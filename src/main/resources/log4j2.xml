@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" strict="true">
+
+  <Appenders>
+    <Appender type="Console" name="STDOUT">
+      <Layout type="PatternLayout" pattern="%-d [%t] %-5p %c - %m%n"/>
+    </Appender>
+  </Appenders>
+
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="STDOUT"/>
+    </Root>
+    <Logger name="org.quartz" level="info"/>
+    <Logger name="org.reflections" level="warn"/>
+    <Logger name="org.hibernate" level="warn"/>
+    <Logger name="org.jboss" level="warn"/>
+
+    <!-- c3p0 -->
+    <Logger name="com.mchange.v2" level="warn"/>
+
+    <!-- default apache http client seems to hate cookies.
+    don't want to create a custom one just to get rid of this output. -->
+    <Logger name="org.apache.http.client.protocol" level="error"/>
+
+    <!-- HTMLUnit; did not find a way to use a less strict error reporter, so just turning it off. -->
+    <Logger name="com.gargoylesoftware" level="error"/>
+    <Logger name="com.gargoylesoftware.htmlunit.javascript.StrictErrorReporter" level="off"/>
+  </Loggers>
+
+</Configuration>

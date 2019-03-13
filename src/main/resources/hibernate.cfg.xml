@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+  <session-factory>
+    <property name="show_sql">false</property>
+    <property name="format_sql">false</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
+    <property name="connection.driver_class">org.postgresql.Driver</property>
+    <property name="connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+    <property name="connection.url">
+      jdbc:postgresql://google/postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory&amp;cloudSqlInstance=arctic-rite-143002:us-west1:rsanek-db
+    </property>
+
+    <property name="hibernate.jdbc.time_zone">America/Los_Angeles</property> <!-- UTC -->
+
+    <!-- settings to make batching ideal (not confident that I need them all) -->
+    <property name="hibernate.jdbc.batch_size">1000</property>
+    <property name="hibernate.cache.use_query_cache">false</property>
+    <property name="hibernate.cache.use_second_level_cache">false</property>
+    <property name="hibernate.order_inserts">true</property>
+    <property name="hibernate.order_updates">true</property>
+    <property name="hibernate.jdbc.batch_versioned_data">true</property>
+
+    <!-- c3p0; properties here are just copy-pasted, not really optimized at all
+         via https://stackoverflow.com/a/2067546
+     -->
+    <property name="hibernate.c3p0.acquire_increment">1</property>
+    <property name="hibernate.c3p0.idle_test_period">60</property>
+    <property name="hibernate.c3p0.min_size">1</property>
+    <property name="hibernate.c3p0.max_size">8</property>
+    <property name="hibernate.c3p0.max_statements">50</property>
+    <property name="hibernate.c3p0.timeout">0</property>
+    <property name="hibernate.c3p0.acquireRetryAttempts">1</property>
+    <property name="hibernate.c3p0.acquireRetryDelay">250</property>
+
+    <mapping class="com.robertsanek.data.etl.EtlRun"/>
+    <mapping class="com.robertsanek.data.etl.local.habitica.History"/>
+    <mapping class="com.robertsanek.data.etl.local.habitica.Task"/>
+    <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Card"/>
+    <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Deck"/>
+    <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Field"/>
+    <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Model"/>
+    <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Note"/>
+    <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Review"/>
+    <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Template"/>
+    <mapping class="com.robertsanek.data.etl.local.workflowy.Entry"/>
+    <mapping class="com.robertsanek.data.etl.remote.google.sheets.budget.AnnotatedItem"/>
+    <mapping class="com.robertsanek.data.etl.remote.google.sheets.clothing.ClothingRating"/>
+    <mapping class="com.robertsanek.data.etl.remote.google.sheets.creditscores.CreditScore"/>
+    <mapping class="com.robertsanek.data.etl.remote.google.sheets.workouts.Workout"/>
+    <mapping class="com.robertsanek.data.etl.remote.humanapi.entities.ActivitySummary"/>
+    <mapping class="com.robertsanek.data.etl.remote.humanapi.entities.GenericReading"/>
+    <mapping class="com.robertsanek.data.etl.remote.humanapi.entities.SleepSummary"/>
+    <mapping class="com.robertsanek.data.etl.remote.lastfm.Artist"/>
+    <mapping class="com.robertsanek.data.etl.remote.oauth.goodreads.Book"/>
+    <mapping class="com.robertsanek.data.etl.remote.oauth.toodledo.ToodledoTask"/>
+    <mapping class="com.robertsanek.data.etl.remote.rescuetime.Category"/>
+    <mapping class="com.robertsanek.data.etl.remote.rescuetime.Efficiency"/>
+    <mapping class="com.robertsanek.data.etl.remote.scrape.leetcode.Question"/>
+    <mapping class="com.robertsanek.data.etl.remote.scrape.toodledo.HabitRep"/>
+    <mapping class="com.robertsanek.data.etl.remote.scrape.toodledo.Habit"/>
+    <mapping class="com.robertsanek.data.etl.remote.wakatime.CodingTime"/>
+    <mapping class="com.robertsanek.data.etl.remote.wikipedia.WikiPerson"/>
+    <mapping class="com.robertsanek.data.derived.anki.CardNewReps"/>
+    <mapping class="com.robertsanek.data.derived.anki.DaysSinceReview"/>
+    <mapping class="com.robertsanek.data.derived.anki.ReviewTimePerTag"/>
+
+  </session-factory>
+</hibernate-configuration>
