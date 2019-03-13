@@ -96,6 +96,7 @@ public abstract class DataQualityBase {
         .replaceAll(" \\(n[é|e]e.+\\)", "")
         .replaceAll(" or .*", "")
         .replaceAll(".+ / ", "")
+        .replace("ø", "o")
         .replace("\"", "")
         //usually a forward slash is used in the case of DHH / David Heinemeier Hansson, but we may also find
         //it in a situation without a space after it. In this case, just replace both.

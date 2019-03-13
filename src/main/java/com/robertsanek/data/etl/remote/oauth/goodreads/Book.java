@@ -26,6 +26,38 @@ public class Book {
   @Column(name = "found_in_anki")
   private boolean foundInAnki;
 
+  public Long getId() {
+    return id;
+  }
+
+  public String getIsbn13() {
+    return isbn13;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getAuthorName() {
+    return authorName;
+  }
+
+  public String getAuthorImageUrl() {
+    return authorImageUrl;
+  }
+
+  public Long getYearPublished() {
+    return yearPublished;
+  }
+
+  public ZonedDateTime getAddedOn() {
+    return addedOn;
+  }
+
+  public boolean isFoundInAnki() {
+    return foundInAnki;
+  }
+
   public static final class BookBuilder {
 
     private Long id;

@@ -35,7 +35,7 @@ public class Artist {
     return foundInAnki;
   }
 
-  public String isImageUrl() {
+  public String getImageUrl() {
     return imageUrl;
   }
 

@@ -44,6 +44,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.robertsanek.ankigen.BaseGenerator;
 import com.robertsanek.data.etl.remote.wikipedia.WikiPerson;
 import com.robertsanek.data.quality.anki.DataQualityBase;
 import com.robertsanek.passivekiva.HTMLOutputBuilder;
@@ -199,7 +200,7 @@ public class WikipediaConnector {
                 if (shouldWriteToDisk && personImageFilename.isPresent()) {
                   saveImage(wikiArticle, personImageFilename.orElseThrow())
                       .ifPresent(localImageFile ->
-                          threadSafePrintRecord(csvPrinter,
+                          BaseGenerator.threadSafePrintRecord(csvPrinter,
                               wikiArticle.getPrettyTitle(),
                               "dummy_pron",
                               "dummy_known_for",
@@ -232,13 +233,6 @@ public class WikipediaConnector {
         return DateTimeFormatter.ofPattern("YYYY/MM").format(date) + "/all-days";
       default:
         throw new RuntimeException(String.format("Don't have URL scheme defined for granularity '%s'.", granularity));
-    }
-  }
-
-  private static synchronized void threadSafePrintRecord(CSVPrinter csvPrinter, Object... values) {
-    try {
-      csvPrinter.printRecord(values);
-    } catch (IOException ignored) {
     }
   }
 
