@@ -12,6 +12,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Charsets;
 import com.google.common.collect.Iterables;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.lastfm.jsonentities.ArtistApiResponse;
@@ -63,7 +64,7 @@ public class ArtistEtl extends Etl<Artist> {
     return Unchecked.get(() -> mapper.readValue(Request.Get(uri)
             .execute()
             .returnContent()
-            .asString(),
+            .asString(Charsets.UTF_8),
         ArtistApiResponse.class));
   }
 
