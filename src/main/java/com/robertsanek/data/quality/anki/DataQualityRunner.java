@@ -57,7 +57,7 @@ public class DataQualityRunner implements QuartzJob {
       "AllAnswerTemplatesHaversAnswerClassAndAvoidUsageOfClozeClass.sql",
       "AllCardsHaveTextPartBeforeImagePart.sql",
       "AllCardsWithEquationsHaveMathJaxInCorrespondingTemplate.sql",
-      "AllContextsUsersAnkiContextClass.sql",
+      "AllContextsUsesAnkiContextClass.sql",
       "AllCoreCardsHaveKeyFields.sql",
       "AllDecksLabeledAutoAddHaveAutoAddOptionsGroup.sql",
       "AllKeyFieldsAreSticky.sql",
@@ -70,7 +70,6 @@ public class DataQualityRunner implements QuartzJob {
       "NoImageSourcesAreExternal.sql",
       "NoTemplatesUseConditionalReplacementForRequiredFields.sql",
       "NoTemplatesUseDeckOverride.sql"
-      //      "UniformBr.sql"
   );
   private static final ImmutableSet<String> ANKI_SEARCH_STRINGS_WITHIN_SQL = ImmutableSet.of(
       "nid:",
