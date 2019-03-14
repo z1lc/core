@@ -4,7 +4,6 @@ import static com.robertsanek.util.SecretType.RESCUETIME_API_KEY;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +24,7 @@ import com.robertsanek.data.etl.Etl;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
+import com.robertsanek.util.Unchecked;
 
 abstract class RescueTimeEtl<T> extends Etl<T> {
 
@@ -38,7 +38,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
         .forEach(currentYear -> {
           final URI efficiencyUri;
           try {
-            efficiencyUri = new URIBuilder()
+            efficiencyUri = Unchecked.get(() -> new URIBuilder()
                 .setScheme("https")
                 .setHost("rescuetime.com")
                 .setPath("/anapi/data")
@@ -49,7 +49,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
                 .setParameter("ty", taxonomy)
                 .setParameter("rb", String.format("%s-01-01", currentYear))
                 .setParameter("re", String.format("%s-01-01", currentYear + 1))
-                .build();
+                .build());
             String csv = Request.Get(efficiencyUri).execute().returnContent().asString();
             CSVParser csvRecords = CSVParser.parse(csv, CSVFormat.DEFAULT);
             synchronized (allRecords) {
@@ -58,9 +58,8 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
                   .map(csvToObjectFunction)
                   .collect(Collectors.toList()));
             }
-          } catch (URISyntaxException | IOException e) {
-            log.error("Exception thrown when performing RescueTime ETL:");
-            log.error(e);
+          } catch (IOException e) {
+            throw new RuntimeException(e);
           }
         });
     log.info("Received %s objects for '%s' taxonomy.", allRecords.size(), taxonomy);
