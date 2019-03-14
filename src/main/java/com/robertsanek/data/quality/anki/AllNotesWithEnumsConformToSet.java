@@ -22,6 +22,7 @@ public class AllNotesWithEnumsConformToSet extends DataQualityBase {
       1528425911054L,
       1538514663195L,
       1545656297838L,
+      1552519997695L, 1552519925954L, //Dynamo get / put
       0L
   );
 
