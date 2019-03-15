@@ -59,7 +59,7 @@ public class DataQualityRunner implements QuartzJob {
       "AllCardsWithEquationsHaveMathJaxInCorrespondingTemplate.sql",
       "AllContextsUsesAnkiContextClass.sql",
       "AllCoreCardsHaveKeyFields.sql",
-      "AllDaggerAccentedDecksHaveMoreThan30NewCards.sql",
+      "AllDaggerAccentedDecksHaveMoreThan12NewCards.sql",
       "AllDecksLabeledAutoAddHaveAutoAddOptionsGroup.sql",
       "AllKeyFieldsAreSticky.sql",
       "AllModelsHaveMainDeckAsDefault.sql",

@@ -9,5 +9,5 @@ with autoadd_backfill_decks as (select name, id
                    order by 1 asc)
 select 'deck:"' || name || '"'
 from new_per_deck
-where new_cards <= 30
+where new_cards <= 12
 ;
