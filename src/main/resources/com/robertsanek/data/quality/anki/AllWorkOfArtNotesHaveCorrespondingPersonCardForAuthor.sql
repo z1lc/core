@@ -1,28 +1,15 @@
 /* People for which there is a work of art card but no corresponding Person card */
-WITH people AS (SELECT REPLACE(REPLACE(REPLACE(split_part(fields, '","', 1), '<b>', ''), '</b>', ''), '"', '') as name
+WITH people AS (SELECT split_part(
+  REPLACE(REPLACE(REPLACE(split_part(fields, '","', 1), '<b>', ''), '</b>', ''), '"', ''), ' or', 1) as name
                 FROM anki_notes
                 WHERE model_id = (
                   SELECT id
                   FROM anki_models
                   WHERE name LIKE '%Person%')),
-  leaders AS (SELECT REPLACE(REPLACE(REPLACE(split_part(fields, '","', 1), '<b>', ''), '</b>', ''), '"', '') as name
-              FROM anki_notes
-              WHERE model_id = (
-                SELECT id
-                FROM anki_models
-                WHERE name LIKE '%Political Leader%')),
-  unified_people AS (SELECT *
-                     FROM people
-                     UNION
-                     SELECT *
-                     FROM leaders),
   works_of_art AS (SELECT anki_notes.id as work_of_art_note_id,
                      REGEXP_REPLACE(
                        REPLACE(REPLACE(REPLACE(split_part(fields, '","', 4), '<b>', ''), '</b>', ''), '"',
-                               ''), '\[sound:.*\]$', '') as name,
-                       'Author, <i>' || REPLACE(split_part(fields, '","', 1), '"',
-                                                '') || '</i> (' || split_part(fields, '","', 3) ||
-                       ')' as urlTitle
+                               ''), '\[sound:.*\]$', '') as name
                    FROM anki_notes
                    WHERE model_id = (
                      SELECT id
@@ -53,7 +40,7 @@ WITH people AS (SELECT REPLACE(REPLACE(REPLACE(split_part(fields, '","', 1), '<b
                                                                      0))
 SELECT 'nid:' || work_of_art_note_id /*, REPLACE(works_of_art.name, '"', '') as name, urlTitle*/
 FROM works_of_art
-       FULL OUTER JOIN unified_people ON works_of_art.name = unified_people.name
-WHERE unified_people.name IS NULL AND works_of_art.name NOT LIKE '%<div>%' AND works_of_art.name NOT LIKE '%<br>%'
+       FULL OUTER JOIN people ON works_of_art.name = people.name
+WHERE people.name IS NULL AND works_of_art.name NOT LIKE '%<div>%' AND works_of_art.name NOT LIKE '%<br>%'
 ORDER BY 1 ASC
 ;
