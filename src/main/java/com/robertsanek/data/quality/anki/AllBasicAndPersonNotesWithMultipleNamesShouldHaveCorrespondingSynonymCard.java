@@ -9,12 +9,13 @@ import org.jsoup.Jsoup;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Streams;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 
-public class AllBasicCardsWithMultipleNamesShouldHaveCorrespondingSynonymCard extends DataQualityBase {
+public class AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends DataQualityBase {
 
-  static final Log log = Logs.getLog(AllBasicCardsWithMultipleNamesShouldHaveCorrespondingSynonymCard.class);
+  static final Log log = Logs.getLog(AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.class);
   private static final ImmutableSet<Long> NOTE_ID_EXCLUSIONS = ImmutableSet.of(
       1404606499435L,
       1410152894223L,
@@ -71,6 +72,12 @@ public class AllBasicCardsWithMultipleNamesShouldHaveCorrespondingSynonymCard ex
       1511886826563L,  //snapshot/repeatable read
       1550216794965L,  //docker
       1550216794959L,  //docker
+
+      //Japanese Emperors
+      1532774175301L,
+      1532774135965L,
+      1532774106415L,
+      1532774000812L,
       0L
   );
   private final boolean shouldGenerateCsvOutput = false;
@@ -81,9 +88,9 @@ public class AllBasicCardsWithMultipleNamesShouldHaveCorrespondingSynonymCard ex
     return Lists.newArrayList(front.split(" or "));
   }
 
-  static String getPrimaryTextFromFields(List<String> fields) {
+  static String getPrimaryTextFromFields(List<String> fields, Long modelId) {
     String abbrev = "";
-    if (fields.size() >= 6) {
+    if (fields.size() >= 6 && modelId == BASIC_MODEL_ID) {
       abbrev = Jsoup.parse(fields.get(5)).text();
     }
     List<String> individualOr = getIndividualNames(fields);
@@ -98,20 +105,28 @@ public class AllBasicCardsWithMultipleNamesShouldHaveCorrespondingSynonymCard ex
           return Jsoup.parse(fields.get(0)).text().replaceAll("\\[sound:.+]", "");
         })
         .collect(Collectors.toSet());
-    getAllNotesInRelevantDecks(BASIC_MODEL_ID, NOTE_ID_EXCLUSIONS)
+    Streams.concat(
+        getAllNotesInRelevantDecks(BASIC_MODEL_ID, NOTE_ID_EXCLUSIONS).stream(),
+        getAllNotesInRelevantDecks(PERSON_MODEL_ID, NOTE_ID_EXCLUSIONS).stream())
         .forEach(note -> {
           List<String> fields = splitCsvIntoCommaSeparatedList(note.getFields());
           String front = Jsoup.parse(fields.get(0)).text().replaceAll("^Visualize ", "");
           boolean frontContainsOr = front.contains(" or ");
           List<String> individualOr = Lists.newArrayList(front.split(" or "));
-          String primary = getPrimaryTextFromFields(fields).replaceAll("^Visualize ", "");
+          String primary = getPrimaryTextFromFields(fields, note.getModel_id()).replaceAll("^Visualize ", "");
           boolean synonymAlreadyExists = primarySynonymTerms.contains(primary);
           boolean probablySentence = front.endsWith(".") || front.endsWith("?")
               || front.length() >= MIN_CHARACTERS_TO_CONSIDER_SENTENCE;
           if (frontContainsOr && !synonymAlreadyExists && !probablySentence) {
             String context = "";
-            if (fields.size() > 3) {
-              context = Jsoup.parse(fields.get(3)).text().replace("%", "");
+            int contextField = -1;
+            if (note.getModel_id() == BASIC_MODEL_ID) {
+              contextField = 3;
+            } else if (note.getModel_id() == PERSON_MODEL_ID) {
+              contextField = 5;
+            }
+            if (fields.size() > contextField) {
+              context = Jsoup.parse(fields.get(contextField)).text().replace("%", "");
             }
             violations.put(this.getClass(), "nid:" + note.getId().toString());
             if (shouldGenerateCsvOutput) {

@@ -1,7 +1,7 @@
 package com.robertsanek.data.quality.anki;
 
-import static com.robertsanek.data.quality.anki.AllBasicCardsWithMultipleNamesShouldHaveCorrespondingSynonymCard.getIndividualNames;
-import static com.robertsanek.data.quality.anki.AllBasicCardsWithMultipleNamesShouldHaveCorrespondingSynonymCard.getPrimaryTextFromFields;
+import static com.robertsanek.data.quality.anki.AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.getIndividualNames;
+import static com.robertsanek.data.quality.anki.AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.getPrimaryTextFromFields;
 import static com.robertsanek.data.quality.anki.NoSynonymIsAFullSubstringOfAnotherSynonym.getSublistOfSynonymFieldsWithoutContext;
 
 import java.util.List;
@@ -78,7 +78,7 @@ public class AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatch e
         .forEach(note -> {
           List<String> fields = splitCsvIntoCommaSeparatedList(note.getFields());
           List<String> individualNames = getIndividualNames(fields);
-          String primary = getPrimaryTextFromFields(fields);
+          String primary = getPrimaryTextFromFields(fields, note.getModel_id());
           SynonymInformation correspondingSynonym = primarySynonymToRestOfSynonymsMap.get(primary);
           if (correspondingSynonym != null) {
             if (!correspondingSynonym.getAllSynonyms().subList(1, correspondingSynonym.getAllSynonyms().size())

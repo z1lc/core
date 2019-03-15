@@ -68,6 +68,7 @@ public abstract class DataQualityBase {
   static Map<Long, Note> noteByNoteId = toMap(allNotes, Note::getId);
   static long BASIC_MODEL_ID = 1416785626019L;
   static long CLOZE_MODEL_ID = 1410460771936L;
+  static long PERSON_MODEL_ID = 1436872005312L;
   static long SYNONYM_MODEL_ID = 1539762208227L;
   static List<Field> allFields = Unchecked.get(() -> new FieldEtl().getObjects());
   static List<Field> fieldsInUse = allFields.stream()
