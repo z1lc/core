@@ -25,13 +25,14 @@ public class ArtistEtl extends Etl<Artist> {
 
   private static ObjectMapper mapper = CommonProvider.getObjectMapper();
   private static final String USERNAME = "rsanek";
+  private static final long ARTISTS_PER_PAGE = 1000;
 
   @Override
   public List<Artist> getObjects() {
     Set<String> existingPeopleInAnkiDb = DataQualityBase.getExistingPeopleInAnkiDbLowerCased();
     return IntStream.range(1, extractTotalPages(getApiResponse(1, 1)) + 1).parallel()
         .boxed()
-        .flatMap(page -> getApiResponse(page, 1000).getTopartists().getArtist().stream())
+        .flatMap(page -> getApiResponse(page, ARTISTS_PER_PAGE).getTopartists().getArtist().stream())
         .map(artist -> {
           String name = DataQualityBase.cleanName(artist.getName());
           return Artist.ArtistBuilder.anArtist()
@@ -69,7 +70,7 @@ public class ArtistEtl extends Etl<Artist> {
   }
 
   private int extractTotalPages(ArtistApiResponse response) {
-    return (int) Math.ceil(Double.valueOf(response.getTopartists().getAttr().getTotal()) / 1000);
+    return (int) Math.ceil(Double.valueOf(response.getTopartists().getAttr().getTotal()) / ARTISTS_PER_PAGE);
   }
 
 }
