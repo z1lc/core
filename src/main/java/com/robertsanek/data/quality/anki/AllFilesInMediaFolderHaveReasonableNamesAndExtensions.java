@@ -27,9 +27,8 @@ public class AllFilesInMediaFolderHaveReasonableNamesAndExtensions extends DataQ
       "dat",  //some add-on storage
       "db",   //AnKindle add-on
       "gif",
-      "jpe",
-      "jpeg",
-      "jpg",
+      "jpg",  //.jpg should be preferred to .jpe and .jpeg so that we can more easily automatically
+              // find an image based on a name
       "js",
       "json",  //some add-on storage
       "mp3",
@@ -67,12 +66,11 @@ public class AllFilesInMediaFolderHaveReasonableNamesAndExtensions extends DataQ
             })
             .collect(Collectors.groupingBy(Pair::getLeft, Collectors.mapping(Pair::getRight, Collectors.toSet())))
             .forEach((extension, fileNames) -> {
-              if (!REASONABLE_EXTENSIONS.contains(extension.toLowerCase())) {
-                dqInformation.warn("%s files in media folder with disallowed extension '%s'.",
-                    fileNames.size(), extension);
-                dqInformation.warn(String.join(" ", fileNames));
+              if (!REASONABLE_EXTENSIONS.contains(extension)) {
+                dqInformation.warn("%s files in media folder with disallowed extension '%s': \n%s",
+                    fileNames.size(), extension, String.join("\n", fileNames));
               } else {
-                //log.info("%s files with extension %s", fileNames.size(), extension);
+                log.info("%s files with extension %s", fileNames.size(), extension);
               }
             });
         return Unit.unit();

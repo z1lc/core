@@ -30,6 +30,10 @@ public class AllNumericalClozeDeletionsHaveHashtagHint extends DataQualityBase {
         1546907641919L,  //Form ADV part 1/2
         1547699725186L,  //Das Keyboard 4
         1547937943437L,  //python L[::] subsets
+        //shoe names
+        1552805817123L,
+        1552805757575L,
+        1552804997297L,
         0L
     );
     Pattern clozeDigitsNoHint = Pattern.compile("\\{\\{c\\d+::\\d+?}}");
