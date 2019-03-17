@@ -1,6 +1,12 @@
 /* People for which there is a work of art card but no corresponding Person card */
 WITH people AS (SELECT split_part(
-  REPLACE(REPLACE(REPLACE(split_part(fields, '","', 1), '<b>', ''), '</b>', ''), '"', ''), ' or', 1) as name
+  REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(split_part(fields, '","', 1),
+                                          '<b>', ''),
+                                  '</b>', ''),
+                          '"', ''),
+                  '<u>', ''),
+          '</u>', ''),
+  ' or', 1) as name
                 FROM anki_notes
                 WHERE model_id = (
                   SELECT id
