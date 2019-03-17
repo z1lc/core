@@ -70,7 +70,7 @@ public class AllFilesInMediaFolderHaveReasonableNamesAndExtensions extends DataQ
                 dqInformation.warn("%s files in media folder with disallowed extension '%s': \n%s",
                     fileNames.size(), extension, String.join("\n", fileNames));
               } else {
-                log.info("%s files with extension %s", fileNames.size(), extension);
+                //log.info("%s files with extension %s", fileNames.size(), extension);
               }
             });
         return Unit.unit();
