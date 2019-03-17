@@ -17,13 +17,13 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 public abstract class AnkiEtl<T> extends SQLiteEtl<T> {
 
   private static final Log log = Logs.getLog(AnkiEtl.class);
-  public static final String PROFILE_NAME = "z1lc";
+  private static final String PROFILE_NAME = "z1lc";
   static final int FIELDS_LIMIT = 10_000;
   private File tempCopiedAnkiDb;
 
   @Override
   public void preEtlStep() {
-    AnkiSyncer.syncLocalCollectionIfOutOfDate();
+    AnkiSyncer.syncLocalCollectionIfOutOfDate(getProfileName());
   }
 
   @Override
@@ -36,7 +36,7 @@ public abstract class AnkiEtl<T> extends SQLiteEtl<T> {
   @Override
   public File getSQLiteDbFileLocation() {
     final Path fromPath = Path.of(String.format("%s/%s/collection.anki2",
-        CrossPlatformUtils.getPlatform().getAnkiBaseDirectory().orElseThrow().toString(), PROFILE_NAME));
+        CrossPlatformUtils.getPlatform().getAnkiBaseDirectory().orElseThrow().toString(), getProfileName()));
     final String newFileName = RandomStringUtils.randomAlphanumeric(32).toLowerCase();
     final String target = String.format(System.getProperty("java.io.tmpdir") + "/%s.ankidb", newFileName);
     Unchecked.run(() -> Files.copy(fromPath,
@@ -44,6 +44,10 @@ public abstract class AnkiEtl<T> extends SQLiteEtl<T> {
         StandardCopyOption.REPLACE_EXISTING));
     tempCopiedAnkiDb = new File(target);
     return tempCopiedAnkiDb;
+  }
+
+  public String getProfileName() {
+    return PROFILE_NAME;
   }
 
 }

@@ -66,6 +66,38 @@ public class Review {
     return time_ms;
   }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public void setCreated_at(ZonedDateTime created_at) {
+    this.created_at = created_at;
+  }
+
+  public void setCard_id(Long card_id) {
+    this.card_id = card_id;
+  }
+
+  public void setEase(Long ease) {
+    this.ease = ease;
+  }
+
+  public void setInterval(Long interval) {
+    this.interval = interval;
+  }
+
+  public void setLast_interval(Long last_interval) {
+    this.last_interval = last_interval;
+  }
+
+  public void setFactor(Long factor) {
+    this.factor = factor;
+  }
+
+  public void setTime_ms(Long time_ms) {
+    this.time_ms = time_ms;
+  }
+
   public static final class ReviewBuilder {
 
     Long id;

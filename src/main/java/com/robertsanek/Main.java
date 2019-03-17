@@ -188,7 +188,7 @@ public class Main {
           log.info("Credentials for Google Sheets set up successfully.");
 
           log.info("Testing Anki sync...");
-          if (AnkiSyncer.syncLocalCollectionIfOutOfDate()) {
+          if (AnkiSyncer.syncLocalCollectionIfOutOfDate("z1lc")) {
             log.info("Anki sync successful.");
           } else {
             log.error("Anki sync unsuccessful!");

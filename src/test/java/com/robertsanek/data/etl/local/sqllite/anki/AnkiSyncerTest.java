@@ -10,7 +10,7 @@ public class AnkiSyncerTest {
   @Test
   @Ignore("integration")
   public void testSync() {
-    AnkiSyncer.syncLocalCollectionIfOutOfDate();
+    AnkiSyncer.syncLocalCollectionIfOutOfDate("z1lc");
   }
 
   @Test

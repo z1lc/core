@@ -9,6 +9,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
+import com.barnacle.AnkiEtl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.JsonObject;
@@ -37,6 +38,7 @@ public class EtlAndDqJob implements QuartzJob {
       parallel = dataMap.getBoolean("parallel");
     }
     new MasterEtl().runEtls(false, parallel);
+    new AnkiEtl().call();
     triggerKlipfolioRefresh();
     new DataQualityRunner().run();
   }

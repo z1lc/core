@@ -36,7 +36,6 @@ public class AnkiSyncer {
       .setConnectTimeout((int) HTTP_REQUEST_TIMEOUT.toMillis())
       .setSocketTimeout((int) HTTP_REQUEST_TIMEOUT.toMillis())
       .build();
-  private static final String profileToSync = AnkiEtl.PROFILE_NAME;
   private static final ObjectMapper objectMapper = CommonProvider.getObjectMapper();
   private static Log log = Logs.getLog(AnkiSyncer.class);
   private static String ANKI_CONNECT_HOST = "localhost";
@@ -47,7 +46,7 @@ public class AnkiSyncer {
       .setHost(ANK_CONNECT_PRETTY_URL);
   private static ZonedDateTime lastLogged = ZonedDateTime.now().minusYears(10);
 
-  public static synchronized boolean syncLocalCollectionIfOutOfDate() {
+  public static synchronized boolean syncLocalCollectionIfOutOfDate(String profileToSync) {
     File lastSyncFile = new File(String.format("%sout/anki/last_sync_%s.zoneddatetime",
         CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow(), profileToSync));
     ZonedDateTime lastSuccessfulSync = ZonedDateTime.now();
@@ -56,15 +55,16 @@ public class AnkiSyncer {
       if (lastSyncFile.exists()) {
         AnkiSyncResult ankiSyncResult = objectMapper.readValue(lastSyncFile, AnkiSyncResult.class);
         if (!ankiSyncResult.getSucceeded()) {
-          log.warn("Last sync did not succeed.");
+          log.warn("Last sync of profile %s did not succeed.", profileToSync);
         }
         lastSuccessfulSync = ankiSyncResult.getLastSuccessfulSync();
         if (lastSuccessfulSync.isBefore(ZonedDateTime.now().minus(DO_NOT_SYNC_IF_WITHIN))) {
-          log.info("Will need to sync; last sync was %s minutes ago.",
-              ChronoUnit.MINUTES.between(lastSuccessfulSync, ZonedDateTime.now()));
+          log.info("Will need to sync profile %s; last sync was %s minutes ago.",
+              profileToSync, ChronoUnit.MINUTES.between(lastSuccessfulSync, ZonedDateTime.now()));
         } else {
           if (ChronoUnit.SECONDS.between(lastLogged, ZonedDateTime.now()) > 30) {
-            log.info("No need to sync; last sync is within %s minutes.", DO_NOT_SYNC_IF_WITHIN.toMinutes());
+            log.info("No need to sync profile %s; last sync is within %s minutes.",
+                profileToSync, DO_NOT_SYNC_IF_WITHIN.toMinutes());
             lastLogged = ZonedDateTime.now();
           }
           return true;
@@ -101,7 +101,7 @@ public class AnkiSyncer {
             CommonProvider.getHttpClient(timeoutConfig).execute(syncPost).getEntity());
         Thread.sleep(WAIT_TIME_BETWEEN_STEPS.toMillis());
         if (syncResponse.equals("{\"result\": null, \"error\": null}")) {
-          log.info("Successfully synced Anki.");
+          log.info("Successfully synced Anki for profile %s.", profileToSync);
           writeFile(lastSyncFile, thisSyncTime, thisSyncTime);
           return true;
         } else {
