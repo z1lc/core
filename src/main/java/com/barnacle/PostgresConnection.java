@@ -17,7 +17,7 @@ public class PostgresConnection {
         CommonProvider.getSecret(SecretType.HEROKU_POSTGRES_URL),
         CommonProvider.getSecret(SecretType.HEROKU_POSTGRES_USERNAME),
         CommonProvider.getSecret(SecretType.HEROKU_POSTGRES_PASSWORD));
-    if (local) {
+    if (!local) {
       dbUrl = System.getenv("JDBC_DATABASE_URL");
     }
     return DriverManager.getConnection(dbUrl);

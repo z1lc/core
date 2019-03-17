@@ -35,18 +35,18 @@ public class AnkiEtl implements Callable<Object> {
         .addAll(Unchecked.get(() -> new ReviewEtl() {
           @Override
           public String getProfileName() {
-            return ROB_NAME;
-          }
-        }.getObjects()).stream()
-            .map(review -> Pair.of(User.ROB, review))
-            .collect(Collectors.toList()))
-        .addAll(Unchecked.get(() -> new ReviewEtl() {
-          @Override
-          public String getProfileName() {
             return WILL_NAME;
           }
         }.getObjects()).stream()
             .map(review -> Pair.of(User.WILL, review))
+            .collect(Collectors.toList()))
+        .addAll(Unchecked.get(() -> new ReviewEtl() {
+          @Override
+          public String getProfileName() {
+            return ROB_NAME;
+          }
+        }.getObjects()).stream()
+            .map(review -> Pair.of(User.ROB, review))
             .collect(Collectors.toList()))
         .build().stream()
         .filter(userReviewPair -> userReviewPair.getRight().getCreated_at().isAfter(start))

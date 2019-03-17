@@ -55,15 +55,15 @@ public class AnkiSyncer {
       if (lastSyncFile.exists()) {
         AnkiSyncResult ankiSyncResult = objectMapper.readValue(lastSyncFile, AnkiSyncResult.class);
         if (!ankiSyncResult.getSucceeded()) {
-          log.warn("Last sync of profile %s did not succeed.", profileToSync);
+          log.warn("Last sync of profile '%s' did not succeed.", profileToSync);
         }
         lastSuccessfulSync = ankiSyncResult.getLastSuccessfulSync();
         if (lastSuccessfulSync.isBefore(ZonedDateTime.now().minus(DO_NOT_SYNC_IF_WITHIN))) {
-          log.info("Will need to sync profile %s; last sync was %s minutes ago.",
+          log.info("Will need to sync profile '%s'; last sync was %s minutes ago.",
               profileToSync, ChronoUnit.MINUTES.between(lastSuccessfulSync, ZonedDateTime.now()));
         } else {
           if (ChronoUnit.SECONDS.between(lastLogged, ZonedDateTime.now()) > 30) {
-            log.info("No need to sync profile %s; last sync is within %s minutes.",
+            log.info("No need to sync profile '%s'; last sync is within %s minutes.",
                 profileToSync, DO_NOT_SYNC_IF_WITHIN.toMinutes());
             lastLogged = ZonedDateTime.now();
           }
@@ -96,12 +96,12 @@ public class AnkiSyncer {
         syncPost.setEntity(new ByteArrayEntity(
             String.format("{\"action\": \"sync\", \"version\": %s}", ANKI_CONNECT_VERSION)
                 .getBytes(StandardCharsets.UTF_8)));
-        log.info("Syncing selected profile...");
+        log.info("Syncing profile '%s'...", profileToSync);
         String syncResponse = EntityUtils.toString(
             CommonProvider.getHttpClient(timeoutConfig).execute(syncPost).getEntity());
         Thread.sleep(WAIT_TIME_BETWEEN_STEPS.toMillis());
         if (syncResponse.equals("{\"result\": null, \"error\": null}")) {
-          log.info("Successfully synced Anki for profile %s.", profileToSync);
+          log.info("Successfully synced Anki for profile '%s'.", profileToSync);
           writeFile(lastSyncFile, thisSyncTime, thisSyncTime);
           return true;
         } else {
