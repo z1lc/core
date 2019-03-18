@@ -1,7 +1,7 @@
 package com.barnacle.lifting;
 
-import static com.barnacle.PostgresConnection.QUERY_TIMEOUT;
-import static com.barnacle.PostgresConnection.quote;
+import static com.robertsanek.util.PostgresConnection.QUERY_TIMEOUT;
+import static com.robertsanek.util.PostgresConnection.quote;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.barnacle.PostgresConnection;
+import com.robertsanek.util.PostgresConnection;
 import com.barnacle.User;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

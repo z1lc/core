@@ -1,7 +1,7 @@
 package com.barnacle;
 
-import static com.barnacle.PostgresConnection.QUERY_TIMEOUT;
-import static com.barnacle.PostgresConnection.quote;
+import static com.robertsanek.util.PostgresConnection.QUERY_TIMEOUT;
+import static com.robertsanek.util.PostgresConnection.quote;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,6 +20,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import com.google.common.collect.ImmutableList;
 import com.robertsanek.data.etl.local.sqllite.anki.Review;
 import com.robertsanek.data.etl.local.sqllite.anki.ReviewEtl;
+import com.robertsanek.util.PostgresConnection;
 import com.robertsanek.util.Unchecked;
 
 public class AnkiEtl implements Callable<Object> {
@@ -79,6 +80,7 @@ public class AnkiEtl implements Callable<Object> {
               return Triple.of(pairListEntry.getKey().getLeft(), review, Pair.of(cardsPerMinute, percentCorrect));
             }).collect(Collectors.toList());
 
+    Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
     try (Connection connection = PostgresConnection.getConnection(true);
          Statement statement = connection.createStatement()) {
       statement.setQueryTimeout((int) QUERY_TIMEOUT.getSeconds());

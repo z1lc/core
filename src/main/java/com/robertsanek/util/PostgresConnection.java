@@ -1,26 +1,27 @@
 package com.robertsanek.util;
 
-import static com.robertsanek.util.SecretType.HEROKU_POSTGRES_PASSWORD;
-import static com.robertsanek.util.SecretType.HEROKU_POSTGRES_USERNAME;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.Duration;
 
 public class PostgresConnection {
 
   public static final Duration QUERY_TIMEOUT = Duration.ofSeconds(30);
 
-  public static Connection getConnection(boolean local) {
-    String dbUrl = local ? String.format(
-        "jdbc:postgresql://ec2-184-72-243-166.compute-1.amazonaws.com:5432/d78ml1ie48ald4" +
-            "?sslmode=require" +
-            "&user=%s" +
-            "&password=%s",
-        CommonProvider.getSecret(HEROKU_POSTGRES_USERNAME),
-        CommonProvider.getSecret(HEROKU_POSTGRES_PASSWORD)) :
-        System.getenv("JDBC_DATABASE_URL");
-    return Unchecked.get(() -> DriverManager.getConnection(dbUrl));
+  public static Connection getConnection(boolean local) throws SQLException {
+    String dbUrl = String.format("jdbc:postgresql://%s?sslmode=require&user=%s&password=%s",
+        CommonProvider.getSecret(SecretType.HEROKU_POSTGRES_URL),
+        CommonProvider.getSecret(SecretType.HEROKU_POSTGRES_USERNAME),
+        CommonProvider.getSecret(SecretType.HEROKU_POSTGRES_PASSWORD));
+    if (!local) {
+      dbUrl = System.getenv("JDBC_DATABASE_URL");
+    }
+    return DriverManager.getConnection(dbUrl);
+  }
+
+  public static String quote(Object s) {
+    return s == null ? "NULL" : String.format("'%s'", s.toString());
   }
 
 }
