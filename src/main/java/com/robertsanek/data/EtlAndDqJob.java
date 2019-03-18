@@ -37,8 +37,8 @@ public class EtlAndDqJob implements QuartzJob {
       JobDataMap dataMap = context.getMergedJobDataMap();
       parallel = dataMap.getBoolean("parallel");
     }
-    new MasterEtl().runEtls(false, parallel);
     new AnkiEtl().call();
+    new MasterEtl().runEtls(false, parallel);
     triggerKlipfolioRefresh();
     new DataQualityRunner().run();
   }
