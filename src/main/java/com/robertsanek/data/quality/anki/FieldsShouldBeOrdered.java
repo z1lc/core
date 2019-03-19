@@ -44,6 +44,7 @@ public class FieldsShouldBeOrdered extends DataQualityBase {
           Pair.of("Algorithm", "\uD83D\uDD39Average Case Time Complexity"),
           Pair.of("Geography Countries and Counties", "\uD83D\uDD39Currency Name"),
           Pair.of("Geography Countries and Counties", "\uD83D\uDD39Czech Name"),
+          Pair.of("Geography Countries and Counties", "\uD83D\uDD39Currency Pronunciation"),
           Pair.of("8 Interview Question", "Additional Criteria"),
           Pair.of("8 Interview Question", "Insight Explanation"),
           Pair.of("8 Interview Question", "Complexity specifications")
