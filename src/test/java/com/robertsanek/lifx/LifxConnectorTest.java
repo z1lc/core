@@ -8,7 +8,7 @@ public class LifxConnectorTest {
   @Test
   @Ignore("integration")
   public void name() {
-    boolean b = new LifxConnector().triggerBreathe();
+    boolean b = new LifxConnector().triggerCoreDay();
     System.out.println("b = " + b);
   }
 }

@@ -1,5 +1,6 @@
 package com.robertsanek.lifx;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class LifxConnector {
 
   private static final String LIFX_ACCESS_TOKEN = CommonProvider.getSecret(SecretType.LIFX_ACCESS_TOKEN);
   private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
-  private static final double SWITCH_BETWEEN_SCENE_DURATION = 10.0;
+  private static final Duration SWITCH_BETWEEN_SCENE_DURATION = Duration.ofMinutes(5);
 
   boolean triggerCoreDay() {
     return triggerScene(Optional.ofNullable(getSceneNameMap().get("Core Day")).orElseThrow().getUuid());
@@ -87,7 +88,7 @@ public class LifxConnector {
         .Put(String.format("https://api.lifx.com/v1/scenes/scene_id:%s/activate", uuid))
         .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
         .body(EntityBuilder.create()
-            .setParameters(new BasicNameValuePair("duration", String.valueOf(SWITCH_BETWEEN_SCENE_DURATION)))
+            .setParameters(new BasicNameValuePair("duration", String.valueOf(SWITCH_BETWEEN_SCENE_DURATION.getSeconds())))
             .build())
         .execute()
         .returnContent()

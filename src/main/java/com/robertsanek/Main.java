@@ -129,7 +129,7 @@ public class Main {
           JobDetail lifxDay = JobBuilder
               .newJob(Lifx.class)
               .usingJobData("action", Lifx.Action.DAY.toString()).build();
-          String nineCron = "0 0 9 1/1 * ? *";
+          String nineCron = "0 40 8 1/1 * ? *";
           Trigger coreDayTrigger = TriggerBuilder.newTrigger()
               .withSchedule(CronScheduleBuilder.cronSchedule(nineCron))
               .build();
@@ -139,7 +139,7 @@ public class Main {
               .withIdentity(UUID.randomUUID().toString())
               .usingJobData("action", Lifx.Action.EARLY_NIGHT.toString())
               .build();
-          String eighteenCron = "0 0 18 1/1 * ? *";
+          String eighteenCron = "0 20 19 1/1 * ? *";
           Trigger earlyNightTrigger = TriggerBuilder.newTrigger()
               .withSchedule(CronScheduleBuilder.cronSchedule(eighteenCron))
               .build();
