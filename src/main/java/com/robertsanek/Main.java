@@ -129,7 +129,7 @@ public class Main {
           JobDetail lifxDay = JobBuilder
               .newJob(Lifx.class)
               .usingJobData("action", Lifx.Action.DAY.toString()).build();
-          String nineCron = "0 40 8 1/1 * ? *";
+          String nineCron = "0 50 8 1/1 * ? *";
           Trigger coreDayTrigger = TriggerBuilder.newTrigger()
               .withSchedule(CronScheduleBuilder.cronSchedule(nineCron))
               .build();
