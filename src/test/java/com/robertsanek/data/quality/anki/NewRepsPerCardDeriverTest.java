@@ -25,4 +25,14 @@ public class NewRepsPerCardDeriverTest {
     long count = objects.size();
     System.out.println((double) sum / count);
   }
+
+  @Test
+  @Ignore("integration")
+  public void integration2() {
+    List<CardNewReps> ret = new NewRepsPerCardDeriver().getObjects();
+    long correct = ret.stream().filter(CardNewReps::isGotFirstReviewAfterGraduationCorrect).count();
+    long total = ret.stream().filter(CardNewReps::isScheduledAs1DayGraduationAndReviewedOnTime).count();
+    System.out.println((double) correct / total);
+  }
+
 }

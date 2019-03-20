@@ -35,11 +35,21 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
           long toGraduate = 0;
           long toMature = 0;
           long to90 = 0;
+          boolean gotFirstReviewAfterGraduationCorrect = false;
+          boolean foundFirstReviewAfterGraduation = false;
           boolean matured = false;
           boolean reached90 = false;
-          for (Review review : reviewsPerCard) {
+          for (int i = 0; i < reviewsPerCard.size(); i++) {
+            Review review = reviewsPerCard.get(i);
             if (review.getLast_interval() < 0) {
               toGraduate++;
+            }
+            if (review.getLast_interval() == 1 &&
+                reviewsPerCard.get(i - 1).getCreated_at().toLocalDate().plusDays(1)
+                    .equals(review.getCreated_at().toLocalDate()) &&
+                !foundFirstReviewAfterGraduation) {
+              foundFirstReviewAfterGraduation = true;
+              gotFirstReviewAfterGraduationCorrect = review.getEase() >= 3;
             }
             if (review.getInterval() < 21) {
               toMature++;
@@ -59,6 +69,8 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
               .withReps_to_graduate(toGraduate)
               .withReps_to_mature(matured? toMature : null)
               .withReps_to_90d(reached90? to90 : null)
+              .withGotFirstReviewAfterGraduationCorrect(gotFirstReviewAfterGraduationCorrect)
+              .withScheduledAs1DayGraduationAndReviewedOnTime(foundFirstReviewAfterGraduation)
               .build();
         })
         .collect(Collectors.toList());
