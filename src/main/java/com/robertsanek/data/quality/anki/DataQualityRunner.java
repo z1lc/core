@@ -69,6 +69,7 @@ public class DataQualityRunner implements QuartzJob {
       "AllTemplatesIncludeJavaScriptLibrariesAndTags.sql",
       "AllWorkOfArtNotesHaveCorrespondingPersonCardForAuthor.sql",
       "NoImageSourcesAreExternal.sql",
+      "NoFieldsHaveTrailingBr.sql",
       "NoTemplatesUseConditionalReplacementForRequiredFields.sql",
       "NoTemplatesUseDeckOverride.sql"
   );
