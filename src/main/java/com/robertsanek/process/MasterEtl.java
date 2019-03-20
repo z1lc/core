@@ -11,7 +11,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -45,7 +44,6 @@ import com.google.api.services.sqladmin.model.Operation;
 import com.google.api.services.sqladmin.model.Settings;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.Iterables;
 import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.EtlRun;
@@ -219,12 +217,17 @@ public class MasterEtl implements QuartzJob {
       log.info(template);
     } else {
       NotificationSender.sendNotificationDefault(
-          String.format("%s failed at %s!",
-              Iterables.getLast(Arrays.asList(etlClazz.getName().split("\\."))),
+          String.format("%s failed at %s!", etlClazz.getSimpleName(),
               LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))),
           template + "\n\n" + ExceptionUtils.getStackTrace(exceptionDuringEtl));
       log.error(template);
     }
+
+    if (max.get() == 0) {
+      NotificationSender.sendNotificationDefault(
+          String.format("%s generated 0 rows!", etlClazz.getSimpleName()), "Check output.");
+    }
+
     return EtlRun.EtlRunBuilder.anEtlRun()
         .withId(ETL_RUN_ID_GENERATOR.getAndIncrement())
         .withClass_name(etlClazz.getName())
@@ -271,14 +274,14 @@ public class MasterEtl implements QuartzJob {
         .collect(Collectors.toList());
   }
 
-  /*https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl
-    'create' forces drop of existing schema+data and creation of new schema when connection happens. So tables will
-    all be emptied and then filled in as the ETL goes on.
-    'validate' ensures the schemas in code and in the DB match. Will not drop anything and will throw exception
-    if there is a schema mismatch (so you have to manually manage schemas yourself).
-    'update' will do nothing if the schemas match and will update them if it finds differences.
-    This is good if you want to keep existing data.
-  */
+  /* https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl
+   * 'create' forces drop of existing schema+data and creation of new schema when connection happens. So tables will
+   * all be emptied and then filled in as the ETL goes on.
+   * 'validate' ensures the schemas in code and in the DB match. Will not drop anything and will throw exception
+   * if there is a schema mismatch (so you have to manually manage schemas yourself).
+   * 'update' will do nothing if the schemas match and will update them if it finds differences.
+   * This is good if you want to keep existing data.
+   */
   private enum Hbm2ddlType {
     CREATE("create"),              //Database dropping will be generated followed by database creation.
     CREATE_DROP("create-drop"),    /*Drop the schema and recreate it on SessionFactory startup.
