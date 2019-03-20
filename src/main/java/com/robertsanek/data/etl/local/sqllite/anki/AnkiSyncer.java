@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.http.client.config.RequestConfig;
@@ -19,6 +20,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Maps;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
@@ -44,7 +46,7 @@ public class AnkiSyncer {
   private static final URIBuilder ANKI_CONNECT_BASE_URI = new URIBuilder()
       .setScheme("http")
       .setHost(ANK_CONNECT_PRETTY_URL);
-  private static ZonedDateTime lastLogged = ZonedDateTime.now().minusYears(10);
+  private static final Map<String, ZonedDateTime> lastLoggedMap = Maps.newHashMap();
 
   public static synchronized boolean syncLocalCollectionIfOutOfDate(String profileToSync) {
     File lastSyncFile = new File(String.format("%sout/anki/last_sync_%s.zoneddatetime",
@@ -62,10 +64,12 @@ public class AnkiSyncer {
           log.info("Will need to sync profile '%s'; last sync was %s minutes ago.",
               profileToSync, ChronoUnit.MINUTES.between(lastSuccessfulSync, ZonedDateTime.now()));
         } else {
-          if (ChronoUnit.SECONDS.between(lastLogged, ZonedDateTime.now()) > 30) {
+          if (ChronoUnit.SECONDS.between(
+              lastLoggedMap.getOrDefault(profileToSync, ZonedDateTime.now().minusYears(10)),
+              ZonedDateTime.now()) > 30) {
             log.info("No need to sync profile '%s'; last sync is within %s minutes.",
                 profileToSync, DO_NOT_SYNC_IF_WITHIN.toMinutes());
-            lastLogged = ZonedDateTime.now();
+            lastLoggedMap.put(profileToSync, ZonedDateTime.now());
           }
           return true;
         }
