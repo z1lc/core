@@ -21,7 +21,7 @@ abstract class ToodledoHabitsEtl<T> extends Etl<T> {
   private static ObjectMapper mapper = CommonProvider.getObjectMapper();
 
   <O> List<O> genericGet(String path, Class<O[]> clazz) {
-    try (WebClient webClient = new WebClient()) {
+    try (WebClient webClient = CommonProvider.getHtmlUnitWebClient()) {
       //via https://stackoverflow.com/a/31496516
       HtmlPage page = webClient.getPage("https://www.toodledo.com/signin.php");
       HtmlForm form = Iterables.getOnlyElement(page.getForms());

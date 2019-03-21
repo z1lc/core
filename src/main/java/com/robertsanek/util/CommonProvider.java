@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public class CommonProvider {
@@ -36,6 +37,13 @@ public class CommonProvider {
 
   public static String getEmailAddress() {
     return EMAIL_ADDRESS;
+  }
+
+  //https://stackoverflow.com/a/25591540
+  public static WebClient getHtmlUnitWebClient() {
+    WebClient webClient = new WebClient();
+    webClient.getOptions().setThrowExceptionOnScriptError(false);
+    return webClient;
   }
 
   //https://github.com/FasterXML/jackson-modules-java8
