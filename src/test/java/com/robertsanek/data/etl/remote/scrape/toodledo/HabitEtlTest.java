@@ -1,7 +1,5 @@
 package com.robertsanek.data.etl.remote.scrape.toodledo;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.junit.Ignore;
