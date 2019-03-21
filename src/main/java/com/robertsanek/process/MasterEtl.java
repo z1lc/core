@@ -215,17 +215,16 @@ public class MasterEtl implements QuartzJob {
         totalRuntime, totalRuntime == 1 ? "second" : "seconds", tryNumber.get(), max);
     if (successful.get()) {
       log.info(template);
+      if (max.get() == 0) {
+        NotificationSender.sendNotificationDefault(
+            String.format("%s generated 0 rows!", etlClazz.getSimpleName()), "Check output.");
+      }
     } else {
       NotificationSender.sendNotificationDefault(
           String.format("%s failed at %s!", etlClazz.getSimpleName(),
               LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))),
           template + "\n\n" + ExceptionUtils.getStackTrace(exceptionDuringEtl));
       log.error(template);
-    }
-
-    if (max.get() == 0) {
-      NotificationSender.sendNotificationDefault(
-          String.format("%s generated 0 rows!", etlClazz.getSimpleName()), "Check output.");
     }
 
     return EtlRun.EtlRunBuilder.anEtlRun()
