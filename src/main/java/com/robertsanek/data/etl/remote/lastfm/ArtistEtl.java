@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
 
