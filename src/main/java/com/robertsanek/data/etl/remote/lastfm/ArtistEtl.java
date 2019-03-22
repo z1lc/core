@@ -9,12 +9,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
-import org.eclipse.jetty.client.HttpResponseException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Iterables;
 import com.robertsanek.data.etl.Etl;
@@ -52,7 +52,8 @@ public class ArtistEtl extends Etl<Artist> {
         .collect(Collectors.toList());
   }
 
-  private ArtistApiResponse getApiResponse(long pageNumber, long limitPerPage) {
+  @VisibleForTesting
+  ArtistApiResponse getApiResponse(long pageNumber, long limitPerPage) {
     URI uri = Unchecked.get(() -> new URIBuilder()
         .setScheme("https")
         .setHost("ws.audioscrobbler.com")
@@ -66,19 +67,21 @@ public class ArtistEtl extends Etl<Artist> {
         .setParameter("limit", String.valueOf(limitPerPage))
         .build());
     try {
-      return mapper.readValue(Request.Get(uri)
-              .execute()
-              .returnContent()
-              .asString(Charsets.UTF_8),
-          ArtistApiResponse.class);
-    } catch (HttpResponseException e) {
-      if (e.getResponse().getStatus() == 500) {
+      return mapper.readValue(get(uri), ArtistApiResponse.class);
+    } catch (Exception e) {
+      if (e.getMessage().contains("status code: 500")) {
         return new ArtistApiResponse();
       }
       throw new RuntimeException(e);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
+  }
+
+  @VisibleForTesting
+  String get(URI uri) throws IOException {
+    return Request.Get(uri)
+        .execute()
+        .returnContent()
+        .asString(Charsets.UTF_8);
   }
 
   private int extractTotalPages(ArtistApiResponse response) {
