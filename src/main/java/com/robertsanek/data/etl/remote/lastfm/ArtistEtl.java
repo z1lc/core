@@ -2,14 +2,17 @@ package com.robertsanek.data.etl.remote.lastfm;
 
 import static com.robertsanek.util.SecretType.LAST_FM_API_KEY;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
+import org.eclipse.jetty.client.HttpResponseException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
@@ -62,11 +65,20 @@ public class ArtistEtl extends Etl<Artist> {
         .setParameter("page", String.valueOf(pageNumber))
         .setParameter("limit", String.valueOf(limitPerPage))
         .build());
-    return Unchecked.get(() -> mapper.readValue(Request.Get(uri)
-            .execute()
-            .returnContent()
-            .asString(Charsets.UTF_8),
-        ArtistApiResponse.class));
+    try {
+      return mapper.readValue(Request.Get(uri)
+              .execute()
+              .returnContent()
+              .asString(Charsets.UTF_8),
+          ArtistApiResponse.class);
+    } catch (HttpResponseException e) {
+      if (e.getResponse().getStatus() == 500) {
+        return new ArtistApiResponse();
+      }
+      throw new RuntimeException(e);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private int extractTotalPages(ArtistApiResponse response) {

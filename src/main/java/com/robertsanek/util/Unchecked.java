@@ -1,5 +1,6 @@
 package com.robertsanek.util;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
