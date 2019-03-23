@@ -34,6 +34,7 @@ public class AllNumericalClozeDeletionsHaveHashtagHint extends DataQualityBase {
         1552805817123L,
         1552805757575L,
         1552804997297L,
+        1553373071049L, //bezos type 1 type 2
         0L
     );
     Pattern clozeDigitsNoHint = Pattern.compile("\\{\\{c\\d+::\\d+?}}");
