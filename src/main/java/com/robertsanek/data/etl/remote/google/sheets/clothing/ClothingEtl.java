@@ -16,7 +16,7 @@ public class ClothingEtl extends Etl<ClothingRating> {
   private static final AtomicLong ID_ISSUER = new AtomicLong(1);
 
   private static boolean convertYesNoStringToBoolean(String yesNoOrNull) {
-    return yesNoOrNull != null && (yesNoOrNull.equals("Yes") || yesNoOrNull.startsWith("Yes "));
+    return yesNoOrNull != null && yesNoOrNull.startsWith("Yes");
   }
 
   @Override
