@@ -59,6 +59,7 @@
     <mapping class="com.robertsanek.data.etl.remote.rescuetime.Category"/>
     <mapping class="com.robertsanek.data.etl.remote.rescuetime.Efficiency"/>
     <mapping class="com.robertsanek.data.etl.remote.scrape.leetcode.Question"/>
+    <mapping class="com.robertsanek.data.etl.remote.scrape.rottentomatoes.Movie"/>
     <mapping class="com.robertsanek.data.etl.remote.scrape.toodledo.HabitRep"/>
     <mapping class="com.robertsanek.data.etl.remote.scrape.toodledo.Habit"/>
     <mapping class="com.robertsanek.data.etl.remote.wakatime.CodingTime"/>
