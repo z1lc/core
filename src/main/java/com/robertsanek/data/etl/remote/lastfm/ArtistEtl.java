@@ -5,6 +5,7 @@ import static com.robertsanek.util.SecretType.LAST_FM_API_KEY;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -32,7 +33,7 @@ public class ArtistEtl extends Etl<Artist> {
   @Override
   public List<Artist> getObjects() {
     Set<String> existingPeopleInAnkiDb = DataQualityBase.getExistingPeopleInAnkiDbLowerCased();
-    return IntStream.range(1, extractTotalPages(getApiResponse(1, 1)) + 1).parallel()
+    return IntStream.range(1, extractTotalPages(getApiResponse(1, 1)).orElse(0) + 1).parallel()
         .boxed()
         .flatMap(page -> getApiResponse(page, ARTISTS_PER_PAGE).getTopartists().getArtist().stream())
         .map(artist -> {
@@ -83,8 +84,9 @@ public class ArtistEtl extends Etl<Artist> {
         .asString(Charsets.UTF_8);
   }
 
-  private int extractTotalPages(ArtistApiResponse response) {
-    return (int) Math.ceil(Double.valueOf(response.getTopartists().getAttr().getTotal()) / ARTISTS_PER_PAGE);
+  private Optional<Integer> extractTotalPages(ArtistApiResponse response) {
+    return Optional.ofNullable(response.getTopartists())
+        .map(topArtists -> (int) Math.ceil(Double.valueOf(topArtists.getAttr().getTotal()) / ARTISTS_PER_PAGE));
   }
 
 }
