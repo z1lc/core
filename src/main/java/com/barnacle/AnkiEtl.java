@@ -20,6 +20,8 @@ import org.apache.commons.lang3.tuple.Triple;
 import com.google.common.collect.ImmutableList;
 import com.robertsanek.data.etl.local.sqllite.anki.Review;
 import com.robertsanek.data.etl.local.sqllite.anki.ReviewEtl;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
 import com.robertsanek.util.PostgresConnection;
 import com.robertsanek.util.Unchecked;
 
@@ -29,9 +31,11 @@ public class AnkiEtl implements Callable<Object> {
   private static final ZonedDateTime start = ZonedDateTime.of(2017, 11, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
   private static final String ROB_NAME = "z1lc";
   private static final String WILL_NAME = "will";
+  private static Log log = Logs.getLog(AnkiEtl.class);
 
   @Override
   public Object call() {
+    log.info("Running Anki ETL for Heroku Postgres...");
     List<Pair<User, Review>> reviews = ImmutableList.<Pair<User, Review>>builder()
         .addAll(Unchecked.get(() -> new ReviewEtl() {
           @Override
@@ -110,6 +114,7 @@ public class AnkiEtl implements Callable<Object> {
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+    log.info("Successfully pushed Anki data to Heroku Postgres.");
     return null;
   }
 
