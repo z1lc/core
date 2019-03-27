@@ -14,7 +14,7 @@ public class AllClozeTablesHaveDeletionForRowOrColumnTitle extends DataQualityBa
   private static final Pattern hasClozedTable = Pattern.compile("<table>[\\s\\S]*\\{\\{c");
   private static final Pattern hasThCloze = Pattern.compile("<table>[\\s\\S]*<th>.*?\\{\\{c\\d.+</th>");
   private static final Pattern hasFirstTdCloze =
-      Pattern.compile("<table>[\\s\\S]*<tr>\\s*<td( class=\"tablecloze\")?>(<code>)?(<span class=\"code\">)?\\{\\{c");
+      Pattern.compile("<tr>\\s*<td( class=\"tablecloze\")?>(<code>)?(<span class=\"code\">)?[A-z ]*?\\{\\{c\\d.+</td>");
   private static final ImmutableSet<Long> NOTE_ID_EXCLUSIONS = ImmutableSet.of(
       1517966960047L,
       1516295483881L,
@@ -101,6 +101,8 @@ public class AllClozeTablesHaveDeletionForRowOrColumnTitle extends DataQualityBa
       1553555027201L,
       1553555227318L,
       1553561513280L,
+      1553658128067L,
+      1553649621496L,
       0L
   );
 
