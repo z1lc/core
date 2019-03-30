@@ -1,10 +1,10 @@
 package com.robertsanek.data;
 
 import java.net.URI;
-import java.time.Duration;
 import java.util.Arrays;
 
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -26,7 +26,6 @@ import com.robertsanek.util.Unchecked;
 public class EtlAndDqJob implements QuartzJob {
 
   private static final String KLIPFOLIO_API_KEY = CommonProvider.getSecret(SecretType.KLIPFOLIO_API_KEY);
-  private static final Duration SLEEP_TIME_BETWEEN_DATASOURCE_REFRESHES = Duration.ofSeconds(5);
   private static ObjectMapper mapper = CommonProvider.getObjectMapper();
   private static Log log = Logs.getLog(EtlAndDqJob.class);
 
@@ -45,6 +44,7 @@ public class EtlAndDqJob implements QuartzJob {
 
   @VisibleForTesting
   void triggerKlipfolioRefresh() {
+    log.info("Triggering Klipfolio refresh for all data sources...");
     final URI uri = Unchecked.get(() -> new URIBuilder()
         .setScheme("https")
         .setHost("app.klipfolio.com")
@@ -60,6 +60,7 @@ public class EtlAndDqJob implements QuartzJob {
             .getAsJsonObject();
     String dataSources = obj.getAsJsonObject("data").getAsJsonArray("datasources").toString();
     DataSource[] dataSourcesArr = Unchecked.get(() -> mapper.readValue(dataSources, DataSource[].class));
+    log.info("Will refresh %s data sources.", dataSourcesArr.length);
 
     URIBuilder refreshUriBuilder = new URIBuilder()
         .setScheme("https")
@@ -71,15 +72,14 @@ public class EtlAndDqJob implements QuartzJob {
               .setPath(String.format("api/1.0/datasource-instances/%s/@/refresh", id))
               .build());
           try {
-            Request.Post(refreshUri)
-                .addHeader("kf-api-key", KLIPFOLIO_API_KEY)
-                .connectTimeout((int) SLEEP_TIME_BETWEEN_DATASOURCE_REFRESHES.toMillis())
-                .socketTimeout((int) SLEEP_TIME_BETWEEN_DATASOURCE_REFRESHES.toMillis())
-                .execute();
+            HttpPost post = new HttpPost(refreshUri);
+            post.addHeader("kf-api-key", KLIPFOLIO_API_KEY);
+            CommonProvider.getHttpClient().execute(post);
           } catch (Exception e) {
             log.error(e);
           }
         });
+    log.info("Successfully refreshed %s data sources.", dataSourcesArr.length);
   }
 
 }

@@ -12,7 +12,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
@@ -31,13 +30,7 @@ public class AnkiSyncer {
 
   private static final Duration DO_NOT_SYNC_IF_WITHIN = Duration.ofMinutes(15);
   private static final Duration WAIT_TIME_BETWEEN_STEPS = Duration.ofSeconds(5);
-  private static final Duration HTTP_REQUEST_TIMEOUT = Duration.ofSeconds(30);
   private static final int ANKI_CONNECT_VERSION = 6;
-  private static final RequestConfig timeoutConfig = RequestConfig.custom()
-      .setConnectionRequestTimeout((int) HTTP_REQUEST_TIMEOUT.toMillis())
-      .setConnectTimeout((int) HTTP_REQUEST_TIMEOUT.toMillis())
-      .setSocketTimeout((int) HTTP_REQUEST_TIMEOUT.toMillis())
-      .build();
   private static final ObjectMapper objectMapper = CommonProvider.getObjectMapper();
   private static Log log = Logs.getLog(AnkiSyncer.class);
   private static String ANKI_CONNECT_HOST = "localhost";
@@ -93,7 +86,7 @@ public class AnkiSyncer {
               .getBytes(StandardCharsets.UTF_8)));
       log.info("Loading profile '%s'...", profileToSync);
       String profileResponse = EntityUtils.toString(
-          CommonProvider.getHttpClient(timeoutConfig).execute(changeProfilePost).getEntity());
+          CommonProvider.getHttpClient().execute(changeProfilePost).getEntity());
       Thread.sleep(WAIT_TIME_BETWEEN_STEPS.toMillis());
       if (profileResponse.contains("true")) {
         HttpPost syncPost = new HttpPost(ankiConnectUri);
@@ -101,8 +94,7 @@ public class AnkiSyncer {
             String.format("{\"action\": \"sync\", \"version\": %s}", ANKI_CONNECT_VERSION)
                 .getBytes(StandardCharsets.UTF_8)));
         log.info("Syncing profile '%s'...", profileToSync);
-        String syncResponse = EntityUtils.toString(
-            CommonProvider.getHttpClient(timeoutConfig).execute(syncPost).getEntity());
+        String syncResponse = EntityUtils.toString(CommonProvider.getHttpClient().execute(syncPost).getEntity());
         Thread.sleep(WAIT_TIME_BETWEEN_STEPS.toMillis());
         if (syncResponse.equals("{\"result\": null, \"error\": null}")) {
           log.info("Successfully synced Anki for profile '%s'.", profileToSync);

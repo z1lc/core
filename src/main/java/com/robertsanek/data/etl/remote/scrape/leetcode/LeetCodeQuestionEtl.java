@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -17,8 +15,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +31,6 @@ public class LeetCodeQuestionEtl extends Etl<Question> {
 
   private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
   private static final String LOGIN = CommonProvider.getEmailAddress();
-  private static final RequestConfig globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
   private static final CookieStore cookieStore = new BasicCookieStore();
 
   @Override
@@ -45,7 +40,7 @@ public class LeetCodeQuestionEtl extends Etl<Question> {
       context.setCookieStore(cookieStore);
       HttpGet httpGet = new HttpGet("https://leetcode.com/accounts/login/");
       httpGet.setHeader("Referer", "https://leetcode.com/");
-      getHttpClient().execute(httpGet, context);
+      CommonProvider.getHttpClient(cookieStore).execute(httpGet, context);
       String csrftoken = Iterables.getOnlyElement(context.getCookieStore().getCookies().stream()
           .filter(cookie -> cookie.getName().equals("csrftoken"))
           .collect(Collectors.toList()))
@@ -64,14 +59,14 @@ public class LeetCodeQuestionEtl extends Etl<Question> {
           .addTextBody("login", LOGIN)
           .addTextBody("password", CommonProvider.getSecret(LEETCODE_PASSWORD))
           .build());
-      String loginResponse = EntityUtils.toString(getHttpClient().execute(post).getEntity());
+      String loginResponse = EntityUtils.toString(CommonProvider.getHttpClient(cookieStore).execute(post).getEntity());
       if (loginResponse.toLowerCase().contains("csrf")) {
         throw new RuntimeException("CSRF token problem.");
       }
 
       HttpGet httpGet2 = new HttpGet("https://leetcode.com/api/problems/algorithms/");
-      JsonObject obj =
-          new JsonParser().parse(EntityUtils.toString(getHttpClient().execute(httpGet2).getEntity())).getAsJsonObject();
+      JsonObject obj = new JsonParser().parse(EntityUtils.toString(
+          CommonProvider.getHttpClient(cookieStore).execute(httpGet2).getEntity())).getAsJsonObject();
       if (!obj.toString().contains("rsanek")) {
         throw new RuntimeException("Could not guarantee user was logged into LeetCode. " +
             "Likely need to debug names & values of header fields, csrf token, or cookies.");
@@ -88,12 +83,5 @@ public class LeetCodeQuestionEtl extends Etl<Question> {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  private CloseableHttpClient getHttpClient() {
-    return HttpClients.custom()
-        .setDefaultRequestConfig(globalConfig)
-        .setDefaultCookieStore(cookieStore)
-        .build();
   }
 }
