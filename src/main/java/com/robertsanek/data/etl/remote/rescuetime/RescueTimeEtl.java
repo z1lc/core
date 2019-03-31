@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,6 +19,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.robertsanek.data.etl.Etl;
@@ -28,8 +30,8 @@ import com.robertsanek.util.Unchecked;
 
 abstract class RescueTimeEtl<T> extends Etl<T> {
 
-  private static final int FROM_YEAR = 2009; //first data in RescueTime is from 2009
-  private static final int TO_YEAR = LocalDate.now().getYear();
+  @VisibleForTesting int FROM_YEAR = 2009; //first data in RescueTime is from 2009
+  @VisibleForTesting int TO_YEAR = LocalDate.now().getYear();
   private static Log log = Logs.getLog(RescueTimeEtl.class);
 
   public <O> List<O> genericGet(String taxonomy, Function<CSVRecord, O> csvToObjectFunction) {
@@ -50,7 +52,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
                 .setParameter("rb", String.format("%s-01-01", currentYear))
                 .setParameter("re", String.format("%s-01-01", currentYear + 1))
                 .build());
-            String csv = Request.Get(efficiencyUri).execute().returnContent().asString();
+            String csv = get(efficiencyUri);
             CSVParser csvRecords = CSVParser.parse(csv, CSVFormat.DEFAULT);
             synchronized (allRecords) {
               allRecords.addAll(csvRecords.getRecords().stream()
@@ -59,10 +61,24 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
                   .collect(Collectors.toList()));
             }
           } catch (IOException e) {
-            throw new RuntimeException(e);
+            if (Pattern.compile("status code: 5\\d\\d").matcher(e.getMessage()).find()) {
+              log.error("Got 500-level exception from RescueTime:");
+              log.error(e);
+            } else{
+              throw new RuntimeException(e);
+            }
           }
         });
     log.info("Received %s objects for '%s' taxonomy.", allRecords.size(), taxonomy);
     return Lists.newArrayList(allRecords);
   }
+
+  @VisibleForTesting
+  String get(URI efficiencyUri) throws IOException {
+    return Request.Get(efficiencyUri)
+        .execute()
+        .returnContent()
+        .asString();
+  }
+
 }

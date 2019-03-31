@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -69,7 +70,7 @@ public class ArtistEtl extends Etl<Artist> {
     try {
       return mapper.readValue(get(uri), ArtistApiResponse.class);
     } catch (Exception e) {
-      if (e.getMessage().contains("status code: 500")) {
+      if (Pattern.compile("status code: 5\\d\\d").matcher(e.getMessage()).find()) {
         return new ArtistApiResponse();
       }
       throw new RuntimeException(e);

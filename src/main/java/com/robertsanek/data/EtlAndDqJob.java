@@ -37,9 +37,13 @@ public class EtlAndDqJob implements QuartzJob {
       parallel = dataMap.getBoolean("parallel");
     }
     new AnkiEtl().call();
-    new MasterEtl().runEtls(false, parallel);
-    triggerKlipfolioRefresh();
-    new DataQualityRunner().run();
+    boolean etlsSuccessful = new MasterEtl().runEtls(false, parallel);
+    if (etlsSuccessful) {
+      triggerKlipfolioRefresh();
+      new DataQualityRunner().run();
+    } else {
+      log.info("Not all ETLs were successful, so will not trigger Klipfolio refresh or run Data Quality checks.");
+    }
   }
 
   @VisibleForTesting

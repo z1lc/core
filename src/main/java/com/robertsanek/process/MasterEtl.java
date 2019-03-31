@@ -124,15 +124,10 @@ public class MasterEtl implements QuartzJob {
     return Long.valueOf(config.getProperty("hibernate.jdbc.batch_size"));
   }
 
-  public void runEtls(boolean fastRun, boolean parallel) {
+  @SuppressWarnings({"rawtypes", "try"})
+  public boolean runEtls(boolean fastRun, boolean parallel) {
     this.fastRun = fastRun;
     this.parallel = parallel;
-    exec(null);
-  }
-
-  @Override
-  @SuppressWarnings({"rawtypes", "try"})
-  public void exec(JobExecutionContext context) {
     Stopwatch total = Stopwatch.createStarted();
     List<Class<? extends Etl>> concreteEtls = getConcreteEtls(fastRun);
     log.info("Creating connection to Cloud SQL and re-generating table schemas... (this may take up to 3 minutes)");
@@ -154,10 +149,16 @@ public class MasterEtl implements QuartzJob {
       } catch (Exception e) {
         log.error(e);
       }
+      log.info("Completed %s ETLs in %s seconds.",
+          concreteEtls.size(),
+          total.elapsed().getSeconds());
+      return etlRuns.stream().allMatch(etlRun -> etlRun.getWas_successful() && etlRun.getRows_generated() > 0);
     }
-    log.info("Completed %s ETLs in %s seconds.",
-        concreteEtls.size(),
-        total.elapsed().getSeconds());
+  }
+
+  @Override
+  public void exec(JobExecutionContext context) {
+    runEtls(false, true);
   }
 
   @SuppressWarnings("rawtypes")
@@ -217,7 +218,8 @@ public class MasterEtl implements QuartzJob {
       log.info(template);
       if (max.get() == 0) {
         NotificationSender.sendNotificationDefault(
-            String.format("%s generated 0 rows!", etlClazz.getSimpleName()), "Check output.");
+            String.format("%s generated 0 rows at %s!", etlClazz.getSimpleName(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))), "Check output.");
       }
     } else {
       NotificationSender.sendNotificationDefault(

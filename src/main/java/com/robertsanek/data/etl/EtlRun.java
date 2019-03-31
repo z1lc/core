@@ -25,6 +25,58 @@ public class EtlRun {
   private Long seconds_in_load;
   private Long try_number;
 
+  public Long getId() {
+    return id;
+  }
+
+  public String getClass_name() {
+    return class_name;
+  }
+
+  public ZonedDateTime getStart_time() {
+    return start_time;
+  }
+
+  public ZonedDateTime getEnd_time() {
+    return end_time;
+  }
+
+  public String getThread_name() {
+    return thread_name;
+  }
+
+  public Long getRows_generated() {
+    return rows_generated;
+  }
+
+  public Boolean getUsing_parallel() {
+    return using_parallel;
+  }
+
+  public Boolean getWas_successful() {
+    return was_successful;
+  }
+
+  public Boolean getIs_slow() {
+    return is_slow;
+  }
+
+  public Boolean getUses_local_files() {
+    return uses_local_files;
+  }
+
+  public Long getSeconds_in_extract_and_transform() {
+    return seconds_in_extract_and_transform;
+  }
+
+  public Long getSeconds_in_load() {
+    return seconds_in_load;
+  }
+
+  public Long getTry_number() {
+    return try_number;
+  }
+
   public static final class EtlRunBuilder {
 
     private Long id;

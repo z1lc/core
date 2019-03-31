@@ -17,7 +17,7 @@ public class CategoryEtl extends RescueTimeEtl<Category> {
   private static AtomicInteger ID_ISSUER = new AtomicInteger(1);
 
   @Override
-  public List<Category> getObjects() throws Exception {
+  public List<Category> getObjects() {
     return genericGet("category", record ->
         Category.CategoryBuilder.aCategory()
             .withId(ID_ISSUER.getAndIncrement())
