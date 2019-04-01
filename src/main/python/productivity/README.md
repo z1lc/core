@@ -1,7 +1,7 @@
 # z.productivity
 
 A PyQt-based split view of Toodledo Habits, Toodledo Tasks, and Workflowy items.
-#![screenshot](screenshot.png)
+![screenshot](screenshot.png)
 
 ## Usage
  - Install Python 3.7+ (if on Windows, ensure you install the 64-bit version, since otherwise you [won't be able to get WebEngine modules](https://www.riverbankcomputing.com/software/pyqt/download5)).
