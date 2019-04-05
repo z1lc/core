@@ -15,6 +15,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @Table(name = "toodledo_habit_repetitions")
 public class HabitRep {
 
+  @Id
+  private Long id;
   @JsonProperty("habit")
   private Long habit;
   @JsonProperty("date")
@@ -28,8 +30,29 @@ public class HabitRep {
   @JsonProperty("status")
   private String status;
 
-  @Id
-  private Long id;
+  public Long getId() {
+    return id;
+  }
+
+  public Long getHabit() {
+    return habit;
+  }
+
+  public ZonedDateTime getDate() {
+    return date;
+  }
+
+  public Integer getValue() {
+    return value;
+  }
+
+  public ZonedDateTime getModified() {
+    return modified;
+  }
+
+  public String getStatus() {
+    return status;
+  }
 
   public void setId(Long id) {
     this.id = id;

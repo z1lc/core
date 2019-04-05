@@ -17,7 +17,6 @@ import com.robertsanek.util.Unchecked;
 
 abstract class ToodledoHabitsEtl<T> extends Etl<T> {
 
-  private static final String USERNAME = CommonProvider.getEmailAddress();
   private static ObjectMapper mapper = CommonProvider.getObjectMapper();
 
   <O> List<O> genericGet(String path, Class<O[]> clazz) {
@@ -25,9 +24,9 @@ abstract class ToodledoHabitsEtl<T> extends Etl<T> {
       //via https://stackoverflow.com/a/31496516
       HtmlPage page = webClient.getPage("https://www.toodledo.com/signin.php");
       HtmlForm form = Iterables.getOnlyElement(page.getForms());
-      form.getInputByName("email").setValueAttribute(USERNAME);
+      form.getInputByName("email").setValueAttribute(getUsername());
       HtmlInput passWordInput = form.getInputByName("pass");
-      passWordInput.setValueAttribute(CommonProvider.getSecret(SecretType.TOODLEDO_PASSWORD));
+      passWordInput.setValueAttribute(getPassword());
       form.getElementsByTagName("button").get(0).click();
       Page page1 = webClient.getPage(path);
 
@@ -36,6 +35,14 @@ abstract class ToodledoHabitsEtl<T> extends Etl<T> {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public String getUsername() {
+    return CommonProvider.getEmailAddress();
+  }
+
+  public String getPassword() {
+    return CommonProvider.getSecret(SecretType.TOODLEDO_PASSWORD);
   }
 
 }

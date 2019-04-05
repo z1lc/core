@@ -10,6 +10,7 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import com.barnacle.AnkiEtl;
+import com.barnacle.LeetCodeToodledoTaskEtl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.JsonObject;
@@ -37,6 +38,7 @@ public class EtlAndDqJob implements QuartzJob {
       parallel = dataMap.getBoolean("parallel");
     }
     new AnkiEtl().call();
+    new LeetCodeToodledoTaskEtl().run();
     boolean etlsSuccessful = new MasterEtl().runEtls(false, parallel);
     if (etlsSuccessful) {
       triggerKlipfolioRefresh();

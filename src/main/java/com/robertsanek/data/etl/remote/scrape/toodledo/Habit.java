@@ -37,4 +37,39 @@ public class Habit {
   @JsonProperty("version")
   private Integer version;
 
+  public Long getId() {
+    return id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Integer getType() {
+    return type;
+  }
+
+  public Integer getRepeat() {
+    return repeat;
+  }
+
+  public Integer getAlarm() {
+    return alarm;
+  }
+
+  public ZonedDateTime getAdded() {
+    return added;
+  }
+
+  public Integer getDeleted() {
+    return deleted;
+  }
+
+  public ZonedDateTime getModified() {
+    return modified;
+  }
+
+  public Integer getVersion() {
+    return version;
+  }
 }

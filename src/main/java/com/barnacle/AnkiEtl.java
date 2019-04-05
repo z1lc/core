@@ -37,22 +37,18 @@ public class AnkiEtl implements Callable<Object> {
   public Object call() {
     log.info("Running Anki ETL for Heroku Postgres...");
     List<Pair<User, Review>> reviews = ImmutableList.<Pair<User, Review>>builder()
-        .addAll(Unchecked.get(() -> new ReviewEtl() {
+        .addAll(Utils.addUser(Unchecked.get(() -> new ReviewEtl() {
           @Override
           public String getProfileName() {
             return WILL_NAME;
           }
-        }.getObjects()).stream()
-            .map(review -> Pair.of(User.WILL, review))
-            .collect(Collectors.toList()))
-        .addAll(Unchecked.get(() -> new ReviewEtl() {
+        }.getObjects()), User.WILL))
+        .addAll(Utils.addUser(Unchecked.get(() -> new ReviewEtl() {
           @Override
           public String getProfileName() {
             return ROB_NAME;
           }
-        }.getObjects()).stream()
-            .map(review -> Pair.of(User.ROB, review))
-            .collect(Collectors.toList()))
+        }.getObjects()), User.ROB))
         .build().stream()
         .filter(userReviewPair -> userReviewPair.getRight().getCreated_at().isAfter(start))
         .collect(Collectors.toList());
