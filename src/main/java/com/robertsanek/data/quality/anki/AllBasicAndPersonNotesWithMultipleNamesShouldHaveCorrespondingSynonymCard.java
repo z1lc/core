@@ -80,6 +80,7 @@ public class AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynon
       1532774000812L,
 
       1553746047485L,
+      1545076640994L,
       0L
   );
   private final boolean shouldGenerateCsvOutput = false;
