@@ -16,11 +16,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.http.client.fluent.Request;
 
 import com.robertsanek.data.quality.anki.DataQualityBase;
+import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public abstract class BaseGenerator {
 
-  public abstract List<PersonNote> getPersons();
+  public abstract List<PersonNote> getPersons() throws Exception;
 
   public void writeFiles() {
     String outName = getRootDestination() + "new_people.csv";
@@ -30,7 +31,7 @@ public abstract class BaseGenerator {
       if (!new File(directory).exists() && !new File(directory).mkdirs()) {
         throw new RuntimeException("Failed to create directory on desktop!");
       }
-      getPersons().parallelStream().forEach(person -> {
+      Unchecked.get(this::getPersons).parallelStream().forEach(person -> {
         threadSafePrintRecord(csvPrinter,
             person.getName(),
             person.getNamePronunciation(),
@@ -49,7 +50,7 @@ public abstract class BaseGenerator {
                         .saveContent(destination);
                   } catch (IOException ignored) {
                   }
-                  return String.format("<img src=\"%s\">", fileName);
+                  return String.format("<img src='%s'>", fileName);
                 })
                 .collect(Collectors.joining("")),
             person.getSource()
