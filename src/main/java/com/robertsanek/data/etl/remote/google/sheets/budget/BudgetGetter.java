@@ -100,6 +100,7 @@ public class BudgetGetter implements QuartzJob {
 
     String requestType = range.equals(EXPENSES_RANGE) ? "expenses" : "income";
     return spreadsheet.stream()
+        .filter(row -> row.size() > 0 && !row.get(0).toString().isEmpty())
         .flatMap(row -> {
           final List<AnnotatedItem> currentRowAnnotatedItems = Lists.newArrayList();
           final LocalDate date = Unchecked.get(() -> LocalDate.parse(row.get(0).toString(), SIMPLE_DATE_FORMAT));
