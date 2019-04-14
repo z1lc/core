@@ -4,3 +4,4 @@ manual_file_download
 src/test/generated-sources/
 tokens/
 dependency-reduced-pom.xml
+*.iml
