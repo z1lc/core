@@ -13,9 +13,4 @@ public class AnkiSyncerTest {
     AnkiSyncer.syncLocalCollectionIfOutOfDate("z1lc");
     AnkiSyncer.syncLocalCollectionIfOutOfDate("will");
   }
-
-  @Test
-  public void getAnkiExecutablePath() {
-    assertEquals("C:\\Program Files\\Anki\\anki.exe", AnkiSyncer.getAnkiExecutablePath().orElseThrow());
-  }
 }

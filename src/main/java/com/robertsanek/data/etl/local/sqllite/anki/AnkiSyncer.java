@@ -1,24 +1,6 @@
 package com.robertsanek.data.etl.local.sqllite.anki;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.util.EntityUtils;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
@@ -26,19 +8,18 @@ import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Map;
+
 public class AnkiSyncer {
 
   private static final Duration DO_NOT_SYNC_IF_WITHIN = Duration.ofMinutes(15);
-  private static final Duration WAIT_TIME_BETWEEN_STEPS = Duration.ofSeconds(5);
-  private static final int ANKI_CONNECT_VERSION = 6;
   private static final ObjectMapper objectMapper = CommonProvider.getObjectMapper();
   private static Log log = Logs.getLog(AnkiSyncer.class);
-  private static String ANKI_CONNECT_HOST = "localhost";
-  private static int ANKI_CONNECT_PORT = 8765;
-  private static String ANK_CONNECT_PRETTY_URL = String.format("%s:%d", ANKI_CONNECT_HOST, ANKI_CONNECT_PORT);
-  private static final URIBuilder ANKI_CONNECT_BASE_URI = new URIBuilder()
-      .setScheme("http")
-      .setHost(ANK_CONNECT_PRETTY_URL);
   private static final Map<String, ZonedDateTime> lastLoggedMap = Maps.newHashMap();
 
   public static synchronized boolean syncLocalCollectionIfOutOfDate(String profileToSync) {
@@ -69,42 +50,9 @@ public class AnkiSyncer {
       } else {
         log.info("Didn't find file at '%s'. Will create after Anki sync.", lastSyncFile.getAbsolutePath());
       }
-      if (getAnkiExecutablePath().isPresent()) {
-        File ankiExecutable = new File(getAnkiExecutablePath().orElseThrow());
-        log.info("Opening Anki...");
-        Desktop.getDesktop().open(ankiExecutable);
-        Thread.sleep(WAIT_TIME_BETWEEN_STEPS.toMillis());
-      } else {
-        log.info("Anki application path was not provided so application could not be started. " +
-            "Assuming Anki is open and attempting to connect anyway....");
-      }
-      URI ankiConnectUri = ANKI_CONNECT_BASE_URI.build();
-      HttpPost changeProfilePost = new HttpPost(ankiConnectUri);
-      changeProfilePost.setEntity(new ByteArrayEntity(
-          String.format("{\"action\": \"loadProfile\", \"params\": {\"name\": \"%s\"}, \"version\": %s}",
-              profileToSync, ANKI_CONNECT_VERSION)
-              .getBytes(StandardCharsets.UTF_8)));
-      log.info("Loading profile '%s'...", profileToSync);
-      String profileResponse = EntityUtils.toString(
-          CommonProvider.getHttpClient().execute(changeProfilePost).getEntity());
-      Thread.sleep(WAIT_TIME_BETWEEN_STEPS.toMillis());
-      if (profileResponse.contains("true")) {
-        HttpPost syncPost = new HttpPost(ankiConnectUri);
-        syncPost.setEntity(new ByteArrayEntity(
-            String.format("{\"action\": \"sync\", \"version\": %s}", ANKI_CONNECT_VERSION)
-                .getBytes(StandardCharsets.UTF_8)));
-        log.info("Syncing profile '%s'...", profileToSync);
-        String syncResponse = EntityUtils.toString(CommonProvider.getHttpClient().execute(syncPost).getEntity());
-        Thread.sleep(WAIT_TIME_BETWEEN_STEPS.toMillis());
-        if (syncResponse.equals("{\"result\": null, \"error\": null}")) {
-          log.info("Successfully synced Anki for profile '%s'.", profileToSync);
-          writeFile(lastSyncFile, thisSyncTime, thisSyncTime);
-          return true;
-        } else {
-          log.info("Response from AnkiConnect did not match expected. Actual response: '%s'", syncResponse);
-        }
-      } else {
-        log.info("Response from AnkiConnect did not match expected. Actual response: '%s'", profileResponse);
+      if (AnkiConnectUtils.loadProfile(profileToSync) && AnkiConnectUtils.triggerSync()) {
+        writeFile(lastSyncFile, thisSyncTime, thisSyncTime);
+        return true;
       }
 
     } catch (Exception e) {
@@ -128,11 +76,6 @@ public class AnkiSyncer {
                                 ZonedDateTime lastSyncAttempt) throws IOException {
     log.info("Writing ZonedDateTime to file '%s'.", lastSyncFile.getAbsolutePath());
     objectMapper.writeValue(lastSyncFile, new AnkiSyncResult(lastSuccessfulSync, lastSyncAttempt));
-  }
-
-  @VisibleForTesting
-  static Optional<String> getAnkiExecutablePath() {
-    return CrossPlatformUtils.getPlatform().getAnkiExecutable().map(Path::toString);
   }
 
 }
