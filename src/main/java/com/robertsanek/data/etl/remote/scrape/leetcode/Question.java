@@ -25,6 +25,26 @@ public class Question {
   private Status status;
   private Long difficulty;
 
+  public static Log getLog() {
+    return log;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public Long getDifficulty() {
+    return difficulty;
+  }
+
   public enum Status {
     NOT_ATTEMPTED(null),
     ACCEPTED("ac"),
