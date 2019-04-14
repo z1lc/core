@@ -228,9 +228,9 @@ public class WikipediaConnector {
   private static String formatDate(LocalDate date, Granularity granularity) {
     switch (granularity) {
       case DAILY:
-        return DateTimeFormatter.ofPattern("YYYY/MM/dd").format(date);
+        return DateTimeFormatter.ofPattern("yyyy/MM/dd").format(date);
       case MONTHLY:
-        return DateTimeFormatter.ofPattern("YYYY/MM").format(date) + "/all-days";
+        return DateTimeFormatter.ofPattern("yyyy/MM").format(date) + "/all-days";
       default:
         throw new RuntimeException(String.format("Don't have URL scheme defined for granularity '%s'.", granularity));
     }
