@@ -50,6 +50,7 @@ public class DataQualityRunner implements QuartzJob {
 
   private static final Log log = Logs.getLog(DataQualityRunner.class);
   private static final String REFLECTIONS_PREFIX = "com.robertsanek.data.quality.anki";
+  //don't want to run RenameAllPersonImagesToUniformNaming in parallel with other DQ checks
   private static final boolean PARALLEL = false;
   private static final Set<ContainerTag> EMAIL_BODIES_SENT_THIS_RUN = Sets.newHashSet();
   private static final int MINIMUM_VIOLATIONS = 3;

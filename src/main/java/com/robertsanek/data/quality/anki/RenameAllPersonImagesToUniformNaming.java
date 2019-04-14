@@ -1,5 +1,15 @@
 package com.robertsanek.data.quality.anki;
 
+import com.google.common.collect.Lists;
+import com.robertsanek.data.etl.local.sqllite.anki.Note;
+import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
+import com.robertsanek.util.Unchecked;
+import com.robertsanek.util.platform.CrossPlatformUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.jsoup.Jsoup;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,39 +24,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.io.FilenameUtils;
-import org.jsoup.Jsoup;
-
-import com.google.common.base.Charsets;
-import com.google.common.collect.Lists;
-import com.google.common.io.Resources;
-import com.robertsanek.data.etl.local.sqllite.anki.Note;
-import com.robertsanek.util.Log;
-import com.robertsanek.util.Logs;
-import com.robertsanek.util.Unchecked;
-import com.robertsanek.util.platform.CrossPlatformUtils;
-
-/* HOW TO USE
- *
- * 1. Add tag 'temporary_person' to *all* person notes
- * 2. Use Edit > 'Export Cards as Text' (add-on)
- *        Use temporary_person in "Tag Filter"
- *        Check only "Include All Fields"
- * 3. Put exported data into folder core\src\main\resources\com\robertsanek\data\quality\anki\files\anki_export.csv
- * 4. Set SHOULD_RUN to true and run the class's associated integration test (this won't make any file/card changes)
- * 5. Evaluate results. If satisfied with the output, set SHOULD_RENAME to true and re-run (this will make file changes)
- * 5. Import file named core/out/anki/export.csv into Anki
- * 6. Make sure mapping of fields and total number of fields match (with default settings, this should be true).
- * 7. Use Tools>Check Media... and Tools>Empty Cards... to verify nothing went wrong.
- * 8. Remove 'temporary_person' tag from notes; use Notes > Clear Unused Tags
- * 9. Set SHOULD_RUN and SHOULD_RENAME back to false.
- */
-
 public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
 
   static final Log log = Logs.getLog(RenameAllPersonImagesToUniformNaming.class);
-  static final boolean SHOULD_RUN = false;
-  static final boolean SHOULD_RENAME = false;
+  static final boolean SHOULD_RUN = true;
+  static final boolean SHOULD_RENAME = true;
 
   @Override
   void runDQ() {
@@ -72,13 +54,14 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
                       return Stream.empty();
                     } else {
                       if (new File(mediaFolder + targetSrc).exists()) {
-                        throw new RuntimeException(String.format("File with name %s already exists.", targetSrc));
+                        throw new RuntimeException(String.format("File with name '%s' already exists. This likely " +
+                                "means you have unused media files -- delete them by using Tools > Check Media...",
+                            targetSrc));
                       }
-                      return Stream.of(new FileNameChange(fields.get(0), currentSrc, targetSrc));
+                      return Stream.of(new FileNameChange(note.getId(), fields.get(0), currentSrc, targetSrc));
                     }
                   });
             } else {
-              //log.info("Note with name '%s' didn't have enough fields", cleanName);
               return Stream.empty();
             }
           })
@@ -101,33 +84,23 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
           throw new RuntimeException(e);
         }
 
-        List<String> strings = Unchecked.get(() -> Resources.readLines(
-            Resources.getResource("com/robertsanek/data/quality/anki/files/anki_export.csv"), Charsets.UTF_8)).stream()
-            .skip(1) //skip the header line
-            .distinct()
-            .filter(line -> filesToChange.stream().anyMatch(file -> line.startsWith(file.getFirstField())))
-            .collect(Collectors.toList());
-        String allPersonCards = String.join("\n", strings);
-        File ankiExport = new File(String
-            .format(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/anki/%s export.csv",
-                dateTimeForFile));
+        AnkiConnectUtils.loadProfile("z1lc");
         for (FileNameChange fileNameChange : filesToChange) {
-          allPersonCards = allPersonCards.replace(
-              String.format("src=\"%s\"", fileNameChange.getOriginalFileName()),
-              String.format("src=\"%s\"", fileNameChange.getTargetFileName()));
           if (SHOULD_RENAME) {
             String ankiMediaRoot =
                 CrossPlatformUtils.getAnkiMediaFolderForUserz1lcIncludingTrailingSlash().orElseThrow();
             Unchecked.get(() -> Files.move(
                 Paths.get((ankiMediaRoot + fileNameChange.getOriginalFileName())),
                 Paths.get((ankiMediaRoot + fileNameChange.getTargetFileName()))));
+            if (!AnkiConnectUtils.updatePersonNoteImage(fileNameChange.getNoteId(),
+                fileNameChange.getOriginalFileName(),
+                fileNameChange.getTargetFileName())) {
+              throw new RuntimeException(String.format(
+                  "Failed to use anki-connect to update Person %s.", fileNameChange.getFirstField()));
+            }
           }
         }
-        try (final PrintWriter writer = new PrintWriter(ankiExport, StandardCharsets.UTF_8)) {
-          writer.print(allPersonCards);
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
+        AnkiConnectUtils.triggerSync();
       } else {
         log.info("No files to change.");
       }
@@ -137,14 +110,20 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
 
   static class FileNameChange {
 
+    private Long noteId;
     private String firstField;
     private String originalFileName;
     private String targetFileName;
 
-    FileNameChange(String firstField, String originalFileName, String targetFileName) {
+    FileNameChange(Long noteId, String firstField, String originalFileName, String targetFileName) {
+      this.noteId = noteId;
       this.firstField = firstField;
       this.originalFileName = originalFileName;
       this.targetFileName = targetFileName;
+    }
+
+    public Long getNoteId() {
+      return noteId;
     }
 
     public String getFirstField() {

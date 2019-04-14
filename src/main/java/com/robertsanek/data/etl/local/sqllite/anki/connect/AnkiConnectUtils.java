@@ -1,11 +1,17 @@
-package com.robertsanek.data.etl.local.sqllite.anki;
+package com.robertsanek.data.etl.local.sqllite.anki.connect;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.robertsanek.data.etl.local.sqllite.anki.connect.jsonschema.CardsInfoResult;
+import com.robertsanek.data.quality.anki.DataQualityBase;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.platform.CrossPlatformUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
@@ -18,11 +24,12 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.Optional;
 
 public class AnkiConnectUtils {
 
+  private static ObjectMapper mapper = CommonProvider.getObjectMapper();
   private static String ANKI_CONNECT_HOST = "localhost";
   private static int ANKI_CONNECT_PORT = 8765;
   private static String ANK_CONNECT_PRETTY_URL = String.format("%s:%d", ANKI_CONNECT_HOST, ANKI_CONNECT_PORT);
@@ -59,6 +66,11 @@ public class AnkiConnectUtils {
     log.info("Syncing current profile...");
     String syncResponse =
         Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(syncPost).getEntity()));
+    try {
+      Thread.sleep(Duration.ofSeconds(5).toMillis());
+    } catch (InterruptedException ignored) {
+
+    }
     if (!syncResponse.equals("{\"result\": null, \"error\": null}")) {
       log.info("Response from AnkiConnect did not match expected. Actual response: '%s'", syncResponse);
       return false;
@@ -68,13 +80,68 @@ public class AnkiConnectUtils {
     }
   }
 
+  public static boolean updatePersonNoteImage(Long noteId, String oldName, String newName) {
+    String currentImageField = getPersonNoteImage(noteId);
+    HttpPost updateNote = new HttpPost(getUri());
+    updateNote.setEntity(new ByteArrayEntity(
+        String.format("{\n" +
+            "    \"action\": \"updateNoteFields\",\n" +
+            "    \"version\": 6,\n" +
+            "    \"params\": {\n" +
+            "        \"note\": {\n" +
+            "            \"id\": %s,\n" +
+            "            \"fields\": {\n" +
+            "                \"⭐Image \uD83D\uDDBC️\": \"%s\"\n" +
+            "            }\n" +
+            "        }\n" +
+            "    }\n" +
+            "}", noteId, StringEscapeUtils.escapeJson(currentImageField.replace(oldName, newName)))
+            .getBytes(StandardCharsets.UTF_8)));
+    String updateResponse =
+        Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(updateNote).getEntity()));
+    if (!updateResponse.equals("{\"result\": null, \"error\": null}")) {
+      log.info("Response from AnkiConnect did not match expected. Actual response: '%s'", updateResponse);
+      return false;
+    } else {
+      log.info("Successfully update image source from '%s' to '%s'.", oldName, newName);
+      return true;
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public static String getPersonNoteImage(Long noteId) {
+    Long firstCardId = DataQualityBase.getCardsByNoteId().get(noteId).get(0).getId();
+    CardsInfoResult cardInfo = getCardInfo(firstCardId);
+    return ((HashMap<String, String>) cardInfo.getFields().getAdditionalProperties().get("⭐Image 🖼️")).get("value");
+  }
+
+  public static CardsInfoResult getCardInfo(Long cardId) {
+    HttpPost syncPost = new HttpPost(getUri());
+    syncPost.setEntity(new ByteArrayEntity(
+        String.format("{\n" +
+            "    \"action\": \"cardsInfo\",\n" +
+            "    \"version\": 6,\n" +
+            "    \"params\": {\n" +
+            "        \"cards\": [%s]\n" +
+            "    }\n" +
+            "}", cardId)
+            .getBytes(StandardCharsets.UTF_8)));
+    JsonObject obj =
+        new JsonParser()
+            .parse(Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(syncPost).getEntity())))
+            .getAsJsonObject();
+    String dataSources = obj.getAsJsonArray("result").toString();
+    CardsInfoResult[] cardsInfoResults = Unchecked.get(() -> mapper.readValue(dataSources, CardsInfoResult[].class));
+    return cardsInfoResults[0];
+  }
+
   private static void openAnki() {
     if (getAnkiExecutablePath().isPresent()) {
       File ankiExecutable = new File(getAnkiExecutablePath().orElseThrow());
       log.info("Opening Anki...");
       try {
         Desktop.getDesktop().open(ankiExecutable);
-        Thread.sleep(Duration.ofSeconds(5).get(ChronoUnit.MILLIS));
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
       } catch (IOException | InterruptedException ignored) {
       }
     } else {

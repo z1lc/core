@@ -126,6 +126,10 @@ public abstract class DataQualityBase {
     return cardByCardId;
   }
 
+  public static Map<Long, List<Card>> getCardsByNoteId() {
+    return cardsByNoteId;
+  }
+
   public static List<Review> getAllReviews() {
     return allReviews;
   }

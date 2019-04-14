@@ -2,6 +2,7 @@ package com.robertsanek.data.etl.local.sqllite.anki;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
+import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
