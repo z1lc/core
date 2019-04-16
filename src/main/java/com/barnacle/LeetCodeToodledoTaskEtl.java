@@ -79,7 +79,11 @@ public class LeetCodeToodledoTaskEtl {
           .map(userAndHabitRep -> {
             final List<String> row = ImmutableList.<String>builder()
                 .add(quote(userAndHabitRep.getLeft()))
-                .add(quote(userAndHabitRep.getRight().getDate().toLocalDateTime()))
+                .add(quote(userAndHabitRep.getRight().getDate().toLocalDateTime()
+                    .withHour(0)
+                    .withMinute(0)
+                    .withSecond(0)
+                    .withNano(0)))
                 .add(quote(userAndHabitRep.getRight().getValue()))
                 .build();
             return String.format("(%s)", String.join(",", row));
