@@ -1,3 +1,4 @@
+-- Change in db: col>models; search for did": 1, (1 is Default)
 SELECT DISTINCT 'note:' || anki_models.name
 FROM anki_models
        INNER JOIN anki_decks ON anki_models.deck_id = anki_decks.id
