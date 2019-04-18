@@ -61,4 +61,14 @@ public class DataQualityBaseTest {
   public void cleanName_specialChar() {
     assertEquals("abcdefghi", cleanName("a\"b/c&d*e:f,g'h’i"));
   }
+
+  @Test
+  public void cleanName_HER() {
+    assertEquals("H.E.R.", cleanName("H.E.R."));
+  }
+
+  @Test
+  public void cleanName_LetsEatGrandma() {
+    assertEquals("Lets Eat Grandma", cleanName("Let's Eat Grandma"));
+  }
 }
