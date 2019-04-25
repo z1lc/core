@@ -21,6 +21,8 @@ public class TermDefinitionPairsDoNotHaveTermInDefinition extends DataQualityBas
       1523814710740L,
       1542494392949L, //sorption
       1549084693051L, //python mapping
+      1549084693065L, //python package/subpackage
+      1549084692990L, //python asynchronous generator
       0L
   );
 
