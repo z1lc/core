@@ -110,6 +110,7 @@ public class AllClozeTablesHaveDeletionForRowOrColumnTitle extends DataQualityBa
       1556136604055L,
       1556137217855L,
       1556141242631L,
+      1556220646048L,
       0L
   );
 
