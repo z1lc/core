@@ -37,6 +37,7 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
           long to90 = 0;
           boolean gotFirstReviewAfterGraduationCorrect = false;
           boolean foundFirstReviewAfterGraduation = false;
+          Long graduatingInterval = null;
           boolean matured = false;
           boolean reached90 = false;
           for (int i = 0; i < reviewsPerCard.size(); i++) {
@@ -44,12 +45,20 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
             if (review.getLast_interval() < 0) {
               toGraduate++;
             }
-            if (review.getLast_interval() == 1 &&
-                reviewsPerCard.get(i - 1).getCreated_at().toLocalDate().plusDays(1)
-                    .equals(review.getCreated_at().toLocalDate()) &&
-                !foundFirstReviewAfterGraduation) {
-              foundFirstReviewAfterGraduation = true;
-              gotFirstReviewAfterGraduationCorrect = review.getEase() >= 3;
+            if (!foundFirstReviewAfterGraduation) {
+              if (review.getLast_interval() == 1 &&
+                  reviewsPerCard.get(i - 1).getCreated_at().toLocalDate().plusDays(1)
+                      .equals(review.getCreated_at().toLocalDate())) {
+                graduatingInterval = 1L;
+                foundFirstReviewAfterGraduation = true;
+                gotFirstReviewAfterGraduationCorrect = review.getEase() >= 3;
+              } else if (review.getLast_interval() == 2 &&
+                  reviewsPerCard.get(i - 1).getCreated_at().toLocalDate().plusDays(2)
+                      .equals(review.getCreated_at().toLocalDate())) {
+                graduatingInterval = 2L;
+                foundFirstReviewAfterGraduation = true;
+                gotFirstReviewAfterGraduationCorrect = review.getEase() >= 3;
+              }
             }
             if (review.getInterval() < 21) {
               toMature++;
@@ -69,8 +78,9 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
               .withReps_to_graduate(toGraduate)
               .withReps_to_mature(matured? toMature : null)
               .withReps_to_90d(reached90? to90 : null)
+              .withGraduating_interval(graduatingInterval)
               .withGotFirstReviewAfterGraduationCorrect(gotFirstReviewAfterGraduationCorrect)
-              .withScheduledAs1DayGraduationAndReviewedOnTime(foundFirstReviewAfterGraduation)
+              .withReviewedGraduationRepetitionOnTime(foundFirstReviewAfterGraduation)
               .build();
         })
         .collect(Collectors.toList());
