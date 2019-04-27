@@ -44,7 +44,7 @@ public abstract class DataQualityBase {
   static final DQInformation dqInformation = new DQInformation();
 
   //ETL'd Anki data for use by all subclasses of DQBase
-  public static List<Model> allModels = Unchecked.get(() -> new ModelEtl().getObjects());
+  static List<Model> allModels = Unchecked.get(() -> new ModelEtl().getObjects());
   static List<Model> modelsInUse = allModels.stream()
       .filter(model -> !model.getName().startsWith("\u23F8"))
       .filter(model -> !model.getName().startsWith("~"))
