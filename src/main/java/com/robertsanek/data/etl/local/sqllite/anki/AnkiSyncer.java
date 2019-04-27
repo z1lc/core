@@ -3,6 +3,7 @@ package com.robertsanek.data.etl.local.sqllite.anki;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
+import com.robertsanek.data.quality.anki.DataQualityBase;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
@@ -53,6 +54,7 @@ public class AnkiSyncer {
       }
       if (AnkiConnectUtils.loadProfile(profileToSync) && AnkiConnectUtils.triggerSync()) {
         writeFile(lastSyncFile, thisSyncTime, thisSyncTime);
+        DataQualityBase.recomputeCachedFields();
         return true;
       }
 
@@ -73,7 +75,8 @@ public class AnkiSyncer {
     return false;
   }
 
-  private static void writeFile(File lastSyncFile, ZonedDateTime lastSuccessfulSync,
+  private static void writeFile(File lastSyncFile,
+                                ZonedDateTime lastSuccessfulSync,
                                 ZonedDateTime lastSyncAttempt) throws IOException {
     log.info("Writing ZonedDateTime to file '%s'.", lastSyncFile.getAbsolutePath());
     objectMapper.writeValue(lastSyncFile, new AnkiSyncResult(lastSuccessfulSync, lastSyncAttempt));

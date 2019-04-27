@@ -15,7 +15,6 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.http.client.fluent.Request;
 
-import com.robertsanek.data.quality.anki.AllNumericalClozeDeletionsHaveHashtagHint;
 import com.robertsanek.data.quality.anki.DataQualityBase;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
@@ -24,8 +23,9 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public abstract class BaseGenerator {
 
-  public abstract List<PersonNote> getPersons() throws Exception;
   static final Log log = Logs.getLog(BaseGenerator.class);
+
+  public abstract List<PersonNote> getPersons() throws Exception;
 
   public void writeFiles() {
     log.info("Creating new_people.csv file and pictures folder on the Desktop...");
