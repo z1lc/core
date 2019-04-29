@@ -52,7 +52,6 @@ public class DataQualityRunner implements QuartzJob {
   private static final String REFLECTIONS_PREFIX = "com.robertsanek.data.quality.anki";
   //don't want to run RenameAllPersonImagesToUniformNaming in parallel with other DQ checks
   private static final boolean PARALLEL = false;
-  private static final Set<ContainerTag> EMAIL_BODIES_SENT_THIS_RUN = Sets.newHashSet();
   private static final int MINIMUM_VIOLATIONS = 3;
   private static final ImmutableList<String> DATA_QUALITY_SQL_FILE_NAMES = ImmutableList.of(
       "AllAnswerTemplatesHaversAnswerClassAndAvoidUsageOfClozeClass.sql",
@@ -156,7 +155,8 @@ public class DataQualityRunner implements QuartzJob {
         .collect(Collectors.toList());
   }
 
-  public void run() {
+  @Override
+  public void exec(JobExecutionContext context) {
     Stopwatch startSW = Stopwatch.createStarted();
     ZonedDateTime startZdt = ZonedDateTime.now();
     log.info("Preparing to run Anki data quality checks (using parallel = %s)...", PARALLEL);
@@ -223,9 +223,7 @@ public class DataQualityRunner implements QuartzJob {
           "Time: ", b(startZdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z"))), br(),
           "Duration :", b(String.valueOf(startSW.elapsed().getSeconds())), "seconds"));
       ContainerTag emailContent = getEmailContent(dqInformation);
-      if (EMAIL_BODIES_SENT_THIS_RUN.contains(emailContent)) {
-        log.info("Already sent a notification with generated email content. Skipping sending additional notification.");
-      } else if (errors + warnings >= MINIMUM_VIOLATIONS) {
+      if (errors + warnings >= MINIMUM_VIOLATIONS && context == null) {
         log.info("Will notify because the total number of errors and warnings (%s) is at least as large as the " +
             "configured alert minimum (%s).", errors + warnings, MINIMUM_VIOLATIONS);
         NotificationSender.sendEmail(
@@ -233,16 +231,10 @@ public class DataQualityRunner implements QuartzJob {
             new Email(CommonProvider.getEmailAddress()),
             emailSubject,
             new Content("text/html", div(join(emailIntro, br(), br(), emailContent)).render()));
-        EMAIL_BODIES_SENT_THIS_RUN.add(emailContent);
       } else {
         log.info("Won't send notification because the total number of errors and warnings (%s) is less than the " +
             "configured alert minimum (%s).", errors + warnings, MINIMUM_VIOLATIONS);
       }
     }
-  }
-
-  @Override
-  public void exec(JobExecutionContext context) {
-    run();
   }
 }

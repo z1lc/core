@@ -10,7 +10,7 @@ public class DataQualityRunnerTest {
   @Test
   @Ignore("integration")
   public void run() {
-    new DataQualityRunner().run();
+    new DataQualityRunner().exec(null);
   }
 
   @Test
