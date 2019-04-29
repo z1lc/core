@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableSet;
 
 public class AllSyntaxHighlightedCodeHasMobileFriendlyLineLengths extends DataQualityBase {
 
-  private static final int MAX_LINE_LENGTH = 60;
+  private static final int MAX_LINE_LENGTH = 65;
   private static final ImmutableSet<Long> NOTE_ID_EXCLUSIONS = ImmutableSet.of(
       1422760703581L,
       1422761169018L,
