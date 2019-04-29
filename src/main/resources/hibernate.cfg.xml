@@ -45,6 +45,8 @@
     <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Note"/>
     <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Review"/>
     <mapping class="com.robertsanek.data.etl.local.sqllite.anki.Template"/>
+    <mapping class="com.robertsanek.data.etl.local.sqllite.calibre.Book"/>
+    <mapping class="com.robertsanek.data.etl.local.sqllite.calibre.IncrementalReadingPriority"/>
     <mapping class="com.robertsanek.data.etl.local.workflowy.Entry"/>
     <mapping class="com.robertsanek.data.etl.remote.google.sheets.budget.AnnotatedItem"/>
     <mapping class="com.robertsanek.data.etl.remote.google.sheets.clothing.ClothingRating"/>

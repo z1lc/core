@@ -102,15 +102,31 @@ public abstract class DataQualityBase {
         .collect(Collectors.groupingBy(Field::getModel_id));
   }
 
-  public static Set<String> getExistingPeopleInAnkiDbLowerCased() {
+  public static List<Note> getExistingPeopleInAnkiDb() {
     Long personModelId = Iterables.getOnlyElement(DataQualityBase.allModels.stream()
         .filter(model -> model.getName().contains("Person"))
         .collect(Collectors.toList()))
         .getId();
-    return DataQualityBase.getAllNotesInRelevantDecks(personModelId).stream()
+    return DataQualityBase.getAllNotesInRelevantDecks(personModelId);
+  }
+
+  public static Set<String> getExistingPeopleInAnkiDbLowerCased() {
+    return getExistingPeopleInAnkiDb().stream()
         .map(note -> DataQualityBase.splitCsvIntoCommaSeparatedList(note.getFields()))
         .filter(fieldList -> fieldList.size() > 0)
         .map(fieldList -> cleanName(fieldList.get(0)).toLowerCase())
+        .collect(Collectors.toSet());
+  }
+
+  public static Set<String> getExistingWorksOfArtInAnkiDbLowerCased() {
+    Long workOfArtModelId = Iterables.getOnlyElement(DataQualityBase.allModels.stream()
+        .filter(model -> model.getName().contains("Work of Art"))
+        .collect(Collectors.toList()))
+        .getId();
+    return DataQualityBase.getAllNotesInRelevantDecks(workOfArtModelId).stream()
+        .map(note -> DataQualityBase.splitCsvIntoCommaSeparatedList(note.getFields()))
+        .filter(fieldList -> fieldList.size() > 0)
+        .map(fieldList -> fieldList.get(0).toLowerCase())
         .collect(Collectors.toSet());
   }
 
