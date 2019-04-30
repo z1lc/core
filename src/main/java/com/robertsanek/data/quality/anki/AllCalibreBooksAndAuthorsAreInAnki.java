@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.jsoup.Jsoup;
+
 import com.google.common.collect.ImmutableSet;
 import com.robertsanek.data.etl.local.sqllite.anki.Note;
 import com.robertsanek.data.etl.local.sqllite.calibre.CalibreBookEtl;
@@ -30,7 +32,9 @@ public class AllCalibreBooksAndAuthorsAreInAnki extends DataQualityBase {
     Set<String> lowerCasePersonKnownFor = getExistingPeopleInAnkiDb().stream()
         .map(Note::getFields)
         .filter(fields -> fields.length() >= 2)
-        .map(fields -> DataQualityBase.splitCsvIntoCommaSeparatedList(fields).get(2).toLowerCase())
+        .map(fields -> Jsoup.parse(DataQualityBase.splitCsvIntoCommaSeparatedList(fields).get(2))
+            .text()
+            .toLowerCase())
         .collect(Collectors.toSet());
     Unchecked.get(() -> new CalibreBookEtl().getObjects()).stream()
         .filter(book -> !EXCEPTIONS.contains(book.getTitle()))
