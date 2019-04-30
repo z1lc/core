@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableSet;
 import com.robertsanek.data.etl.local.sqllite.anki.Note;
-import com.robertsanek.data.etl.local.sqllite.calibre.BookEtl;
+import com.robertsanek.data.etl.local.sqllite.calibre.CalibreBookEtl;
 import com.robertsanek.data.etl.local.sqllite.calibre.IncrementalReadingPriority;
 import com.robertsanek.data.etl.local.sqllite.calibre.IncrementalReadingPriorityEtl;
 import com.robertsanek.util.Unchecked;
@@ -32,7 +32,7 @@ public class AllCalibreBooksAndAuthorsAreInAnki extends DataQualityBase {
         .filter(fields -> fields.length() >= 2)
         .map(fields -> DataQualityBase.splitCsvIntoCommaSeparatedList(fields).get(2).toLowerCase())
         .collect(Collectors.toSet());
-    Unchecked.get(() -> new BookEtl().getObjects()).stream()
+    Unchecked.get(() -> new CalibreBookEtl().getObjects()).stream()
         .filter(book -> !EXCEPTIONS.contains(book.getTitle()))
         .forEach(book -> {
           String bookTitle = book.getTitle();

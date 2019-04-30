@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-public class BookEtl extends CalibreEtl<Book> {
+public class CalibreBookEtl extends CalibreEtl<CalibreBook> {
 
   @Override
-  public List<Book> transformRow(ResultSet row) throws Exception {
-    return Lists.newArrayList(Book.BookBuilder.aBook()
+  public List<CalibreBook> transformRow(ResultSet row) throws Exception {
+    return Lists.newArrayList(CalibreBook.BookBuilder.aBook()
         .withId(row.getLong("id"))
         .withTitle(row.getString("title"))
         .build());

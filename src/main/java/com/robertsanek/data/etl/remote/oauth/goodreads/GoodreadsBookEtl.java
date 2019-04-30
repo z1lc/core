@@ -34,7 +34,7 @@ import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.quality.anki.DataQualityBase;
 import com.robertsanek.util.CommonProvider;
 
-public class BookEtl extends Etl<Book> {
+public class GoodreadsBookEtl extends Etl<GoodreadsBook> {
 
   private static final String LIST_ID = "4081882";
   private static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss XXXX uuuu");
@@ -45,7 +45,7 @@ public class BookEtl extends Etl<Book> {
       "J.D. Salinger", "J. D. Salinger");
 
   @Override
-  public List<Book> getObjects() {
+  public List<GoodreadsBook> getObjects() {
     Set<String> existingPeopleInAnkiDb = DataQualityBase.getExistingPeopleInAnkiDbLowerCased();
     return IntStream.range(1, extractTotalPages(getApiResponse(1, 1)) + 1).parallel()
         .boxed()
@@ -61,7 +61,7 @@ public class BookEtl extends Etl<Book> {
                     .getElementsByTagName("author").item(0);
                 String maybeYearPublished = getChildAsText(book, "published");
                 String authorName = DataQualityBase.cleanName(cleanGoodreadsAuthor(getChildAsText(author, "name")));
-                return Book.BookBuilder.aBook()
+                return GoodreadsBook.BookBuilder.aBook()
                     .withId(Long.valueOf(getChildAsText(book, "id")))
                     .withIsbn13(getChildAsText(book, "isbn13"))
                     .withTitle(getChildAsText(book, "title"))

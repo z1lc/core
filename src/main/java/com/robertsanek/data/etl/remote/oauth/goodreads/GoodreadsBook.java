@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "goodreads_books")
-public class Book {
+public class GoodreadsBook {
 
   @Id
   private Long id;
@@ -115,17 +115,17 @@ public class Book {
       return this;
     }
 
-    public Book build() {
-      Book book = new Book();
-      book.isbn13 = this.isbn13;
-      book.authorName = this.authorName;
-      book.foundInAnki = this.foundInAnki;
-      book.id = this.id;
-      book.authorImageUrl = this.authorImageUrl;
-      book.title = this.title;
-      book.addedOn = this.addedOn;
-      book.yearPublished = this.yearPublished;
-      return book;
+    public GoodreadsBook build() {
+      GoodreadsBook goodreadsBook = new GoodreadsBook();
+      goodreadsBook.isbn13 = this.isbn13;
+      goodreadsBook.authorName = this.authorName;
+      goodreadsBook.foundInAnki = this.foundInAnki;
+      goodreadsBook.id = this.id;
+      goodreadsBook.authorImageUrl = this.authorImageUrl;
+      goodreadsBook.title = this.title;
+      goodreadsBook.addedOn = this.addedOn;
+      goodreadsBook.yearPublished = this.yearPublished;
+      return goodreadsBook;
     }
   }
 }

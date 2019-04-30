@@ -5,12 +5,12 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class BookEtlTest {
+public class CalibreCalibreBookEtlTest {
 
   @Test
   @Ignore("integration")
   public void name() throws Exception {
-    List<Book> objects = new BookEtl().getObjects();
+    List<CalibreBook> objects = new CalibreBookEtl().getObjects();
     System.out.println("objects = " + objects);
   }
 }

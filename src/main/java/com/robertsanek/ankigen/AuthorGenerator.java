@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Lists;
-import com.robertsanek.data.etl.remote.oauth.goodreads.BookEtl;
+import com.robertsanek.data.etl.remote.oauth.goodreads.GoodreadsBookEtl;
 
 public class AuthorGenerator extends BaseGenerator {
 
   @Override
   public List<PersonNote> getPersons() {
-    return new BookEtl().getObjects().stream()
+    return new GoodreadsBookEtl().getObjects().stream()
         .filter(book -> !book.isFoundInAnki())
         .map(book -> Pair.of(book.getAuthorName(), book.getAuthorImageUrl()))
         .distinct()

@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "calibre_books")
-public class Book {
+public class CalibreBook {
 
   @Id
   private Long id;
@@ -41,11 +41,11 @@ public class Book {
       return this;
     }
 
-    public Book build() {
-      Book book = new Book();
-      book.title = this.title;
-      book.id = this.id;
-      return book;
+    public CalibreBook build() {
+      CalibreBook calibreBook = new CalibreBook();
+      calibreBook.title = this.title;
+      calibreBook.id = this.id;
+      return calibreBook;
     }
   }
 }
