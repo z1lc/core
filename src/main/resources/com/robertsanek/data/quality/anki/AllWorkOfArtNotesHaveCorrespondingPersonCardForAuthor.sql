@@ -43,6 +43,7 @@ WITH people AS (SELECT split_part(
                                                                      1542492394303, --EPA
                                                                      1542506015816, --DMT / spirit molecule
                                                                      1542879193491, --Alfred Lansing (couldn't find pic)
+                                                                     1542879193543, --Mittie Hellmich (couldn't find pic)
                                                                      0))
 SELECT 'nid:' || work_of_art_note_id /*, REPLACE(works_of_art.name, '"', '') as name, urlTitle*/
 FROM works_of_art
