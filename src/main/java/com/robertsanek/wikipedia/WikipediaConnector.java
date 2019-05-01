@@ -93,8 +93,12 @@ public class WikipediaConnector {
 
   public List<WikiPerson> outputTop30PeopleInLastYear() {
     List<WikiPerson> mostViewedPeople =
-        Unchecked.get(
-            () -> getMostViewedPeople(Language.EN, LocalDate.now().minusMonths(12), Granularity.MONTHLY, 30, true));
+        Unchecked.get(() -> getMostViewedPeople(
+            Language.EN,
+            LocalDate.now().minusMonths(12),
+            Granularity.MONTHLY,
+            30,
+            true));
     log.info("Successfully extracted information for %s people.", mostViewedPeople.size());
     writeHtmlFile(mostViewedPeople);
     return mostViewedPeople;
@@ -184,45 +188,45 @@ public class WikipediaConnector {
         "(this may take a while).", sortedArticles.size());
 
     String outName = CrossPlatformUtils.getDesktopPathIncludingTrailingSlash().orElseThrow() + "new_people.csv";
-    Writer writer = shouldWriteToDisk ? Files.newBufferedWriter(Paths.get(outName)) : new NullWriter();
-    CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
-    return sortedArticles.parallelStream()
-        .flatMap(wikiArticle -> getWikiDataEntityIdIfPerson(wikiArticle)
-            .map(Unchecked.function(wikiDataEntityId -> {
-              boolean foundInAnki = existingPeopleInAnkiDb.contains(wikiArticle.getPrettyTitle().toLowerCase());
-              Optional<LocalDate> maybeBirthday =
-                  foundInAnki ? Optional.empty() : getDate(wikiDataEntityId, WIKIDATA_BIRTHDAY_PROPERTY);
-              Optional<LocalDate> maybeDeathday =
-                  foundInAnki ? Optional.empty() : getDate(wikiDataEntityId, WIKIDATA_DEATHDAY_PROPERTY);
-              Optional<String> personImageFilename = Optional.empty();
-              if (!foundInAnki) {
-                personImageFilename = getPersonImageFilename(wikiDataEntityId);
-                if (shouldWriteToDisk && personImageFilename.isPresent()) {
-                  saveImage(wikiArticle, personImageFilename.orElseThrow())
-                      .ifPresent(localImageFile ->
-                          BaseGenerator.threadSafePrintRecord(csvPrinter,
-                              wikiArticle.getPrettyTitle(),
-                              "dummy_pron",
-                              "dummy_known_for",
-                              maybeBirthday.map(ld -> String.valueOf(ld.getYear())).orElse(""),
-                              maybeDeathday.map(ld -> String.valueOf(ld.getYear())).orElse(""),
-                              "<img src='" + localImageFile.getName() + "'>")
-                      );
+    try (Writer writer = shouldWriteToDisk ? Files.newBufferedWriter(Paths.get(outName)) : new NullWriter();
+         CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+      return sortedArticles.parallelStream()
+          .flatMap(wikiArticle -> getWikiDataEntityIdIfPerson(wikiArticle)
+              .map(Unchecked.function(wikiDataEntityId -> {
+                boolean foundInAnki = existingPeopleInAnkiDb.contains(wikiArticle.getPrettyTitle().toLowerCase());
+                Optional<LocalDate> maybeBirthday =
+                    foundInAnki ? Optional.empty() : getDate(wikiDataEntityId, WIKIDATA_BIRTHDAY_PROPERTY);
+                Optional<LocalDate> maybeDeathday =
+                    foundInAnki ? Optional.empty() : getDate(wikiDataEntityId, WIKIDATA_DEATHDAY_PROPERTY);
+                Optional<String> personImageFilename = Optional.empty();
+                if (!foundInAnki) {
+                  personImageFilename = getPersonImageFilename(wikiDataEntityId);
+                  if (shouldWriteToDisk && personImageFilename.isPresent()) {
+                    saveImage(wikiArticle, personImageFilename.orElseThrow())
+                        .ifPresent(localImageFile ->
+                            BaseGenerator.threadSafePrintRecord(csvPrinter,
+                                wikiArticle.getPrettyTitle(),
+                                "dummy_pron",
+                                "dummy_known_for",
+                                maybeBirthday.map(ld -> String.valueOf(ld.getYear())).orElse(""),
+                                maybeDeathday.map(ld -> String.valueOf(ld.getYear())).orElse(""),
+                                "<img src='" + localImageFile.getName() + "'>")
+                        );
+                  }
                 }
-              }
-              return WikiPerson.WikiPersonBuilder.aWikiPerson()
-                  .withRank(wikiArticle.getRank())
-                  .withHits_in_past_year(wikiArticle.getHits())
-                  .withWikipedia_url_title(wikiArticle.getUrlTitle())
-                  .withFound_in_anki(foundInAnki)
-                  .withBirth_day(maybeBirthday.orElse(null))
-                  .withDeath_day(maybeDeathday.orElse(null))
-                  .withImage_url(personImageFilename.map(WikipediaConnector::getUrl).orElse(null))
-                  .build();
-            }))
-            .stream())
-        .collect(Collectors.toList());
-
+                return WikiPerson.WikiPersonBuilder.aWikiPerson()
+                    .withRank(wikiArticle.getRank())
+                    .withHits_in_past_year(wikiArticle.getHits())
+                    .withWikipedia_url_title(wikiArticle.getUrlTitle())
+                    .withFound_in_anki(foundInAnki)
+                    .withBirth_day(maybeBirthday.orElse(null))
+                    .withDeath_day(maybeDeathday.orElse(null))
+                    .withImage_url(personImageFilename.map(WikipediaConnector::getUrl).orElse(null))
+                    .build();
+              }))
+              .stream())
+          .collect(Collectors.toList());
+    }
   }
 
   private static String formatDate(LocalDate date, Granularity granularity) {
@@ -282,7 +286,7 @@ public class WikipediaConnector {
     }
     File destination = new File(
         CrossPlatformUtils.getDesktopPathIncludingTrailingSlash().orElseThrow() + "pictures/" +
-            wikiArticle.getUrlTitle() + "_1." +
+            "Person_" + DataQualityBase.cleanName(wikiArticle.getUrlTitle()) + "_1." +
             FilenameUtils.getExtension(personImageFileName));
     try {
       Request.Get(getUrl(personImageFileName))
