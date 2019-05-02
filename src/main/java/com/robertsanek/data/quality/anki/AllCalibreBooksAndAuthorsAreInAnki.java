@@ -21,7 +21,10 @@ public class AllCalibreBooksAndAuthorsAreInAnki extends DataQualityBase {
       "Frommer's India",
       "Buzzed",
       "The Ultimate Bar Book",
-      "Residential Air Cleaners: A Technical Summary"
+      "Residential Air Cleaners: A Technical Summary",
+      "Confidence Cheat Sheet",
+      "Little Black Book of Scams",
+      "How the European Union Works"
   );
 
   @Override
