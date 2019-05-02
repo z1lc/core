@@ -224,6 +224,7 @@ public class WikipediaConnector {
                     .withImage_url(personImageFilename.map(WikipediaConnector::getUrl).orElse(null))
                     .build();
               }))
+              .filter(wikiPerson -> !shouldWriteToDisk || !wikiPerson.isFound_in_anki())
               .stream())
           .collect(Collectors.toList());
     }
