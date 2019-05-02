@@ -37,18 +37,18 @@ public class AnkiSyncer {
       if (lastSyncFile.exists()) {
         AnkiSyncResult ankiSyncResult = objectMapper.readValue(lastSyncFile, AnkiSyncResult.class);
         if (!ankiSyncResult.getSucceeded()) {
-          log.warn("Last sync of profile '%s' did not succeed.", profileToSync);
+          log.warn("Last sync of profile '%s' on device '%s' did not succeed.", profileToSync, getDeviceName());
         }
         lastSuccessfulSync = ankiSyncResult.getLastSuccessfulSync();
         if (lastSuccessfulSync.isBefore(ZonedDateTime.now().minus(DO_NOT_SYNC_IF_WITHIN))) {
-          log.info("Will need to sync profile '%s'; last sync was %s minutes ago.",
-              profileToSync, ChronoUnit.MINUTES.between(lastSuccessfulSync, ZonedDateTime.now()));
+          log.info("Will need to sync profile '%s'; last sync on device '%s' was %s minutes ago.",
+              profileToSync, getDeviceName(), ChronoUnit.MINUTES.between(lastSuccessfulSync, ZonedDateTime.now()));
         } else {
           if (ChronoUnit.SECONDS.between(
               lastLoggedMap.getOrDefault(profileToSync, ZonedDateTime.now().minusYears(10)),
               ZonedDateTime.now()) > 30) {
-            log.info("No need to sync profile '%s'; last sync is within %s minutes.",
-                profileToSync, DO_NOT_SYNC_IF_WITHIN.toMinutes());
+            log.info("No need to sync profile '%s'; last sync on device '%s' is within %s minutes.",
+                profileToSync, getDeviceName(), DO_NOT_SYNC_IF_WITHIN.toMinutes());
             lastLoggedMap.put(profileToSync, ZonedDateTime.now());
           }
           return true;
@@ -73,7 +73,8 @@ public class AnkiSyncer {
 
     if (ChronoUnit.HOURS.between(lastSuccessfulSync, thisSyncTime) > 24) {
       NotificationSender.sendNotificationDefault("Anki Sync broken for more than 24 hours!",
-          String.format("Anki has been unable to sync since %s. Please investigate.", lastSuccessfulSync));
+          String.format("Anki has been unable to sync on device '%s' since %s. Please investigate.",
+              getDeviceName(), lastSuccessfulSync));
     }
 
     return false;
