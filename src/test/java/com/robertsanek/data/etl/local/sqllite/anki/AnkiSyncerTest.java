@@ -1,7 +1,5 @@
 package com.robertsanek.data.etl.local.sqllite.anki;
 
-import static junit.framework.TestCase.assertEquals;
-
 import org.junit.Ignore;
 import org.junit.Test;
 

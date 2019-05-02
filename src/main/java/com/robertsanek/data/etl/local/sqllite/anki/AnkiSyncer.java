@@ -12,6 +12,8 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -25,8 +27,10 @@ public class AnkiSyncer {
   private static final Map<String, ZonedDateTime> lastLoggedMap = Maps.newHashMap();
 
   public static synchronized boolean syncLocalCollectionIfOutOfDate(String profileToSync) {
-    File lastSyncFile = new File(String.format("%sout/anki/last_sync_%s.zoneddatetime",
-        CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow(), profileToSync));
+    File lastSyncFile = new File(String.format("%sout/anki/last_sync_%s_%s.zoneddatetime",
+        CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow(),
+        getDeviceName(),
+        profileToSync));
     ZonedDateTime lastSuccessfulSync = ZonedDateTime.now();
     ZonedDateTime thisSyncTime = ZonedDateTime.now();
     try {
@@ -73,6 +77,14 @@ public class AnkiSyncer {
     }
 
     return false;
+  }
+
+  private static String getDeviceName() {
+    try {
+      return InetAddress.getLocalHost().getHostName();
+    } catch (UnknownHostException e) {
+      return "unknown";
+    }
   }
 
   private static void writeFile(File lastSyncFile,
