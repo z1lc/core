@@ -107,7 +107,7 @@ public class AnkiConnectUtils {
       log.info("Response from AnkiConnect did not match expected. Actual response: '%s'", updateResponse);
       return false;
     } else {
-      log.info("Successfully update image source from '%s' to '%s'.", oldName, newName);
+      log.info("Successfully updated image source from '%s' to '%s'.", oldName, newName);
       return true;
     }
   }
