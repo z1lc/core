@@ -12,7 +12,7 @@ import com.robertsanek.data.etl.local.sqllite.anki.Note;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 
-@IgnoreDQ
+@IgnoreDQ(explanation = "too many false positives")
 @Deprecated
 public class BasicCardsThatHaveReverseHaveLowerCaseDefinition extends DataQualityBase {
 

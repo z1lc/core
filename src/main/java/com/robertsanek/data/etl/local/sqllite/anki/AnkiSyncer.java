@@ -83,6 +83,7 @@ public class AnkiSyncer {
     try {
       return InetAddress.getLocalHost().getHostName();
     } catch (UnknownHostException e) {
+      log.warn("Failed to get local hostname. Will use 'unknown'.");
       return "unknown";
     }
   }
