@@ -70,6 +70,9 @@ public abstract class DataQualityBase {
   }
 
   public static void recomputeCachedFields() {
+    if (CrossPlatformUtils.isRunningInsideDocker()) {
+      return;
+    }
     allModels = Unchecked.get(() -> new ModelEtl().getObjects());
     modelsInUse = allModels.stream()
         .filter(model -> !model.getName().startsWith("\u23F8"))
