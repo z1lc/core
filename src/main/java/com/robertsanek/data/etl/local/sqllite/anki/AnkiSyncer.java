@@ -27,6 +27,9 @@ public class AnkiSyncer {
   private static final Map<String, ZonedDateTime> lastLoggedMap = Maps.newHashMap();
 
   public static synchronized boolean syncLocalCollectionIfOutOfDate(String profileToSync) {
+    if (CrossPlatformUtils.isRunningInsideDocker()) {
+      return true;
+    }
     File lastSyncFile = new File(String.format("%sout/anki/last_sync_%s_%s.zoneddatetime",
         CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow(),
         getDeviceName(),

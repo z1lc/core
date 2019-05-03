@@ -1,9 +1,13 @@
 package com.robertsanek.util.platform;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import org.apache.commons.lang3.SystemUtils;
+
+import com.robertsanek.util.Unchecked;
 
 public class CrossPlatformUtils {
 
@@ -47,6 +51,26 @@ public class CrossPlatformUtils {
       throw new RuntimeException(String.format("Couldn't detect platform for operating system %s.",
           System.getProperty("os.name")));
     }
+  }
+
+  //via https://stackoverflow.com/a/52581380
+  public static Boolean isRunningInsideDocker() {
+    return getPlatform().visit(new Platform.Visitor<Boolean>() {
+      @Override
+      public Boolean caseWindows10(Platform.Windows10 windows10) {
+        return false;
+      }
+
+      @Override
+      public Boolean caseRaspberryPi(Platform.RaspberryPi raspberryPi) {
+        return false;
+      }
+
+      @Override
+      public Boolean caseUbuntu(Platform.Ubuntu ubuntu) {
+        return Unchecked.get(() -> Files.lines(Paths.get("/proc/1/cgroup")).anyMatch(line -> line.contains("/docker")));
+      }
+    });
   }
 
 }
