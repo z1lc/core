@@ -1,10 +1,13 @@
 package com.robertsanek.data.etl.local.sqllite.anki.connect;
 
-import com.robertsanek.data.etl.local.sqllite.anki.connect.jsonschema.CardsInfoResult;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import com.robertsanek.data.etl.local.sqllite.anki.connect.jsonschema.CardsInfoResult;
+import com.robertsanek.util.platform.CrossPlatformUtils;
+import com.robertsanek.util.platform.Platform;
 
 public class AnkiConnectUtilsTest {
 
@@ -24,7 +27,22 @@ public class AnkiConnectUtilsTest {
 
   @Test
   public void getAnkiExecutablePath() {
-    assertEquals("C:\\Program Files\\Anki\\anki.exe", AnkiConnectUtils.getAnkiExecutablePath().orElseThrow());
+    assertTrue(CrossPlatformUtils.getPlatform().visit(new Platform.Visitor<>() {
+      @Override
+      public Boolean caseWindows10(Platform.Windows10 windows10) {
+        return "C:\\Program Files\\Anki\\anki.exe".equals(AnkiConnectUtils.getAnkiExecutablePath().orElseThrow());
+      }
+
+      @Override
+      public Boolean caseRaspberryPi(Platform.RaspberryPi raspberryPi) {
+        return true;
+      }
+
+      @Override
+      public Boolean caseUbuntu(Platform.Ubuntu ubuntu) {
+        return true;
+      }
+    }));
   }
 
 }
