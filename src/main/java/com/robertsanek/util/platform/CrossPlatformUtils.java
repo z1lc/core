@@ -1,13 +1,13 @@
 package com.robertsanek.util.platform;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.SystemUtils;
-
-import com.robertsanek.util.Unchecked;
 
 public class CrossPlatformUtils {
 
@@ -55,7 +55,7 @@ public class CrossPlatformUtils {
 
   //via https://stackoverflow.com/a/52581380
   public static Boolean isRunningInsideDocker() {
-    return getPlatform().visit(new Platform.Visitor<Boolean>() {
+    return getPlatform().visit(new Platform.Visitor<>() {
       @Override
       public Boolean caseWindows10(Platform.Windows10 windows10) {
         return false;
@@ -68,7 +68,11 @@ public class CrossPlatformUtils {
 
       @Override
       public Boolean caseUbuntu(Platform.Ubuntu ubuntu) {
-        return Unchecked.get(() -> Files.lines(Paths.get("/proc/1/cgroup")).anyMatch(line -> line.contains("/docker")));
+        try (Stream<String> stream = Files.lines(Paths.get("/proc/1/cgroup"))) {
+          return stream.anyMatch(line -> line.contains("/docker"));
+        } catch (IOException e) {
+          return false;
+        }
       }
     });
   }
