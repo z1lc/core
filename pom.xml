@@ -261,7 +261,7 @@
     <dependency>
       <groupId>com.github.scribejava</groupId>
       <artifactId>scribejava-apis</artifactId>
-      <version>6.2.0</version>
+      <version>6.5.1</version>
     </dependency>
 
     <!-- Workflowy OPML -->
