@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-sqladmin</artifactId>
-      <version>v1beta4-rev20190328-1.28.0</version>
+      <version>v1beta4-rev20190415-1.28.0</version>
     </dependency>
 
     <!-- Became necessary to include when loading Hibernate config after Java 10 upgrade.
