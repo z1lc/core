@@ -5,7 +5,7 @@ jobs:
     working_directory: ~
 
     docker:
-      - image: circleci/openjdk:8-jdk-browsers
+      - image: circleci/openjdk:latest
 
     steps:
 
