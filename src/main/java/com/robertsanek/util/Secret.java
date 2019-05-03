@@ -19,6 +19,12 @@ public class Secret {
   @JsonIgnore
   private Map<String, Object> additionalProperties = new HashMap<>();
 
+  public Secret(SecretType type, String secret, Map<String, Object> additionalProperties) {
+    this.type = type;
+    this.secret = secret;
+    this.additionalProperties = additionalProperties;
+  }
+
   @JsonProperty("type")
   public SecretType getType() {
     return type;

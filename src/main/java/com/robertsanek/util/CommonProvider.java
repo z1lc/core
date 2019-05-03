@@ -41,7 +41,9 @@ public class CommonProvider {
           .readValue(secretsFile, Secret[].class)))
           .collect(Collectors.toMap(Secret::getType, Function.identity()));
     } else {
-      secrets = Maps.newHashMap();
+      secrets = Arrays.stream(SecretType.values())
+          .map(secretType -> new Secret(secretType, "", Maps.newHashMap()))
+          .collect(Collectors.toMap(Secret::getType, Function.identity()));
       log.error("No file was found at '%s'.", secretsFile.toString());
     }
   }
