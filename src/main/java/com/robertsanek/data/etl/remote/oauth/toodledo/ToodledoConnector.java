@@ -2,8 +2,6 @@ package com.robertsanek.data.etl.remote.oauth.toodledo;
 
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.Response;
@@ -22,7 +20,8 @@ public class ToodledoConnector {
 
   private static final String TOODLEDO_CLIENT_ID = CommonProvider.getSecret(SecretType.TOODLEDO_CLIENT_ID);
   private static final String TOODLEDO_CLIENT_SECRET = CommonProvider.getSecret(SecretType.TOODLEDO_CLIENT_SECRET);
-  private static final String TOODLEDO_ROOT = CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/toodledo/";
+  private static final String TOODLEDO_ROOT =
+      CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/toodledo/";
   private static ObjectMapper mapper = CommonProvider.getObjectMapper();
   private final OAuth20Service service = new ServiceBuilder(TOODLEDO_CLIENT_ID)
       .apiSecret(TOODLEDO_CLIENT_SECRET)
