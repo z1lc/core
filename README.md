@@ -1,5 +1,5 @@
 # core
-[![CircleCI](https://circleci.com/gh/z1lc/core/tree/master.svg?style=svg)](https://circleci.com/gh/z1lc/core/tree/master)
+[![CircleCI](https://circleci.com/gh/z1lc/core/tree/master.svg?style=shield)](https://circleci.com/gh/z1lc/core/tree/master)
 
 ## Description
 `core` is [my](http://www.robertsanek.com) personal repository. Most of the code is related to providing data for a quantified self dashboard on [Klipfolio](https://www.klipfolio.com/). Data is [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load)'d and sent to a [PostgreSQL](https://en.wikipedia.org/wiki/PostgreSQL) database hosted on [Google Cloud SQL](https://cloud.google.com/sql/). [Hibernate](http://hibernate.org/orm/) is used as the ORM and schema generator. Everything is scheduled with [Quartz](http://www.quartz-scheduler.org/).
