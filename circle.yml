@@ -1,0 +1,9 @@
+test:
+  override:
+    - mvn test
+
+deployment:
+  main:
+    branch: master
+    commands:
+      - mvn -DskipTests install
