@@ -18,6 +18,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 
 browsers = set()
 
+
 # https://stackoverflow.com/a/47736565
 class WebEnginePage(QWebEnginePage):
     def acceptNavigationRequest(self, url, _type, is_main_frame):
@@ -43,6 +44,7 @@ class HtmlView(QWebEngineView):
         for browser in browsers:
             browser.setZoomFactor(self.zoomFactor() + adjustment)
 
+    # https://stackoverflow.com/a/7988897
     def wheelEvent(self, event):
         if event.modifiers() & Qt.ControlModifier:
             self.zoom(event.angleDelta())
