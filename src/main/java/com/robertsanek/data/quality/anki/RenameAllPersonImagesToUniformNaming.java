@@ -1,15 +1,5 @@
 package com.robertsanek.data.quality.anki;
 
-import com.google.common.collect.Lists;
-import com.robertsanek.data.etl.local.sqllite.anki.Note;
-import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
-import com.robertsanek.util.Log;
-import com.robertsanek.util.Logs;
-import com.robertsanek.util.Unchecked;
-import com.robertsanek.util.platform.CrossPlatformUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.jsoup.Jsoup;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,6 +13,17 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.io.FilenameUtils;
+import org.jsoup.Jsoup;
+
+import com.google.common.collect.Lists;
+import com.robertsanek.data.etl.local.sqllite.anki.Note;
+import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
+import com.robertsanek.util.Unchecked;
+import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
 
@@ -54,9 +55,11 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
                       return Stream.empty();
                     } else {
                       if (new File(mediaFolder + targetSrc).exists()) {
-                        throw new RuntimeException(String.format("File with name '%s' already exists. This likely " +
-                                "means you have unused media files -- delete them by using Tools > Check Media...",
-                            targetSrc));
+                        log.error("Tried changing file '%s' to '%s' for note ID '%s', but a file with the new name " +
+                                "already exists. This likely means you have unused media files -- delete them by " +
+                                "using Tools > Check Media...",
+                            currentSrc, targetSrc, note.getId());
+                        return Stream.empty();
                       }
                       return Stream.of(new FileNameChange(note.getId(), fields.get(0), currentSrc, targetSrc));
                     }

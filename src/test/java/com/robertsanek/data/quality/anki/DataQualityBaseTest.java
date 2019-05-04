@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -25,6 +26,7 @@ public class DataQualityBaseTest {
   }
 
   @Test
+  @Ignore("integration")
   public void getExistingPeopleInAnkiDb() {
     Set<String> existingPeopleInAnkiDb = DataQualityBase.getExistingPeopleInAnkiDbLowerCased();
     assertTrue(existingPeopleInAnkiDb.contains("robert sanek"));

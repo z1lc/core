@@ -42,52 +42,94 @@ public abstract class DataQualityBase {
   static final Multimap<Class<? extends DataQualityBase>, String> violations =
       Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
   static final DQInformation dqInformation = new DQInformation();
+  static final long BASIC_MODEL_ID = 1416785626019L;
+  static final long CLOZE_MODEL_ID = 1410460771936L;
+  static final long PERSON_MODEL_ID = 1436872005312L;
+  static final long SYNONYM_MODEL_ID = 1539762208227L;
 
   //ETL'd Anki data for use by all subclasses of DQBase
-  public static List<Model> allModels = Unchecked.get(() -> new ModelEtl().getObjects());
-  static List<Model> modelsInUse = allModels.stream()
-      .filter(model -> !model.getName().startsWith("\u23F8"))
-      .filter(model -> !model.getName().startsWith("~"))
-      .filter(model -> model.getId() != 1487029322167L)  //Will's Cloze
-      .filter(model -> model.getId() != 1511625126772L)  //Will's Basic
-      .collect(Collectors.toList());
-  static Map<Long, List<Model>> modelsByModelId = allModels.stream()
-      .collect(Collectors.groupingBy(Model::getId));
-  static List<Template> allTemplates = Unchecked.get(() -> new TemplateEtl().getObjects());
-  static List<Template> templatesInUse = allTemplates.stream()
-      .filter(template -> !template.getName().startsWith("@D"))
-      .collect(Collectors.toList());
-  static List<Review> allReviews = Unchecked.get(() -> new ReviewEtl().getObjects());
-  static List<Card> cards = getAllCards();
-  static Map<Long, List<Card>> cardsByNoteId = cards.stream()
-      .collect(Collectors.groupingBy(Card::getNote_id));
-  static Map<Long, Card> cardByCardId = toMap(cards, Card::getId);
-  static List<Deck> allDecks = getAllDecks();
-  static List<Long> relevantDeckIds = getRelevantDeckIds(allDecks);
-  static List<Note> allNotes = Unchecked.get(() -> new NoteEtl().getObjects());
-  static Map<Long, Note> noteByNoteId = toMap(allNotes, Note::getId);
-  static long BASIC_MODEL_ID = 1416785626019L;
-  static long CLOZE_MODEL_ID = 1410460771936L;
-  static long PERSON_MODEL_ID = 1436872005312L;
-  static long SYNONYM_MODEL_ID = 1539762208227L;
-  static List<Field> allFields = Unchecked.get(() -> new FieldEtl().getObjects());
-  static List<Field> fieldsInUse = allFields.stream()
-      .filter(field -> !field.getName().startsWith("@Deprecated"))
-      .filter(field -> !field.getName().startsWith("@Unused"))
-      .collect(Collectors.toList());
-  static Map<Long, List<Field>> requiredFieldsByModelId = allFields.stream()
-      .filter(field -> field.getName().startsWith("⭐"))
-      .collect(Collectors.groupingBy(Field::getModel_id));
+  static List<Model> allModels;
+  static List<Model> modelsInUse;
+  static Map<Long, List<Model>> modelsByModelId;
+  static List<Template> allTemplates;
+  static List<Template> templatesInUse;
+  static List<Review> allReviews;
+  static List<Card> cards;
+  static Map<Long, List<Card>> cardsByNoteId;
+  static Map<Long, Card> cardByCardId;
+  static List<Deck> allDecks;
+  static List<Long> relevantDeckIds;
+  static List<Note> allNotes;
+  static Map<Long, Note> noteByNoteId;
+  static List<Field> allFields;
+  static List<Field> fieldsInUse;
+  static Map<Long, List<Field>> requiredFieldsByModelId;
 
-  public static Set<String> getExistingPeopleInAnkiDbLowerCased() {
+  static {
+    recomputeCachedFields();
+  }
+
+  public static void recomputeCachedFields() {
+    if (CrossPlatformUtils.isRunningInsideDocker()) {
+      return;
+    }
+    allModels = Unchecked.get(() -> new ModelEtl().getObjects());
+    modelsInUse = allModels.stream()
+        .filter(model -> !model.getName().startsWith("\u23F8"))
+        .filter(model -> !model.getName().startsWith("~"))
+        .filter(model -> model.getId() != 1487029322167L)  //Will's Cloze
+        .filter(model -> model.getId() != 1511625126772L)  //Will's Basic
+        .collect(Collectors.toList());
+    modelsByModelId = allModels.stream()
+        .collect(Collectors.groupingBy(Model::getId));
+    allTemplates = Unchecked.get(() -> new TemplateEtl().getObjects());
+    templatesInUse = allTemplates.stream()
+        .filter(template -> !template.getName().startsWith("@D"))
+        .collect(Collectors.toList());
+    allReviews = Unchecked.get(() -> new ReviewEtl().getObjects());
+    cards = getAllCards();
+    cardsByNoteId = cards.stream()
+        .collect(Collectors.groupingBy(Card::getNote_id));
+    cardByCardId = toMap(cards, Card::getId);
+    allDecks = getAllDecks();
+    relevantDeckIds = getRelevantDeckIds(allDecks);
+    allNotes = Unchecked.get(() -> new NoteEtl().getObjects());
+    noteByNoteId = toMap(allNotes, Note::getId);
+    allFields = Unchecked.get(() -> new FieldEtl().getObjects());
+    fieldsInUse = allFields.stream()
+        .filter(field -> !field.getName().startsWith("@Deprecated"))
+        .filter(field -> !field.getName().startsWith("@Unused"))
+        .collect(Collectors.toList());
+    requiredFieldsByModelId = allFields.stream()
+        .filter(field -> field.getName().startsWith("⭐"))
+        .collect(Collectors.groupingBy(Field::getModel_id));
+  }
+
+  public static List<Note> getExistingPeopleInAnkiDb() {
     Long personModelId = Iterables.getOnlyElement(DataQualityBase.allModels.stream()
         .filter(model -> model.getName().contains("Person"))
         .collect(Collectors.toList()))
         .getId();
-    return DataQualityBase.getAllNotesInRelevantDecks(personModelId).stream()
+    return DataQualityBase.getAllNotesInRelevantDecks(personModelId);
+  }
+
+  public static Set<String> getExistingPeopleInAnkiDbLowerCased() {
+    return getExistingPeopleInAnkiDb().stream()
         .map(note -> DataQualityBase.splitCsvIntoCommaSeparatedList(note.getFields()))
         .filter(fieldList -> fieldList.size() > 0)
         .map(fieldList -> cleanName(fieldList.get(0)).toLowerCase())
+        .collect(Collectors.toSet());
+  }
+
+  public static Set<String> getExistingWorksOfArtInAnkiDbLowerCased() {
+    Long workOfArtModelId = Iterables.getOnlyElement(DataQualityBase.allModels.stream()
+        .filter(model -> model.getName().contains("Work of Art"))
+        .collect(Collectors.toList()))
+        .getId();
+    return DataQualityBase.getAllNotesInRelevantDecks(workOfArtModelId).stream()
+        .map(note -> DataQualityBase.splitCsvIntoCommaSeparatedList(note.getFields()))
+        .filter(fieldList -> fieldList.size() > 0)
+        .map(fieldList -> fieldList.get(0).toLowerCase())
         .collect(Collectors.toSet());
   }
 

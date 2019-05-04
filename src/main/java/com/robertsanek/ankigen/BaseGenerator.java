@@ -16,14 +16,19 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.http.client.fluent.Request;
 
 import com.robertsanek.data.quality.anki.DataQualityBase;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
 import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public abstract class BaseGenerator {
 
+  static final Log log = Logs.getLog(BaseGenerator.class);
+
   public abstract List<PersonNote> getPersons() throws Exception;
 
   public void writeFiles() {
+    log.info("Creating new_people.csv file and pictures folder on the Desktop...");
     String outName = getRootDestination() + "new_people.csv";
     try (Writer writer = Files.newBufferedWriter(Paths.get(outName));
          CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
@@ -31,6 +36,7 @@ public abstract class BaseGenerator {
       if (!new File(directory).exists() && !new File(directory).mkdirs()) {
         throw new RuntimeException("Failed to create directory on desktop!");
       }
+      log.info("Getting people & downloading images...");
       Unchecked.get(this::getPersons).parallelStream().forEach(person -> {
         threadSafePrintRecord(csvPrinter,
             person.getName(),

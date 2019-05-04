@@ -42,7 +42,7 @@ public class EtlAndDqJob implements QuartzJob {
     boolean etlsSuccessful = new MasterEtl().runEtls(false, parallel);
     if (etlsSuccessful) {
       triggerKlipfolioRefresh();
-      new DataQualityRunner().run();
+      new DataQualityRunner().exec(context);
     } else {
       log.info("Not all ETLs were successful, so will not trigger Klipfolio refresh or run Data Quality checks.");
     }

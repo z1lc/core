@@ -3,11 +3,13 @@ package com.robertsanek.data.quality.anki;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class AllClozeTablesHaveDeletionForRowOrColumnTitleTest {
 
   @Test
+  @Ignore("integration")
   public void integration() {
     new AllClozeTablesHaveDeletionForRowOrColumnTitle().runDQ();
   }

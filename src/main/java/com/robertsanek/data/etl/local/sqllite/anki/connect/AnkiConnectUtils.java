@@ -1,5 +1,23 @@
 package com.robertsanek.data.etl.local.sqllite.anki.connect;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Optional;
+
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.util.EntityUtils;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.JsonObject;
@@ -11,21 +29,6 @@ import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.platform.CrossPlatformUtils;
-import org.apache.commons.text.StringEscapeUtils;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.util.EntityUtils;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Optional;
 
 public class AnkiConnectUtils {
 
@@ -38,6 +41,7 @@ public class AnkiConnectUtils {
       .setHost(ANK_CONNECT_PRETTY_URL);
   private static final int ANKI_CONNECT_VERSION = 6;
   private static Log log = Logs.getLog(AnkiConnectUtils.class);
+  private static ZonedDateTime lastAnkiOpenTime = ZonedDateTime.now().minusYears(10);
 
   public static boolean loadProfile(String profileToLoad) {
     openAnki();
@@ -103,7 +107,7 @@ public class AnkiConnectUtils {
       log.info("Response from AnkiConnect did not match expected. Actual response: '%s'", updateResponse);
       return false;
     } else {
-      log.info("Successfully update image source from '%s' to '%s'.", oldName, newName);
+      log.info("Successfully updated image source from '%s' to '%s'.", oldName, newName);
       return true;
     }
   }
@@ -128,7 +132,8 @@ public class AnkiConnectUtils {
             .getBytes(StandardCharsets.UTF_8)));
     JsonObject obj =
         new JsonParser()
-            .parse(Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(syncPost).getEntity())))
+            .parse(
+                Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(syncPost).getEntity())))
             .getAsJsonObject();
     String dataSources = obj.getAsJsonArray("result").toString();
     CardsInfoResult[] cardsInfoResults = Unchecked.get(() -> mapper.readValue(dataSources, CardsInfoResult[].class));
@@ -136,17 +141,20 @@ public class AnkiConnectUtils {
   }
 
   private static void openAnki() {
-    if (getAnkiExecutablePath().isPresent()) {
-      File ankiExecutable = new File(getAnkiExecutablePath().orElseThrow());
-      log.info("Opening Anki...");
-      try {
-        Desktop.getDesktop().open(ankiExecutable);
-        Thread.sleep(Duration.ofSeconds(5).toMillis());
-      } catch (IOException | InterruptedException ignored) {
+    if (ChronoUnit.MINUTES.between(lastAnkiOpenTime, ZonedDateTime.now()) >= 15) {
+      if (getAnkiExecutablePath().isPresent()) {
+        lastAnkiOpenTime = ZonedDateTime.now();
+        File ankiExecutable = new File(getAnkiExecutablePath().orElseThrow());
+        log.info("Opening Anki...");
+        try {
+          Desktop.getDesktop().open(ankiExecutable);
+          Thread.sleep(Duration.ofSeconds(5).toMillis());
+        } catch (IOException | InterruptedException ignored) {
+        }
+      } else {
+        log.info("Anki application path was not provided so application could not be started. " +
+            "Assuming Anki is open and attempting to connect anyway....");
       }
-    } else {
-      log.info("Anki application path was not provided so application could not be started. " +
-          "Assuming Anki is open and attempting to connect anyway....");
     }
   }
 

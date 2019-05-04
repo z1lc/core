@@ -176,7 +176,7 @@ public class Main {
           break;
         case DQ:
           log.info("Running command %s.", command.orElseThrow());
-          new DataQualityRunner().run();
+          new DataQualityRunner().exec(null);
           break;
         case ETL:
           log.info("Running command %s.", command.orElseThrow());

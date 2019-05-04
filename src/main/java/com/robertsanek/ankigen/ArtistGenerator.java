@@ -13,7 +13,9 @@ public class ArtistGenerator extends BaseGenerator {
 
   private static List<String> IGNORABLE_PEOPLE = Lists.newArrayList(
       "Deeb",
-      "baaskaT"
+      "baaskaT",
+      "JSan",
+      "Above Beyond"
   );
   private static final long MINIMUM_PLAY_COUNT = 100;
 

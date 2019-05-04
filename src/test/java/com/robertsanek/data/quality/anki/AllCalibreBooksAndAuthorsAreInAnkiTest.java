@@ -3,11 +3,11 @@ package com.robertsanek.data.quality.anki;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class AllSyntaxHighlightedCodeHasMobileFriendlyLineLengthsTest {
+public class AllCalibreBooksAndAuthorsAreInAnkiTest {
 
   @Test
   @Ignore("integration")
   public void name() {
-    new AllSyntaxHighlightedCodeHasMobileFriendlyLineLengths().runDQ();
+    new AllCalibreBooksAndAuthorsAreInAnki().runDQ();
   }
 }

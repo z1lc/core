@@ -21,10 +21,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.google.common.collect.Maps;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public class CommonProvider {
 
+  private static final Log log = Logs.getLog(CommonProvider.class);
   private static final String EMAIL_ADDRESS = "rsanek@gmail.com";
   private static final Map<SecretType, Secret> secrets;
   private static final RequestConfig.Builder globalConfig = RequestConfig.custom()
@@ -39,7 +41,10 @@ public class CommonProvider {
           .readValue(secretsFile, Secret[].class)))
           .collect(Collectors.toMap(Secret::getType, Function.identity()));
     } else {
-      throw new RuntimeException(String.format("No file was found at '%s'.", secretsFile.toString()));
+      secrets = Arrays.stream(SecretType.values())
+          .map(secretType -> new Secret(secretType, "", Maps.newHashMap()))
+          .collect(Collectors.toMap(Secret::getType, Function.identity()));
+      log.error("No file was found at '%s'.", secretsFile.toString());
     }
   }
 

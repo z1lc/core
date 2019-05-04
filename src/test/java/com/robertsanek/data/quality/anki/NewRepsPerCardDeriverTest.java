@@ -30,8 +30,14 @@ public class NewRepsPerCardDeriverTest {
   @Ignore("integration")
   public void integration2() {
     List<CardNewReps> ret = new NewRepsPerCardDeriver().getObjects();
-    long correct = ret.stream().filter(CardNewReps::isGotFirstReviewAfterGraduationCorrect).count();
-    long total = ret.stream().filter(CardNewReps::isScheduledAs1DayGraduationAndReviewedOnTime).count();
+    long correct = ret.stream()
+        .filter(CardNewReps::isGotFirstReviewAfterGraduationCorrect)
+        .filter(card -> card.getGraduating_interval() == 2)
+        .count();
+    long total = ret.stream()
+        .filter(CardNewReps::isReviewedGraduationRepetitionOnTime)
+        .filter(card -> card.getGraduating_interval() == 2)
+        .count();
     System.out.println((double) correct / total);
   }
 
