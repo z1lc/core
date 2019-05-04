@@ -1,11 +1,11 @@
 import os
+import platform
 import sys
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtWidgets import *
-import platform
 
 DEFAULT_ZOOM = 1.25
 REMOVE_TOODLEDO_HEADER_JS = "var elem = document.getElementById('topnav-in'); elem.parentNode.removeChild(elem);"
@@ -16,6 +16,7 @@ style.innerHTML = 'div.page.active { padding: 0; margin: 18px auto; }';
 document.getElementsByTagName('head')[0].appendChild(style);
 """
 
+browsers = set()
 
 # https://stackoverflow.com/a/47736565
 class WebEnginePage(QWebEnginePage):
@@ -36,6 +37,17 @@ class HtmlView(QWebEngineView):
     def on_load_finished(self, ok):
         if ok:
             self.page().runJavaScript(self.custom_javascript)
+
+    def zoom(self, delta):
+        adjustment = -0.25 if delta.y() < 0 else 0.25
+        for browser in browsers:
+            browser.setZoomFactor(self.zoomFactor() + adjustment)
+
+    def wheelEvent(self, event):
+        if event.modifiers() & Qt.ControlModifier:
+            self.zoom(event.angleDelta())
+        else:
+            QWebEngineView.wheelEvent(self, event)
 
 
 def __get_size_policy_horizontal(horizontal_stretch):
@@ -93,13 +105,27 @@ def window():
     win.setWindowIcon(QIcon(os.path.join('checked.png')))
     win.resize(1920, 1080)
 
+    browsers.add(browser1)
+    browsers.add(browser2)
+    browsers.add(browser3)
+
     def reload():
-        browser1.reload()
-        browser2.reload()
-        browser3.reload()
+        for browser in browsers:
+            browser.reload()
+
+    def zoom(adjustment):
+        for browser in browsers:
+            browser.setZoomFactor(browser.zoomFactor() + adjustment)
 
     shortcut = QShortcut(QKeySequence("Ctrl+R"), horizontal_splitter)
     shortcut.activated.connect(reload)
+
+    zoom_in = QShortcut(QKeySequence("Ctrl++"), horizontal_splitter)
+    zoom_in_eq = QShortcut(QKeySequence("Ctrl+="), horizontal_splitter)
+    zoom_out = QShortcut(QKeySequence("Ctrl+-"), horizontal_splitter)
+    zoom_in.activated.connect(lambda: zoom(0.25))
+    zoom_in_eq.activated.connect(lambda: zoom(0.25))
+    zoom_out.activated.connect(lambda: zoom(-0.25))
 
     sys.exit(app.exec_())
 
