@@ -1,5 +1,18 @@
 package com.robertsanek.lifx;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.gson.JsonParser;
+import com.robertsanek.lifx.jsonentities.SceneSelectionResult;
+import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretType;
+import com.robertsanek.util.Unchecked;
+import net.jodah.failsafe.Failsafe;
+import net.jodah.failsafe.RetryPolicy;
+import org.apache.http.client.entity.EntityBuilder;
+import org.apache.http.client.fluent.Request;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -7,22 +20,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import org.apache.http.client.entity.EntityBuilder;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.message.BasicNameValuePair;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.gson.JsonParser;
-import com.robertsanek.lifx.jsonentities.Scene;
-import com.robertsanek.lifx.jsonentities.SceneSelectionResult;
-import com.robertsanek.util.CommonProvider;
-import com.robertsanek.util.SecretType;
-import com.robertsanek.util.Unchecked;
-
-import net.jodah.failsafe.Failsafe;
-import net.jodah.failsafe.RetryPolicy;
 
 public class LifxConnector {
 
@@ -82,15 +79,10 @@ public class LifxConnector {
   }
 
   private Map<String, SceneInfo> getSceneNameMap() {
-    String scenes = Failsafe.with(lifxRetry)
-        .get(() -> Request
-            .Get("https://api.lifx.com/v1/scenes")
-            .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
-            .execute()
-            .returnContent()
-            .asString());
-    return Arrays.stream(Unchecked.get(() -> mapper.readValue(scenes, Scene[].class)))
-        .collect(Collectors.toMap(Scene::getName, scene -> new SceneInfo(scene.getName(), scene.getUuid())));
+    return ListScenesResponse.request("https://api.lifx.com/v1/scenes")
+        .withHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
+        .getMany().stream()
+        .collect(Collectors.toMap(res -> res.getName(), scene -> new SceneInfo(scene.getName(), scene.getUuid())));
   }
 
   private boolean triggerScene(String uuid) {
