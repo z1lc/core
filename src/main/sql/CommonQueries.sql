@@ -40,6 +40,7 @@ WHERE title NOT IN (SELECT distinct title FROM toodledo_tasks WHERE repeat != ''
         title NOT LIKE 'Workout overrides' AND
         title NOT LIKE 'Update events in yearly candlestick calendar' AND title NOT LIKE 'Vacuum car'
 ORDER BY completed_at DESC
+;
 
 
 /* Anki time spend by tag */

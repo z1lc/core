@@ -166,6 +166,7 @@ public class DataQualityRunner implements QuartzJob {
     String username = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_POSTGRES_USERNAME);
     String password = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_POSTGRES_PASSWORD);
 
+    Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
     try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
       Stream<String> stream =
           PARALLEL ? DATA_QUALITY_SQL_FILE_NAMES.parallelStream() : DATA_QUALITY_SQL_FILE_NAMES.stream();
