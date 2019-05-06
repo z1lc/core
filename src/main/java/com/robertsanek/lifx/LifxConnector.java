@@ -3,6 +3,7 @@ package com.robertsanek.lifx;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.JsonParser;
+import com.robertsanek.lifx.jsonentities.Scene;
 import com.robertsanek.lifx.jsonentities.SceneSelectionResult;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.SecretType;
@@ -79,10 +80,15 @@ public class LifxConnector {
   }
 
   private Map<String, SceneInfo> getSceneNameMap() {
-    return ListScenesResponse.request("https://api.lifx.com/v1/scenes")
-        .withHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
-        .getMany().stream()
-        .collect(Collectors.toMap(res -> res.getName(), scene -> new SceneInfo(scene.getName(), scene.getUuid())));
+    String scenes = Failsafe.with(lifxRetry)
+        .get(() -> Request
+            .Get("https://api.lifx.com/v1/scenes")
+            .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
+            .execute()
+            .returnContent()
+            .asString());
+    return Arrays.stream(Unchecked.get(() -> mapper.readValue(scenes, Scene[].class)))
+        .collect(Collectors.toMap(Scene::getName, scene -> new SceneInfo(scene.getName(), scene.getUuid())));
   }
 
   private boolean triggerScene(String uuid) {
