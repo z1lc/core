@@ -70,6 +70,10 @@ public class MasterEtl implements QuartzJob {
   private static final String SERVICE_ACCOUNT_FILENAME = "z1lc-qs.json";
   private static final RetryPolicy<EtlRun> individualEtlRetry = new RetryPolicy<EtlRun>()
       .handle(Throwable.class)
+      .onRetry(event -> {
+        log.error("%s failed on try #%s. Error:", event.getLastResult().getClass_name(), event.getAttemptCount());
+        log.error(event.getLastFailure());
+      })
       .withDelay(Duration.ofSeconds(3))
       .withMaxRetries(2);
 
@@ -177,8 +181,7 @@ public class MasterEtl implements QuartzJob {
       Failsafe
           .with(individualEtlRetry)
           .run(() -> {
-            log.info("Running ETL with class %s.", etlClazz.getName());
-            tryNumber.incrementAndGet();
+            log.info("Running ETL with class %s (try #%s).", etlClazz.getName(), tryNumber.incrementAndGet());
             Etl instance = etlClazz.getDeclaredConstructor().newInstance();
             List objects = instance.getObjects();
             max.set(Math.min(ROW_LIMIT, objects.size()));
