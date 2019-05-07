@@ -1,20 +1,5 @@
 package com.robertsanek.util;
 
-import java.io.File;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +8,24 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.google.common.collect.Maps;
 import com.robertsanek.util.platform.CrossPlatformUtils;
+import net.jodah.failsafe.Failsafe;
+import net.jodah.failsafe.FailsafeExecutor;
+import net.jodah.failsafe.RetryPolicy;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
+import java.io.File;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class CommonProvider {
 
@@ -105,6 +108,17 @@ public class CommonProvider {
         .setDefaultRequestConfig(config)
         .setDefaultCookieStore(cookieStore)
         .build();
+  }
+
+  public static <R> RetryPolicy<R> defaultRetryPolicy() {
+    return new RetryPolicy<R>()
+        .handle(Throwable.class)
+        .withBackoff(10, 60, ChronoUnit.SECONDS)
+        .withMaxRetries(2);
+  }
+
+  public static <R> FailsafeExecutor<R> retrying() {
+    return Failsafe.with(defaultRetryPolicy());
   }
 
 }

@@ -1,15 +1,5 @@
 package com.robertsanek.data.etl.remote.scrape.rottentomatoes;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import org.apache.http.client.utils.URIBuilder;
-
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlListItem;
@@ -17,6 +7,14 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Unchecked;
+import org.apache.http.client.utils.URIBuilder;
+
+import java.net.URI;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class MovieEtl extends Etl<Movie> {
 
@@ -34,7 +32,7 @@ public class MovieEtl extends Etl<Movie> {
         .setParameter("wtsni", "wts")
         .build());
     try (WebClient webClient = CommonProvider.getHtmlUnitWebClient()) {
-      HtmlPage page = webClient.getPage(wantToSeeUri.toURL());
+      HtmlPage page = CommonProvider.retrying().get(() -> webClient.getPage(wantToSeeUri.toURL()));
       List<HtmlListItem> ul = page.getByXPath("//li[contains(@class, 'bottom_divider')]");
       return ul.stream()
           .map(li -> {
@@ -58,8 +56,6 @@ public class MovieEtl extends Etl<Movie> {
                 .build();
           })
           .collect(Collectors.toList());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 }

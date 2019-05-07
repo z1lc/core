@@ -8,14 +8,11 @@ import com.robertsanek.lifx.jsonentities.SceneSelectionResult;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.SecretType;
 import com.robertsanek.util.Unchecked;
-import net.jodah.failsafe.Failsafe;
-import net.jodah.failsafe.RetryPolicy;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
@@ -27,10 +24,6 @@ public class LifxConnector {
   private static final String LIFX_ACCESS_TOKEN = CommonProvider.getSecret(SecretType.LIFX_ACCESS_TOKEN);
   private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
   private static final Duration SWITCH_BETWEEN_SCENE_DURATION = Duration.ofMinutes(5);
-  private static final RetryPolicy<String> lifxRetry = new RetryPolicy<String>()
-      .handle(Throwable.class)
-      .withBackoff(10, 60, ChronoUnit.SECONDS)
-      .withMaxRetries(2);
 
   boolean triggerCoreDay() {
     return triggerScene(Optional.ofNullable(getSceneNameMap().get("Core Day")).orElseThrow().getUuid());
@@ -47,7 +40,7 @@ public class LifxConnector {
   }
 
   boolean triggerBreathe() {
-    String response = Failsafe.with(lifxRetry).get(() -> Request
+    String response = CommonProvider.retrying().get(() -> Request
         .Post("https://api.lifx.com/v1/lights/all/effects/breathe")
         .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
         .body(EntityBuilder.create()
@@ -68,7 +61,7 @@ public class LifxConnector {
   @VisibleForTesting
   boolean allLightsAreOnRightNow() {
     return StreamSupport.stream(
-        new JsonParser().parse(Failsafe.with(lifxRetry).get(() -> Request
+        new JsonParser().parse(CommonProvider.retrying().get(() -> Request
             .Get("https://api.lifx.com/v1/lights/all")
             .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
             .execute()
@@ -80,7 +73,7 @@ public class LifxConnector {
   }
 
   private Map<String, SceneInfo> getSceneNameMap() {
-    String scenes = Failsafe.with(lifxRetry)
+    String scenes = CommonProvider.retrying()
         .get(() -> Request
             .Get("https://api.lifx.com/v1/scenes")
             .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
@@ -92,7 +85,7 @@ public class LifxConnector {
   }
 
   private boolean triggerScene(String uuid) {
-    String response = Failsafe.with(lifxRetry)
+    String response = CommonProvider.retrying()
         .get(() -> Request
             .Put(String.format("https://api.lifx.com/v1/scenes/scene_id:%s/activate", uuid))
             .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
