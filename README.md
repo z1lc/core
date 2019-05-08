@@ -19,8 +19,7 @@
 *  [RottenTomatoes](https://www.rottentomatoes.com/) scraping
 *  [Toodledo API](https://api.toodledo.com/3/index.php) & scraping
 *  [WakaTime API](https://wakatime.com/developers)
-*  Wikipedia: [Wikimedia API](https://wikimedia.org/api/rest_v1/), [DBpedia](https://wiki.dbpedia.org/) scraping, 
-[MediaWiki API](https://www.wikidata.org/w/api.php)
+*  Wikipedia: [Wikimedia API](https://wikimedia.org/api/rest_v1/), [DBpedia](https://wiki.dbpedia.org/) scraping, [MediaWiki API](https://www.wikidata.org/w/api.php)
 
 ## Dependencies
 1.  Install the [gcloud sdk](https://cloud.google.com/sdk/install).
