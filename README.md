@@ -1,4 +1,5 @@
 # core
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/773092d777b14335af5fbd0fb23e465b)](https://app.codacy.com/app/z1lc/core?utm_source=github.com&utm_medium=referral&utm_content=z1lc/core&utm_campaign=Badge_Grade_Dashboard)
 [![CircleCI](https://circleci.com/gh/z1lc/core/tree/master.svg?style=shield)](https://circleci.com/gh/z1lc/core/tree/master)
 
 ## Description
