@@ -1,6 +1,7 @@
 # core
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/773092d777b14335af5fbd0fb23e465b)](https://app.codacy.com/app/z1lc/core?utm_source=github.com&utm_medium=referral&utm_content=z1lc/core&utm_campaign=Badge_Grade_Dashboard)
 [![CircleCI](https://circleci.com/gh/z1lc/core/tree/master.svg?style=shield)](https://circleci.com/gh/z1lc/core/tree/master)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fz1lc%2Fcore.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fz1lc%2Fcore?ref=badge_shield)
 
 ## Description
 `core` is [my](http://www.robertsanek.com) personal repository. Most of the code is related to providing data for a
@@ -59,3 +60,6 @@ file and images to import into Anki.
 exact scheduling.
 
 Example: `java -jar target/core-1.0-SNAPSHOT.jar -command etl_setup -type manual`
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fz1lc%2Fcore.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fz1lc%2Fcore?ref=badge_large)
