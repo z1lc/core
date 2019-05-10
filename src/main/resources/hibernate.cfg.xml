@@ -60,6 +60,7 @@
     <mapping class="com.robertsanek.data.etl.remote.oauth.toodledo.ToodledoTask"/>
     <mapping class="com.robertsanek.data.etl.remote.rescuetime.Category"/>
     <mapping class="com.robertsanek.data.etl.remote.rescuetime.Efficiency"/>
+    <mapping class="com.robertsanek.data.etl.remote.scrape.indiehackers.IndieHackersBook"/>
     <mapping class="com.robertsanek.data.etl.remote.scrape.leetcode.Question"/>
     <mapping class="com.robertsanek.data.etl.remote.scrape.rottentomatoes.Movie"/>
     <mapping class="com.robertsanek.data.etl.remote.scrape.toodledo.HabitRep"/>
