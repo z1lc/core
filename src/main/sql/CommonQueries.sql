@@ -40,7 +40,7 @@ order by date desc
 SELECT distinct title, completed_at
 FROM toodledo_tasks
 WHERE title NOT IN (SELECT distinct title FROM toodledo_tasks WHERE repeat != '')
-  AND completed_at >= current_date - 14
+  AND completed_at >= current_date - 22
   AND title NOT LIKE 'Update Lifting Stats'
   AND title NOT LIKE 'Workout overrides'
   AND title NOT LIKE 'Update events in yearly candlestick calendar'

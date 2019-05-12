@@ -288,6 +288,11 @@
       <artifactId>selenium-server</artifactId>
       <version>3.141.59</version>
     </dependency>
+    <dependency>
+      <groupId>com.taskadapter</groupId>
+      <artifactId>trello-java-wrapper</artifactId>
+      <version>0.13</version>
+    </dependency>
 
 
   </dependencies>

@@ -65,6 +65,8 @@
     <mapping class="com.robertsanek.data.etl.remote.scrape.rottentomatoes.Movie"/>
     <mapping class="com.robertsanek.data.etl.remote.scrape.toodledo.HabitRep"/>
     <mapping class="com.robertsanek.data.etl.remote.scrape.toodledo.Habit"/>
+    <mapping class="com.robertsanek.data.etl.remote.trello.TrelloBoard"/>
+    <mapping class="com.robertsanek.data.etl.remote.trello.TrelloCard"/>
     <mapping class="com.robertsanek.data.etl.remote.wakatime.CodingTime"/>
     <mapping class="com.robertsanek.data.etl.remote.wikipedia.WikiPerson"/>
     <mapping class="com.robertsanek.data.derived.anki.CardNewReps"/>
