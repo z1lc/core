@@ -8,7 +8,20 @@ from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtWidgets import *
 
 DEFAULT_ZOOM = 1.25
-REMOVE_TOODLEDO_HEADER_JS = "var elem = document.getElementById('topnav-in'); elem.parentNode.removeChild(elem);"
+REMOVE_TOODLEDO_HEADER_JS = """
+var topnav = document.getElementById('topnav-in');
+topnav.parentNode.removeChild(topnav);
+var sidebar = document.getElementById('ribbon');
+sidebar.parentNode.removeChild(sidebar);
+var list = document.getElementById('sidebar');
+list.removeChild(list.getElementsByTagName('div')[0]);  //remove 'dashboard' link
+"""
+REMOVE_TRELLO_HEADER_JS = """
+$('div.js-react-root').remove();
+$('div.board-header').remove();
+$('div#board').css('padding-top', '8px');
+$('div.js-add-list').remove();
+"""
 REMOVE_WORKFLOWY_PADDING_JS = """
 var style = document.createElement('style');
 style.type = 'text/css';
@@ -23,8 +36,10 @@ browsers = set()
 class WebEnginePage(QWebEnginePage):
     def acceptNavigationRequest(self, url, _type, is_main_frame):
         if _type == QWebEnginePage.NavigationTypeLinkClicked:
-            QDesktopServices.openUrl(url)
-            return False
+            #Trello opens this automatically, seemingly to get you to sign in with Google
+            if "accounts.google.com/o/oauth2/iframe" not in url.toString():
+                QDesktopServices.openUrl(url)
+                return False
         return True
 
 
@@ -83,7 +98,7 @@ def window():
     win = QWidget()
 
     horizontal_splitter = QSplitter(Qt.Horizontal)
-    browser1 = __get_browser("https://habits.toodledo.com/", __get_size_policy_horizontal(9), REMOVE_TOODLEDO_HEADER_JS)
+    browser1 = __get_browser("https://habits.toodledo.com/", __get_size_policy_horizontal(7), REMOVE_TOODLEDO_HEADER_JS)
     horizontal_splitter.addWidget(browser1)
 
     vertical_splitter = QSplitter(Qt.Vertical)
@@ -91,8 +106,8 @@ def window():
     horizontal_splitter.addWidget(vertical_splitter)
 
     browser2 = __get_browser("https://toodledo.com/", __get_size_policy_vertical(30), REMOVE_TOODLEDO_HEADER_JS)
-    browser3 = __get_browser("https://workflowy.com/#/eacfb1db8eb3", __get_size_policy_vertical(20),
-                             REMOVE_WORKFLOWY_PADDING_JS)
+    browser3 = __get_browser("https://trello.com/b/Kq6NQ2LP/backlogs", __get_size_policy_vertical(20),
+                             REMOVE_TRELLO_HEADER_JS)
     vertical_splitter.addWidget(browser2)
     vertical_splitter.addWidget(browser3)
 
