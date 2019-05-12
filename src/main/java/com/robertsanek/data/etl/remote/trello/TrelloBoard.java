@@ -11,7 +11,7 @@ public class TrelloBoard {
   @Id
   private String id;
   private String name;
-  private String desc;
+  private String description;
   private boolean closed;
 
   public String getId() {
@@ -22,8 +22,8 @@ public class TrelloBoard {
     return name;
   }
 
-  public String getDesc() {
-    return desc;
+  public String getDescription() {
+    return description;
   }
 
   public boolean isClosed() {
@@ -67,7 +67,7 @@ public class TrelloBoard {
       TrelloBoard trelloBoard = new TrelloBoard();
       trelloBoard.name = this.name;
       trelloBoard.closed = this.closed;
-      trelloBoard.desc = this.desc;
+      trelloBoard.description = this.desc;
       trelloBoard.id = this.id;
       return trelloBoard;
     }

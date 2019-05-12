@@ -11,7 +11,7 @@ public class TrelloCard {
   @Id
   private String id;
   private String name;
-  private String desc;
+  private String description;
   private String idBoard;
 
   public String getIdBoard() {
@@ -26,8 +26,8 @@ public class TrelloCard {
     return name;
   }
 
-  public String getDesc() {
-    return desc;
+  public String getDescription() {
+    return description;
   }
 
   public static final class TrelloCardBuilder {
@@ -66,7 +66,7 @@ public class TrelloCard {
     public TrelloCard build() {
       TrelloCard trelloCard = new TrelloCard();
       trelloCard.name = this.name;
-      trelloCard.desc = this.desc;
+      trelloCard.description = this.desc;
       trelloCard.id = this.id;
       trelloCard.idBoard = this.idBoard;
       return trelloCard;
