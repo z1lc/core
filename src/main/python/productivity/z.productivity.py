@@ -19,7 +19,10 @@ list.removeChild(list.getElementsByTagName('div')[0]);  //remove 'dashboard' lin
 REMOVE_TRELLO_HEADER_JS = """
 $('div.js-react-root').remove();
 $('div.board-header').remove();
-$('div#board').css('padding-top', '8px');
+$('div#board').css({
+'padding-top': '8px',
+'margin-bottom': '0px'
+});
 $('div.js-add-list').remove();
 """
 REMOVE_WORKFLOWY_PADDING_JS = """
@@ -37,7 +40,8 @@ class WebEnginePage(QWebEnginePage):
     def acceptNavigationRequest(self, url, _type, is_main_frame):
         if _type == QWebEnginePage.NavigationTypeLinkClicked:
             #Trello opens this automatically, seemingly to get you to sign in with Google
-            if "accounts.google.com/o/oauth2/iframe" not in url.toString():
+            if ("accounts.google.com/o/oauth2/iframe" not in url.toString()
+                and "toodledo.com/offline_iframe.html" not in url.toString()):
                 QDesktopServices.openUrl(url)
                 return False
         return True
@@ -79,10 +83,9 @@ def __get_size_policy_vertical(vertical_stretch):
     return sp
 
 
-def __get_browser(url, qt_size_policy, custom_javascript, open_links_in_browser=True):
-    zoom = DEFAULT_ZOOM
+def __get_browser(url, qt_size_policy, custom_javascript, zoom=DEFAULT_ZOOM, open_links_in_browser=True):
     if "laptop" in platform.node().lower():
-        zoom = 1.75
+        zoom += 0.5
     browser = HtmlView(custom_javascript=custom_javascript) if open_links_in_browser else QWebEngineView()
     browser.setUrl(QUrl(url))
     browser.setZoomFactor(zoom)
@@ -105,9 +108,9 @@ def window():
     vertical_splitter.setSizePolicy(__get_size_policy_horizontal(20))
     horizontal_splitter.addWidget(vertical_splitter)
 
-    browser2 = __get_browser("https://toodledo.com/", __get_size_policy_vertical(30), REMOVE_TOODLEDO_HEADER_JS)
+    browser2 = __get_browser("https://tasks.toodledo.com/", __get_size_policy_vertical(30), REMOVE_TOODLEDO_HEADER_JS)
     browser3 = __get_browser("https://trello.com/b/Kq6NQ2LP/backlogs", __get_size_policy_vertical(20),
-                             REMOVE_TRELLO_HEADER_JS)
+                             REMOVE_TRELLO_HEADER_JS, zoom=1.00)
     vertical_splitter.addWidget(browser2)
     vertical_splitter.addWidget(browser3)
 
