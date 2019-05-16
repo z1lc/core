@@ -199,7 +199,7 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-sheets</artifactId>
-      <version>v4-rev20190429-1.28.0</version>
+      <version>v4-rev20190508-1.28.0</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>
