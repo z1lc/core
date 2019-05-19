@@ -2,8 +2,8 @@ package com.robertsanek.data.quality.anki;
 
 import static com.robertsanek.data.quality.anki.DataQualityBase.dqInformation;
 import static com.robertsanek.util.PostgresConnection.QUERY_TIMEOUT;
-import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_POSTGRES_PASSWORD;
-import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_POSTGRES_USERNAME;
+import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD;
+import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME;
 import static j2html.TagCreator.b;
 import static j2html.TagCreator.br;
 import static j2html.TagCreator.div;
@@ -163,8 +163,8 @@ public class DataQualityRunner implements QuartzJob {
     DataQualityBase.prepareForDQ();
     String jdbcUrl = "jdbc:postgresql://google/postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory" +
         "&cloudSqlInstance=arctic-rite-143002:us-west1:rsanek-db";
-    String username = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_POSTGRES_USERNAME);
-    String password = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_POSTGRES_PASSWORD);
+    String username = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME);
+    String password = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
 
     Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
     try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {

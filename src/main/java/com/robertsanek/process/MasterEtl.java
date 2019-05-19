@@ -1,7 +1,8 @@
 package com.robertsanek.process;
 
-import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_POSTGRES_PASSWORD;
-import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_POSTGRES_USERNAME;
+import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME;
+import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD;
+import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -81,12 +82,29 @@ public class MasterEtl implements QuartzJob {
   private boolean fastRun = false;
   private boolean parallel = true;
 
-  private SessionFactory getSessionFactory(
-      Hbm2ddlType hbm2ddlType) throws HibernateException, IOException, GeneralSecurityException, InterruptedException {
+  private SessionFactory getSessionFactory(Hbm2ddlType hbm2ddlType, ConnectionType connectionType)
+      throws HibernateException, IOException, GeneralSecurityException, InterruptedException {
     try {
       config.setProperty("hibernate.hbm2ddl.auto", hbm2ddlType.getText());
-      config.setProperty("hibernate.connection.username", CommonProvider.getSecret(GOOGLE_CLOUD_SQL_POSTGRES_USERNAME));
-      config.setProperty("hibernate.connection.password", CommonProvider.getSecret(GOOGLE_CLOUD_SQL_POSTGRES_PASSWORD));
+      String username;
+      String password;
+      String instanceName;
+      if (connectionType.equals(ConnectionType.RSANEK)) {
+        username = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME);
+        password = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
+        instanceName = "rsanek-db";
+      } else if (connectionType.equals(ConnectionType.CRONUS)) {
+        username = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME);
+        password = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME);
+        instanceName = "cronus-pg-primary";
+      } else {
+        throw new RuntimeException(String.format("Don't know configuration for connection type %s.", connectionType));
+      }
+      config.setProperty("hibernate.connection.username", username);
+      config.setProperty("hibernate.connection.password", password);
+      config.setProperty("connection.url",
+          "jdbc:postgresql://google/postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory&cloudSqlInstance=arctic-rite-143002:us-west1:" +
+              instanceName);
       return config.buildSessionFactory();
     } catch (ServiceException e) {
       log.info("Failed to connect to Cloud SQL Instance. Assuming instance is stopped, attempting to start...");
@@ -135,8 +153,8 @@ public class MasterEtl implements QuartzJob {
     Stopwatch total = Stopwatch.createStarted();
     List<Class<? extends Etl>> concreteEtls = getConcreteEtls(fastRun);
     log.info("Creating connection to Cloud SQL and re-generating table schemas... (this may take up to 3 minutes)");
-    try (SessionFactory ignored = Unchecked.get(() -> getSessionFactory(Hbm2ddlType.CREATE));
-         SessionFactory noneSf = Unchecked.get(() -> getSessionFactory(Hbm2ddlType.NONE))) {
+    try (SessionFactory ignored = Unchecked.get(() -> getSessionFactory(Hbm2ddlType.CREATE, ConnectionType.RSANEK));
+         SessionFactory noneSf = Unchecked.get(() -> getSessionFactory(Hbm2ddlType.NONE, ConnectionType.RSANEK))) {
       log.info("Schema re-generation complete, taking %s seconds. Beginning ETL with parallel = %s.",
           total.elapsed().getSeconds(), parallel);
       Stream<Class<? extends Etl>> stream = parallel ? concreteEtls.parallelStream() : concreteEtls.stream();
@@ -305,6 +323,11 @@ public class MasterEtl implements QuartzJob {
     public String getText() {
       return text;
     }
+  }
+
+  private enum ConnectionType {
+    CRONUS,
+    RSANEK
   }
 
 }
