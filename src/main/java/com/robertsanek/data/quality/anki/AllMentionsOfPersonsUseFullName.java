@@ -1,19 +1,15 @@
 package com.robertsanek.data.quality.anki;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.Jsoup;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.io.Resources;
 import com.robertsanek.data.etl.local.sqllite.anki.Note;
-import com.robertsanek.util.Unchecked;
+import com.robertsanek.util.CommonProvider;
 
 @IgnoreDQ(explanation = "in development")
 @Deprecated
@@ -27,11 +23,7 @@ public class AllMentionsOfPersonsUseFullName extends DataQualityBase {
 
   @Override
   void runDQ() {
-    String rawNames = Unchecked.get(() -> Resources.toString(Resources.getResource(
-        "com/robertsanek/data/quality/anki/files/common_first_names.txt"), Charsets.UTF_8));
-    ImmutableSet<String> names = ImmutableSet.copyOf(Arrays.stream(rawNames.split("\r\n"))
-        .map(name -> StringUtils.capitalize(name.toLowerCase()))
-        .collect(Collectors.toSet()));
+    ImmutableSet<String> names = CommonProvider.getCommonNames();
     List<Pair<Note, String>> collect = getAllNotesInRelevantDecks().parallelStream()
         .filter(note -> !EXCLUDED_MODEL_IDS.contains(note.getModel_id()))
         .map(note -> {

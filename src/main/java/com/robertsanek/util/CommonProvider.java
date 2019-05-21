@@ -6,11 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
+import com.google.common.io.Resources;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 import net.jodah.failsafe.Failsafe;
 import net.jodah.failsafe.FailsafeExecutor;
 import net.jodah.failsafe.RetryPolicy;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -119,6 +124,14 @@ public class CommonProvider {
 
   public static <R> FailsafeExecutor<R> retrying() {
     return Failsafe.with(defaultRetryPolicy());
+  }
+
+  public static ImmutableSet<String> getCommonNames() {
+    String rawNames = Unchecked.get(() -> Resources.toString(Resources.getResource(
+        "com/robertsanek/data/quality/anki/files/common_first_names.txt"), Charsets.UTF_8));
+    return ImmutableSet.copyOf(Arrays.stream(rawNames.split("\r\n"))
+        .map(name -> StringUtils.capitalize(name.toLowerCase()))
+        .collect(Collectors.toSet()));
   }
 
 }
