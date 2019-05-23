@@ -1,13 +1,23 @@
 package com.robertsanek.data.etl.remote.scrape.indiehackers;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.robertsanek.data.etl.DoNotRun;
-import com.robertsanek.data.etl.Etl;
-import com.robertsanek.util.Log;
-import com.robertsanek.util.Logs;
-import com.robertsanek.util.Unchecked;
+import java.net.URI;
+import java.net.URL;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.openqa.selenium.By;
@@ -17,18 +27,14 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.net.URI;
-import java.net.URL;
-import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.robertsanek.data.etl.DoNotRun;
+import com.robertsanek.data.etl.Etl;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
+import com.robertsanek.util.Unchecked;
 
 @DoNotRun(explanation = "resource-hungry (uses multiple chromedrivers)")
 public class IndieHackersBookEtl extends Etl<IndieHackersBook> {
