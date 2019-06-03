@@ -129,7 +129,7 @@ public abstract class DataQualityBase {
     return DataQualityBase.getAllNotesInRelevantDecks(workOfArtModelId).stream()
         .map(note -> DataQualityBase.splitCsvIntoCommaSeparatedList(note.getFields()))
         .filter(fieldList -> fieldList.size() > 0)
-        .map(fieldList -> fieldList.get(0).toLowerCase())
+        .map(fieldList -> Jsoup.parse(fieldList.get(0)).text().toLowerCase())
         .collect(Collectors.toSet());
   }
 

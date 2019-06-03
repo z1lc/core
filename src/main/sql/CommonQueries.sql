@@ -96,9 +96,3 @@ END;
 $$
     LANGUAGE plpgsql
 ;
-
-select anchortext, SUM(indiehackerskudos), COUNT(*)
-from indie_hackers_books
-where url not like '%aws.amazon.com%'
-group by anchortext
-order by 2 desc, 3 desc

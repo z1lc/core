@@ -24,7 +24,8 @@ public class AllCalibreBooksAndAuthorsAreInAnki extends DataQualityBase {
       "Residential Air Cleaners: A Technical Summary",
       "Confidence Cheat Sheet",
       "Little Black Book of Scams",
-      "How the European Union Works"
+      "How the European Union Works",
+      "2019 Email Deliverability Guide"
   );
 
   @Override

@@ -4,6 +4,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlListItem;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Unchecked;
@@ -16,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@DoNotRun(explanation = "broken/flaky")
 public class MovieEtl extends Etl<Movie> {
 
   private static final String USER_ID = "977226125";

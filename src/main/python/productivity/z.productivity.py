@@ -39,9 +39,9 @@ browsers = set()
 class WebEnginePage(QWebEnginePage):
     def acceptNavigationRequest(self, url, _type, is_main_frame):
         if _type == QWebEnginePage.NavigationTypeLinkClicked:
-            #Trello opens this automatically, seemingly to get you to sign in with Google
+            # Trello opens this automatically, seemingly to get you to sign in with Google
             if ("accounts.google.com/o/oauth2/iframe" not in url.toString()
-                and "toodledo.com/offline_iframe.html" not in url.toString()):
+                    and "toodledo.com/offline_iframe.html" not in url.toString()):
                 QDesktopServices.openUrl(url)
                 return False
         return True
@@ -71,8 +71,10 @@ class HtmlView(QWebEngineView):
             QWebEngineView.wheelEvent(self, event)
 
 
-def __get_size_policy_horizontal(horizontal_stretch):
+def __get_size_policy_horizontal(horizontal_stretch, minimum_width=False):
     sp = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+    if minimum_width:
+        sp = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     sp.setHorizontalStretch(horizontal_stretch)
     return sp
 
@@ -101,7 +103,8 @@ def window():
     win = QWidget()
 
     horizontal_splitter = QSplitter(Qt.Horizontal)
-    browser1 = __get_browser("https://habits.toodledo.com/", __get_size_policy_horizontal(7), REMOVE_TOODLEDO_HEADER_JS)
+    browser1 = __get_browser("https://habits.toodledo.com/", __get_size_policy_horizontal(7, True), REMOVE_TOODLEDO_HEADER_JS)
+    browser1.setMinimumWidth(425)
     horizontal_splitter.addWidget(browser1)
 
     vertical_splitter = QSplitter(Qt.Vertical)
