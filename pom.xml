@@ -20,12 +20,12 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>5.4.2.Final</version>
+      <version>5.4.3.Final</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-c3p0</artifactId>
-      <version>5.4.2.Final</version>
+      <version>5.4.3.Final</version>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -234,7 +234,7 @@
     <dependency>
       <groupId>com.twilio.sdk</groupId>
       <artifactId>twilio</artifactId>
-      <version>7.38.0</version>
+      <version>7.38.1</version>
     </dependency>
 
     <dependency>
@@ -245,7 +245,7 @@
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>8.20</version>
+      <version>8.21</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>
@@ -267,14 +267,14 @@
     <dependency>
       <groupId>com.github.scribejava</groupId>
       <artifactId>scribejava-apis</artifactId>
-      <version>6.5.1</version>
+      <version>6.6.2</version>
     </dependency>
 
     <!-- Workflowy OPML -->
     <dependency>
       <groupId>be.ceau</groupId>
       <artifactId>opml-parser</artifactId>
-      <version>2.0.0</version>
+      <version>2.1.0</version>
     </dependency>
 
     <dependency>
