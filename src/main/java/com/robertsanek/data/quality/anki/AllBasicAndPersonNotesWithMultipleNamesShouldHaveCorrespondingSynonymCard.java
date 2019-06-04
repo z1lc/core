@@ -84,6 +84,8 @@ public class AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynon
       1556400664224L, //MMDB
       1504548042442L,
       1504573008645L,
+      1557517888678L,
+      1559631381236L,
       0L
   );
   private final boolean shouldGenerateCsvOutput = false;
