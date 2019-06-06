@@ -1,5 +1,6 @@
 package com.robertsanek.data.etl.remote.trello;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,9 +9,12 @@ import javax.persistence.Table;
 @Table(name = "trello_cards")
 public class TrelloCard {
 
+  private static final int MAX_LENGTH = 10_000;
+
   @Id
   private String id;
   private String name;
+  @Column(length = MAX_LENGTH)
   private String description;
   private String idBoard;
 
@@ -31,6 +35,7 @@ public class TrelloCard {
   }
 
   public static final class TrelloCardBuilder {
+
     private String id;
     private String name;
     private String desc;
