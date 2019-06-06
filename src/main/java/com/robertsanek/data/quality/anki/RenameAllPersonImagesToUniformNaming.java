@@ -81,7 +81,7 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
             filesToChange.size(),
             filesToChange.stream().map(FileNameChange::getFirstField).distinct().count(),
             fileNameChangesTarget.getAbsolutePath());
-        try (final PrintWriter writer = new PrintWriter(fileNameChangesTarget, StandardCharsets.UTF_8)) {
+        try (PrintWriter writer = new PrintWriter(fileNameChangesTarget, StandardCharsets.UTF_8)) {
           writer.print(String.join("\n", Lists.transform(filesToChange, FileNameChange::toString)));
         } catch (IOException e) {
           throw new RuntimeException(e);

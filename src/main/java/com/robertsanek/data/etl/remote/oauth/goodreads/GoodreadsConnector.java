@@ -93,7 +93,7 @@ public class GoodreadsConnector {
 
   private String saveToken(String token, String fileName) {
     String outName = GOODREADS_ROOT + fileName;
-    try (final PrintWriter writer = Unchecked.get(() -> new PrintWriter(outName, StandardCharsets.UTF_8))) {
+    try (PrintWriter writer = Unchecked.get(() -> new PrintWriter(outName, StandardCharsets.UTF_8))) {
       writer.print(token);
     }
     return token;

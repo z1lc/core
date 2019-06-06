@@ -40,7 +40,7 @@ public class SheetsConnector {
   private static Log log = Logs.getLog(SheetsConnector.class);
 
   private static Credential authorize() throws IOException {
-    try (final InputStream in = new FileInputStream(
+    try (InputStream in = new FileInputStream(
         CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "in/etl/client_secret.json")) {
       final GoogleClientSecrets clientSecrets =
           GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in, UTF_8));

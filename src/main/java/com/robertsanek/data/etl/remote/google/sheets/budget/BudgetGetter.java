@@ -71,7 +71,7 @@ public class BudgetGetter implements QuartzJob {
   //I no longer need this but leaving it in case I want to go back.
   private static void writeToCsvForShinyDash(List<AnnotatedItem> allLineItems) throws IOException {
     String outName = CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/extracted.csv";
-    try (final PrintWriter writer = new PrintWriter(outName, StandardCharsets.UTF_8)) {
+    try (PrintWriter writer = new PrintWriter(outName, StandardCharsets.UTF_8)) {
       writer.println(String.join(CSV_DELIMITER, "date", "value", "lineItemType", "comment", "isExpense"));
       allLineItems
           .forEach(ai -> {

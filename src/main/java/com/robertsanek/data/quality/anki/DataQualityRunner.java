@@ -41,8 +41,8 @@ import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
 import com.robertsanek.util.QuoteUtils;
 import com.robertsanek.util.Unchecked;
-import com.sendgrid.Content;
-import com.sendgrid.Email;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
 
 import j2html.tags.ContainerTag;
 

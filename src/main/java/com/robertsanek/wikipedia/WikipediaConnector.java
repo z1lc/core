@@ -354,7 +354,7 @@ public class WikipediaConnector {
     File loansTarget =
         new File(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/wikipedia.html");
     log.info("Writing to %s", loansTarget.getAbsolutePath());
-    try (final PrintWriter writer = Unchecked.get(() -> new PrintWriter(loansTarget, StandardCharsets.UTF_8))) {
+    try (PrintWriter writer = Unchecked.get(() -> new PrintWriter(loansTarget, StandardCharsets.UTF_8))) {
       writer.print(html.render());
     }
   }

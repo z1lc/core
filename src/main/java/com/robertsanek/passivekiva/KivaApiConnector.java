@@ -146,7 +146,7 @@ public class KivaApiConnector implements QuartzJob {
     File loansTarget =
         new File(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/loans.html");
     log.info("Writing to %s", loansTarget.getAbsolutePath());
-    try (final PrintWriter writer = new PrintWriter(loansTarget, StandardCharsets.UTF_8)) {
+    try (PrintWriter writer = new PrintWriter(loansTarget, StandardCharsets.UTF_8)) {
       writer.print(containerTag.render());
     }
 

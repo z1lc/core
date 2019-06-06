@@ -64,7 +64,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
             if (Pattern.compile("status code: 5\\d\\d").matcher(e.getMessage()).find()) {
               log.error("Got 500-level exception from RescueTime:");
               log.error(e);
-            } else{
+            } else {
               throw new RuntimeException(e);
             }
           }

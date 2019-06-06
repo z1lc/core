@@ -110,7 +110,7 @@ public class OAuth20Utils {
 
   private String saveToken(String token, String fileName) {
     String outName = tokenSaveLocation + fileName;
-    try (final PrintWriter writer = Unchecked.get(() -> new PrintWriter(outName, StandardCharsets.UTF_8))) {
+    try (PrintWriter writer = Unchecked.get(() -> new PrintWriter(outName, StandardCharsets.UTF_8))) {
       writer.print(token);
     }
     return token;

@@ -131,7 +131,8 @@ public class MasterEtl implements QuartzJob {
     HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
     JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
-    GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(
+    @SuppressWarnings("deprecation")  //https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory/issues/66
+        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(
         CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + SERVICE_ACCOUNT_FILENAME));
     if (credential.createScopedRequired()) {
       credential = credential.createScoped(Collections.singletonList("https://www.googleapis.com/auth/cloud-platform"));
