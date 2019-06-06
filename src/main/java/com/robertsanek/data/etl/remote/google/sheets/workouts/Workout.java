@@ -13,15 +13,25 @@ public class Workout {
 
   @Id
   private ZonedDateTime date;
-  private BigDecimal value;
+  private BigDecimal cardio;
+  private BigDecimal lifting;
+  private BigDecimal total;
   private String comment;
 
   public ZonedDateTime getDate() {
     return date;
   }
 
-  public BigDecimal getValue() {
-    return value;
+  public BigDecimal getCardio() {
+    return cardio;
+  }
+
+  public BigDecimal getLifting() {
+    return lifting;
+  }
+
+  public BigDecimal getTotal() {
+    return total;
   }
 
   public String getComment() {
@@ -31,7 +41,9 @@ public class Workout {
   public static final class WorkoutBuilder {
 
     private ZonedDateTime date;
-    private BigDecimal value;
+    private BigDecimal cardio;
+    private BigDecimal lifting;
+    private BigDecimal total;
     private String comment;
 
     private WorkoutBuilder() {}
@@ -45,8 +57,18 @@ public class Workout {
       return this;
     }
 
-    public WorkoutBuilder withValue(BigDecimal value) {
-      this.value = value;
+    public WorkoutBuilder withCardio(BigDecimal cardio) {
+      this.cardio = cardio;
+      return this;
+    }
+
+    public WorkoutBuilder withLifting(BigDecimal lifting) {
+      this.lifting = lifting;
+      return this;
+    }
+
+    public WorkoutBuilder withTotal(BigDecimal total) {
+      this.total = total;
       return this;
     }
 
@@ -57,9 +79,11 @@ public class Workout {
 
     public Workout build() {
       Workout workout = new Workout();
-      workout.value = this.value;
-      workout.comment = this.comment;
       workout.date = this.date;
+      workout.comment = this.comment;
+      workout.cardio = this.cardio;
+      workout.lifting = this.lifting;
+      workout.total = this.total;
       return workout;
     }
   }
