@@ -45,6 +45,11 @@ WITH people AS (SELECT split_part(
                                                                      1542879193491, --Alfred Lansing (couldn't find pic)
                                                                      1542879193543, --Mittie Hellmich (couldn't find pic)
                                                                      1539753868266,
+                                                                     1421205009429,
+                                                                     1421207265551,
+                                                                     1421207514429,
+                                                                     1484430821746,
+                                                                     1484432378503,
                                                                      0))
 SELECT 'nid:' || work_of_art_note_id /*, REPLACE(works_of_art.name, '"', '') as name, urlTitle*/
 FROM works_of_art
