@@ -114,7 +114,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>27.1-jre</version>
+      <version>28.0-jre</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -164,12 +164,12 @@
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.5.8</version>
+      <version>4.5.9</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>fluent-hc</artifactId>
-      <version>4.5.8</version>
+      <version>4.5.9</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -199,7 +199,7 @@
     <dependency>
       <groupId>com.google.oauth-client</groupId>
       <artifactId>google-oauth-client-jetty</artifactId>
-      <version>1.29.2</version>
+      <version>1.30.1</version>
     </dependency>
     <dependency>
       <groupId>com.google.apis</groupId>
@@ -239,7 +239,7 @@
     <dependency>
       <groupId>com.twilio.sdk</groupId>
       <artifactId>twilio</artifactId>
-      <version>7.38.1</version>
+      <version>7.39.0</version>
     </dependency>
 
     <dependency>
@@ -272,7 +272,7 @@
     <dependency>
       <groupId>com.github.scribejava</groupId>
       <artifactId>scribejava-apis</artifactId>
-      <version>6.6.2</version>
+      <version>6.6.3</version>
     </dependency>
 
     <!-- Workflowy OPML -->
