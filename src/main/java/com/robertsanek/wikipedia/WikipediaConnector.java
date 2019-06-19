@@ -5,10 +5,7 @@ import static j2html.TagCreator.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,10 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.output.NullWriter;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.fluent.Request;
@@ -44,7 +38,6 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.robertsanek.ankigen.BaseGenerator;
 import com.robertsanek.data.etl.remote.wikipedia.WikiPerson;
 import com.robertsanek.data.quality.anki.DataQualityBase;
 import com.robertsanek.passivekiva.HTMLOutputBuilder;
@@ -71,7 +64,13 @@ public class WikipediaConnector {
   );
   private static final ImmutableSet<String> EXCLUDED_ARTICLE_TITLES = ImmutableSet.of(
       "Black_Panther_(film)",
-      "Captain_Marvel_(film)"
+      "Captain_Marvel_(film)",
+      "Beto_O'Rourke",
+      "Mary,_Queen_of_Scots",
+      "Anne,_Queen_of_Great_Britain",
+      "Charles,_Prince_of_Wales",
+      "Diana,_Princess_of_Wales",
+      "Kayden_Boche"
   );
   private static final Long IMAGE_WIDTH = 1000L;
   private static final String WIKIDATA_URL_TEMPLATE =
@@ -95,9 +94,9 @@ public class WikipediaConnector {
     List<WikiPerson> mostViewedPeople =
         Unchecked.get(() -> getMostViewedPeople(
             Language.EN,
-            LocalDate.now().minusMonths(12),
+            LocalDate.now().minusMonths(60),
             Granularity.MONTHLY,
-            30,
+            100,
             true));
     log.info("Successfully extracted information for %s people.", mostViewedPeople.size());
     writeHtmlFile(mostViewedPeople);
@@ -187,47 +186,20 @@ public class WikipediaConnector {
     log.info("Will filter top %s articles for people only, and search for an image and birth/death day for each " +
         "(this may take a while).", sortedArticles.size());
 
-    String outName = CrossPlatformUtils.getDesktopPathIncludingTrailingSlash().orElseThrow() + "new_people.csv";
-    try (Writer writer = shouldWriteToDisk ? Files.newBufferedWriter(Paths.get(outName)) : new NullWriter();
-         CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-      return sortedArticles.parallelStream()
-          .flatMap(wikiArticle -> getWikiDataEntityIdIfPerson(wikiArticle)
-              .map(Unchecked.function(wikiDataEntityId -> {
-                boolean foundInAnki = existingPeopleInAnkiDb.contains(wikiArticle.getPrettyTitle().toLowerCase());
-                Optional<LocalDate> maybeBirthday =
-                    foundInAnki ? Optional.empty() : getDate(wikiDataEntityId, WIKIDATA_BIRTHDAY_PROPERTY);
-                Optional<LocalDate> maybeDeathday =
-                    foundInAnki ? Optional.empty() : getDate(wikiDataEntityId, WIKIDATA_DEATHDAY_PROPERTY);
-                Optional<String> personImageFilename = Optional.empty();
-                if (!foundInAnki) {
-                  personImageFilename = getPersonImageFilename(wikiDataEntityId);
-                  if (shouldWriteToDisk && personImageFilename.isPresent()) {
-                    saveImage(wikiArticle, personImageFilename.orElseThrow())
-                        .ifPresent(localImageFile ->
-                            BaseGenerator.threadSafePrintRecord(csvPrinter,
-                                wikiArticle.getPrettyTitle(),
-                                "dummy_pron",
-                                "dummy_known_for",
-                                maybeBirthday.map(ld -> String.valueOf(ld.getYear())).orElse(""),
-                                maybeDeathday.map(ld -> String.valueOf(ld.getYear())).orElse(""),
-                                "<img src='" + localImageFile.getName() + "'>")
-                        );
-                  }
-                }
-                return WikiPerson.WikiPersonBuilder.aWikiPerson()
-                    .withRank(wikiArticle.getRank())
-                    .withHits_in_past_year(wikiArticle.getHits())
-                    .withWikipedia_url_title(wikiArticle.getUrlTitle())
-                    .withFound_in_anki(foundInAnki)
-                    .withBirth_day(maybeBirthday.orElse(null))
-                    .withDeath_day(maybeDeathday.orElse(null))
-                    .withImage_url(personImageFilename.map(WikipediaConnector::getUrl).orElse(null))
-                    .build();
-              }))
-              .filter(wikiPerson -> !shouldWriteToDisk || !wikiPerson.isFound_in_anki())
-              .stream())
-          .collect(Collectors.toList());
-    }
+    return sortedArticles.parallelStream()
+        .flatMap(wikiArticle -> getWikiDataEntityIdIfPerson(wikiArticle)
+            .map(Unchecked.function(wikiDataEntityId -> {
+              boolean foundInAnki = existingPeopleInAnkiDb.contains(wikiArticle.getPrettyTitle().toLowerCase());
+              return WikiPerson.WikiPersonBuilder.aWikiPerson()
+                  .withRank(wikiArticle.getRank())
+                  .withHits_in_past_year(wikiArticle.getHits())
+                  .withWikipedia_url_title(wikiArticle.getUrlTitle())
+                  .withFound_in_anki(foundInAnki)
+                  .build();
+            }))
+            .filter(wikiPerson -> !shouldWriteToDisk || !wikiPerson.isFound_in_anki())
+            .stream())
+        .collect(Collectors.toList());
   }
 
   private static String formatDate(LocalDate date, Granularity granularity) {
@@ -348,7 +320,6 @@ public class WikipediaConnector {
             )
             .with(sortedPeople.stream()
                 .map(WikiPerson::toArticle)
-                .sorted(Comparator.comparing(WikiArticle::getPrettyTitle))
                 .map(article -> p(article.getURL()))
                 .collect(Collectors.toList())));
     File loansTarget =
