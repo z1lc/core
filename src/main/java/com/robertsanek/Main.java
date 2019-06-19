@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Optional;
@@ -34,6 +36,7 @@ import com.robertsanek.data.etl.local.sqllite.anki.AnkiSyncer;
 import com.robertsanek.data.etl.remote.google.sheets.budget.BudgetGetter;
 import com.robertsanek.data.etl.remote.oauth.toodledo.ToodledoConnector;
 import com.robertsanek.data.quality.anki.DataQualityRunner;
+import com.robertsanek.here.HereConnector;
 import com.robertsanek.lifx.Lifx;
 import com.robertsanek.passivekiva.KivaApiConnector;
 import com.robertsanek.process.Command;
@@ -139,7 +142,9 @@ public class Main {
               .withIdentity(UUID.randomUUID().toString())
               .usingJobData("action", Lifx.Action.EARLY_NIGHT.toString())
               .build();
-          String eighteenCron = "0 20 19 1/1 * ? *";
+          LocalTime sundown = HereConnector.getTodaysSundownTimeForSanFrancisco()
+              .minus(Duration.ofMinutes(10));
+          String eighteenCron = String.format("0 %s %s 1/1 * ? *", sundown.getMinute(), sundown.getHour());
           Trigger earlyNightTrigger = TriggerBuilder.newTrigger()
               .withSchedule(CronScheduleBuilder.cronSchedule(eighteenCron))
               .build();

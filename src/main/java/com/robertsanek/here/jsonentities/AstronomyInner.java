@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,13 +30,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class AstronomyInner {
 
   @JsonProperty("sunrise")
+  @JsonFormat(pattern = "h:mma")
   private LocalTime sunrise;
   @JsonProperty("sunset")
+  @JsonFormat(pattern = "h:mma")
   private LocalTime sunset;
   @JsonProperty("moonrise")
-  private LocalTime moonrise;
+  private String moonrise;
   @JsonProperty("moonset")
-  private LocalTime moonset;
+  private String moonset;
   @JsonProperty("moonPhase")
   private Double moonPhase;
   @JsonProperty("moonPhaseDesc")
@@ -74,22 +77,22 @@ public class AstronomyInner {
   }
 
   @JsonProperty("moonrise")
-  public LocalTime getMoonrise() {
+  public String getMoonrise() {
     return moonrise;
   }
 
   @JsonProperty("moonrise")
-  public void setMoonrise(LocalTime moonrise) {
+  public void setMoonrise(String moonrise) {
     this.moonrise = moonrise;
   }
 
   @JsonProperty("moonset")
-  public LocalTime getMoonset() {
+  public String getMoonset() {
     return moonset;
   }
 
   @JsonProperty("moonset")
-  public void setMoonset(LocalTime moonset) {
+  public void setMoonset(String moonset) {
     this.moonset = moonset;
   }
 
