@@ -60,7 +60,9 @@ public class Health {
 
     private HealthBuilder() {}
 
-    public static HealthBuilder aHealth() { return new HealthBuilder(); }
+    public static HealthBuilder aHealth() {
+      return new HealthBuilder();
+    }
 
     public HealthBuilder withDate(ZonedDateTime date) {
       this.date = date;
