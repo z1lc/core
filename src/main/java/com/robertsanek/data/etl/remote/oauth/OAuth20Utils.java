@@ -1,9 +1,9 @@
 package com.robertsanek.data.etl.remote.oauth;
 
 import java.io.File;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Scanner;
@@ -13,7 +13,6 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
-import com.google.common.collect.Iterables;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.Unchecked;
@@ -104,22 +103,18 @@ public class OAuth20Utils {
 
   private Optional<String> maybeGet(String fileName) {
     return getFile(fileName)
-        .map(file -> Iterables.getOnlyElement(Unchecked.get(() ->
-            Files.readAllLines(Paths.get(tokenSaveLocation + fileName)))));
+        .map(file -> Unchecked.get(() -> Files.readString(file)));
   }
 
-  private String saveToken(String token, String fileName) {
-    String outName = tokenSaveLocation + fileName;
-    try (PrintWriter writer = Unchecked.get(() -> new PrintWriter(outName, StandardCharsets.UTF_8))) {
-      writer.print(token);
-    }
+  private synchronized String saveToken(String token, String fileName) {
+    Unchecked.run(() -> Files.writeString(Paths.get(tokenSaveLocation + fileName), token));
     return token;
   }
 
-  private Optional<File> getFile(String fileName) {
+  private Optional<Path> getFile(String fileName) {
     File maybeFile = new File(tokenSaveLocation + fileName);
     if (maybeFile.exists() && maybeFile.isFile()) {
-      return Optional.of(maybeFile);
+      return Optional.of(maybeFile.toPath());
     }
     return Optional.empty();
   }
