@@ -3,6 +3,7 @@ package com.robertsanek.data.etl.remote.fitbit.json;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Sleep {
 
+  @Id
+  private Long id;
   @JsonProperty("awakeCount")
   private Long awakeCount;
   @JsonProperty("awakeDuration")
@@ -51,6 +54,14 @@ public class Sleep {
   private LocalDateTime startTime;
   @JsonProperty("timeInBed")
   private Long timeInBed;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   @JsonProperty("awakeCount")
   public Long getAwakeCount() {
