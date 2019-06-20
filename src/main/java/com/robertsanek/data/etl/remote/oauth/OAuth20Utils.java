@@ -32,7 +32,7 @@ public class OAuth20Utils {
     handleLogin();
   }
 
-  private void handleLogin() {
+  private synchronized void handleLogin() {
     Optional<String> maybeAccessToken = maybeGetAccessToken();
     Optional<String> maybeRefreshToken = maybeGetRefreshToken();
 
@@ -75,7 +75,7 @@ public class OAuth20Utils {
     return Unchecked.get(() -> service.execute(request));
   }
 
-  public OAuth2AccessToken getRefreshedAccessToken(String refreshToken) {
+  public synchronized OAuth2AccessToken getRefreshedAccessToken(String refreshToken) {
     log.info("Getting refreshed access token (using refresh token %s).", refreshToken);
     OAuth2AccessToken accessToken = Unchecked.get(() -> service.refreshAccessToken(refreshToken));
     saveRefreshToken(accessToken.getRefreshToken());
