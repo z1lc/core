@@ -12,6 +12,7 @@ generator. Everything is scheduled with [Quartz](http://www.quartz-scheduler.org
 
 ### Data Sources
 *  [Anki](https://apps.ankiweb.net/) local SQLite database
+*  [Fitbit API](https://dev.fitbit.com/build/reference/web-api/)
 *  [Goodreads API](https://www.goodreads.com/api)
 *  [Google Sheets API](https://developers.google.com/sheets/)
 *  [HERE API](https://developer.here.com/)
@@ -23,6 +24,7 @@ generator. Everything is scheduled with [Quartz](http://www.quartz-scheduler.org
 *  [RescueTime API](https://www.rescuetime.com/developers)
 *  [RottenTomatoes](https://www.rottentomatoes.com/) scraping
 *  [Toodledo API](https://api.toodledo.com/3/index.php) & scraping
+*  [Trello API](https://developers.trello.com/reference/)
 *  [WakaTime API](https://wakatime.com/developers)
 *  Wikipedia: [Wikimedia API](https://wikimedia.org/api/rest_v1/), [DBpedia](https://wiki.dbpedia.org/) scraping,
 [MediaWiki API](https://www.wikidata.org/w/api.php)
