@@ -56,7 +56,7 @@ Pass a command-line argument to select one of the below (documented in `Main.jav
 highly-rated field partners.
 *  **`WIKI`** will extract basic information about popular Wikipedia articles that refer to people, outputting a csv 
 file and images to import into Anki.
-*  **`ETL_SETUP`** needs to be triggered before ETLs are run.
+*  **`ETL_SETUP`** needs to be triggered before ETLs are run. Idempotent (no downside to re-running).
 *  **`DAEMON`** will run some combination of the above commands on a specified schedule. See `Main.java` for the 
 exact scheduling.
 
