@@ -1,4 +1,4 @@
-package com.robertsanek.data.etl.remote.google.sheets.workouts;
+package com.robertsanek.data.etl.remote.google.sheets.health;
 
 import static com.robertsanek.util.SecretType.HEALTH_SPREADSHEET_ID;
 
@@ -18,13 +18,13 @@ import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.DateTimeUtils;
 import com.robertsanek.util.Unchecked;
 
-public class WorkoutEtl extends Etl<Workout> {
+public class HealthEtl extends Etl<Health> {
 
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-  private static final String RANGE = "Workout Log!A2:E10000";
+  private static final String RANGE = "Daily Log!A2:H10000";
 
   @Override
-  public List<Workout> getObjects() {
+  public List<Health> getObjects() {
     List<List<Object>> spreadsheetCells =
         SheetsConnector.getSpreadsheetCells(CommonProvider.getSecret(HEALTH_SPREADSHEET_ID), RANGE);
     return spreadsheetCells.stream()
@@ -38,15 +38,21 @@ public class WorkoutEtl extends Etl<Workout> {
               .map(this::fromStringToBigDecimal)
               .orElse(getTotal(cardio, lifting));
           String note = maybeGet(row, 4).orElse("");
-          return Workout.WorkoutBuilder.aWorkout()
+          BigDecimal alcohol = maybeGet(row, 6)
+              .map(this::fromStringToBigDecimal)
+              .orElse(new BigDecimal(0));
+          String drugs = maybeGet(row, 7).orElse("");
+          return Health.HealthBuilder.aHealth()
               .withDate(DateTimeUtils.toZonedDateTime(date))
               .withCardio(cardio.orElse(null))
               .withLifting(lifting.orElse(null))
               .withTotal(total)
+              .withAlcohol(alcohol)
+              .withDrugs(drugs)
               .withComment(note)
               .build();
         })
-        .filter(workout -> workout.getDate().isBefore(ZonedDateTime.now().plusDays(1)))
+        .filter(health -> health.getDate().isBefore(ZonedDateTime.now().plusDays(1)))
         .collect(Collectors.toList());
   }
 
