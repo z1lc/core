@@ -1,9 +1,11 @@
 package com.robertsanek.data.etl.remote.fitbit;
 
 import java.time.LocalDate;
-import java.util.Collections;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.apis.FitbitApi20;
@@ -25,6 +27,7 @@ public class SleepEtl extends Etl<Sleep> {
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/fitbit/";
   private static final LocalDate FITBIT_START_DATE = LocalDate.of(2016, 8, 7);
   private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
+  private static final long MAXIMUM_DAYS_PER_REQUEST = 100;
 
   @Override
   public List<Sleep> getObjects() {
@@ -35,14 +38,18 @@ public class SleepEtl extends Etl<Sleep> {
     OAuth20Utils oAuth20Utils = new OAuth20Utils(service, FITBIT_ROOT,
         "https://api.fitbit.com/1.2/user/-/sleep/date/2019-01-01.json");
 
-    final Response response = oAuth20Utils.getSignedResponse(String.format(
-        "https://api.fitbit.com/1.2/user/-/sleep/date/%s/%s.json",
-        FITBIT_START_DATE.toString(),
-        LocalDate.now().toString()),
-        oAuth20Utils.maybeGetAccessToken().orElseThrow());
-    SleepSummary sleepSummary = Unchecked.get(() -> mapper.readValue(response.getBody(), SleepSummary.class));
-    return Optional.ofNullable(sleepSummary.getSleep())
-        .orElse(Collections.emptyList());
+    long daysBetweenDates = ChronoUnit.DAYS.between(FITBIT_START_DATE, LocalDate.now());
+    return LongStream.range(0, (daysBetweenDates / MAXIMUM_DAYS_PER_REQUEST) + 1)
+        .mapToObj(l -> {
+          final Response response = oAuth20Utils.getSignedResponse(String.format(
+              "https://api.fitbit.com/1.2/user/-/sleep/date/%s/%s.json",
+              FITBIT_START_DATE.plusDays(l * 100).toString(),
+              FITBIT_START_DATE.plusDays((l + 1) * 100).toString()),
+              oAuth20Utils.maybeGetAccessToken().orElseThrow());
+          return Unchecked.get(() -> mapper.readValue(response.getBody(), SleepSummary.class));
+        })
+        .flatMap(sleepSummary -> sleepSummary.getSleep() != null ? sleepSummary.getSleep().stream() : Stream.empty())
+        .collect(Collectors.toList());
   }
 
 }
