@@ -25,6 +25,7 @@ import org.reflections.Reflections;
 import com.google.common.collect.ImmutableSet;
 import com.robertsanek.data.etl.local.habitica.TaskEtl;
 import com.robertsanek.data.etl.local.sqllite.anki.ReviewEtl;
+import com.robertsanek.data.etl.remote.fitbit.json.Sleep;
 import com.robertsanek.data.etl.remote.humanapi.entities.ActivitySummary;
 import com.robertsanek.data.etl.remote.humanapi.entities.SleepSummary;
 import com.robertsanek.data.etl.remote.wikipedia.WikiPerson;
@@ -52,7 +53,8 @@ public class MasterEtlTest {
   private static final ImmutableSet<Pair<Class<?>, Class<?>>> EXCEPTIONS = ImmutableSet.of(
       Pair.of(SleepSummary.class, LocalDate.class),
       Pair.of(ActivitySummary.class, LocalDate.class),
-      Pair.of(WikiPerson.class, LocalDate.class)
+      Pair.of(WikiPerson.class, LocalDate.class),
+      Pair.of(Sleep.class, LocalDateTime.class)
   );
 
   @Test

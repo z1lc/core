@@ -33,6 +33,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import com.google.common.collect.Lists;
 import com.robertsanek.data.EtlAndDqJob;
 import com.robertsanek.data.etl.local.sqllite.anki.AnkiSyncer;
+import com.robertsanek.data.etl.remote.fitbit.SleepEtl;
 import com.robertsanek.data.etl.remote.google.sheets.budget.BudgetGetter;
 import com.robertsanek.data.etl.remote.oauth.toodledo.ToodledoConnector;
 import com.robertsanek.data.quality.anki.DataQualityRunner;
@@ -204,6 +205,13 @@ public class Main {
             log.info("Successfully set up Toodledo.");
           } else {
             log.error("Toodledo setup unsuccessful!");
+          }
+
+          log.info("Setting up FitBit...");
+          if (new SleepEtl().getObjects().size() > 0) {
+            log.info("Successfully set up FitBit.");
+          } else {
+            log.error("FitBit setup unsuccessful!");
           }
           break;
         case HABITICA:
