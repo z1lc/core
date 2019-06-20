@@ -3,7 +3,6 @@ package com.robertsanek.data.etl.remote.fitbit;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -29,7 +28,6 @@ public class SleepEtl extends Etl<Sleep> {
   private static final LocalDate FITBIT_START_DATE = LocalDate.of(2016, 8, 7);
   private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
   private static final long MAXIMUM_DAYS_PER_REQUEST = 100;
-  private static final AtomicLong ID_ISSUER = new AtomicLong(1);
 
   @Override
   public List<Sleep> getObjects() {
@@ -51,7 +49,7 @@ public class SleepEtl extends Etl<Sleep> {
           return Unchecked.get(() -> mapper.readValue(response.getBody(), SleepSummary.class));
         })
         .flatMap(sleepSummary -> sleepSummary.getSleep() != null ? sleepSummary.getSleep().stream() : Stream.empty())
-        .peek(sleep -> sleep.setId(ID_ISSUER.getAndIncrement()))
+        .distinct()
         .collect(Collectors.toList());
   }
 

@@ -1,7 +1,9 @@
 package com.robertsanek.data.etl.remote.fitbit.json;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,52 +18,60 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Sleep {
 
-  @Id
-  private Long id;
   @JsonProperty("awakeCount")
+  @Column(name = "awake_count")
   private Long awakeCount;
   @JsonProperty("awakeDuration")
+  @Column(name = "awake_duration")
   private Long awakeDuration;
   @JsonProperty("awakeningsCount")
+  @Column(name = "awakenings_count")
   private Long awakeningsCount;
   @JsonProperty("dateOfSleep")
+  @Column(name = "date_of_sleep")
   private String dateOfSleep;
   @JsonProperty("duration")
+  @Column(name = "duration")
   private Long duration;
   @JsonProperty("efficiency")
+  @Column(name = "efficiency")
   private Long efficiency;
   @JsonProperty("endTime")
+  @Column(name = "end_time")
   private LocalDateTime endTime;
   @JsonProperty("isMainSleep")
+  @Column(name = "is_main_sleep")
   private Boolean isMainSleep;
+  @Id
   @JsonProperty("logId")
+  @Column(name = "log_id")
   private Long logId;
   //    @JsonProperty("minuteData")
   //    private List<MinuteDatum> minuteData = null;
   @JsonProperty("minutesAfterWakeup")
+  @Column(name = "mintes_after_wakeup")
   private Long minutesAfterWakeup;
   @JsonProperty("minutesAsleep")
+  @Column(name = "minutes_asleep")
   private Long minutesAsleep;
   @JsonProperty("minutesAwake")
+  @Column(name = "minutes_awake")
   private Long minutesAwake;
   @JsonProperty("minutesToFallAsleep")
+  @Column(name = "minutes_to_fall_asleep")
   private Long minutesToFallAsleep;
   @JsonProperty("restlessCount")
+  @Column(name = "restless_count")
   private Long restlessCount;
   @JsonProperty("restlessDuration")
+  @Column(name = "restless_duration")
   private Long restlessDuration;
   @JsonProperty("startTime")
+  @Column(name = "start_time")
   private LocalDateTime startTime;
   @JsonProperty("timeInBed")
+  @Column(name = "time_in_bed")
   private Long timeInBed;
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
 
   @JsonProperty("awakeCount")
   public Long getAwakeCount() {
@@ -243,4 +253,20 @@ public class Sleep {
     this.timeInBed = timeInBed;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Sleep sleep = (Sleep) o;
+    return Objects.equals(logId, sleep.logId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(logId);
+  }
 }
