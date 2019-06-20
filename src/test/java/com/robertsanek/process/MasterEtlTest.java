@@ -54,7 +54,8 @@ public class MasterEtlTest {
       Pair.of(SleepSummary.class, LocalDate.class),
       Pair.of(ActivitySummary.class, LocalDate.class),
       Pair.of(WikiPerson.class, LocalDate.class),
-      Pair.of(Sleep.class, LocalDateTime.class)
+      Pair.of(Sleep.class, LocalDateTime.class),
+      Pair.of(Sleep.class, LocalDate.class)
   );
 
   @Test

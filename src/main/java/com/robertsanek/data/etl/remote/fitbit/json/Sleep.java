@@ -1,5 +1,6 @@
 package com.robertsanek.data.etl.remote.fitbit.json;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -29,7 +30,7 @@ public class Sleep {
   private Long awakeningsCount;
   @JsonProperty("dateOfSleep")
   @Column(name = "date_of_sleep")
-  private String dateOfSleep;
+  private LocalDate dateOfSleep;
   @JsonProperty("duration")
   @Column(name = "duration")
   private Long duration;
@@ -104,12 +105,12 @@ public class Sleep {
   }
 
   @JsonProperty("dateOfSleep")
-  public String getDateOfSleep() {
+  public LocalDate getDateOfSleep() {
     return dateOfSleep;
   }
 
   @JsonProperty("dateOfSleep")
-  public void setDateOfSleep(String dateOfSleep) {
+  public void setDateOfSleep(LocalDate dateOfSleep) {
     this.dateOfSleep = dateOfSleep;
   }
 
