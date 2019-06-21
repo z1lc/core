@@ -15,7 +15,7 @@ GROUP BY week
 ORDER BY week desc
 ;
 
-/***************************************************** RLP - ANKI *****************************************************/
+/************************************************** RLP - EDUCATION ***************************************************/
 SELECT DATE_TRUNC('week', created_at + interval '1 day') - interval '1 day' as week,
     SUM(total_minutes / 7),
     SUM(complete)
