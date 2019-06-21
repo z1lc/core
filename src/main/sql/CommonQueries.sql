@@ -1,3 +1,20 @@
+/***************************************************** RLP - SLEEP ****************************************************/
+SELECT DATE_TRUNC('week', date_of_sleep + interval '1 day') - interval '1 day' as week,
+    stddev(minutes) as standard_deviation,
+    case when stddev(minutes) <= 10
+             then 1
+         when stddev(minutes) >= 60
+             then 0
+         else 1 - greatest(stddev(minutes) - 10, 0::float) / 60 end as rating,
+    count(*) as individual_sleep_logs
+from (select date_of_sleep, extract(hour from end_time) * 24 + extract(minute from end_time) as minutes
+      from fitbit_sleep
+      where time_in_bed >= 180
+      order by date_of_sleep desc) as hours
+GROUP BY week
+ORDER BY week desc
+;
+
 /***************************************************** RLP - ANKI *****************************************************/
 SELECT DATE_TRUNC('week', created_at + interval '1 day') - interval '1 day' as week,
     SUM(total_minutes / 7),
@@ -45,7 +62,6 @@ WHERE title NOT IN (SELECT distinct title FROM toodledo_tasks WHERE repeat != ''
     title NOT LIKE 'Vacuum car'
 ORDER BY completed_at DESC
 ;
-
 
 /* Anki time spend by tag */
 SELECT ROUND(SUM(time_ms) / 3.6e+6, 2) as hours
