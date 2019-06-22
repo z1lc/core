@@ -190,7 +190,7 @@ public class Main {
           break;
         case ETL_SETUP:
           log.info("Setting up Google Sheets credentials...");
-          BudgetGetter.getData();
+          new BudgetGetter().getData();
           log.info("Credentials for Google Sheets set up successfully.");
 
           log.info("Testing Anki sync...");

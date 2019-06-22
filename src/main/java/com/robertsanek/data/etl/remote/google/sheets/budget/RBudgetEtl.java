@@ -8,7 +8,7 @@ public class RBudgetEtl extends Etl<AnnotatedItem> {
 
   @Override
   public List<AnnotatedItem> getObjects() throws Exception {
-    return BudgetGetter.getData();
+    return new BudgetGetter().getData();
   }
 
 }

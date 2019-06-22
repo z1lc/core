@@ -28,6 +28,7 @@ import com.robertsanek.process.QuartzJob;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
+import com.robertsanek.util.NotificationSender;
 import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
@@ -58,18 +59,23 @@ public class BudgetGetter implements QuartzJob {
   private static final String INCOME_RANGE = "Budget!P2:R10000";
   private static final String CSV_DELIMITER = "`";
   private static Log log = Logs.getLog(BudgetGetter.class);
-  private static AtomicLong counter = new AtomicLong(0);
 
-  public static List<AnnotatedItem> getData() {
+  private AtomicLong counter = new AtomicLong(0);
+  private List<String> errors = Lists.newArrayList();
+
+  public List<AnnotatedItem> getData() {
     List<AnnotatedItem> allLineItems = getValues(INCOME_RANGE);
     allLineItems.addAll(getValues(EXPENSES_RANGE));
     allLineItems.sort(Comparator.comparing(AnnotatedItem::getDate));
+    if (errors.size() > 0) {
+      NotificationSender.sendEmailDefault("Budget errors", String.join("\n", errors));
+    }
     return allLineItems;
   }
 
   //I used to write this out within the getData method so that I'd have the information for the R shiny dashboard.
   //I no longer need this but leaving it in case I want to go back.
-  private static void writeToCsvForShinyDash(List<AnnotatedItem> allLineItems) throws IOException {
+  private void writeToCsvForShinyDash(List<AnnotatedItem> allLineItems) throws IOException {
     String outName = CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/extracted.csv";
     try (PrintWriter writer = new PrintWriter(outName, StandardCharsets.UTF_8)) {
       writer.println(String.join(CSV_DELIMITER, "date", "value", "lineItemType", "comment", "isExpense"));
@@ -87,7 +93,7 @@ public class BudgetGetter implements QuartzJob {
     }
   }
 
-  private static List<AnnotatedItem> getValues(String range) {
+  private List<AnnotatedItem> getValues(String range) {
     String columnLettersOnly = range.substring(7).replaceAll("[^A-Z]", "");
     Preconditions.checkArgument(columnLettersOnly.length() == 2, "Expected column letters to be only 1 letter long.");
     final int expectedCells = columnLettersOnly.charAt(1) - columnLettersOnly.charAt(0) + 1;
@@ -132,13 +138,18 @@ public class BudgetGetter implements QuartzJob {
               }
             }
             if (currentSplit != split.size()) {
-              log.error(
+              String descriptionExpenseMismatch = String.format(
                   "Number of descriptions does not match individual %s for date %s; descriptions: %d, expenses: %d",
                   requestType, SIMPLE_DATE_FORMAT.format(date), split.size(), currentSplit);
+              log.error(descriptionExpenseMismatch);
+              errors.add(descriptionExpenseMismatch);
             }
           } else {
             if (row.size() != 1) { //list size should always be 15 or 1: comment causes it to be 15
-              log.error("No description for some %s on date %s.", requestType, SIMPLE_DATE_FORMAT.format(date));
+              String noDescription = String.format(
+                  "No description for some %s on date %s.", requestType, SIMPLE_DATE_FORMAT.format(date));
+              log.error(noDescription);
+              errors.add(noDescription);
             }
           }
           return currentRowAnnotatedItems.stream();
@@ -148,7 +159,7 @@ public class BudgetGetter implements QuartzJob {
 
   @Override
   public void exec(JobExecutionContext context) {
-    Unchecked.run(BudgetGetter::getData);
+    Unchecked.run(() -> new BudgetGetter().getData());
   }
 
 }

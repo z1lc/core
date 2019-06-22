@@ -4,13 +4,13 @@ import java.io.IOException;
 
 import com.github.sheigutn.pushbullet.Pushbullet;
 import com.github.sheigutn.pushbullet.items.push.sendable.defaults.SendableNotePush;
-import com.sendgrid.helpers.mail.objects.Content;
-import com.sendgrid.helpers.mail.objects.Email;
-import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
 import com.twilio.Twilio;
 
 import net.pushover.client.MessagePriority;
@@ -27,11 +27,15 @@ public class NotificationSender {
 
   //Sends notification using default provider
   public static boolean sendNotificationDefault(String title, String message) {
-    return sendEmail(new Email("notifications@robertsanek.com", "Notification Service"),
-        new Email(CommonProvider.getEmailAddress()), title, new Content("text/plain", message)) &&
+    return sendEmailDefault(title, message) &&
         (sendPushBulletNotification(title, message)
             || sendPushoverNotification(title, message)
             || sendTwilioNotification(title, message));
+  }
+
+  public static boolean sendEmailDefault(String title, String message) {
+    return sendEmail(new Email("notifications@robertsanek.com", "Notification Service"),
+        new Email(CommonProvider.getEmailAddress()), title, new Content("text/plain", message));
   }
 
   public static boolean sendEmail(Email from, Email to, String subject, Content content) {
