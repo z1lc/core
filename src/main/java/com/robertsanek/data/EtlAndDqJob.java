@@ -40,15 +40,16 @@ public class EtlAndDqJob implements QuartzJob {
     new AnkiEtl().call();
     new LeetCodeToodledoTaskEtl().run();
     boolean etlsSuccessful = new MasterEtl().runEtls(false, parallel);
+
+    log.info("Will execute all queries in CommonQueries.sql file to re-create views.");
+    ReCreateViews.executeQueries();
+
     if (etlsSuccessful) {
       triggerKlipfolioRefresh();
       new DataQualityRunner().exec(context);
     } else {
       log.info("Not all ETLs were successful, so will not trigger Klipfolio refresh or run Data Quality checks.");
     }
-
-    log.info("Will execute all queries in CommonQueries.sql file to re-create views.");
-    ReCreateViews.executeQueries();
   }
 
   @VisibleForTesting
