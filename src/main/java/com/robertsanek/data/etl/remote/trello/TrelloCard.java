@@ -1,5 +1,7 @@
 package com.robertsanek.data.etl.remote.trello;
 
+import java.time.ZonedDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,13 +15,19 @@ public class TrelloCard {
 
   @Id
   private String id;
+  @Column(name = "board_id")
+  private String boardId;
+  @Column(name = "list_id")
+  private String listId;
   private String name;
   @Column(length = MAX_LENGTH)
   private String description;
-  private String idBoard;
+  private boolean closed;
+  @Column(name = "last_activity")
+  private ZonedDateTime lastActivity;
 
-  public String getIdBoard() {
-    return idBoard;
+  public String getBoardId() {
+    return boardId;
   }
 
   public String getId() {
@@ -34,22 +42,34 @@ public class TrelloCard {
     return description;
   }
 
+  public boolean isClosed() {
+    return closed;
+  }
+
+  public ZonedDateTime getLastActivity() {
+    return lastActivity;
+  }
+
   public static final class TrelloCardBuilder {
 
     private String id;
+    private String boardId;
     private String name;
-    private String desc;
-    private String idBoard;
+    private String description;
+    private boolean closed;
+    private ZonedDateTime lastActivity;
 
-    private TrelloCardBuilder() {
-    }
+    private TrelloCardBuilder() {}
 
-    public static TrelloCardBuilder aTrelloCard() {
-      return new TrelloCardBuilder();
-    }
+    public static TrelloCardBuilder aTrelloCard() { return new TrelloCardBuilder(); }
 
     public TrelloCardBuilder withId(String id) {
       this.id = id;
+      return this;
+    }
+
+    public TrelloCardBuilder withBoardId(String boardId) {
+      this.boardId = boardId;
       return this;
     }
 
@@ -58,22 +78,29 @@ public class TrelloCard {
       return this;
     }
 
-    public TrelloCardBuilder withDesc(String desc) {
-      this.desc = desc;
+    public TrelloCardBuilder withDescription(String description) {
+      this.description = description;
       return this;
     }
 
-    public TrelloCardBuilder withIdBoard(String idBoard) {
-      this.idBoard = idBoard;
+    public TrelloCardBuilder withClosed(boolean closed) {
+      this.closed = closed;
+      return this;
+    }
+
+    public TrelloCardBuilder withLastActivity(ZonedDateTime lastActivity) {
+      this.lastActivity = lastActivity;
       return this;
     }
 
     public TrelloCard build() {
       TrelloCard trelloCard = new TrelloCard();
+      trelloCard.boardId = this.boardId;
       trelloCard.name = this.name;
-      trelloCard.description = this.desc;
+      trelloCard.lastActivity = this.lastActivity;
       trelloCard.id = this.id;
-      trelloCard.idBoard = this.idBoard;
+      trelloCard.closed = this.closed;
+      trelloCard.description = this.description;
       return trelloCard;
     }
   }
