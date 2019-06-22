@@ -18,6 +18,7 @@ public class CardEtl extends Etl<TrelloCard> {
         .map(card -> TrelloCard.TrelloCardBuilder.aTrelloCard()
             .withId(card.getId())
             .withBoardId(card.getIdBoard())
+            .withListId(card.getIdList())
             .withName(card.getName())
             .withDescription(card.getDesc())
             .withClosed(card.isClosed())

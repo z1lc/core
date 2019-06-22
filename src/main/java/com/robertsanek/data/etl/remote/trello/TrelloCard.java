@@ -26,12 +26,16 @@ public class TrelloCard {
   @Column(name = "last_activity")
   private ZonedDateTime lastActivity;
 
+  public String getId() {
+    return id;
+  }
+
   public String getBoardId() {
     return boardId;
   }
 
-  public String getId() {
-    return id;
+  public String getListId() {
+    return listId;
   }
 
   public String getName() {
@@ -54,6 +58,7 @@ public class TrelloCard {
 
     private String id;
     private String boardId;
+    private String listId;
     private String name;
     private String description;
     private boolean closed;
@@ -70,6 +75,11 @@ public class TrelloCard {
 
     public TrelloCardBuilder withBoardId(String boardId) {
       this.boardId = boardId;
+      return this;
+    }
+
+    public TrelloCardBuilder withListId(String listId) {
+      this.listId = listId;
       return this;
     }
 
@@ -95,12 +105,13 @@ public class TrelloCard {
 
     public TrelloCard build() {
       TrelloCard trelloCard = new TrelloCard();
-      trelloCard.boardId = this.boardId;
+      trelloCard.listId = this.listId;
       trelloCard.name = this.name;
       trelloCard.lastActivity = this.lastActivity;
       trelloCard.id = this.id;
       trelloCard.closed = this.closed;
       trelloCard.description = this.description;
+      trelloCard.boardId = this.boardId;
       return trelloCard;
     }
   }
