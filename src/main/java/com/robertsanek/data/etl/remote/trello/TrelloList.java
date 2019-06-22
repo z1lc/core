@@ -2,12 +2,14 @@ package com.robertsanek.data.etl.remote.trello;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "trello_lists")
 public class TrelloList {
 
+  @Id
   private String id;
   @Column(name = "board_id")
   private String boardId;
