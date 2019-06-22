@@ -52,7 +52,7 @@ public class HealthEtl extends Etl<Health> {
               .withComment(note)
               .build();
         })
-        .filter(health -> health.getDate().isBefore(ZonedDateTime.now().plusDays(1)))
+        .filter(health -> health.getDate().isBefore(ZonedDateTime.now()))
         .collect(Collectors.toList());
   }
 
