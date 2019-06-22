@@ -1,5 +1,5 @@
 /**************************************************** RLP - EXERCISE **************************************************/
-create view rlp_weekly_exercise as (select DATE_TRUNC('week', date + interval '1 day') - interval '1 day' as week,
+create or replace view rlp_weekly_exercise as (select DATE_TRUNC('week', date + interval '1 day') - interval '1 day' as week,
                                         sum(cardio) as cardio,
                                         sum(lifting) as lifting,
                                         sum(total) as total,
@@ -14,7 +14,7 @@ create view rlp_weekly_exercise as (select DATE_TRUNC('week', date + interval '1
 ;
 
 /***************************************************** RLP - SLEEP ****************************************************/
-create view rlp_weekly_sleep as (SELECT DATE_TRUNC('week', date_of_sleep + interval '1 day') - interval '1 day' as week,
+create or replace view rlp_weekly_sleep as (SELECT DATE_TRUNC('week', date_of_sleep + interval '1 day') - interval '1 day' as week,
                                      stddev(minutes) as standard_deviation,
                                      case when stddev(minutes) <= 10
                                               then 1
@@ -32,7 +32,7 @@ create view rlp_weekly_sleep as (SELECT DATE_TRUNC('week', date_of_sleep + inter
 ;
 
 /************************************************** RLP - EDUCATION ***************************************************/
-create view rlp_weekly_education as (SELECT DATE_TRUNC('week', created_at + interval '1 day') - interval '1 day' as week,
+create or replace view rlp_weekly_education as (SELECT DATE_TRUNC('week', created_at + interval '1 day') - interval '1 day' as week,
                                          SUM(total_minutes / 7) as average_minutes,
                                          SUM(complete) as days_completed
                                      FROM (SELECT *,
@@ -48,7 +48,7 @@ create view rlp_weekly_education as (SELECT DATE_TRUNC('week', created_at + inte
 
 
 /************************************************* RLP - PRODUCTIVITY *************************************************/
-create view rlp_weekly_productivity as (with value_overrides as (select 'Toodledo Tasks' as title, 10 as override
+create or replace view rlp_weekly_productivity as (with value_overrides as (select 'Toodledo Tasks' as title, 10 as override
                                                                  union
                                                                  select 'M+', 0.1
                                                                  union
