@@ -70,7 +70,8 @@ public class WikipediaConnector {
       "Anne,_Queen_of_Great_Britain",
       "Charles,_Prince_of_Wales",
       "Diana,_Princess_of_Wales",
-      "Kayden_Boche"
+      "Kayden_Boche",
+      "Jimmy_Carter"
   );
   private static final Long IMAGE_WIDTH = 1000L;
   private static final String WIKIDATA_URL_TEMPLATE =
