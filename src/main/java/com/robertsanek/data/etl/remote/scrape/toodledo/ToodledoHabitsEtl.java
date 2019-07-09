@@ -23,7 +23,7 @@ abstract class ToodledoHabitsEtl<T> extends Etl<T> {
     try (WebClient webClient = CommonProvider.getHtmlUnitWebClient()) {
       //via https://stackoverflow.com/a/31496516
       HtmlPage page = webClient.getPage("https://www.toodledo.com/signin.php");
-      HtmlForm form = Iterables.getOnlyElement(page.getForms());
+      HtmlForm form = page.getForms().stream().filter(f -> f.getId().equals("ToodledoLogin")).findFirst().get();
       form.getInputByName("email").setValueAttribute(getUsername());
       HtmlInput passWordInput = form.getInputByName("pass");
       passWordInput.setValueAttribute(getPassword());
