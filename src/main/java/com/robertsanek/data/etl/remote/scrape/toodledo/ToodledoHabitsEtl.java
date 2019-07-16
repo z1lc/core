@@ -8,7 +8,6 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.util.CommonProvider;
