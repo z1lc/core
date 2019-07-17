@@ -1,7 +1,7 @@
 package com.robertsanek.data.quality.anki;
 
-import static com.robertsanek.data.quality.anki.AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.getIndividualNames;
-import static com.robertsanek.data.quality.anki.AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.getPrimaryTextFromFields;
+import static com.robertsanek.data.quality.anki.AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.getIndividualNames;
+import static com.robertsanek.data.quality.anki.AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.getPrimaryTextFromFields;
 import static com.robertsanek.data.quality.anki.NoSynonymIsAFullSubstringOfAnotherSynonym.getSublistOfSynonymFieldsWithoutContext;
 
 import java.util.List;

@@ -13,9 +13,9 @@ import com.google.common.collect.Streams;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 
-public class AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends DataQualityBase {
+public class AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends DataQualityBase {
 
-  static final Log log = Logs.getLog(AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.class);
+  static final Log log = Logs.getLog(AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.class);
   private static final ImmutableSet<Long> NOTE_ID_EXCLUSIONS = ImmutableSet.of(
       1404606499435L,
       1410152894223L,
@@ -118,6 +118,7 @@ public class AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynon
         .collect(Collectors.toSet());
     Streams.concat(
         getAllNotesInRelevantDecks(BASIC_MODEL_ID, NOTE_ID_EXCLUSIONS).stream(),
+        getAllNotesInRelevantDecks(VENUE_MODEL_ID, NOTE_ID_EXCLUSIONS).stream(),
         getAllNotesInRelevantDecks(PERSON_MODEL_ID, NOTE_ID_EXCLUSIONS).stream())
         .forEach(note -> {
           List<String> fields = splitCsvIntoCommaSeparatedList(note.getFields());
@@ -135,6 +136,8 @@ public class AllBasicAndPersonNotesWithMultipleNamesShouldHaveCorrespondingSynon
               contextField = 3;
             } else if (note.getModel_id() == PERSON_MODEL_ID) {
               contextField = 5;
+            } else if (note.getModel_id() == VENUE_MODEL_ID) {
+              contextField = 8;
             }
             if (fields.size() > contextField) {
               context = Jsoup.parse(fields.get(contextField)).text().replace("%", "");
