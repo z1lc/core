@@ -41,7 +41,7 @@ class WebEnginePage(QWebEnginePage):
         if _type == QWebEnginePage.NavigationTypeLinkClicked:
             # Trello opens this automatically, seemingly to get you to sign in with Google
             if ("accounts.google.com/o/oauth2/iframe" not in url.toString()
-                    and "toodledo.com/offline_iframe.html" not in url.toString()):
+                    and "toodledo.com" not in url.toString()):
                 QDesktopServices.openUrl(url)
                 return False
         return True
