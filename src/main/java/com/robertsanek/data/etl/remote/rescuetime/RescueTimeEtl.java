@@ -36,7 +36,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
 
   public <O> List<O> genericGet(String taxonomy, Function<CSVRecord, O> csvToObjectFunction) {
     Set<O> allRecords = Collections.synchronizedSet(Sets.newHashSet());
-    IntStream.range(FROM_YEAR, TO_YEAR + 1).parallel()
+    IntStream.range(FROM_YEAR, TO_YEAR).parallel()
         .forEach(currentYear -> {
           final URI efficiencyUri;
           try {
@@ -50,7 +50,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
                 .setParameter("format", "csv")
                 .setParameter("ty", taxonomy)
                 .setParameter("rb", String.format("%s-01-01", currentYear))
-                .setParameter("re", String.format("%s-01-01", currentYear + 1))
+                .setParameter("re", String.format("%s-12-31", currentYear))
                 .build());
             String csv = get(efficiencyUri);
             CSVParser csvRecords = CSVParser.parse(csv, CSVFormat.DEFAULT);
