@@ -6,3 +6,4 @@ src/test/generated-sources/
 tokens/
 dependency-reduced-pom.xml
 *.iml
+env_variables.yaml
