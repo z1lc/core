@@ -24,6 +24,7 @@ public class AllClozeTablesHaveUnderscoresAndUniqueDeletionIndexesAndNoThElement
       1423067675251L,
       1551911896871L,
       1534845749748L,
+      1562008511052L,
       0L
   );
 

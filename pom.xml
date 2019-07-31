@@ -250,7 +250,7 @@
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>8.22</version>
+      <version>8.23</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>
@@ -272,7 +272,7 @@
     <dependency>
       <groupId>com.github.scribejava</groupId>
       <artifactId>scribejava-apis</artifactId>
-      <version>6.6.3</version>
+      <version>6.7.0</version>
     </dependency>
 
     <!-- Workflowy OPML -->
