@@ -1,11 +1,12 @@
 package com.robertsanek.data.etl.remote.oauth.toodledo;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.robertsanek.data.etl.Etl;
-import com.robertsanek.util.DateTimeUtils;
 
 public class TaskEtl extends Etl<ToodledoTask> {
 
@@ -17,10 +18,10 @@ public class TaskEtl extends Etl<ToodledoTask> {
           return ToodledoTask.ToodledoTaskBuilder.aToodledoTask()
               .withId(Long.valueOf(jsonTask.getId()))
               .withTitle(jsonTask.getTitle())
-              .withAdded_at(DateTimeUtils.toZonedDateTime(jsonTask.getAdded()))
-              .withModified_at(DateTimeUtils.toZonedDateTime(jsonTask.getModified()))
-              .withDue_at(DateTimeUtils.toZonedDateTime(jsonTask.getDuedate()))
-              .withCompleted_at(completedIsNull ? null : DateTimeUtils.toZonedDateTime(jsonTask.getCompleted()))
+              .withAdded_at(ZonedDateTime.ofInstant(jsonTask.getAdded(), ZoneId.of("UTC")))
+              .withModified_at(ZonedDateTime.ofInstant(jsonTask.getModified(), ZoneId.of("UTC")))
+              .withDue_at(ZonedDateTime.ofInstant(jsonTask.getDuedate(), ZoneId.of("UTC")))
+              .withCompleted_at(completedIsNull ? null : ZonedDateTime.ofInstant(jsonTask.getCompleted(), ZoneId.of("UTC")))
               .withNote(jsonTask.getNote())
               .withFolder_id(Long.valueOf(jsonTask.getFolder()))
               .withContext_id(Long.valueOf(jsonTask.getContext()))
