@@ -82,9 +82,9 @@ create or replace view rlp_weekly_productivity as (
 select distinct title, completed_at
 from toodledo_tasks
 where title not in (select distinct title from toodledo_tasks where repeat != '') and
-    completed_at >= current_date - 30 and title not like 'Update Lifting Stats' and
+    completed_at >= '2019-08-14' and title not like 'Update Lifting Stats' and
     title not like 'Workout overrides' and title not like 'Update events in yearly candlestick calendar' and
-    title not like 'Vacuum car'
+    title not like 'Vacuum car' and title not like 'Change bedding %' and title not like 'Greylist inbox zero'
 order by completed_at DESC
 ;
 
@@ -111,3 +111,11 @@ select 'https://en.wikipedia.org/wiki/' || wikipedia_url_title
 from wikipedia_people
 where found_in_anki is false
 order by rank asc
+;
+
+select cards.last_activity, cards.name, cards.description, lists.name
+from trello_cards cards
+         join trello_boards boards on cards.board_id = boards.id
+         join trello_lists lists on lists.board_id = boards.id and lists.id = cards.list_id
+where boards.name = 'Backlogs' and cards.closed is true
+order by 1 desc
