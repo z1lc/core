@@ -41,6 +41,7 @@ public class FieldsShouldBeOrdered extends DataQualityBase {
       ImmutableSet.of(
           Pair.of("4 Work of Art: Book Film Painting", "Author Count"),
           Pair.of("7 Programming Language Function", "\uD83D\uDD39Library/Package"),
+          Pair.of("7 Programming Language Function", "\uD83D\uDD39Time Complexity"),
           Pair.of("Algorithm", "\uD83D\uDD39Average Case Time Complexity"),
           Pair.of("Geography Countries and Counties", "\uD83D\uDD39Currency Name"),
           Pair.of("Geography Countries and Counties", "\uD83D\uDD39Czech Name"),
