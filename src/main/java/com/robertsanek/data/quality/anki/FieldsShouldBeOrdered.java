@@ -24,7 +24,7 @@ import com.robertsanek.util.Logs;
  */
 public class FieldsShouldBeOrdered extends DataQualityBase {
 
-  static final Log log = Logs.getLog(FieldsShouldBeOrdered.class);
+  private static final Log log = Logs.getLog(FieldsShouldBeOrdered.class);
   private static final ImmutableSet<String> NOTE_EXCLUSIONS = ImmutableSet.of(
       "1 Basic",
       "Command-Line",
