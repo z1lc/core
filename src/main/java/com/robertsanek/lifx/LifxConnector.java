@@ -1,23 +1,23 @@
 package com.robertsanek.lifx;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.gson.JsonParser;
-import com.robertsanek.lifx.jsonentities.Scene;
-import com.robertsanek.lifx.jsonentities.SceneSelectionResult;
-import com.robertsanek.util.CommonProvider;
-import com.robertsanek.util.SecretType;
-import com.robertsanek.util.Unchecked;
-import org.apache.http.client.entity.EntityBuilder;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.message.BasicNameValuePair;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import org.apache.http.client.entity.EntityBuilder;
+import org.apache.http.client.fluent.Request;
+import org.apache.http.message.BasicNameValuePair;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonParser;
+import com.robertsanek.lifx.jsonentities.Scene;
+import com.robertsanek.lifx.jsonentities.SceneSelectionResult;
+import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretType;
+import com.robertsanek.util.Unchecked;
 
 public class LifxConnector {
 
@@ -58,8 +58,7 @@ public class LifxConnector {
     return responseWasSuccess(response);
   }
 
-  @VisibleForTesting
-  boolean allLightsAreOnRightNow() {
+  private boolean allLightsAreOnRightNow() {
     return StreamSupport.stream(
         new JsonParser().parse(CommonProvider.retrying().get(() -> Request
             .Get("https://api.lifx.com/v1/lights/all")
