@@ -39,6 +39,7 @@ public class AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatch e
       1557435608561L,
       1530572200296L,
       1420173931436L,
+      1566588027914L,
       0L
   );
   public static int SYNONYM_INDEX_CONTEXT = (int) fieldsInUse.stream()

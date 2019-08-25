@@ -89,6 +89,7 @@ public class AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends
       1560116533529L,
       1560894873886L,
       1561587972179L,
+      1566496220590L,
       0L
   );
   private final boolean shouldGenerateCsvOutput = false;
