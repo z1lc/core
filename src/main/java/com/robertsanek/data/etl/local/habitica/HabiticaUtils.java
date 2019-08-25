@@ -19,7 +19,7 @@ class HabiticaUtils {
     return Task.TaskBuilder.aTask()
         .withId(jsonTask.getId())
         .withName(jsonTask.getText())
-        .withTime_in_minutes(jsonTask.getTimeBasedOnPriority())
+        .withTimeInMinutes(Double.parseDouble(jsonTask.getNotes()))
         .build();
   }
 

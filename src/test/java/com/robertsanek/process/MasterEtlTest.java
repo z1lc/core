@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.reflections.Reflections;
 
 import com.google.common.collect.ImmutableSet;
-import com.robertsanek.data.etl.local.habitica.TaskEtl;
+import com.robertsanek.data.etl.local.habitica.OldHistoryEtl;
 import com.robertsanek.data.etl.local.sqllite.anki.ReviewEtl;
 import com.robertsanek.data.etl.remote.fitbit.json.Sleep;
 import com.robertsanek.data.etl.remote.humanapi.entities.ActivitySummary;
@@ -66,7 +66,7 @@ public class MasterEtlTest {
 
   @Test
   public void getConcreteEtls_filtersOutDoNotRun() {
-    assertFalse(new MasterEtl().getConcreteEtls(false).contains(TaskEtl.class));
+    assertFalse(new MasterEtl().getConcreteEtls(false).contains(OldHistoryEtl.class));
     assertFalse(new MasterEtl().getConcreteEtls(true).contains(ReviewEtl.class));
   }
 

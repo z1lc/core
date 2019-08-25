@@ -2,6 +2,7 @@ package com.robertsanek.data.etl.local.habitica;
 
 import java.time.ZonedDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,21 +13,17 @@ public class History {
 
   @Id
   String id;  //random uuid
-
-  String task_id;
-
+  @Column(name = "task_id")
+  String taskId;
   ZonedDateTime date;
-
   Boolean completed;
-
-  ZonedDateTime etl_date;
 
   public String getId() {
     return id;
   }
 
-  public String getTask_id() {
-    return task_id;
+  public String getTaskId() {
+    return taskId;
   }
 
   public ZonedDateTime getDate() {
@@ -37,17 +34,12 @@ public class History {
     return completed;
   }
 
-  public ZonedDateTime getEtl_date() {
-    return etl_date;
-  }
-
   public static final class HistoryBuilder {
 
     String id;
-    String task_id;
+    String taskId;
     ZonedDateTime date;
     Boolean completed;
-    ZonedDateTime etl_date;
 
     private HistoryBuilder() {}
 
@@ -60,8 +52,8 @@ public class History {
       return this;
     }
 
-    public HistoryBuilder withTask_id(String task_id) {
-      this.task_id = task_id;
+    public HistoryBuilder withTaskId(String taskId) {
+      this.taskId = taskId;
       return this;
     }
 
@@ -75,18 +67,12 @@ public class History {
       return this;
     }
 
-    public HistoryBuilder withEtl_date(ZonedDateTime etl_date) {
-      this.etl_date = etl_date;
-      return this;
-    }
-
     public History build() {
       History history = new History();
-      history.etl_date = this.etl_date;
       history.id = this.id;
       history.completed = this.completed;
       history.date = this.date;
-      history.task_id = this.task_id;
+      history.taskId = this.taskId;
       return history;
     }
   }

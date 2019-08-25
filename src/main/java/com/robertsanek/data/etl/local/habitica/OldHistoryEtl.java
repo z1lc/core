@@ -32,20 +32,9 @@ import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 @DoNotRun(explanation = "messes with local files; don't care about habitica anymore")
-public class HistoryEtl extends HabiticaEtl<History> {
+public class OldHistoryEtl extends HabiticaEtl<History> {
 
-  private static Log log = Logs.getLog(HistoryEtl.class);
-
-  private static Optional<Boolean> increaseOrDecrease(double yesterday, double today) {
-    double diff = today - yesterday;
-    if (diff <= 10e-4 && diff >= -10e-4) {
-      return Optional.empty();
-    } else if (diff < 0) {
-      return Optional.of(Boolean.TRUE);
-    } else {
-      return Optional.of(Boolean.FALSE);
-    }
-  }
+  private static Log log = Logs.getLog(OldHistoryEtl.class);
 
   @Override
   public List<History> getObjects() {
@@ -138,21 +127,19 @@ public class HistoryEtl extends HabiticaEtl<History> {
                         .withId(UUID.randomUUID().toString())
                         .withDate(
                             DateTimeUtils.toZonedDateTime(idHistoryPair.getValue().get(0).getDate().toLocalDate()))
-                        .withEtl_date(etlDateFromFilename)
-                        .withTask_id(id)
+                        .withTaskId(id)
                         .withCompleted(Boolean.TRUE)
                         .build());
                 for (int i = 1; i < taskHistoryCsv.size(); i++) {
                   Optional<Boolean> aBool =
-                      increaseOrDecrease(taskHistoryCsv.get(i).getValue(), taskHistoryCsv.get(i - 1).getValue());
+                      NewHistoryEtl.increaseOrDecrease(taskHistoryCsv.get(i).getValue(), taskHistoryCsv.get(i - 1).getValue());
                   if (aBool.isPresent()) {
                     fulfillHistoryCsv.add(
                         History.HistoryBuilder.aHistory()
                             .withId(UUID.randomUUID().toString())
                             .withDate(
                                 DateTimeUtils.toZonedDateTime(idHistoryPair.getValue().get(i).getDate().toLocalDate()))
-                            .withEtl_date(etlDateFromFilename)
-                            .withTask_id(id)
+                            .withTaskId(id)
                             .withCompleted(aBool.orElseThrow())
                             .build());
                   }

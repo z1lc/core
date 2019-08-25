@@ -1,5 +1,6 @@
 package com.robertsanek.data.etl.local.habitica;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -10,16 +11,15 @@ public class Task {
 
   @Id
   String id;
-
   String name;
-
-  Long time_in_minutes;
+  @Column(name = "time_in_minutes")
+  Double timeInMinutes;
 
   public static final class TaskBuilder {
 
     String id;
     String name;
-    Long time_in_minutes;
+    Double timeInMinutes;
 
     private TaskBuilder() {}
 
@@ -37,15 +37,15 @@ public class Task {
       return this;
     }
 
-    public TaskBuilder withTime_in_minutes(Long time_in_minutes) {
-      this.time_in_minutes = time_in_minutes;
+    public TaskBuilder withTimeInMinutes(Double timeInMinutes) {
+      this.timeInMinutes = timeInMinutes;
       return this;
     }
 
     public Task build() {
       Task task = new Task();
       task.name = this.name;
-      task.time_in_minutes = this.time_in_minutes;
+      task.timeInMinutes = this.timeInMinutes;
       task.id = this.id;
       return task;
     }
