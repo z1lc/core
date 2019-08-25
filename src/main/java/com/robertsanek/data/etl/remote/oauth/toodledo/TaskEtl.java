@@ -24,9 +24,6 @@ public class TaskEtl extends Etl<ToodledoTask> {
               .withCompletedAt(
                   completedIsNull ? null : ZonedDateTime.ofInstant(jsonTask.getCompleted(), ZoneId.of("UTC")))
               .withNote(jsonTask.getNote())
-              .withFolderId(Long.valueOf(jsonTask.getFolder()))
-              .withContextId(Long.valueOf(jsonTask.getContext()))
-              .withGoalId(Long.valueOf(jsonTask.getGoal()))
               .withParentId(Long.valueOf(jsonTask.getParent()))
               .withPriority(ToodledoTask.Priority.fromValue(jsonTask.getPriority()))
               .withRepeat(jsonTask.getRepeat())

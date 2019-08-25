@@ -32,12 +32,6 @@ public class ToodledoTask {
   ZonedDateTime completedAt;
   @Column(length = 10_000)
   String note;
-  @Column(name = "folder_id")
-  Long folderId;
-  @Column(name = "context_id")
-  Long contextId;
-  @Column(name = "goal_id")
-  Long goalId;
   @Column(name = "parent_id")
   Long parentId;
   @Enumerated(value = EnumType.STRING)
@@ -79,9 +73,6 @@ public class ToodledoTask {
     ZonedDateTime dueAt;
     ZonedDateTime completedAt;
     String note;
-    Long folderId;
-    Long contextId;
-    Long goalId;
     Long parentId;
     Priority priority;
     String repeat;
@@ -128,21 +119,6 @@ public class ToodledoTask {
       return this;
     }
 
-    public ToodledoTaskBuilder withFolderId(Long folderId) {
-      this.folderId = folderId;
-      return this;
-    }
-
-    public ToodledoTaskBuilder withContextId(Long contextId) {
-      this.contextId = contextId;
-      return this;
-    }
-
-    public ToodledoTaskBuilder withGoalId(Long goalId) {
-      this.goalId = goalId;
-      return this;
-    }
-
     public ToodledoTaskBuilder withParentId(Long parentId) {
       this.parentId = parentId;
       return this;
@@ -173,9 +149,6 @@ public class ToodledoTask {
       toodledoTask.priority = this.priority;
       toodledoTask.completedAt = this.completedAt;
       toodledoTask.title = this.title;
-      toodledoTask.folderId = this.folderId;
-      toodledoTask.contextId = this.contextId;
-      toodledoTask.goalId = this.goalId;
       toodledoTask.modifiedAt = this.modifiedAt;
       toodledoTask.lengthMinutes = this.lengthMinutes;
       toodledoTask.parentId = this.parentId;
