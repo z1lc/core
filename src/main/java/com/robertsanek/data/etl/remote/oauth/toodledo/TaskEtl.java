@@ -30,6 +30,7 @@ public class TaskEtl extends Etl<ToodledoTask> {
               .withParentId(Long.valueOf(jsonTask.getParent()))
               .withPriority(ToodledoTask.Priority.fromValue(jsonTask.getPriority()))
               .withRepeat(jsonTask.getRepeat())
+              .withLengthMinutes(Long.valueOf(jsonTask.getLength()))
               .build();
         })
         .collect(Collectors.toList());

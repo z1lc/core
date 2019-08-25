@@ -43,6 +43,8 @@ public class ToodledoTask {
   @Enumerated(value = EnumType.STRING)
   Priority priority;
   String repeat;
+  @Column(name = "length_minutes")
+  Long lengthMinutes;
 
   public enum Priority {
     NEGATIVE(-1),
@@ -70,7 +72,6 @@ public class ToodledoTask {
 
   public static final class ToodledoTaskBuilder {
 
-    private static Log log = Logs.getLog(ToodledoTask.class);
     Long id;
     String title;
     ZonedDateTime addedAt;
@@ -84,14 +85,12 @@ public class ToodledoTask {
     Long parentId;
     Priority priority;
     String repeat;
+    Long lengthMinutes;
 
     private ToodledoTaskBuilder() {}
 
-    public static ToodledoTaskBuilder aToodledoTask() { return new ToodledoTaskBuilder(); }
-
-    public ToodledoTaskBuilder withLog(Log log) {
-      this.log = log;
-      return this;
+    public static ToodledoTaskBuilder aToodledoTask() {
+      return new ToodledoTaskBuilder();
     }
 
     public ToodledoTaskBuilder withId(Long id) {
@@ -159,6 +158,11 @@ public class ToodledoTask {
       return this;
     }
 
+    public ToodledoTaskBuilder withLengthMinutes(Long lengthMinutes) {
+      this.lengthMinutes = lengthMinutes;
+      return this;
+    }
+
     public ToodledoTask build() {
       ToodledoTask toodledoTask = new ToodledoTask();
       toodledoTask.note = this.note;
@@ -173,7 +177,7 @@ public class ToodledoTask {
       toodledoTask.contextId = this.contextId;
       toodledoTask.goalId = this.goalId;
       toodledoTask.modifiedAt = this.modifiedAt;
-      toodledoTask.log = this.log;
+      toodledoTask.lengthMinutes = this.lengthMinutes;
       toodledoTask.parentId = this.parentId;
       return toodledoTask;
     }
