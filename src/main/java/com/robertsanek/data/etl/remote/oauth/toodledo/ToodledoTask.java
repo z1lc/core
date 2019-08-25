@@ -21,31 +21,27 @@ public class ToodledoTask {
 
   @Id
   Long id;
-
   String title;
-
-  ZonedDateTime added_at;
-
-  ZonedDateTime modified_at;
-
-  ZonedDateTime due_at;
-
-  ZonedDateTime completed_at;
-
+  @Column(name = "added_at")
+  ZonedDateTime addedAt;
+  @Column(name = "modified_at")
+  ZonedDateTime modifiedAt;
+  @Column(name = "due_at")
+  ZonedDateTime dueAt;
+  @Column(name = "completed_at")
+  ZonedDateTime completedAt;
   @Column(length = 10_000)
   String note;
-
-  Long folder_id;
-
-  Long context_id;
-
-  Long goal_id;
-
-  Long parent_id;
-
+  @Column(name = "folder_id")
+  Long folderId;
+  @Column(name = "context_id")
+  Long contextId;
+  @Column(name = "goal_id")
+  Long goalId;
+  @Column(name = "parent_id")
+  Long parentId;
   @Enumerated(value = EnumType.STRING)
   Priority priority;
-
   String repeat;
 
   public enum Priority {
@@ -74,24 +70,28 @@ public class ToodledoTask {
 
   public static final class ToodledoTaskBuilder {
 
+    private static Log log = Logs.getLog(ToodledoTask.class);
     Long id;
     String title;
-    ZonedDateTime added_at;
-    ZonedDateTime modified_at;
-    ZonedDateTime due_at;
-    ZonedDateTime completed_at;
+    ZonedDateTime addedAt;
+    ZonedDateTime modifiedAt;
+    ZonedDateTime dueAt;
+    ZonedDateTime completedAt;
     String note;
-    Long folder_id;
-    Long context_id;
-    Long goal_id;
-    Long parent_id;
+    Long folderId;
+    Long contextId;
+    Long goalId;
+    Long parentId;
     Priority priority;
     String repeat;
 
     private ToodledoTaskBuilder() {}
 
-    public static ToodledoTaskBuilder aToodledoTask() {
-      return new ToodledoTaskBuilder();
+    public static ToodledoTaskBuilder aToodledoTask() { return new ToodledoTaskBuilder(); }
+
+    public ToodledoTaskBuilder withLog(Log log) {
+      this.log = log;
+      return this;
     }
 
     public ToodledoTaskBuilder withId(Long id) {
@@ -104,23 +104,23 @@ public class ToodledoTask {
       return this;
     }
 
-    public ToodledoTaskBuilder withAdded_at(ZonedDateTime added_at) {
-      this.added_at = added_at;
+    public ToodledoTaskBuilder withAddedAt(ZonedDateTime addedAt) {
+      this.addedAt = addedAt;
       return this;
     }
 
-    public ToodledoTaskBuilder withModified_at(ZonedDateTime modified_at) {
-      this.modified_at = modified_at;
+    public ToodledoTaskBuilder withModifiedAt(ZonedDateTime modifiedAt) {
+      this.modifiedAt = modifiedAt;
       return this;
     }
 
-    public ToodledoTaskBuilder withDue_at(ZonedDateTime due_at) {
-      this.due_at = due_at;
+    public ToodledoTaskBuilder withDueAt(ZonedDateTime dueAt) {
+      this.dueAt = dueAt;
       return this;
     }
 
-    public ToodledoTaskBuilder withCompleted_at(ZonedDateTime completed_at) {
-      this.completed_at = completed_at;
+    public ToodledoTaskBuilder withCompletedAt(ZonedDateTime completedAt) {
+      this.completedAt = completedAt;
       return this;
     }
 
@@ -129,23 +129,23 @@ public class ToodledoTask {
       return this;
     }
 
-    public ToodledoTaskBuilder withFolder_id(Long folder_id) {
-      this.folder_id = folder_id;
+    public ToodledoTaskBuilder withFolderId(Long folderId) {
+      this.folderId = folderId;
       return this;
     }
 
-    public ToodledoTaskBuilder withContext_id(Long context_id) {
-      this.context_id = context_id;
+    public ToodledoTaskBuilder withContextId(Long contextId) {
+      this.contextId = contextId;
       return this;
     }
 
-    public ToodledoTaskBuilder withGoal_id(Long goal_id) {
-      this.goal_id = goal_id;
+    public ToodledoTaskBuilder withGoalId(Long goalId) {
+      this.goalId = goalId;
       return this;
     }
 
-    public ToodledoTaskBuilder withParent_id(Long parent_id) {
-      this.parent_id = parent_id;
+    public ToodledoTaskBuilder withParentId(Long parentId) {
+      this.parentId = parentId;
       return this;
     }
 
@@ -161,19 +161,20 @@ public class ToodledoTask {
 
     public ToodledoTask build() {
       ToodledoTask toodledoTask = new ToodledoTask();
-      toodledoTask.modified_at = this.modified_at;
-      toodledoTask.priority = this.priority;
-      toodledoTask.id = this.id;
-      toodledoTask.repeat = this.repeat;
       toodledoTask.note = this.note;
-      toodledoTask.added_at = this.added_at;
-      toodledoTask.parent_id = this.parent_id;
-      toodledoTask.due_at = this.due_at;
-      toodledoTask.goal_id = this.goal_id;
-      toodledoTask.completed_at = this.completed_at;
-      toodledoTask.folder_id = this.folder_id;
-      toodledoTask.context_id = this.context_id;
+      toodledoTask.repeat = this.repeat;
+      toodledoTask.dueAt = this.dueAt;
+      toodledoTask.id = this.id;
+      toodledoTask.addedAt = this.addedAt;
+      toodledoTask.priority = this.priority;
+      toodledoTask.completedAt = this.completedAt;
       toodledoTask.title = this.title;
+      toodledoTask.folderId = this.folderId;
+      toodledoTask.contextId = this.contextId;
+      toodledoTask.goalId = this.goalId;
+      toodledoTask.modifiedAt = this.modifiedAt;
+      toodledoTask.log = this.log;
+      toodledoTask.parentId = this.parentId;
       return toodledoTask;
     }
   }
