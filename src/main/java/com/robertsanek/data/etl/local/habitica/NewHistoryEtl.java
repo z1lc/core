@@ -27,7 +27,7 @@ public class NewHistoryEtl extends HabiticaEtl<History> {
                 .ifPresent(isIncrease -> {
                   thisList.add(History.HistoryBuilder.aHistory()
                       .withId(UUID.randomUUID().toString())
-                      .withTaskId(task.getText())
+                      .withTaskId(task.getId())
                       .withCompleted(isIncrease)
                       .withDate(DateTimeUtils.toZonedDateTime(Instant.ofEpochMilli(thisHistory.getDate())))
                       .build());
