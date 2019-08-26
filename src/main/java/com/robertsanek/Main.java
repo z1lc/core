@@ -31,6 +31,8 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 import com.google.common.collect.Lists;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.robertsanek.data.EtlAndDqJob;
 import com.robertsanek.data.etl.local.sqllite.anki.AnkiSyncer;
 import com.robertsanek.data.etl.remote.fitbit.SleepEtl;
@@ -220,7 +222,9 @@ public class Main {
           break;
         case KIVA:
           log.info("Running command %s.", command.orElseThrow());
-          boolean didAlert = new KivaApiConnector().doStuff();
+          Injector injector = Guice.createInjector(new ParentModule());
+          KivaApiConnector kivaApiConnector = injector.getInstance(KivaApiConnector.class);
+          boolean didAlert = kivaApiConnector.doStuff();
           writeFile(Command.KIVA, SuccessType.SUCCESS);
           if (didAlert) {
             writeFile(Command.KIVA, SuccessType.ALERT);

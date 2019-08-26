@@ -31,6 +31,7 @@ import org.quartz.JobExecutionContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.robertsanek.Main;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
 import com.robertsanek.passivekiva.entities.Loan;
@@ -66,6 +67,7 @@ public class KivaApiConnector implements QuartzJob {
   private static Log log = Logs.getLog(KivaApiConnector.class);
   private static String PUSH_TITLE = "PassiveKiva Alert";
   ZonedDateTime now = ZonedDateTime.now();
+  @Inject LastAlertedProvider lastAlertedProvider;
 
   @Override
   public void exec(JobExecutionContext context) {
@@ -159,7 +161,7 @@ public class KivaApiConnector implements QuartzJob {
         .sum();
 
     if (outstandingValueOfLoansToPage >= MINIMUM_AVAILABLE_VALUE_TO_PAGE) {
-      ZonedDateTime lastPageTime = LastAlertedProvider.getLast(KIVA, ALERT);
+      ZonedDateTime lastPageTime = lastAlertedProvider.getLast(KIVA, ALERT);
       if (lastPageTime.isBefore(now.minus(MINIMUM_TIME_BETWEEN_PAGES))) {
         Main.writeFile(KIVA, ALERT);
         return Unchecked.get(() -> {
