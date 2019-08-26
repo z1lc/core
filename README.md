@@ -15,6 +15,7 @@ generator. Everything is scheduled with [Quartz](http://www.quartz-scheduler.org
 *  [Fitbit API](https://dev.fitbit.com/build/reference/web-api/)
 *  [Goodreads API](https://www.goodreads.com/api)
 *  [Google Sheets API](https://developers.google.com/sheets/)
+*  [Habitica API](https://habitica.com/apidoc/)
 *  [HERE API](https://developer.here.com/)
 *  [Human API](https://www.humanapi.co/developers/)
 *  [Kiva API](https://build.kiva.org/)
