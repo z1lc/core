@@ -52,29 +52,25 @@ create or replace view rlp_weekly_education as (
 
 /************************************************* RLP - PRODUCTIVITY *************************************************/
 create or replace view rlp_weekly_productivity as (
-    with value_overrides as (select 'Toodledo Tasks' as title, 10 as override
-                             union
-                             select 'M+', 0.1
-                             union
-                             select 'N+', 0.1),
-        summarized as (select date,
-                           toodledo_habits.title,
-                           added,
-                           value * coalesce(override, 1) as contribution,
-                           coalesce(override, 1) as outof
-                       from toodledo_habit_repetitions
-                                join toodledo_habits
-                       on toodledo_habit_repetitions.habit = toodledo_habits.id
-                                full outer join value_overrides
-                       on toodledo_habits.title like '%' || value_overrides.title || '%'
-                       where toodledo_habits.title like '%⭐%')
-    select date_trunc('week', date + interval '1 day') - interval '1 day' as week,
-        sum(contribution) as contrib,
-        sum(outof) as outof,
-        sum(contribution)::float / sum(outof) as percentage
-    from summarized
-    group by week
-    order by week desc)
+    with toodledo as (select date_trunc('day', completed_at) as day, sum(length_minutes) as sum_toodledo
+                      from toodledo_tasks
+                      where completed_at is not null
+                      group by 1
+                      order by 1 desc),
+        habitica as (
+            select date_trunc('day', date) as day, sum(time_in_minutes) as sum_habitica
+            from habitica_tasks
+                     join habitica_histories hh on habitica_tasks.id = hh.task_id
+            where hh.completed
+            group by 1
+            order by 1 desc),
+        minutes_per_day as (select day, coalesce(sum_toodledo, 0) + coalesce(sum_habitica, 0) as total_minutes
+                            from toodledo
+                                     full outer join habitica using (day))
+    select date_trunc('week', day + interval '1 day') - interval '1 day' as week,
+        sum(case when total_minutes >= 30 then 1 else 0 end) as days_completed
+    from minutes_per_day
+    group by 1)
 ;
 
 
