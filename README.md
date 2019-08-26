@@ -12,12 +12,14 @@ generator. Everything is scheduled with [Quartz](http://www.quartz-scheduler.org
 
 ### Data Sources
 *  [Anki](https://apps.ankiweb.net/) local SQLite database
+*  [Calibre](https://calibre-ebook.com/) local SQLite database
 *  [Fitbit API](https://dev.fitbit.com/build/reference/web-api/)
 *  [Goodreads API](https://www.goodreads.com/api)
 *  [Google Sheets API](https://developers.google.com/sheets/)
 *  [Habitica API](https://habitica.com/apidoc/)
 *  [HERE API](https://developer.here.com/)
 *  [Human API](https://www.humanapi.co/developers/)
+*  [Indie Hackers](https://www.indiehackers.com/) scraping
 *  [Kiva API](https://build.kiva.org/)
 *  [Last.fm API](https://www.last.fm/api)
 *  [LeetCode](https://leetcode.com/) scraping
