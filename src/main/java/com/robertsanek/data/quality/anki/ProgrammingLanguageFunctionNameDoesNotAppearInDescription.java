@@ -27,6 +27,8 @@ public class ProgrammingLanguageFunctionNameDoesNotAppearInDescription extends D
       1549661169660L,  //Python insert
       1555884188762L,  //Python permutations
       1566534473449L,
+      1566956522115L,
+      1566839536985L,
       0L
   );
 
