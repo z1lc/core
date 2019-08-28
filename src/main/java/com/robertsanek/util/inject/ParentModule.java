@@ -1,7 +1,9 @@
 package com.robertsanek.util.inject;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -22,4 +24,13 @@ public class ParentModule extends AbstractModule {
     objectMapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
     return objectMapper;
   }
+
+  @Provides
+  @Singleton
+  XmlMapper xmlMapper() {
+    XmlMapper xmlMapper = new XmlMapper();
+    xmlMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    return xmlMapper;
+  }
+
 }

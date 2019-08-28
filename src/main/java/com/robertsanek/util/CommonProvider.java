@@ -17,9 +17,7 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
@@ -67,12 +65,6 @@ public class CommonProvider {
     WebClient webClient = new WebClient();
     webClient.getOptions().setThrowExceptionOnScriptError(false);
     return webClient;
-  }
-
-  public static XmlMapper getXmlMapper() {
-    XmlMapper xmlMapper = new XmlMapper();
-    xmlMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    return xmlMapper;
   }
 
   public static String getSecret(SecretType secretType) {
