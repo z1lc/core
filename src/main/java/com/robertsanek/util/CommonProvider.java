@@ -25,7 +25,6 @@ import net.jodah.failsafe.RetryPolicy;
 
 public class CommonProvider {
 
-  private static final Log log = Logs.getLog(CommonProvider.class);
   private static final String EMAIL_ADDRESS = "rsanek@gmail.com";
   private static final RequestConfig.Builder globalConfig = RequestConfig.custom()
       .setCookieSpec(CookieSpecs.STANDARD);
