@@ -63,7 +63,7 @@ public class KivaApiConnector implements QuartzJob {
   private static int DETAILED_LOAN_LIMIT = 100; //max: 100
   private static int CONCURRENCY_LEVEL = 5;
   private static String APP_ID = "com.robertsanek.com.robertsanek.passivekiva";
-  private static ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private static Log log = Logs.getLog(KivaApiConnector.class);
   private static String PUSH_TITLE = "PassiveKiva Alert";
   ZonedDateTime now = ZonedDateTime.now();

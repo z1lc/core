@@ -6,6 +6,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import com.robertsanek.here.jsonentities.ForecastResponse;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.SecretType;
@@ -13,10 +14,10 @@ import com.robertsanek.util.Unchecked;
 
 public class HereConnector {
 
-  private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
 
   //https://developer.here.com/api-explorer/rest/auto_weather/weather-forecast-7days-astronomy
-  public static LocalTime getTodaysSundownTimeForSanFrancisco() {
+  public LocalTime getTodaysSundownTimeForSanFrancisco() {
     String apiResponse = Unchecked.get(() -> Request.Get(new URIBuilder()
         .setScheme("https")
         .setHost("weather.cit.api.here.com")

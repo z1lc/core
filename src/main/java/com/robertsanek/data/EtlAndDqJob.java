@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.inject.Inject;
 import com.robertsanek.data.quality.anki.DataQualityRunner;
 import com.robertsanek.process.MasterEtl;
 import com.robertsanek.process.QuartzJob;
@@ -27,7 +28,7 @@ import com.robertsanek.util.Unchecked;
 public class EtlAndDqJob implements QuartzJob {
 
   private static final String KLIPFOLIO_API_KEY = CommonProvider.getSecret(SecretType.KLIPFOLIO_API_KEY);
-  private static ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private static Log log = Logs.getLog(EtlAndDqJob.class);
 
   @Override

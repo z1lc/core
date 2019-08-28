@@ -7,6 +7,7 @@ import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.UsesLocalFiles;
 import com.robertsanek.data.etl.remote.oauth.OAuth20Utils;
 import com.robertsanek.data.etl.remote.oauth.toodledo.jsonentities.JsonTask;
@@ -22,7 +23,7 @@ public class ToodledoConnector {
   private static final String TOODLEDO_CLIENT_SECRET = CommonProvider.getSecret(SecretType.TOODLEDO_CLIENT_SECRET);
   private static final String TOODLEDO_ROOT =
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/toodledo/";
-  private static ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private final OAuth20Service service = new ServiceBuilder(TOODLEDO_CLIENT_ID)
       .apiSecret(TOODLEDO_CLIENT_SECRET)
       .defaultScope("basic tasks notes")

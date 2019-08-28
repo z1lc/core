@@ -1,8 +1,7 @@
-package com.robertsanek.util;
+package com.robertsanek.util.inject;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.robertsanek.ParentModule;
 
 public class InjectUtils {
 

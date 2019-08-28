@@ -13,17 +13,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
 import com.robertsanek.data.quality.anki.DataQualityBase;
-import com.robertsanek.util.CommonProvider;
-import com.robertsanek.util.InjectUtils;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
+import com.robertsanek.util.inject.InjectUtils;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public class AnkiSyncer {
 
   private static final Duration DO_NOT_SYNC_IF_WITHIN = Duration.ofMinutes(15);
-  private static final ObjectMapper objectMapper = CommonProvider.getObjectMapper();
+  private static final ObjectMapper objectMapper = InjectUtils.inject(ObjectMapper.class);
+  private static final AnkiConnectUtils ankiConnectUtils = InjectUtils.inject(AnkiConnectUtils.class);
   private static Log log = Logs.getLog(AnkiSyncer.class);
   private static final Map<String, ZonedDateTime> lastLoggedMap = Maps.newHashMap();
 
@@ -61,7 +61,7 @@ public class AnkiSyncer {
       } else {
         log.info("Didn't find file at '%s'. Will create after Anki sync.", lastSyncFile.getAbsolutePath());
       }
-      if (AnkiConnectUtils.loadProfile(profileToSync) && AnkiConnectUtils.triggerSync()) {
+      if (ankiConnectUtils.loadProfile(profileToSync) && ankiConnectUtils.triggerSync()) {
         writeFile(lastSyncFile, thisSyncTime, thisSyncTime);
         DataQualityBase.recomputeCachedFields();
         return true;

@@ -12,6 +12,7 @@ import com.github.scribejava.apis.FitbitApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.fitbit.json.Sleep;
 import com.robertsanek.data.etl.remote.fitbit.json.SleepSummary;
@@ -26,7 +27,7 @@ public class SleepEtl extends Etl<Sleep> {
   private static final String FITBIT_ROOT =
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/fitbit/";
   private static final LocalDate FITBIT_START_DATE = LocalDate.of(2016, 8, 7);
-  private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private static final long MAXIMUM_DAYS_PER_REQUEST = 100;
 
   @Override

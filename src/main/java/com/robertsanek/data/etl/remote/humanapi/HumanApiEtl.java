@@ -10,13 +10,14 @@ import org.apache.http.client.utils.URIBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Unchecked;
 
 abstract class HumanApiEtl<T> extends Etl<T> {
 
-  private static ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
 
   <O> List<O> genericGet(String path, Class<O[]> clazz) {
     final URI weightUri = Unchecked.get(() -> new URIBuilder()

@@ -13,6 +13,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonParser;
+import com.google.inject.Inject;
 import com.robertsanek.lifx.jsonentities.Scene;
 import com.robertsanek.lifx.jsonentities.SceneSelectionResult;
 import com.robertsanek.util.CommonProvider;
@@ -22,7 +23,7 @@ import com.robertsanek.util.Unchecked;
 public class LifxConnector {
 
   private static final String LIFX_ACCESS_TOKEN = CommonProvider.getSecret(SecretType.LIFX_ACCESS_TOKEN);
-  private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private static final Duration SWITCH_BETWEEN_SCENE_DURATION = Duration.ofMinutes(5);
 
   boolean triggerCoreDay() {

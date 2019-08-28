@@ -18,15 +18,14 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
+import com.robertsanek.util.inject.InjectUtils;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 import net.jodah.failsafe.Failsafe;
@@ -48,7 +47,7 @@ public class CommonProvider {
         .orElse(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "secrets.json");
     File secretsFile = new File(secretsLocation);
     if (secretsFile.exists()) {
-      secrets = Arrays.stream(Unchecked.get(() -> getObjectMapper()
+      secrets = Arrays.stream(Unchecked.get(() -> InjectUtils.inject(ObjectMapper.class)
           .readValue(secretsFile, Secret[].class)))
           .collect(Collectors.toMap(Secret::getType, Function.identity()));
     } else {
@@ -68,14 +67,6 @@ public class CommonProvider {
     WebClient webClient = new WebClient();
     webClient.getOptions().setThrowExceptionOnScriptError(false);
     return webClient;
-  }
-
-  //https://github.com/FasterXML/jackson-modules-java8
-  public static ObjectMapper getObjectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper()
-        .registerModule(new JavaTimeModule());
-    objectMapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
-    return objectMapper;
   }
 
   public static XmlMapper getXmlMapper() {

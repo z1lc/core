@@ -52,11 +52,11 @@ import com.robertsanek.data.etl.EtlRun;
 import com.robertsanek.data.etl.SlowEtl;
 import com.robertsanek.data.etl.UsesLocalFiles;
 import com.robertsanek.util.CommonProvider;
-import com.robertsanek.util.InjectUtils;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
 import com.robertsanek.util.Unchecked;
+import com.robertsanek.util.inject.InjectUtils;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 import net.jodah.failsafe.Failsafe;

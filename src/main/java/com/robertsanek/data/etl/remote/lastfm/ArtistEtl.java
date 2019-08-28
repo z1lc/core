@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Iterables;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.lastfm.jsonentities.ArtistApiResponse;
 import com.robertsanek.data.etl.remote.lastfm.jsonentities.Image;
@@ -27,7 +28,7 @@ import com.robertsanek.util.Unchecked;
 
 public class ArtistEtl extends Etl<Artist> {
 
-  private static ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private static final String USERNAME = "rsanek";
   private static final long ARTISTS_PER_PAGE = 1000;
 

@@ -33,10 +33,10 @@ import com.robertsanek.passivekiva.KivaApiConnector;
 import com.robertsanek.process.Command;
 import com.robertsanek.process.HabiticaLoadAssessment;
 import com.robertsanek.process.SuccessType;
-import com.robertsanek.util.InjectUtils;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.Unchecked;
+import com.robertsanek.util.inject.InjectUtils;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 import com.robertsanek.wikipedia.WikipediaConnector;
 
@@ -97,7 +97,7 @@ public class Main {
               .withIdentity(UUID.randomUUID().toString())
               .usingJobData("action", Lifx.Action.EARLY_NIGHT.toString())
               .build();
-          LocalTime sundown = HereConnector.getTodaysSundownTimeForSanFrancisco()
+          LocalTime sundown = InjectUtils.inject(HereConnector.class).getTodaysSundownTimeForSanFrancisco()
               .minus(Duration.ofMinutes(10));
           String eighteenCron = String.format("0 %s %s 1/1 * ? *", sundown.getMinute(), sundown.getHour());
           Trigger earlyNightTrigger = TriggerBuilder.newTrigger()

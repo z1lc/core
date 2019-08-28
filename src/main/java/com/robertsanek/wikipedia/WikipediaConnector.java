@@ -38,10 +38,10 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.remote.wikipedia.WikiPerson;
 import com.robertsanek.data.quality.anki.DataQualityBase;
 import com.robertsanek.passivekiva.HTMLOutputBuilder;
-import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.Unchecked;
@@ -53,7 +53,7 @@ import j2html.tags.DomContent;
 public class WikipediaConnector {
 
   private static final Log log = Logs.getLog(WikipediaConnector.class);
-  private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private static final ImmutableSet<Pattern> EXCLUDED_ARTICLE_TITLE_REGEXES = ImmutableSet.of(
       Pattern.compile("^Main_Page$"),
       Pattern.compile("^Special:.*$"),
@@ -131,10 +131,10 @@ public class WikipediaConnector {
     return localDates;
   }
 
-  public static synchronized List<WikiPerson> getMostViewedPeople(Language language, LocalDate sinceDateInclusive,
-                                                                  Granularity granularity,
-                                                                  long peopleToOutput,
-                                                                  boolean shouldWriteToDisk) throws IOException {
+  public synchronized List<WikiPerson> getMostViewedPeople(Language language, LocalDate sinceDateInclusive,
+                                                           Granularity granularity,
+                                                           long peopleToOutput,
+                                                           boolean shouldWriteToDisk) throws IOException {
     counter.set(0);
     log.info("Getting top Wikipedia articles on %s.wikipedia.org since %s with granularity %s.",
         language.toString().toLowerCase(), sinceDateInclusive.toString(), granularity.toString());

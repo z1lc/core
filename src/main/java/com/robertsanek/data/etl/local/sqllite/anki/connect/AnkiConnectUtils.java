@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.local.sqllite.anki.connect.jsonschema.CardsInfoResult;
 import com.robertsanek.data.quality.anki.DataQualityBase;
 import com.robertsanek.util.CommonProvider;
@@ -32,7 +33,7 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public class AnkiConnectUtils {
 
-  private static ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private static String ANKI_CONNECT_HOST = "localhost";
   private static int ANKI_CONNECT_PORT = 8765;
   private static String ANK_CONNECT_PRETTY_URL = String.format("%s:%d", ANKI_CONNECT_HOST, ANKI_CONNECT_PORT);
@@ -43,7 +44,7 @@ public class AnkiConnectUtils {
   private static Log log = Logs.getLog(AnkiConnectUtils.class);
   private static ZonedDateTime lastAnkiOpenTime = ZonedDateTime.now().minusYears(10);
 
-  public static boolean loadProfile(String profileToLoad) {
+  public boolean loadProfile(String profileToLoad) {
     openAnki();
     HttpPost changeProfilePost = new HttpPost(getUri());
     changeProfilePost.setEntity(new ByteArrayEntity(
@@ -61,7 +62,7 @@ public class AnkiConnectUtils {
     }
   }
 
-  public static boolean triggerSync() {
+  public boolean triggerSync() {
     openAnki();
     HttpPost syncPost = new HttpPost(getUri());
     syncPost.setEntity(new ByteArrayEntity(
@@ -84,7 +85,7 @@ public class AnkiConnectUtils {
     }
   }
 
-  public static boolean updatePersonNoteImage(Long noteId, String oldName, String newName) {
+  public boolean updatePersonNoteImage(Long noteId, String oldName, String newName) {
     String currentImageField = getPersonNoteImage(noteId);
     HttpPost updateNote = new HttpPost(getUri());
     updateNote.setEntity(new ByteArrayEntity(
@@ -113,13 +114,13 @@ public class AnkiConnectUtils {
   }
 
   @SuppressWarnings("unchecked")
-  public static String getPersonNoteImage(Long noteId) {
+  public String getPersonNoteImage(Long noteId) {
     Long firstCardId = DataQualityBase.getCardsByNoteId().get(noteId).get(0).getId();
     CardsInfoResult cardInfo = getCardInfo(firstCardId);
     return ((HashMap<String, String>) cardInfo.getFields().getAdditionalProperties().get("⭐Image 🖼️")).get("value");
   }
 
-  public static CardsInfoResult getCardInfo(Long cardId) {
+  public CardsInfoResult getCardInfo(Long cardId) {
     HttpPost syncPost = new HttpPost(getUri());
     syncPost.setEntity(new ByteArrayEntity(
         String.format("{\n" +
@@ -140,7 +141,7 @@ public class AnkiConnectUtils {
     return cardsInfoResults[0];
   }
 
-  private static void openAnki() {
+  private void openAnki() {
     if (ChronoUnit.MINUTES.between(lastAnkiOpenTime, ZonedDateTime.now()) >= 15) {
       if (getAnkiExecutablePath().isPresent()) {
         lastAnkiOpenTime = ZonedDateTime.now();
@@ -158,12 +159,12 @@ public class AnkiConnectUtils {
     }
   }
 
-  private static URI getUri() {
+  private URI getUri() {
     return Unchecked.get(ANKI_CONNECT_BASE_URI::build);
   }
 
   @VisibleForTesting
-  static Optional<String> getAnkiExecutablePath() {
+  Optional<String> getAnkiExecutablePath() {
     return CrossPlatformUtils.getPlatform().getAnkiExecutable().map(Path::toString);
   }
 

@@ -18,6 +18,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.local.sqllite.anki.Note;
 import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
 import com.robertsanek.util.Log;
@@ -30,6 +31,7 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
   static final Log log = Logs.getLog(RenameAllPersonImagesToUniformNaming.class);
   static final boolean SHOULD_RUN = true;
   static final boolean SHOULD_RENAME = true;
+  @Inject AnkiConnectUtils ankiConnectUtils;
 
   @Override
   void runDQ() {
@@ -87,7 +89,7 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
           throw new RuntimeException(e);
         }
 
-        AnkiConnectUtils.loadProfile("z1lc");
+        ankiConnectUtils.loadProfile("z1lc");
         for (FileNameChange fileNameChange : filesToChange) {
           if (SHOULD_RENAME) {
             String ankiMediaRoot =
@@ -95,7 +97,7 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
             Unchecked.get(() -> Files.move(
                 Paths.get((ankiMediaRoot + fileNameChange.getOriginalFileName())),
                 Paths.get((ankiMediaRoot + fileNameChange.getTargetFileName()))));
-            if (!AnkiConnectUtils.updatePersonNoteImage(fileNameChange.getNoteId(),
+            if (!ankiConnectUtils.updatePersonNoteImage(fileNameChange.getNoteId(),
                 fileNameChange.getOriginalFileName(),
                 fileNameChange.getTargetFileName())) {
               throw new RuntimeException(String.format(
@@ -103,7 +105,7 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
             }
           }
         }
-        AnkiConnectUtils.triggerSync();
+        ankiConnectUtils.triggerSync();
       } else {
         log.info("No files to change.");
       }

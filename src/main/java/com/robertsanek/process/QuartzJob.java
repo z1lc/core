@@ -5,8 +5,8 @@ import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
-import com.robertsanek.util.InjectUtils;
 import com.robertsanek.util.NotificationSender;
+import com.robertsanek.util.inject.InjectUtils;
 
 @DisallowConcurrentExecution
 public interface QuartzJob extends Job {

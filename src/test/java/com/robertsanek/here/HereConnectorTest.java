@@ -10,7 +10,7 @@ public class HereConnectorTest {
   @Test
   @Ignore("integration")
   public void name() {
-    LocalTime todaysSundownTimeForSanFrancisco = HereConnector.getTodaysSundownTimeForSanFrancisco();
+    LocalTime todaysSundownTimeForSanFrancisco = new HereConnector().getTodaysSundownTimeForSanFrancisco();
     System.out.println("todaysSundownTimeForSanFrancisco = " + todaysSundownTimeForSanFrancisco);
   }
 

@@ -22,6 +22,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.scrape.leetcode.jsonentities.LCQuestion;
 import com.robertsanek.util.CommonProvider;
@@ -29,7 +30,7 @@ import com.robertsanek.util.Unchecked;
 
 public class LeetCodeQuestionEtl extends Etl<Question> {
 
-  private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private static final String LOGIN = CommonProvider.getEmailAddress();
   private static final CookieStore cookieStore = new BasicCookieStore();
 

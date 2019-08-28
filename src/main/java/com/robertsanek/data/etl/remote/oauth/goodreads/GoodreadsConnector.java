@@ -21,6 +21,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import com.google.common.collect.Iterables;
+import com.google.inject.Inject;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
@@ -33,7 +34,7 @@ public class GoodreadsConnector {
   private static final Log log = Logs.getLog(GoodreadsConnector.class);
   private static final String GOODREADS_ROOT =
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/goodreads/";
-  private static ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private final String secretState = RandomStringUtils.randomAlphanumeric(13).toLowerCase();
   private final OAuth10aService service = new ServiceBuilder(CommonProvider.getSecret(SecretType.GOODREADS_API_KEY))
       .apiSecret(CommonProvider.getSecret(SecretType.GOODREADS_API_SECRET))

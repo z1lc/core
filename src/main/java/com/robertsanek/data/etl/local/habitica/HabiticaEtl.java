@@ -6,15 +6,15 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.local.habitica.jsonentities.JsonTask;
 import com.robertsanek.data.etl.local.habitica.jsonentities.Response;
-import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Unchecked;
 
 public abstract class HabiticaEtl<T> extends Etl<T> {
 
-  private static ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
 
   public List<JsonTask> getJsonObjects() {
     String responseJson = HabiticaUtils.genericGetJson("api/v3/tasks/user", Lists

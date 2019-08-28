@@ -14,6 +14,7 @@ import org.apache.http.client.fluent.Request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonParser;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.wakatime.jsonentities.CodingInfoForDay;
 import com.robertsanek.util.CommonProvider;
@@ -21,7 +22,7 @@ import com.robertsanek.util.SecretType;
 
 public class CodingTimeEtl extends Etl<CodingTime> {
 
-  private static final ObjectMapper mapper = CommonProvider.getObjectMapper();
+  @Inject ObjectMapper mapper;
   private final AtomicLong counter = new AtomicLong(1);
 
   @Override
