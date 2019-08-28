@@ -34,6 +34,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.common.io.Resources;
+import com.google.inject.Inject;
 import com.robertsanek.process.QuartzJob;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
@@ -86,6 +87,8 @@ public class DataQualityRunner implements QuartzJob {
       "added:",
       "rated:"
   );
+
+  @Inject NotificationSender notificationSender;
 
   @VisibleForTesting
   static ContainerTag getEmailContent(DataQualityBase.DQInformation dqInformation) {
@@ -227,7 +230,7 @@ public class DataQualityRunner implements QuartzJob {
       if (errors + warnings >= MINIMUM_VIOLATIONS && context == null) {
         log.info("Will notify because the total number of errors and warnings (%s) is at least as large as the " +
             "configured alert minimum (%s).", errors + warnings, MINIMUM_VIOLATIONS);
-        NotificationSender.sendEmail(
+        notificationSender.sendEmail(
             new Email("dq@robertsanek.com", "Data Quality Runner"),
             new Email(CommonProvider.getEmailAddress()),
             emailSubject,

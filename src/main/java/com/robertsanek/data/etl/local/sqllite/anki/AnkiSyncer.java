@@ -1,15 +1,5 @@
 package com.robertsanek.data.etl.local.sqllite.anki;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Maps;
-import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
-import com.robertsanek.data.quality.anki.DataQualityBase;
-import com.robertsanek.util.CommonProvider;
-import com.robertsanek.util.Log;
-import com.robertsanek.util.Logs;
-import com.robertsanek.util.NotificationSender;
-import com.robertsanek.util.platform.CrossPlatformUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -19,6 +9,17 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
+import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
+import com.robertsanek.data.quality.anki.DataQualityBase;
+import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.InjectUtils;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
+import com.robertsanek.util.NotificationSender;
+import com.robertsanek.util.platform.CrossPlatformUtils;
+
 public class AnkiSyncer {
 
   private static final Duration DO_NOT_SYNC_IF_WITHIN = Duration.ofMinutes(15);
@@ -26,6 +27,7 @@ public class AnkiSyncer {
   private static Log log = Logs.getLog(AnkiSyncer.class);
   private static final Map<String, ZonedDateTime> lastLoggedMap = Maps.newHashMap();
 
+  //TODO: make these methods non-static. hard because of reliance in static{} in DataQualityBase.
   public static synchronized boolean syncLocalCollectionIfOutOfDate(String profileToSync) {
     if (CrossPlatformUtils.isRunningInsideDocker()) {
       return true;
@@ -75,7 +77,7 @@ public class AnkiSyncer {
     }
 
     if (ChronoUnit.HOURS.between(lastSuccessfulSync, thisSyncTime) > 24) {
-      NotificationSender.sendNotificationDefault("Anki Sync broken for more than 24 hours!",
+      InjectUtils.inject(NotificationSender.class).sendNotificationDefault("Anki Sync broken for more than 24 hours!",
           String.format("Anki has been unable to sync on device '%s' since %s. Please investigate.",
               getDeviceName(), lastSuccessfulSync));
     }

@@ -45,6 +45,7 @@ import com.google.api.services.sqladmin.model.Operation;
 import com.google.api.services.sqladmin.model.Settings;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Stopwatch;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.EtlRun;
@@ -82,6 +83,8 @@ public class MasterEtl implements QuartzJob {
   private final Configuration config = new Configuration().configure();
   private boolean fastRun = false;
   private boolean parallel = true;
+
+  @Inject NotificationSender notificationSender;
 
   private SessionFactory getSessionFactory(Hbm2ddlType hbm2ddlType, ConnectionType connectionType)
       throws HibernateException, IOException, GeneralSecurityException, InterruptedException {
@@ -240,12 +243,12 @@ public class MasterEtl implements QuartzJob {
     if (successful.get()) {
       log.info(template);
       if (max.get() == 0) {
-        NotificationSender.sendNotificationDefault(
+        notificationSender.sendNotificationDefault(
             String.format("%s generated 0 rows at %s!", etlClazz.getSimpleName(),
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))), "Check output.");
       }
     } else {
-      NotificationSender.sendNotificationDefault(
+      notificationSender.sendNotificationDefault(
           String.format("%s failed at %s!", etlClazz.getSimpleName(),
               LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))),
           template + "\n\n" + ExceptionUtils.getStackTrace(exceptionDuringEtl));

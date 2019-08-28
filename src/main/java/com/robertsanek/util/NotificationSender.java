@@ -26,19 +26,19 @@ public class NotificationSender {
   private static PushoverClient client = new PushoverRestClient();
 
   //Sends notification using default provider
-  public static boolean sendNotificationDefault(String title, String message) {
+  public boolean sendNotificationDefault(String title, String message) {
     return sendEmailDefault(title, message) &&
         (sendPushBulletNotification(title, message)
             || sendPushoverNotification(title, message)
             || sendTwilioNotification(title, message));
   }
 
-  public static boolean sendEmailDefault(String title, String message) {
+  public boolean sendEmailDefault(String title, String message) {
     return sendEmail(new Email("notifications@robertsanek.com", "Notification Service"),
         new Email(CommonProvider.getEmailAddress()), title, new Content("text/plain", message));
   }
 
-  public static boolean sendEmail(Email from, Email to, String subject, Content content) {
+  public boolean sendEmail(Email from, Email to, String subject, Content content) {
     Mail mail = new Mail(from, subject, to, content);
     SendGrid sg = new SendGrid(CommonProvider.getSecret(SecretType.SENDGRID_API_KEY));
     Request request = new Request();
@@ -59,14 +59,14 @@ public class NotificationSender {
     return false;
   }
 
-  public static boolean sendTwilioNotification(String title, String message) {
+  public boolean sendTwilioNotification(String title, String message) {
     Twilio.init(CommonProvider.getSecret(SecretType.TWILIO_ACCOUNT_SID),
         CommonProvider.getSecret(SecretType.TWILIO_AUTH_TOKEN));
     //would require me to purchase a phone number
     return false;
   }
 
-  public static boolean sendPushoverNotification(String title, String message) {
+  public boolean sendPushoverNotification(String title, String message) {
     try {
       Unchecked.run(() -> client
           .pushMessage(PushoverMessage.builderWithApiToken(CommonProvider.getSecret(SecretType.PUSHOVER_API_TOKEN))
@@ -84,7 +84,7 @@ public class NotificationSender {
     return true;
   }
 
-  public static boolean sendPushBulletNotification(String title, String message) {
+  public boolean sendPushBulletNotification(String title, String message) {
     try {
       pushbullet.push(new SendableNotePush(title, message));
       log.info("Sent push notification via PushBullet with title \"%s\" to all clients.", title);

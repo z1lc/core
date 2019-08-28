@@ -68,6 +68,7 @@ public class KivaApiConnector implements QuartzJob {
   private static String PUSH_TITLE = "PassiveKiva Alert";
   ZonedDateTime now = ZonedDateTime.now();
   @Inject LastAlertedProvider lastAlertedProvider;
+  @Inject NotificationSender notificationSender;
 
   @Override
   public void exec(JobExecutionContext context) {
@@ -168,7 +169,7 @@ public class KivaApiConnector implements QuartzJob {
           String message = String.format("<%sd duration loans with aggregate value of $%s available. Loan IDs: %s",
               MAXIMUM_DURATION_IN_DAYS_TO_PAGE, outstandingValueOfLoansToPage,
               toPageLoans.stream().map(loan -> loan.getId().toString()).collect(Collectors.toList()));
-          return NotificationSender.sendNotificationDefault(PUSH_TITLE, message);
+          return notificationSender.sendNotificationDefault(PUSH_TITLE, message);
         });
       } else {
         log.info("Will not page because time since last page (%s minutes) does not exceed minimum time " +

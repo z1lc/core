@@ -5,6 +5,7 @@ import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
+import com.robertsanek.util.InjectUtils;
 import com.robertsanek.util.NotificationSender;
 
 @DisallowConcurrentExecution
@@ -15,7 +16,8 @@ public interface QuartzJob extends Job {
     try {
       exec(context);
     } catch (Exception e) {
-      NotificationSender.sendNotificationDefault("Exception during process run!", ExceptionUtils.getStackTrace(e));
+      InjectUtils.inject(NotificationSender.class)
+          .sendNotificationDefault("Exception during process run!", ExceptionUtils.getStackTrace(e));
     }
   }
 

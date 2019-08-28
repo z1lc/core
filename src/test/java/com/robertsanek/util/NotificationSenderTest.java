@@ -8,6 +8,6 @@ public class NotificationSenderTest {
   @Test
   @Ignore("integration")
   public void name() {
-    NotificationSender.sendNotificationDefault("hi", "hello\n\noh hey there");
+    new NotificationSender().sendNotificationDefault("hi", "hello\n\noh hey there");
   }
 }

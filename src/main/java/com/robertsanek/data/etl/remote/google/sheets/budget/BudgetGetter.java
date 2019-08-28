@@ -23,6 +23,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
 import com.robertsanek.process.QuartzJob;
 import com.robertsanek.util.CommonProvider;
@@ -59,16 +60,17 @@ public class BudgetGetter implements QuartzJob {
   private static final String INCOME_RANGE = "Budget!P2:R10000";
   private static final String CSV_DELIMITER = "`";
   private static Log log = Logs.getLog(BudgetGetter.class);
-
   private AtomicLong counter = new AtomicLong(0);
   private List<String> errors = Lists.newArrayList();
+
+  @Inject NotificationSender notificationSender;
 
   public List<AnnotatedItem> getData() {
     List<AnnotatedItem> allLineItems = getValues(INCOME_RANGE);
     allLineItems.addAll(getValues(EXPENSES_RANGE));
     allLineItems.sort(Comparator.comparing(AnnotatedItem::getDate));
     if (errors.size() > 0) {
-      NotificationSender.sendEmailDefault("Budget errors", String.join("\n", errors));
+      notificationSender.sendEmailDefault("Budget errors", String.join("\n", errors));
     }
     return allLineItems;
   }
