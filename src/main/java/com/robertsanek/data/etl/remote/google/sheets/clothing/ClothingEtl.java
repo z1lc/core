@@ -6,14 +6,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
-import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretProvider;
 
 public class ClothingEtl extends Etl<ClothingRating> {
 
   private static final String RANGE = "Data!A2:G10000";
   private static final AtomicLong ID_ISSUER = new AtomicLong(1);
+  @Inject SecretProvider secretProvider;
 
   private static boolean convertYesNoStringToBoolean(String yesNoOrNull) {
     return yesNoOrNull != null && yesNoOrNull.startsWith("Yes");
@@ -22,7 +24,7 @@ public class ClothingEtl extends Etl<ClothingRating> {
   @Override
   public List<ClothingRating> getObjects() {
     List<List<Object>> spreadsheetCells =
-        SheetsConnector.getSpreadsheetCells(CommonProvider.getSecret(CLOTHING_SPREADSHEET_ID), RANGE);
+        SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(CLOTHING_SPREADSHEET_ID), RANGE);
     return spreadsheetCells.stream()
         .map(row -> ClothingRating.ClothingRatingBuilder.aClothingRating()
             .withId(ID_ISSUER.getAndIncrement())

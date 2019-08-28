@@ -13,18 +13,21 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.remote.scrape.toodledo.Habit;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitEtl;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitRep;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitRepEtl;
-import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.PostgresConnection;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.SecretType;
 import com.robertsanek.util.Unchecked;
 
 public class LeetCodeToodledoTaskEtl {
 
   private static final String TABLE_NAME = "toodledo_habit_reps";
+  @Inject SecretProvider secretProvider;
+  @Inject PostgresConnection postgresConnection;
 
   public void run() {
     ImmutableList<Pair<User, Habit>> habits = ImmutableList.<Pair<User, Habit>>builder()
@@ -32,12 +35,12 @@ public class LeetCodeToodledoTaskEtl {
         .addAll(Utils.addUser(new HabitEtl() {
           @Override
           public String getUsername() {
-            return CommonProvider.getSecret(SecretType.TOODLEDO_WILL_USERNAME);
+            return secretProvider.getSecret(SecretType.TOODLEDO_WILL_USERNAME);
           }
 
           @Override
           public String getPassword() {
-            return CommonProvider.getSecret(SecretType.TOODLEDO_WILL_PASSWORD);
+            return secretProvider.getSecret(SecretType.TOODLEDO_WILL_PASSWORD);
           }
         }.getObjects(), User.WILL))
         .build();
@@ -51,18 +54,18 @@ public class LeetCodeToodledoTaskEtl {
         .addAll(Utils.addUser(new HabitRepEtl() {
           @Override
           public String getUsername() {
-            return CommonProvider.getSecret(SecretType.TOODLEDO_WILL_USERNAME);
+            return secretProvider.getSecret(SecretType.TOODLEDO_WILL_USERNAME);
           }
 
           @Override
           public String getPassword() {
-            return CommonProvider.getSecret(SecretType.TOODLEDO_WILL_PASSWORD);
+            return secretProvider.getSecret(SecretType.TOODLEDO_WILL_PASSWORD);
           }
         }.getObjects(), User.WILL))
         .build();
 
     Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
-    try (Connection connection = PostgresConnection.getConnection(true);
+    try (Connection connection = postgresConnection.getConnection(true);
          Statement statement = connection.createStatement()) {
       statement.setQueryTimeout((int) QUERY_TIMEOUT.getSeconds());
       statement.executeUpdate(String.format("DROP TABLE IF EXISTS %s", TABLE_NAME));

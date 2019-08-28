@@ -5,13 +5,12 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.UsesLocalFiles;
 import com.robertsanek.data.etl.remote.oauth.OAuth20Utils;
 import com.robertsanek.data.etl.remote.oauth.toodledo.jsonentities.JsonTask;
-import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.SecretType;
 import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.platform.CrossPlatformUtils;
@@ -19,19 +18,22 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 @UsesLocalFiles
 public class ToodledoConnector {
 
-  private static final String TOODLEDO_CLIENT_ID = CommonProvider.getSecret(SecretType.TOODLEDO_CLIENT_ID);
-  private static final String TOODLEDO_CLIENT_SECRET = CommonProvider.getSecret(SecretType.TOODLEDO_CLIENT_SECRET);
   private static final String TOODLEDO_ROOT =
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/toodledo/";
   @Inject ObjectMapper mapper;
-  private final OAuth20Service service = new ServiceBuilder(TOODLEDO_CLIENT_ID)
-      .apiSecret(TOODLEDO_CLIENT_SECRET)
-      .defaultScope("basic tasks notes")
-      .build(new ToodledoApi20(TOODLEDO_CLIENT_ID, TOODLEDO_CLIENT_SECRET));
+  @Inject SecretProvider secretProvider;
 
   public List<JsonTask> getTasks() {
-    OAuth20Utils
-        oAuth20Utils = new OAuth20Utils(service, TOODLEDO_ROOT, "https://api.toodledo.com/3/account/get.php?f=json");
+    String clientId = secretProvider.getSecret(SecretType.TOODLEDO_CLIENT_ID);
+    String clientSecret = secretProvider.getSecret(SecretType.TOODLEDO_CLIENT_SECRET);
+    OAuth20Utils oAuth20Utils = new OAuth20Utils(
+        new ServiceBuilder(clientId)
+            .apiSecret(clientSecret)
+            .defaultScope("basic tasks notes")
+            .build(new ToodledoApi20(clientId, clientSecret)),
+        TOODLEDO_ROOT,
+        "https://api.toodledo.com/3/account/get.php?f=json");
+
     int startOffset = 0;
     List<JsonTask> toReturn = Lists.newArrayList();
     while (true) {

@@ -22,10 +22,11 @@ import org.apache.http.client.utils.URIBuilder;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
-import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 
 abstract class RescueTimeEtl<T> extends Etl<T> {
@@ -33,6 +34,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
   @VisibleForTesting int FROM_YEAR = 2009; //first data in RescueTime is from 2009
   @VisibleForTesting int TO_YEAR = LocalDate.now().getYear();
   private static Log log = Logs.getLog(RescueTimeEtl.class);
+  @Inject SecretProvider secretProvider;
 
   public <O> List<O> genericGet(String taxonomy, Function<CSVRecord, O> csvToObjectFunction) {
     Set<O> allRecords = Collections.synchronizedSet(Sets.newHashSet());
@@ -44,7 +46,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
                 .setScheme("https")
                 .setHost("rescuetime.com")
                 .setPath("/anapi/data")
-                .setParameter("key", CommonProvider.getSecret(RESCUETIME_API_KEY))
+                .setParameter("key", secretProvider.getSecret(RESCUETIME_API_KEY))
                 .setParameter("rs", "day")
                 .setParameter("by", "interval")
                 .setParameter("format", "csv")

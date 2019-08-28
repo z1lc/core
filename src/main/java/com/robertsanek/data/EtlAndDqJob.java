@@ -22,13 +22,15 @@ import com.robertsanek.process.QuartzJob;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.SecretType;
 import com.robertsanek.util.Unchecked;
 
 public class EtlAndDqJob implements QuartzJob {
 
-  private static final String KLIPFOLIO_API_KEY = CommonProvider.getSecret(SecretType.KLIPFOLIO_API_KEY);
   @Inject ObjectMapper mapper;
+  @Inject ReCreateViews reCreateViews;
+  @Inject SecretProvider secretProvider;
   private static Log log = Logs.getLog(EtlAndDqJob.class);
 
   @Override
@@ -43,7 +45,7 @@ public class EtlAndDqJob implements QuartzJob {
     boolean etlsSuccessful = new MasterEtl().runEtls(false, parallel);
 
     log.info("Will execute all queries in CommonQueries.sql file to re-create views.");
-    ReCreateViews.executeQueries();
+    reCreateViews.executeQueries();
 
     if (etlsSuccessful) {
       triggerKlipfolioRefresh();
@@ -64,7 +66,7 @@ public class EtlAndDqJob implements QuartzJob {
     JsonObject obj =
         new JsonParser()
             .parse(Unchecked.get(() -> Request.Get(uri)
-                .addHeader("kf-api-key", KLIPFOLIO_API_KEY)
+                .addHeader("kf-api-key", secretProvider.getSecret(SecretType.KLIPFOLIO_API_KEY))
                 .execute()
                 .returnContent()
                 .asString()))
@@ -84,7 +86,7 @@ public class EtlAndDqJob implements QuartzJob {
               .build());
           try {
             HttpPost post = new HttpPost(refreshUri);
-            post.addHeader("kf-api-key", KLIPFOLIO_API_KEY);
+            post.addHeader("kf-api-key", secretProvider.getSecret(SecretType.KLIPFOLIO_API_KEY));
             CommonProvider.getHttpClient().execute(post);
           } catch (Exception e) {
             log.error(e);

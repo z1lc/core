@@ -8,6 +8,6 @@ public class ReCreateViewsTest {
   @Test
   @Ignore("integration")
   public void name() {
-    ReCreateViews.executeQueries();
+    new ReCreateViews().executeQueries();
   }
 }

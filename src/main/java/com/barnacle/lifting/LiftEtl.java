@@ -17,12 +17,13 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.robertsanek.util.PostgresConnection;
 import com.barnacle.User;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
-import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.PostgresConnection;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.SecretType;
 import com.robertsanek.util.Unchecked;
 
@@ -37,11 +38,13 @@ public class LiftEtl implements Callable<Object> {
       ExerciseType.OVERHEAD_PRESS
   );
   private static final String TABLE_NAME = "lifts";
+  @Inject SecretProvider secretProvider;
+  @Inject PostgresConnection postgresConnection;
 
   @Override
   public Object call() {
     List<List<Object>> rows =
-        SheetsConnector.getSpreadsheetCells(CommonProvider.getSecret(SecretType.LIFTING_SPREADSHEET_ID), "Lifts");
+        SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(SecretType.LIFTING_SPREADSHEET_ID), "Lifts");
     List<Integer> dateIndexes = Lists.newArrayList();
     for (int i = 0; i < rows.size(); i++) {
       if (rows.get(i).get(0).toString().contains("/")) {
@@ -110,7 +113,7 @@ public class LiftEtl implements Callable<Object> {
 
     //    File csvFile = new File(System.getProperty("java.io.tmpdir"), String.format("%s.csv", TABLE_NAME));
 
-    try (Connection connection = PostgresConnection.getConnection(true);
+    try (Connection connection = postgresConnection.getConnection(true);
          Statement statement = connection.createStatement()) {
       statement.setQueryTimeout((int) QUERY_TIMEOUT.getSeconds());
       statement.executeUpdate(String.format("DROP TABLE IF EXISTS %s", TABLE_NAME));

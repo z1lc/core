@@ -37,11 +37,11 @@ import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
 import com.robertsanek.passivekiva.entities.Loan;
 import com.robertsanek.passivekiva.entities.LoanListResponse;
 import com.robertsanek.process.QuartzJob;
-import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.LastAlertedProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
@@ -69,6 +69,7 @@ public class KivaApiConnector implements QuartzJob {
   ZonedDateTime now = ZonedDateTime.now();
   @Inject LastAlertedProvider lastAlertedProvider;
   @Inject NotificationSender notificationSender;
+  @Inject SecretProvider secretProvider;
 
   @Override
   public void exec(JobExecutionContext context) {
@@ -195,7 +196,7 @@ public class KivaApiConnector implements QuartzJob {
   private boolean currentlyLooking() {
     try {
       List<List<Object>> spreadsheetCells =
-          SheetsConnector.getSpreadsheetCells(CommonProvider.getSecret(KIVA_SPREADSHEET_ID), RANGE);
+          SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(KIVA_SPREADSHEET_ID), RANGE);
       return Boolean.valueOf(Iterables.getOnlyElement(Iterables.getOnlyElement(spreadsheetCells)).toString());
     } catch (Exception e) {
       log.error("Encountered exception when trying to determine if should be searching for Kiva loans. " +

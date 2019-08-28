@@ -12,21 +12,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
-import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.DateTimeUtils;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 
 public class HealthEtl extends Etl<Health> {
 
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM-dd-yyyy");
   private static final String RANGE = "Daily Log!A2:H10000";
+  @Inject SecretProvider secretProvider;
 
   @Override
   public List<Health> getObjects() {
     List<List<Object>> spreadsheetCells =
-        SheetsConnector.getSpreadsheetCells(CommonProvider.getSecret(HEALTH_SPREADSHEET_ID), RANGE);
+        SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(HEALTH_SPREADSHEET_ID), RANGE);
     return spreadsheetCells.stream()
         .map(row -> {
           final LocalDate date = Unchecked.get(() -> LocalDate.parse(row.get(0).toString(), DATE_FORMAT));

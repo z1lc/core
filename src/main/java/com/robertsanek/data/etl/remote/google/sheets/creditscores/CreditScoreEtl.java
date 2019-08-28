@@ -10,20 +10,22 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
-import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 
 public class CreditScoreEtl extends Etl<CreditScore> {
 
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM-dd-yyyy");
   private static final String RANGE = "Credit Score!A2:H10000";
+  @Inject SecretProvider secretProvider;
 
   @Override
   public List<CreditScore> getObjects() throws Exception {
     List<List<Object>> spreadsheetCells =
-        SheetsConnector.getSpreadsheetCells(CommonProvider.getSecret(FINANCE_SPREADSHEET_ID), RANGE);
+        SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(FINANCE_SPREADSHEET_ID), RANGE);
     return spreadsheetCells.stream()
         .map(row -> {
           final ZonedDateTime date =

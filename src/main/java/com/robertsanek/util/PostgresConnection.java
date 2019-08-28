@@ -5,15 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.Duration;
 
+import com.google.inject.Inject;
+
 public class PostgresConnection {
 
   public static final Duration QUERY_TIMEOUT = Duration.ofSeconds(30);
+  @Inject SecretProvider secretProvider;
 
-  public static Connection getConnection(boolean local) throws SQLException {
+  public Connection getConnection(boolean local) throws SQLException {
     String dbUrl = String.format("jdbc:postgresql://%s?sslmode=require&user=%s&password=%s",
-        CommonProvider.getSecret(SecretType.HEROKU_POSTGRES_URL),
-        CommonProvider.getSecret(SecretType.HEROKU_POSTGRES_USERNAME),
-        CommonProvider.getSecret(SecretType.HEROKU_POSTGRES_PASSWORD));
+        secretProvider.getSecret(SecretType.HEROKU_POSTGRES_URL),
+        secretProvider.getSecret(SecretType.HEROKU_POSTGRES_USERNAME),
+        secretProvider.getSecret(SecretType.HEROKU_POSTGRES_PASSWORD));
     if (!local) {
       dbUrl = System.getenv("JDBC_DATABASE_URL");
     }

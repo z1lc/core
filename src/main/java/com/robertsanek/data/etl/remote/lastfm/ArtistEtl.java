@@ -23,12 +23,13 @@ import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.lastfm.jsonentities.ArtistApiResponse;
 import com.robertsanek.data.etl.remote.lastfm.jsonentities.Image;
 import com.robertsanek.data.quality.anki.DataQualityBase;
-import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 
 public class ArtistEtl extends Etl<Artist> {
 
   @Inject ObjectMapper mapper;
+  @Inject SecretProvider secretProvider;
   private static final String USERNAME = "rsanek";
   private static final long ARTISTS_PER_PAGE = 1000;
 
@@ -64,7 +65,7 @@ public class ArtistEtl extends Etl<Artist> {
         .setParameter("user", USERNAME)
         .setParameter("format", "json")
         .setParameter("period", "overall")
-        .setParameter("api_key", CommonProvider.getSecret(LAST_FM_API_KEY))
+        .setParameter("api_key", secretProvider.getSecret(LAST_FM_API_KEY))
         .setParameter("page", String.valueOf(pageNumber))
         .setParameter("limit", String.valueOf(limitPerPage))
         .build());

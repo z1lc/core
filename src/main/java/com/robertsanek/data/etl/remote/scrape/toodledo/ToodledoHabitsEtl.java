@@ -12,12 +12,14 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.SecretType;
 import com.robertsanek.util.Unchecked;
 
 abstract class ToodledoHabitsEtl<T> extends Etl<T> {
 
   @Inject ObjectMapper mapper;
+  @Inject SecretProvider secretProvider;
 
   <O> List<O> genericGet(String path, Class<O[]> clazz) {
     try (WebClient webClient = CommonProvider.getHtmlUnitWebClient()) {
@@ -42,7 +44,7 @@ abstract class ToodledoHabitsEtl<T> extends Etl<T> {
   }
 
   public String getPassword() {
-    return CommonProvider.getSecret(SecretType.TOODLEDO_PASSWORD);
+    return secretProvider.getSecret(SecretType.TOODLEDO_PASSWORD);
   }
 
 }

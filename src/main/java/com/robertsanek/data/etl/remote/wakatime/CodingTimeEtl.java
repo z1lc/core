@@ -17,19 +17,20 @@ import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.wakatime.jsonentities.CodingInfoForDay;
-import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.SecretType;
 
 public class CodingTimeEtl extends Etl<CodingTime> {
 
   @Inject ObjectMapper mapper;
+  @Inject SecretProvider secretProvider;
   private final AtomicLong counter = new AtomicLong(1);
 
   @Override
   public List<CodingTime> getObjects() throws Exception {
     LocalDate today = LocalDate.now();
     String URL = String.format("https://wakatime.com/api/v1/users/%s/summaries/?api_key=%s&start=%s&end=%s",
-        CommonProvider.getSecret(SecretType.WAKATIME_USER_ID), CommonProvider.getSecret(SecretType.WAKATIME_API_KEY),
+        secretProvider.getSecret(SecretType.WAKATIME_USER_ID), secretProvider.getSecret(SecretType.WAKATIME_API_KEY),
         today.minusDays(13), today);
     String jsonReturned = Request.Get(URL).execute().returnContent().asString();
     String dataArrAsString = new JsonParser().parse(jsonReturned).getAsJsonObject().getAsJsonArray("data").toString();

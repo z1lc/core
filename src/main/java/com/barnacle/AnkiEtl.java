@@ -18,6 +18,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.local.sqllite.anki.Review;
 import com.robertsanek.data.etl.local.sqllite.anki.ReviewEtl;
 import com.robertsanek.util.Log;
@@ -32,6 +33,7 @@ public class AnkiEtl implements Callable<Object> {
   private static final String ROB_NAME = "z1lc";
   private static final String WILL_NAME = "will";
   private static Log log = Logs.getLog(AnkiEtl.class);
+  @Inject PostgresConnection postgresConnection;
 
   @Override
   public Object call() {
@@ -81,7 +83,7 @@ public class AnkiEtl implements Callable<Object> {
             }).collect(Collectors.toList());
 
     Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
-    try (Connection connection = PostgresConnection.getConnection(true);
+    try (Connection connection = postgresConnection.getConnection(true);
          Statement statement = connection.createStatement()) {
       statement.setQueryTimeout((int) QUERY_TIMEOUT.getSeconds());
       statement.executeUpdate(String.format("DROP TABLE IF EXISTS %s", TABLE_NAME));

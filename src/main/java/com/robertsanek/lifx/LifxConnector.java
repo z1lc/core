@@ -17,14 +17,19 @@ import com.google.inject.Inject;
 import com.robertsanek.lifx.jsonentities.Scene;
 import com.robertsanek.lifx.jsonentities.SceneSelectionResult;
 import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.SecretType;
 import com.robertsanek.util.Unchecked;
 
 public class LifxConnector {
 
-  private static final String LIFX_ACCESS_TOKEN = CommonProvider.getSecret(SecretType.LIFX_ACCESS_TOKEN);
   @Inject ObjectMapper mapper;
+  @Inject SecretProvider secretProvider;
   private static final Duration SWITCH_BETWEEN_SCENE_DURATION = Duration.ofMinutes(5);
+
+  private String getAuthorizationString() {
+    return String.format("Bearer %s", secretProvider.getSecret(SecretType.LIFX_ACCESS_TOKEN));
+  }
 
   boolean triggerCoreDay() {
     return triggerScene(Optional.ofNullable(getSceneNameMap().get("Core Day")).orElseThrow().getUuid());
@@ -43,7 +48,7 @@ public class LifxConnector {
   boolean triggerBreathe() {
     String response = CommonProvider.retrying().get(() -> Request
         .Post("https://api.lifx.com/v1/lights/all/effects/breathe")
-        .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
+        .setHeader("Authorization", getAuthorizationString())
         .body(EntityBuilder.create()
             .setParameters(
                 new BasicNameValuePair("color", "#800080"),
@@ -63,7 +68,7 @@ public class LifxConnector {
     return StreamSupport.stream(
         new JsonParser().parse(CommonProvider.retrying().get(() -> Request
             .Get("https://api.lifx.com/v1/lights/all")
-            .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
+            .setHeader("Authorization", getAuthorizationString())
             .execute()
             .returnContent()
             .asString()))
@@ -76,7 +81,7 @@ public class LifxConnector {
     String scenes = CommonProvider.retrying()
         .get(() -> Request
             .Get("https://api.lifx.com/v1/scenes")
-            .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
+            .setHeader("Authorization", getAuthorizationString())
             .execute()
             .returnContent()
             .asString());
@@ -88,7 +93,7 @@ public class LifxConnector {
     String response = CommonProvider.retrying()
         .get(() -> Request
             .Put(String.format("https://api.lifx.com/v1/scenes/scene_id:%s/activate", uuid))
-            .setHeader("Authorization", String.format("Bearer %s", LIFX_ACCESS_TOKEN))
+            .setHeader("Authorization", getAuthorizationString())
             .body(EntityBuilder.create()
                 .setParameters(
                     new BasicNameValuePair("duration", String.valueOf(SWITCH_BETWEEN_SCENE_DURATION.getSeconds())))

@@ -26,10 +26,10 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
 import com.robertsanek.process.QuartzJob;
-import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
@@ -64,6 +64,7 @@ public class BudgetGetter implements QuartzJob {
   private List<String> errors = Lists.newArrayList();
 
   @Inject NotificationSender notificationSender;
+  @Inject SecretProvider secretProvider;
 
   public List<AnnotatedItem> getData() {
     List<AnnotatedItem> allLineItems = getValues(INCOME_RANGE);
@@ -100,7 +101,7 @@ public class BudgetGetter implements QuartzJob {
     Preconditions.checkArgument(columnLettersOnly.length() == 2, "Expected column letters to be only 1 letter long.");
     final int expectedCells = columnLettersOnly.charAt(1) - columnLettersOnly.charAt(0) + 1;
     final List<List<Object>> spreadsheet =
-        SheetsConnector.getSpreadsheetCells(CommonProvider.getSecret(FINANCE_SPREADSHEET_ID), range);
+        SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(FINANCE_SPREADSHEET_ID), range);
     if (spreadsheet == null || spreadsheet.size() == 0) {
       log.error("No data found.");
       return Lists.newArrayList();

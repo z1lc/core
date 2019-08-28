@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.github.sheigutn.pushbullet.Pushbullet;
 import com.github.sheigutn.pushbullet.items.push.sendable.defaults.SendableNotePush;
+import com.google.inject.Inject;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -21,9 +22,9 @@ import net.pushover.client.PushoverRestClient;
 public class NotificationSender {
 
   private static final Log log = Logs.getLog(NotificationSender.class);
-  private static final Pushbullet pushbullet =
-      new Pushbullet(CommonProvider.getSecret(SecretType.PUSHBULLET_ACCESS_TOKEN));
   private static PushoverClient client = new PushoverRestClient();
+  @Inject SecretProvider secretProvider;
+  @Inject Pushbullet pushbullet;
 
   //Sends notification using default provider
   public boolean sendNotificationDefault(String title, String message) {
@@ -40,7 +41,7 @@ public class NotificationSender {
 
   public boolean sendEmail(Email from, Email to, String subject, Content content) {
     Mail mail = new Mail(from, subject, to, content);
-    SendGrid sg = new SendGrid(CommonProvider.getSecret(SecretType.SENDGRID_API_KEY));
+    SendGrid sg = new SendGrid(secretProvider.getSecret(SecretType.SENDGRID_API_KEY));
     Request request = new Request();
     try {
       request.setMethod(Method.POST);
@@ -60,8 +61,8 @@ public class NotificationSender {
   }
 
   public boolean sendTwilioNotification(String title, String message) {
-    Twilio.init(CommonProvider.getSecret(SecretType.TWILIO_ACCOUNT_SID),
-        CommonProvider.getSecret(SecretType.TWILIO_AUTH_TOKEN));
+    Twilio.init(secretProvider.getSecret(SecretType.TWILIO_ACCOUNT_SID),
+        secretProvider.getSecret(SecretType.TWILIO_AUTH_TOKEN));
     //would require me to purchase a phone number
     return false;
   }
@@ -69,14 +70,14 @@ public class NotificationSender {
   public boolean sendPushoverNotification(String title, String message) {
     try {
       Unchecked.run(() -> client
-          .pushMessage(PushoverMessage.builderWithApiToken(CommonProvider.getSecret(SecretType.PUSHOVER_API_TOKEN))
-              .setUserId(CommonProvider.getSecret(SecretType.PUSHOVER_USER_ID))
+          .pushMessage(PushoverMessage.builderWithApiToken(secretProvider.getSecret(SecretType.PUSHOVER_API_TOKEN))
+              .setUserId(secretProvider.getSecret(SecretType.PUSHOVER_USER_ID))
               .setTitle(title)
               .setMessage(message)
               .setPriority(MessagePriority.HIGH)
               .build()));
       log.info("Sent push notification via Pushover with title \"%s\" to user \"%s\".", title,
-          CommonProvider.getSecret(SecretType.PUSHOVER_USER_ID));
+          secretProvider.getSecret(SecretType.PUSHOVER_USER_ID));
     } catch (Exception e) {
       log.error(e);
       return false;

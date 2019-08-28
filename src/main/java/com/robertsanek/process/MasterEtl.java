@@ -51,10 +51,10 @@ import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.EtlRun;
 import com.robertsanek.data.etl.SlowEtl;
 import com.robertsanek.data.etl.UsesLocalFiles;
-import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 import com.robertsanek.util.inject.InjectUtils;
 import com.robertsanek.util.platform.CrossPlatformUtils;
@@ -85,6 +85,7 @@ public class MasterEtl implements QuartzJob {
   private boolean parallel = true;
 
   @Inject NotificationSender notificationSender;
+  @Inject SecretProvider secretProvider;
 
   private SessionFactory getSessionFactory(Hbm2ddlType hbm2ddlType, ConnectionType connectionType)
       throws HibernateException, IOException, GeneralSecurityException, InterruptedException {
@@ -94,12 +95,12 @@ public class MasterEtl implements QuartzJob {
       String password;
       String instanceName;
       if (connectionType.equals(ConnectionType.RSANEK)) {
-        username = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME);
-        password = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
+        username = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME);
+        password = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
         instanceName = "rsanek-db";
       } else if (connectionType.equals(ConnectionType.CRONUS)) {
-        username = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME);
-        password = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME);
+        username = secretProvider.getSecret(GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME);
+        password = secretProvider.getSecret(GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME);
         instanceName = "cronus-pg-primary";
       } else {
         throw new RuntimeException(String.format("Don't know configuration for connection type %s.", connectionType));

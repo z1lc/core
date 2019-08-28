@@ -1,12 +1,9 @@
 package com.robertsanek.util;
 
-import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,14 +14,10 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
-import com.robertsanek.util.inject.InjectUtils;
-import com.robertsanek.util.platform.CrossPlatformUtils;
 
 import net.jodah.failsafe.Failsafe;
 import net.jodah.failsafe.FailsafeExecutor;
@@ -34,27 +27,10 @@ public class CommonProvider {
 
   private static final Log log = Logs.getLog(CommonProvider.class);
   private static final String EMAIL_ADDRESS = "rsanek@gmail.com";
-  private static final Map<SecretType, Secret> secrets;
   private static final RequestConfig.Builder globalConfig = RequestConfig.custom()
       .setCookieSpec(CookieSpecs.STANDARD);
   private static final Duration DEFAULT_HTTP_REQUEST_TIMEOUT = Duration.ofSeconds(30);
   private static final CookieStore DEFAULT_COOKIE_STORE = new BasicCookieStore();
-
-  static {
-    String secretsLocation = Optional.ofNullable(System.getenv("Z1LC_CORE_SECRETS_FILE_LOCATION"))
-        .orElse(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "secrets.json");
-    File secretsFile = new File(secretsLocation);
-    if (secretsFile.exists()) {
-      secrets = Arrays.stream(Unchecked.get(() -> InjectUtils.inject(ObjectMapper.class)
-          .readValue(secretsFile, Secret[].class)))
-          .collect(Collectors.toMap(Secret::getType, Function.identity()));
-    } else {
-      secrets = Arrays.stream(SecretType.values())
-          .map(secretType -> new Secret(secretType, "", Maps.newHashMap()))
-          .collect(Collectors.toMap(Secret::getType, Function.identity()));
-      log.error("No file was found at '%s'.", secretsFile.toString());
-    }
-  }
 
   public static String getEmailAddress() {
     return EMAIL_ADDRESS;
@@ -65,15 +41,6 @@ public class CommonProvider {
     WebClient webClient = new WebClient();
     webClient.getOptions().setThrowExceptionOnScriptError(false);
     return webClient;
-  }
-
-  public static String getSecret(SecretType secretType) {
-    Optional<Secret> maybeSecret = Optional.ofNullable(secrets.get(secretType));
-    if (maybeSecret.isPresent()) {
-      return maybeSecret.orElseThrow().getSecret();
-    } else {
-      throw new RuntimeException(String.format("secrets.json file has no mapping for SecretType '%s'.", secretType));
-    }
   }
 
   public static CloseableHttpClient getHttpClient() {

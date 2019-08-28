@@ -28,11 +28,12 @@ import org.xml.sax.SAXException;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.quality.anki.DataQualityBase;
-import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretProvider;
 
 public class GoodreadsBookEtl extends Etl<GoodreadsBook> {
 
@@ -43,6 +44,7 @@ public class GoodreadsBookEtl extends Etl<GoodreadsBook> {
       "J.K. Rowling", "J. K. Rowling",
       "Frederick P. Brooks Jr.", "Fred Brooks",
       "J.D. Salinger", "J. D. Salinger");
+  @Inject SecretProvider secretProvider;
 
   @Override
   public List<GoodreadsBook> getObjects() {
@@ -82,7 +84,7 @@ public class GoodreadsBookEtl extends Etl<GoodreadsBook> {
         .orElseGet(() -> {
           String noJr = author.replaceAll("(,)? Jr\\.", "");
           List<String> parts = Splitter.on(' ').splitToList(noJr);
-          return parts.size() == 1? parts.get(0) : String.format("%s %s", parts.get(0), parts.get(parts.size() - 1));
+          return parts.size() == 1 ? parts.get(0) : String.format("%s %s", parts.get(0), parts.get(parts.size() - 1));
         });
   }
 
@@ -95,7 +97,7 @@ public class GoodreadsBookEtl extends Etl<GoodreadsBook> {
           .setParameter("v", "2")
           .setParameter("per_page", String.valueOf(limitPerPage))
           .setParameter("page", String.valueOf(pageNumber))
-          .setParameter("key", CommonProvider.getSecret(GOODREADS_API_KEY))
+          .setParameter("key", secretProvider.getSecret(GOODREADS_API_KEY))
           .build();
       String rawXml = Unirest.get(uri.toString()).asString().getBody();
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

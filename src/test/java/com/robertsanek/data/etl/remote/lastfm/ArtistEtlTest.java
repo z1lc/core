@@ -8,6 +8,8 @@ import org.apache.http.client.HttpResponseException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.robertsanek.util.FakeSecretProvider;
+
 public class ArtistEtlTest {
 
   @Test
@@ -19,11 +21,13 @@ public class ArtistEtlTest {
 
   @Test
   public void getApiResponse_doesntThrowOn500() {
-    new ArtistEtl() {
+    ArtistEtl etl = new ArtistEtl() {
       @Override
       String get(URI uri) throws IOException {
         throw new HttpResponseException(500, "Internal Server Error");
       }
-    }.getApiResponse(0, 0);
+    };
+    etl.secretProvider = new FakeSecretProvider();
+    etl.getApiResponse(0, 0);
   }
 }

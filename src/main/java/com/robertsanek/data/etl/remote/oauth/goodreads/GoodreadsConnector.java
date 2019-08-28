@@ -22,11 +22,12 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.SecretType;
 import com.robertsanek.util.Unchecked;
+import com.robertsanek.util.inject.InjectUtils;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public class GoodreadsConnector {
@@ -36,9 +37,11 @@ public class GoodreadsConnector {
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/goodreads/";
   @Inject ObjectMapper mapper;
   private final String secretState = RandomStringUtils.randomAlphanumeric(13).toLowerCase();
-  private final OAuth10aService service = new ServiceBuilder(CommonProvider.getSecret(SecretType.GOODREADS_API_KEY))
-      .apiSecret(CommonProvider.getSecret(SecretType.GOODREADS_API_SECRET))
-      .build(new GoodreadsApi10a());
+  //TODO: inject this
+  private final OAuth10aService service =
+      new ServiceBuilder(InjectUtils.inject(SecretProvider.class).getSecret(SecretType.GOODREADS_API_KEY))
+          .apiSecret(InjectUtils.inject(SecretProvider.class).getSecret(SecretType.GOODREADS_API_SECRET))
+          .build(new GoodreadsApi10a());
 
   private OAuth1RequestToken getRequestToken() throws InterruptedException, ExecutionException, IOException {
     return service.getRequestToken();

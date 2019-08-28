@@ -26,11 +26,13 @@ import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.scrape.leetcode.jsonentities.LCQuestion;
 import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 
 public class LeetCodeQuestionEtl extends Etl<Question> {
 
   @Inject ObjectMapper mapper;
+  @Inject SecretProvider secretProvider;
   private static final String LOGIN = CommonProvider.getEmailAddress();
   private static final CookieStore cookieStore = new BasicCookieStore();
 
@@ -58,7 +60,7 @@ public class LeetCodeQuestionEtl extends Etl<Question> {
           .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
           .addTextBody("csrfmiddlewaretoken", csrftoken)
           .addTextBody("login", LOGIN)
-          .addTextBody("password", CommonProvider.getSecret(LEETCODE_PASSWORD))
+          .addTextBody("password", secretProvider.getSecret(LEETCODE_PASSWORD))
           .build());
       String loginResponse = EntityUtils.toString(CommonProvider.getHttpClient(cookieStore).execute(post).getEntity());
       if (loginResponse.toLowerCase().contains("csrf")) {

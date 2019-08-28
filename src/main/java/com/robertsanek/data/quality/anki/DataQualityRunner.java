@@ -41,6 +41,7 @@ import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
 import com.robertsanek.util.QuoteUtils;
+import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -89,6 +90,7 @@ public class DataQualityRunner implements QuartzJob {
   );
 
   @Inject NotificationSender notificationSender;
+  @Inject SecretProvider secretProvider;
 
   @VisibleForTesting
   static ContainerTag getEmailContent(DataQualityBase.DQInformation dqInformation) {
@@ -166,8 +168,8 @@ public class DataQualityRunner implements QuartzJob {
     DataQualityBase.prepareForDQ();
     String jdbcUrl = "jdbc:postgresql://google/postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory" +
         "&cloudSqlInstance=arctic-rite-143002:us-west1:rsanek-db";
-    String username = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME);
-    String password = CommonProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
+    String username = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME);
+    String password = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
 
     Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
     try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
