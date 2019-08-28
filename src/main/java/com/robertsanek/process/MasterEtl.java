@@ -51,6 +51,7 @@ import com.robertsanek.data.etl.EtlRun;
 import com.robertsanek.data.etl.SlowEtl;
 import com.robertsanek.data.etl.UsesLocalFiles;
 import com.robertsanek.util.CommonProvider;
+import com.robertsanek.util.InjectUtils;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
@@ -201,7 +202,7 @@ public class MasterEtl implements QuartzJob {
           .with(individualEtlRetry)
           .run(() -> {
             log.info("Running ETL with class %s (try #%s).", etlClazz.getName(), tryNumber.incrementAndGet());
-            Etl instance = etlClazz.getDeclaredConstructor().newInstance();
+            Etl instance = InjectUtils.inject(etlClazz);
             List objects = instance.getObjects();
             max.set(Math.min(ROW_LIMIT, objects.size()));
             if (max.get() == ROW_LIMIT) {
