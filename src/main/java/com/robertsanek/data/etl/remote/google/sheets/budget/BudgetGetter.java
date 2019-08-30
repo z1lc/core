@@ -60,11 +60,13 @@ public class BudgetGetter implements QuartzJob {
   private static final String INCOME_RANGE = "Budget!P2:R10000";
   private static final String CSV_DELIMITER = "`";
   private static Log log = Logs.getLog(BudgetGetter.class);
-  private AtomicLong counter = new AtomicLong(0);
-  private List<String> errors = Lists.newArrayList();
 
   @Inject NotificationSender notificationSender;
   @Inject SecretProvider secretProvider;
+
+  private AtomicLong counter = new AtomicLong(0);
+  private List<String> errors = Lists.newArrayList();
+
 
   public List<AnnotatedItem> getData() {
     List<AnnotatedItem> allLineItems = getValues(INCOME_RANGE);

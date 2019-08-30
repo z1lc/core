@@ -28,6 +28,8 @@ import com.robertsanek.util.Unchecked;
 
 public class EtlAndDqJob implements QuartzJob {
 
+  private static Log log = Logs.getLog(EtlAndDqJob.class);
+
   @Inject ObjectMapper mapper;
   @Inject ReCreateViews reCreateViews;
   @Inject SecretProvider secretProvider;
@@ -35,7 +37,6 @@ public class EtlAndDqJob implements QuartzJob {
   @Inject LeetCodeToodledoTaskEtl leetCodeToodledoTaskEtl;
   @Inject MasterEtl masterEtl;
   @Inject DataQualityRunner dqRunner;
-  private static Log log = Logs.getLog(EtlAndDqJob.class);
 
   @Override
   public void exec(JobExecutionContext context) {

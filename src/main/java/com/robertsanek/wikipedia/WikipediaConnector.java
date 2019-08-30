@@ -53,7 +53,6 @@ import j2html.tags.DomContent;
 public class WikipediaConnector {
 
   private static final Log log = Logs.getLog(WikipediaConnector.class);
-  @Inject ObjectMapper mapper;
   private static final ImmutableSet<Pattern> EXCLUDED_ARTICLE_TITLE_REGEXES = ImmutableSet.of(
       Pattern.compile("^Main_Page$"),
       Pattern.compile("^Special:.*$"),
@@ -80,6 +79,8 @@ public class WikipediaConnector {
   private static final String WIKIDATA_BIRTHDAY_PROPERTY = "P569";
   private static final String WIKIDATA_DEATHDAY_PROPERTY = "P570";
   private static final AtomicLong counter = new AtomicLong(0);
+
+  @Inject ObjectMapper mapper;
 
   public enum Language {
     CZ,

@@ -13,13 +13,14 @@ import com.robertsanek.util.Logs;
 
 public class NoSynonymIsAFullSubstringOfAnotherSynonym extends DataQualityBase {
 
-  static final Log log = Logs.getLog(NoSynonymIsAFullSubstringOfAnotherSynonym.class);
   public static int MAX_SYNONYM_INDEX = (int) fieldsInUse.stream()
       .filter(field -> field.getModel_id() == SYNONYM_MODEL_ID)
       .filter(field -> field.getName().toLowerCase().contains("synonym"))
       .mapToLong(Field::getOrdinal)
       .max()
       .orElseThrow();
+
+  static final Log log = Logs.getLog(NoSynonymIsAFullSubstringOfAnotherSynonym.class);
 
   public static List<String> getSublistOfSynonymFieldsWithoutContext(List<String> fields) {
     List<String> fieldsNoSynonym = fields.subList(0, Math.min(MAX_SYNONYM_INDEX + 1, fields.size()));

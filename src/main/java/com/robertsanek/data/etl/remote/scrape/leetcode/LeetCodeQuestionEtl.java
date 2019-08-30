@@ -31,10 +31,11 @@ import com.robertsanek.util.Unchecked;
 
 public class LeetCodeQuestionEtl extends Etl<Question> {
 
-  @Inject ObjectMapper mapper;
-  @Inject SecretProvider secretProvider;
   private static final String LOGIN = CommonProvider.getEmailAddress();
   private static final CookieStore cookieStore = new BasicCookieStore();
+
+  @Inject ObjectMapper mapper;
+  @Inject SecretProvider secretProvider;
 
   @Override
   public List<Question> getObjects() {

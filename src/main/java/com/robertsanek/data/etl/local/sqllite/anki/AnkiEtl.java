@@ -16,9 +16,9 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public abstract class AnkiEtl<T> extends SQLiteEtl<T> {
 
+  static final int FIELDS_LIMIT = 10_000;
   private static final Log log = Logs.getLog(AnkiEtl.class);
   private static final String PROFILE_NAME = "z1lc";
-  static final int FIELDS_LIMIT = 10_000;
   private File tempCopiedAnkiDb;
 
   @Override

@@ -27,9 +27,10 @@ public class SleepEtl extends Etl<Sleep> {
   private static final String FITBIT_ROOT =
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/fitbit/";
   private static final LocalDate FITBIT_START_DATE = LocalDate.of(2016, 8, 7);
+  private static final long MAXIMUM_DAYS_PER_REQUEST = 100;
+
   @Inject ObjectMapper mapper;
   @Inject SecretProvider secretProvider;
-  private static final long MAXIMUM_DAYS_PER_REQUEST = 100;
 
   @Override
   public List<Sleep> getObjects() {

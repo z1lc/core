@@ -80,12 +80,12 @@ public class MasterEtl implements QuartzJob {
       .withDelay(Duration.ofSeconds(3))
       .withMaxRetries(2);
 
+  @Inject NotificationSender notificationSender;
+  @Inject SecretProvider secretProvider;
+
   private final Configuration config = new Configuration().configure();
   private boolean fastRun = false;
   private boolean parallel = true;
-
-  @Inject NotificationSender notificationSender;
-  @Inject SecretProvider secretProvider;
 
   private SessionFactory getSessionFactory(Hbm2ddlType hbm2ddlType, ConnectionType connectionType)
       throws HibernateException, IOException, GeneralSecurityException, InterruptedException {

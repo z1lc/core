@@ -31,9 +31,10 @@ import com.robertsanek.util.Unchecked;
 
 abstract class RescueTimeEtl<T> extends Etl<T> {
 
+  private static Log log = Logs.getLog(RescueTimeEtl.class);
   @VisibleForTesting int FROM_YEAR = 2009; //first data in RescueTime is from 2009
   @VisibleForTesting int TO_YEAR = LocalDate.now().getYear();
-  private static Log log = Logs.getLog(RescueTimeEtl.class);
+
   @Inject SecretProvider secretProvider;
 
   public <O> List<O> genericGet(String taxonomy, Function<CSVRecord, O> csvToObjectFunction) {

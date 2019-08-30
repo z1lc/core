@@ -10,8 +10,8 @@ public enum HeavyOrEndurance {
   ENDURANCE(6),
   HEAVY(5);
 
-  private final int numSets;
   private static Map<Integer, HeavyOrEndurance> map;
+  private final int numSets;
 
   static {
     map = Arrays.stream(HeavyOrEndurance.values())

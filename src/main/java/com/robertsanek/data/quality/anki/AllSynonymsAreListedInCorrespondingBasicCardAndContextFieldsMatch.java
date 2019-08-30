@@ -20,6 +20,18 @@ import com.robertsanek.util.Logs;
 
 public class AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatch extends DataQualityBase {
 
+  public static int SYNONYM_INDEX_CONTEXT = (int) fieldsInUse.stream()
+      .filter(field -> field.getModel_id() == SYNONYM_MODEL_ID)
+      .filter(field -> field.getName().equals("Context \uD83D\uDCA1"))
+      .mapToLong(Field::getOrdinal)
+      .max()
+      .orElseThrow();
+  public static int BASIC_INDEX_CONTEXT = (int) fieldsInUse.stream()
+      .filter(field -> field.getModel_id() == BASIC_MODEL_ID)
+      .filter(field -> field.getName().equals("Context \uD83D\uDCA1"))
+      .mapToLong(Field::getOrdinal)
+      .max()
+      .orElseThrow();
   static final Log log = Logs.getLog(AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatch.class);
   private static final ImmutableSet<Long> NOTE_ID_EXCLUSIONS = ImmutableSet.of(
       1282537182547L,
@@ -42,18 +54,6 @@ public class AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatch e
       1566588027914L,
       0L
   );
-  public static int SYNONYM_INDEX_CONTEXT = (int) fieldsInUse.stream()
-      .filter(field -> field.getModel_id() == SYNONYM_MODEL_ID)
-      .filter(field -> field.getName().equals("Context \uD83D\uDCA1"))
-      .mapToLong(Field::getOrdinal)
-      .max()
-      .orElseThrow();
-  public static int BASIC_INDEX_CONTEXT = (int) fieldsInUse.stream()
-      .filter(field -> field.getModel_id() == BASIC_MODEL_ID)
-      .filter(field -> field.getName().equals("Context \uD83D\uDCA1"))
-      .mapToLong(Field::getOrdinal)
-      .max()
-      .orElseThrow();
 
   private static Pair<String, List<String>> getCleanedIndividualSynonyms(List<String> fields) {
     String primary = Jsoup.parse(fields.get(0)).text().replaceAll("\\[sound:.+]", "");

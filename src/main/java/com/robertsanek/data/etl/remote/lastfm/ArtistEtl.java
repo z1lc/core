@@ -28,10 +28,11 @@ import com.robertsanek.util.Unchecked;
 
 public class ArtistEtl extends Etl<Artist> {
 
-  @Inject ObjectMapper mapper;
-  @Inject SecretProvider secretProvider;
   private static final String USERNAME = "rsanek";
   private static final long ARTISTS_PER_PAGE = 1000;
+
+  @Inject ObjectMapper mapper;
+  @Inject SecretProvider secretProvider;
 
   @Override
   public List<Artist> getObjects() {

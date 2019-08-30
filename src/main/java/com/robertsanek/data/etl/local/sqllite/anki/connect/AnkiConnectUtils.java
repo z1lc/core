@@ -33,7 +33,6 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public class AnkiConnectUtils {
 
-  @Inject ObjectMapper mapper;
   private static String ANKI_CONNECT_HOST = "localhost";
   private static int ANKI_CONNECT_PORT = 8765;
   private static String ANK_CONNECT_PRETTY_URL = String.format("%s:%d", ANKI_CONNECT_HOST, ANKI_CONNECT_PORT);
@@ -43,6 +42,8 @@ public class AnkiConnectUtils {
   private static final int ANKI_CONNECT_VERSION = 6;
   private static Log log = Logs.getLog(AnkiConnectUtils.class);
   private static ZonedDateTime lastAnkiOpenTime = ZonedDateTime.now().minusYears(10);
+
+  @Inject ObjectMapper mapper;
 
   public boolean loadProfile(String profileToLoad) {
     openAnki();

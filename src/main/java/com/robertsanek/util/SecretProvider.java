@@ -17,8 +17,10 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 public class SecretProvider {
 
   private static final Log log = Logs.getLog(SecretProvider.class);
-  private Map<SecretType, Secret> secrets;
+
   @Inject ObjectMapper objectMapper;
+
+  private Map<SecretType, Secret> secrets;
 
   public String getSecret(SecretType secretType) {
     ensureInitialized();

@@ -23,9 +23,10 @@ import com.robertsanek.util.Unchecked;
 
 public class LifxConnector {
 
+  private static final Duration SWITCH_BETWEEN_SCENE_DURATION = Duration.ofMinutes(5);
+
   @Inject ObjectMapper mapper;
   @Inject SecretProvider secretProvider;
-  private static final Duration SWITCH_BETWEEN_SCENE_DURATION = Duration.ofMinutes(5);
 
   private String getAuthorizationString() {
     return String.format("Bearer %s", secretProvider.getSecret(SecretType.LIFX_ACCESS_TOKEN));
