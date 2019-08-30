@@ -31,6 +31,10 @@ public class EtlAndDqJob implements QuartzJob {
   @Inject ObjectMapper mapper;
   @Inject ReCreateViews reCreateViews;
   @Inject SecretProvider secretProvider;
+  @Inject AnkiEtl ankiEtl;
+  @Inject LeetCodeToodledoTaskEtl leetCodeToodledoTaskEtl;
+  @Inject MasterEtl masterEtl;
+  @Inject DataQualityRunner dqRunner;
   private static Log log = Logs.getLog(EtlAndDqJob.class);
 
   @Override
@@ -40,16 +44,16 @@ public class EtlAndDqJob implements QuartzJob {
       JobDataMap dataMap = context.getMergedJobDataMap();
       parallel = dataMap.getBoolean("parallel");
     }
-    new AnkiEtl().call();
-    new LeetCodeToodledoTaskEtl().run();
-    boolean etlsSuccessful = new MasterEtl().runEtls(false, parallel);
+    ankiEtl.call();
+    leetCodeToodledoTaskEtl.run();
+    boolean etlsSuccessful = masterEtl.runEtls(false, parallel);
 
     log.info("Will execute all queries in CommonQueries.sql file to re-create views.");
     reCreateViews.executeQueries();
 
     if (etlsSuccessful) {
       triggerKlipfolioRefresh();
-      new DataQualityRunner().exec(context);
+      dqRunner.exec(context);
     } else {
       log.info("Not all ETLs were successful, so will not trigger Klipfolio refresh or run Data Quality checks.");
     }

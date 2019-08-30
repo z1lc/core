@@ -10,10 +10,11 @@ import com.robertsanek.data.etl.Etl;
 public class TrelloListEtl extends Etl<TrelloList> {
 
   @Inject TrelloConnector trelloConnector;
+  @Inject BoardEtl boardEtl;
 
   @Override
   public List<TrelloList> getObjects() throws Exception {
-    return new BoardEtl().getObjects().stream()
+    return boardEtl.getObjects().stream()
         .map(TrelloBoard::getId)
         .flatMap(boardId -> trelloConnector.getApi().getBoardLists(boardId, new Argument("filter", "all")).stream())
         .map(list -> TrelloList.TrelloListBuilder.aTrelloList()

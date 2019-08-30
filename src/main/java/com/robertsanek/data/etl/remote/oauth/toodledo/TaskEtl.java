@@ -6,13 +6,16 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 
 public class TaskEtl extends Etl<ToodledoTask> {
 
+  @Inject ToodledoConnector toodledoConnector;
+
   @Override
   public List<ToodledoTask> getObjects() {
-    return new ToodledoConnector().getTasks().stream()
+    return toodledoConnector.getTasks().stream()
         .map(jsonTask -> {
           boolean completedIsNull = jsonTask.getCompleted().equals(Instant.ofEpochMilli(0));
           return ToodledoTask.ToodledoTaskBuilder.aToodledoTask()

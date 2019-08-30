@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.inject.Named;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
@@ -19,30 +21,21 @@ import com.robertsanek.data.etl.remote.scrape.toodledo.HabitEtl;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitRep;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitRepEtl;
 import com.robertsanek.util.PostgresConnection;
-import com.robertsanek.util.SecretProvider;
-import com.robertsanek.util.SecretType;
 import com.robertsanek.util.Unchecked;
 
 public class LeetCodeToodledoTaskEtl {
 
   private static final String TABLE_NAME = "toodledo_habit_reps";
-  @Inject SecretProvider secretProvider;
   @Inject PostgresConnection postgresConnection;
+  @Inject HabitEtl robHabitEtl;
+  @Inject @Named("will") HabitEtl willHabitEtl;
+  @Inject HabitRepEtl robHabitRepEtl;
+  @Inject @Named("will") HabitRepEtl willHabitRepEtl;
 
   public void run() {
     ImmutableList<Pair<User, Habit>> habits = ImmutableList.<Pair<User, Habit>>builder()
-        .addAll(Utils.addUser(new HabitEtl().getObjects(), User.ROB))
-        .addAll(Utils.addUser(new HabitEtl() {
-          @Override
-          public String getUsername() {
-            return secretProvider.getSecret(SecretType.TOODLEDO_WILL_USERNAME);
-          }
-
-          @Override
-          public String getPassword() {
-            return secretProvider.getSecret(SecretType.TOODLEDO_WILL_PASSWORD);
-          }
-        }.getObjects(), User.WILL))
+        .addAll(Utils.addUser(robHabitEtl.getObjects(), User.ROB))
+        .addAll(Utils.addUser(willHabitEtl.getObjects(), User.WILL))
         .build();
 
     List<Pair<User, Habit>> leetCodeOnly = habits.stream()
@@ -50,18 +43,8 @@ public class LeetCodeToodledoTaskEtl {
         .collect(Collectors.toList());
 
     ImmutableList<Pair<User, HabitRep>> habitReps = ImmutableList.<Pair<User, HabitRep>>builder()
-        .addAll(Utils.addUser(new HabitRepEtl().getObjects(), User.ROB))
-        .addAll(Utils.addUser(new HabitRepEtl() {
-          @Override
-          public String getUsername() {
-            return secretProvider.getSecret(SecretType.TOODLEDO_WILL_USERNAME);
-          }
-
-          @Override
-          public String getPassword() {
-            return secretProvider.getSecret(SecretType.TOODLEDO_WILL_PASSWORD);
-          }
-        }.getObjects(), User.WILL))
+        .addAll(Utils.addUser(robHabitRepEtl.getObjects(), User.ROB))
+        .addAll(Utils.addUser(willHabitRepEtl.getObjects(), User.WILL))
         .build();
 
     Unchecked.run(() -> Class.forName("org.postgresql.Driver"));

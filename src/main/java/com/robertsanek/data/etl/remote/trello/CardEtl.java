@@ -12,10 +12,11 @@ import com.robertsanek.data.etl.Etl;
 public class CardEtl extends Etl<TrelloCard> {
 
   @Inject TrelloConnector trelloConnector;
+  @Inject BoardEtl boardEtl;
 
   @Override
   public List<TrelloCard> getObjects() {
-    return new BoardEtl().getObjects().stream()
+    return boardEtl.getObjects().stream()
         .map(TrelloBoard::getId)
         .flatMap(boardId -> trelloConnector.getApi().getBoardCards(boardId, new Argument("filter", "all")).stream())
         .map(card -> TrelloCard.TrelloCardBuilder.aTrelloCard()
