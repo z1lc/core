@@ -13,4 +13,5 @@
   <suppress checks="LeftCurly|RightCurly" files="Category.java"/>
   <suppress checks="LeftCurly|RightCurly" files="Efficiency.java"/>
   <suppress checks="[a-zA-Z0-9]*" files="ParallelExample.java"/>
+  <suppress checks="[a-zA-Z0-9]*" files="HelloAnalytics.java"/>
 </suppressions>
