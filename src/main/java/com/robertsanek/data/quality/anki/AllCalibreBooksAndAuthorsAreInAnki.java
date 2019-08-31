@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.local.sqllite.anki.Note;
 import com.robertsanek.data.etl.local.sqllite.calibre.CalibreBookEtl;
 import com.robertsanek.data.etl.local.sqllite.calibre.IncrementalReadingPriority;
@@ -28,10 +29,13 @@ public class AllCalibreBooksAndAuthorsAreInAnki extends DataQualityBase {
       "2019 Email Deliverability Guide"
   );
 
+  @Inject IncrementalReadingPriorityEtl incrementalReadingPriorityEtl;
+  @Inject CalibreBookEtl calibreBookEtl;
+
   @Override
   void runDQ() {
     Set<String> inAnki = getExistingWorksOfArtInAnkiDbLowerCased();
-    Map<Long, Long> bookIdToIRPriority = Unchecked.get(() -> new IncrementalReadingPriorityEtl().getObjects()).stream()
+    Map<Long, Long> bookIdToIRPriority = Unchecked.get(() -> incrementalReadingPriorityEtl.getObjects()).stream()
         .collect(Collectors.toMap(IncrementalReadingPriority::getBookId, IncrementalReadingPriority::getValue));
     Set<String> lowerCasePersonKnownFor = getExistingPeopleInAnkiDb().stream()
         .map(Note::getFields)
@@ -40,7 +44,7 @@ public class AllCalibreBooksAndAuthorsAreInAnki extends DataQualityBase {
             .text()
             .toLowerCase())
         .collect(Collectors.toSet());
-    Unchecked.get(() -> new CalibreBookEtl().getObjects()).stream()
+    Unchecked.get(() -> calibreBookEtl.getObjects()).stream()
         .filter(book -> !EXCEPTIONS.contains(book.getTitle()))
         .forEach(book -> {
           String bookTitle = book.getTitle();

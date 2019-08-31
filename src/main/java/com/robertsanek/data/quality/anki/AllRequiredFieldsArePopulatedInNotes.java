@@ -21,6 +21,7 @@ public class AllRequiredFieldsArePopulatedInNotes extends DataQualityBase {
       1539052554034L,  //Leitner couldn't find image
       1554342383387L,  //magic dictionary complexities
       1564952248287L,
+      1567117908985L,
       0L
   );
 
