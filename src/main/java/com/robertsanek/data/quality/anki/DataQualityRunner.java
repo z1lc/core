@@ -43,6 +43,7 @@ import com.robertsanek.util.NotificationSender;
 import com.robertsanek.util.QuoteUtils;
 import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
+import com.robertsanek.util.inject.InjectUtils;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 
@@ -142,7 +143,7 @@ public class DataQualityRunner implements QuartzJob {
     log.info("Will run %s Java-based DQ checks.", concreteDQs.size());
     Stream<Class<? extends DataQualityBase>> stream = PARALLEL ? concreteDQs.parallelStream() : concreteDQs.stream();
     stream.forEach(dqClazz -> {
-      DataQualityBase instance = Unchecked.get(() -> dqClazz.getDeclaredConstructor().newInstance());
+      DataQualityBase instance = InjectUtils.inject(dqClazz);
       log.info("Running %s...", dqClazz.getSimpleName());
       instance.runDQ();
     });
