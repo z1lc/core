@@ -20,12 +20,16 @@ import com.robertsanek.data.etl.remote.scrape.toodledo.Habit;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitEtl;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitRep;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitRepEtl;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
 import com.robertsanek.util.PostgresConnection;
 import com.robertsanek.util.Unchecked;
 
 public class LeetCodeToodledoTaskEtl {
 
+  private static Log log = Logs.getLog(LeetCodeToodledoTaskEtl.class);
   private static final String TABLE_NAME = "toodledo_habit_reps";
+
   @Inject PostgresConnection postgresConnection;
   @Inject HabitEtl robHabitEtl;
   @Inject @Named("will") HabitEtl willHabitEtl;
@@ -33,6 +37,7 @@ public class LeetCodeToodledoTaskEtl {
   @Inject @Named("will") HabitRepEtl willHabitRepEtl;
 
   public void run() {
+    log.info("Running LeetCode & Toodledo ETLs for Heroku Postgres...");
     ImmutableList<Pair<User, Habit>> habits = ImmutableList.<Pair<User, Habit>>builder()
         .addAll(Utils.addUser(robHabitEtl.getObjects(), User.ROB))
         .addAll(Utils.addUser(willHabitEtl.getObjects(), User.WILL))
@@ -81,6 +86,7 @@ public class LeetCodeToodledoTaskEtl {
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+    log.info("Successfully pushed LeetCode & Toodledo data to Heroku Postgres.");
   }
 
 }

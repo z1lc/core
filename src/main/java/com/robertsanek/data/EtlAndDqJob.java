@@ -38,26 +38,31 @@ public class EtlAndDqJob implements QuartzJob {
   @Inject MasterEtl masterEtl;
   @Inject DataQualityRunner dqRunner;
 
-  @Override
-  public void exec(JobExecutionContext context) {
+  public void exec(JobDataMap jobDataMap) {
+    boolean fastRun = false;
     boolean parallel = true;
-    if (context != null) {
-      JobDataMap dataMap = context.getMergedJobDataMap();
-      parallel = dataMap.getBoolean("parallel");
+    if (jobDataMap != null) {
+      fastRun = jobDataMap.getBoolean("fastrun");
+      parallel = jobDataMap.getBoolean("parallel");
     }
     ankiEtl.call();
     leetCodeToodledoTaskEtl.run();
-    boolean etlsSuccessful = masterEtl.runEtls(false, parallel);
+    boolean etlsSuccessful = masterEtl.runEtls(fastRun, parallel);
 
     log.info("Will execute all queries in CommonQueries.sql file to re-create views.");
     reCreateViews.executeQueries();
 
     if (etlsSuccessful) {
       triggerKlipfolioRefresh();
-      dqRunner.exec(context);
+      dqRunner.exec(jobDataMap);
     } else {
       log.info("Not all ETLs were successful, so will not trigger Klipfolio refresh or run Data Quality checks.");
     }
+  }
+
+  @Override
+  public void exec(JobExecutionContext context) {
+    exec(context.getMergedJobDataMap());
   }
 
   @VisibleForTesting

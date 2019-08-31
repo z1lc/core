@@ -33,6 +33,7 @@ public class AnkiEtl implements Callable<Object> {
   private static final String ROB_NAME = "z1lc";
   private static final String WILL_NAME = "will";
   private static Log log = Logs.getLog(AnkiEtl.class);
+
   @Inject PostgresConnection postgresConnection;
 
   @Override

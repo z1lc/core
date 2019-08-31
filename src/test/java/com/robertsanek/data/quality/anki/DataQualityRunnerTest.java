@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.quartz.JobDataMap;
 
 public class DataQualityRunnerTest {
 
   @Test
   @Ignore("integration")
   public void run() {
-    new DataQualityRunner().exec(null);
+    new DataQualityRunner().exec((JobDataMap) null);
   }
 
   @Test

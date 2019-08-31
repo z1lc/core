@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -21,6 +22,7 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
+import com.google.common.collect.ImmutableMap;
 import com.robertsanek.data.EtlAndDqJob;
 import com.robertsanek.data.etl.local.sqllite.anki.AnkiSyncer;
 import com.robertsanek.data.etl.remote.fitbit.SleepEtl;
@@ -54,6 +56,11 @@ public class Main {
     CLI.CliArgs cliArgs = InjectUtils.inject(CLI.class).getCliArgs(args);
     if (cliArgs.getCommand().isPresent()) {
       Command command = cliArgs.getCommand().orElseThrow();
+      JobDataMap etlJobDataMap = new JobDataMap(ImmutableMap.of(
+          "parallel", cliArgs.isParallel(),
+          "fastrun", cliArgs.isFastRun()
+      ));
+
       switch (command) {
         case DAEMON:
           log.info("Running command %s.", command);
@@ -68,10 +75,9 @@ public class Main {
                 .withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(10))
                 .build();
           }
-
           JobDetail etlAndDq = JobBuilder
               .newJob(EtlAndDqJob.class)
-              .usingJobData("parallel", cliArgs.isParallel())
+              .usingJobData(etlJobDataMap)
               .build();
           //http://www.cronmaker.com/
           String everyHourAtTopOfHourCron = "0 0 0/1 1/1 * ? *";
@@ -136,11 +142,11 @@ public class Main {
           break;
         case DQ:
           log.info("Running command %s.", command);
-          InjectUtils.inject(DataQualityRunner.class).exec(null);
+          InjectUtils.inject(DataQualityRunner.class).exec(etlJobDataMap);
           break;
         case ETL:
           log.info("Running command %s.", command);
-          InjectUtils.inject(EtlAndDqJob.class).exec(null);
+          InjectUtils.inject(EtlAndDqJob.class).exec(etlJobDataMap);
           break;
         case ETL_SETUP:
           log.info("Setting up Google Sheets credentials...");

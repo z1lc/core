@@ -1,5 +1,6 @@
 package com.robertsanek;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,11 +21,13 @@ public class CLI {
 
     private Optional<Command> command;
     private boolean force;
+    private boolean fastRun;
     private boolean parallel;
 
-    CliArgs(Optional<Command> command, boolean force, boolean parallel) {
+    CliArgs(Optional<Command> command, boolean force, boolean fastRun, boolean parallel) {
       this.command = command;
       this.force = force;
+      this.fastRun = fastRun;
       this.parallel = parallel;
     }
 
@@ -34,6 +37,10 @@ public class CLI {
 
     public boolean isForce() {
       return force;
+    }
+
+    public boolean isFastRun() {
+      return fastRun;
     }
 
     public boolean isParallel() {
@@ -67,6 +74,12 @@ public class CLI {
     forceDaemonSelection.setRequired(false);
     options.addOption(forceDaemonSelection);
 
+    Option fastRunSelection =
+        new Option("fr", "fastrun", false,
+            "limit to only run fast ETLs (such as when bandwidth/speed are concerns).");
+    fastRunSelection.setRequired(false);
+    options.addOption(fastRunSelection);
+
     CommandLineParser parser = new DefaultParser();
     HelpFormatter formatter = new HelpFormatter();
     CommandLine cmd;
@@ -75,13 +88,14 @@ public class CLI {
       cmd = parser.parse(options, args);
     } catch (ParseException e) {
       formatter.printHelp("core", options);
-      return new CliArgs(null, false, false);
+      return new CliArgs(null, false, false, false);
     }
     String parallelismPassed = cmd.getOptionValue("parallelism");
     boolean parallelism = parallelismPassed == null || Boolean.parseBoolean(parallelismPassed);
     return new CliArgs(
         Command.matchToCommand(cmd.getOptionValue("command")),
-        cmd.getOptionValue("force") != null,
+        Arrays.stream(cmd.getOptions()).anyMatch(opt -> opt.getLongOpt().equals("force")),
+        Arrays.stream(cmd.getOptions()).anyMatch(opt -> opt.getLongOpt().equals("fastrun")),
         parallelism);
   }
 

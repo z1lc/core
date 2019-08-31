@@ -84,8 +84,6 @@ public class MasterEtl implements QuartzJob {
   @Inject SecretProvider secretProvider;
 
   private final Configuration config = new Configuration().configure();
-  private boolean fastRun = false;
-  private boolean parallel = true;
 
   private SessionFactory getSessionFactory(Hbm2ddlType hbm2ddlType, ConnectionType connectionType)
       throws HibernateException, IOException, GeneralSecurityException, InterruptedException {
@@ -154,8 +152,6 @@ public class MasterEtl implements QuartzJob {
 
   @SuppressWarnings({"rawtypes", "try"})
   public boolean runEtls(boolean fastRun, boolean parallel) {
-    this.fastRun = fastRun;
-    this.parallel = parallel;
     Stopwatch total = Stopwatch.createStarted();
     List<Class<? extends Etl>> concreteEtls = getConcreteEtls(fastRun);
     log.info("Creating connection to Cloud SQL and re-generating table schemas... (this may take up to 3 minutes)");

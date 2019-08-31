@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.reflections.Reflections;
 
@@ -161,8 +162,7 @@ public class DataQualityRunner implements QuartzJob {
         .collect(Collectors.toList());
   }
 
-  @Override
-  public void exec(JobExecutionContext context) {
+  public void exec(JobDataMap jobDataMap) {
     Stopwatch startSW = Stopwatch.createStarted();
     ZonedDateTime startZdt = ZonedDateTime.now();
     log.info("Preparing to run Anki data quality checks (using parallel = %s)...", PARALLEL);
@@ -230,7 +230,7 @@ public class DataQualityRunner implements QuartzJob {
           "Time: ", b(startZdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z"))), br(),
           "Duration :", b(String.valueOf(startSW.elapsed().getSeconds())), "seconds"));
       ContainerTag emailContent = getEmailContent(dqInformation);
-      if (errors + warnings >= MINIMUM_VIOLATIONS && context == null) {
+      if (errors + warnings >= MINIMUM_VIOLATIONS && jobDataMap == null) {
         log.info("Will notify because the total number of errors and warnings (%s) is at least as large as the " +
             "configured alert minimum (%s).", errors + warnings, MINIMUM_VIOLATIONS);
         notificationSender.sendEmail(
@@ -243,5 +243,10 @@ public class DataQualityRunner implements QuartzJob {
             "configured alert minimum (%s).", errors + warnings, MINIMUM_VIOLATIONS);
       }
     }
+  }
+
+  @Override
+  public void exec(JobExecutionContext context) {
+    exec(context.getMergedJobDataMap());
   }
 }
