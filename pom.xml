@@ -185,7 +185,7 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- com.robertsanek.sheets -->
+    <!-- Google APIs -->
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
