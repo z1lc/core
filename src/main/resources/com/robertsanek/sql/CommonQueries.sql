@@ -70,7 +70,8 @@ create or replace view rlp_weekly_productivity as (
     select date_trunc('week', day + interval '1 day') - interval '1 day' as week,
         sum(case when total_minutes >= 30 then 1 else 0 end) as days_completed
     from minutes_per_day
-    group by 1)
+    group by 1
+    order by 1 desc)
 ;
 
 
