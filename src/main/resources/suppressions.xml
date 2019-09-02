@@ -6,6 +6,7 @@
 
 <suppressions>
   <suppress checks="IllegalImport" files="SheetsConnector.java"/>
+  <suppress checks="IllegalImport" files="FitConnector.java"/>
   <suppress checks="LeftCurly|RightCurly" files="Card.java"/>
   <suppress checks="LeftCurly|RightCurly" files="Model.java"/>
   <suppress checks="LeftCurly|RightCurly" files="Note.java"/>
