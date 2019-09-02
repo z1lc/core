@@ -5,7 +5,7 @@ jobs:
     working_directory: ~
 
     docker:
-      - image: circleci/openjdk:latest
+      - image: openjdk:12-jdk
 
     steps:
 
