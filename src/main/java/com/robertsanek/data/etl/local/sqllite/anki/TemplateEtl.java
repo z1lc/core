@@ -3,6 +3,7 @@ package com.robertsanek.data.etl.local.sqllite.anki;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.json.Json;
@@ -10,14 +11,13 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import com.google.common.collect.Lists;
 import com.robertsanek.util.Unchecked;
 
 public class TemplateEtl extends AnkiEtl<Template> {
 
   @Override
   public List<Template> transformRow(ResultSet row) throws Exception {
-    List<Template> allTemplates = Lists.newArrayList();
+    List<Template> allTemplates = new ArrayList<>();
     String models = row.getString("models");
     try (JsonReader jsonReader = Unchecked
         .get(() -> Json.createReader(new ByteArrayInputStream(models.getBytes(StandardCharsets.UTF_8.name()))))) {

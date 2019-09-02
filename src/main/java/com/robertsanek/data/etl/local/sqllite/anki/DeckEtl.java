@@ -3,20 +3,20 @@ package com.robertsanek.data.etl.local.sqllite.anki;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import com.google.common.collect.Lists;
 import com.robertsanek.util.Unchecked;
 
 public class DeckEtl extends AnkiEtl<Deck> {
 
   @Override
   public List<Deck> transformRow(ResultSet row) throws Exception {
-    List<Deck> allDecks = Lists.newArrayList();
+    List<Deck> allDecks = new ArrayList<>();
     String models = row.getString("decks");
     try (JsonReader jsonReader = Unchecked
         .get(() -> Json.createReader(new ByteArrayInputStream(models.getBytes(StandardCharsets.UTF_8.name()))))) {

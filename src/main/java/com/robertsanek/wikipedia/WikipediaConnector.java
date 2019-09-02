@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,7 +34,6 @@ import org.apache.http.util.EntityUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -106,7 +106,7 @@ public class WikipediaConnector {
   }
 
   private static List<LocalDate> getListOfDatesForApiRequest(LocalDate sinceDateInclusive, Granularity granularity) {
-    final List<LocalDate> localDates = Lists.newArrayList();
+    final List<LocalDate> localDates = new ArrayList<>();
     while (sinceDateInclusive.isBefore(LocalDate.now())) {
       LocalDate newDate;
       switch (granularity) {
@@ -170,7 +170,7 @@ public class WikipediaConnector {
     log.info("Found %s top articles.", pageToViewCountMap.size());
 
     AtomicLong count = new AtomicLong(1);
-    List<WikiArticle> sortedArticles = Lists.newArrayList();
+    List<WikiArticle> sortedArticles = new ArrayList<>();
     List<Map.Entry<String, Long>> sortedEntries = pageToViewCountMap.entrySet().stream()
         .sorted(((Comparator<Map.Entry<String, Long>>) (o1, o2) -> {
           return o1.getValue().compareTo(o2.getValue());

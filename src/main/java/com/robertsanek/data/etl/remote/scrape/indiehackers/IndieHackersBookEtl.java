@@ -3,6 +3,7 @@ package com.robertsanek.data.etl.remote.scrape.indiehackers;
 import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.Etl;
@@ -54,7 +54,7 @@ public class IndieHackersBookEtl extends Etl<IndieHackersBook> {
 
   @Override
   public List<IndieHackersBook> getObjects() throws Exception {
-    List<IndieHackersBook> allBooks = Collections.synchronizedList(Lists.newArrayList());
+    List<IndieHackersBook> allBooks = Collections.synchronizedList(new ArrayList<>());
     Set<URL> interviewURLs = getInterviewURLs();
     log.info("Visiting %s individual URLs to find mentions of books...", interviewURLs.size());
     ForkJoinPool pool = new ForkJoinPool(driverCount);

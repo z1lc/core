@@ -6,9 +6,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.util.Unchecked;
 
@@ -24,7 +24,7 @@ public abstract class SQLiteEtl<T> extends Etl<T> {
   public List<T> getObjects() throws Exception {
     preEtlStep();
     Unchecked.run(() -> Class.forName("org.sqlite.JDBC"));
-    List<T> objects = Lists.newArrayList();
+    List<T> objects = new ArrayList<>();
 
     try (Connection connection = DriverManager.getConnection(getConnectionString());
          Statement statement = connection.createStatement()) {

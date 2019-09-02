@@ -1,6 +1,7 @@
 package com.robertsanek;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -8,7 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.Lists;
 import com.robertsanek.util.Unchecked;
 
 public class ParallelExample {
@@ -21,7 +21,7 @@ public class ParallelExample {
 
   public static void parallelSortExample() {
     ThreadLocalRandom random = ThreadLocalRandom.current();
-    List<Integer> randomNumbers = Lists.newArrayList();
+    List<Integer> randomNumbers = new ArrayList<>();
     for (int i = 0; i < 20_000_000; i++) {
       randomNumbers.add(random.nextInt());
     }

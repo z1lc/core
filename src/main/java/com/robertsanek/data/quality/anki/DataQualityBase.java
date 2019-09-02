@@ -5,6 +5,7 @@ import static j2html.TagCreator.td;
 import static j2html.TagCreator.tr;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,7 +22,6 @@ import org.jsoup.Jsoup;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.Streams;
@@ -198,7 +198,7 @@ public abstract class DataQualityBase {
 
   public static List<String> splitCsvIntoCommaSeparatedList(String fields) {
     if (fields.isEmpty()) {
-      return Lists.newArrayList();
+      return new ArrayList<>();
     }
     List<String> fieldsList = Arrays.asList(fields.split("\",\""));
     int lastIndex = fieldsList.size() - 1;
@@ -255,8 +255,8 @@ public abstract class DataQualityBase {
 
   static class DQInformation {
 
-    private List<IndividualError> errors = Lists.newArrayList();
-    private List<IndividualError> warnings = Lists.newArrayList();
+    private List<IndividualError> errors = new ArrayList<>();
+    private List<IndividualError> warnings = new ArrayList<>();
 
     void clear() {
       errors.clear();

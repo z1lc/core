@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -19,7 +20,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.barnacle.User;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
 import com.robertsanek.util.PostgresConnection;
@@ -45,13 +45,13 @@ public class LiftEtl implements Callable<Object> {
   public Object call() {
     List<List<Object>> rows =
         SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(SecretType.LIFTING_SPREADSHEET_ID), "Lifts");
-    List<Integer> dateIndexes = Lists.newArrayList();
+    List<Integer> dateIndexes = new ArrayList<>();
     for (int i = 0; i < rows.size(); i++) {
       if (rows.get(i).get(0).toString().contains("/")) {
         dateIndexes.add(i);
       }
     }
-    List<List<List<Object>>> rowsSublistedByDay = Lists.newArrayList();
+    List<List<List<Object>>> rowsSublistedByDay = new ArrayList<>();
     for (int j = 0; j < dateIndexes.size() - 1; j++) {
       rowsSublistedByDay.add(rows.subList(dateIndexes.get(j), dateIndexes.get(j + 1)));
     }

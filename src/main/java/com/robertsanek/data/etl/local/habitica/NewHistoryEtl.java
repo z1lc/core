@@ -1,12 +1,12 @@
 package com.robertsanek.data.etl.local.habitica;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Lists;
 import com.robertsanek.data.etl.local.habitica.jsonentities.JsonTask;
 import com.robertsanek.util.DateTimeUtils;
 
@@ -18,7 +18,7 @@ public class NewHistoryEtl extends HabiticaEtl<History> {
     return jsonObjects.stream()
         .flatMap(task -> {
           List<com.robertsanek.data.etl.local.habitica.jsonentities.History> historyList = task.getHistory();
-          List<History> thisList = Lists.newArrayList();
+          List<History> thisList = new ArrayList<>();
           for (int i = 1; i < historyList.size(); i++) {
             com.robertsanek.data.etl.local.habitica.jsonentities.History thisHistory = historyList.get(i);
             increaseOrDecrease(

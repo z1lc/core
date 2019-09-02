@@ -1,5 +1,6 @@
 package com.robertsanek.data.quality.anki;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -10,7 +11,6 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.robertsanek.data.etl.local.sqllite.anki.Field;
 import com.robertsanek.data.etl.local.sqllite.anki.Model;
 import com.robertsanek.util.Log;
@@ -53,7 +53,7 @@ public class FieldsShouldBeOrdered extends DataQualityBase {
 
   @Override
   void runDQ() {
-    List<Triple<String, String, Long>> notesWithIssues = Lists.newArrayList();
+    List<Triple<String, String, Long>> notesWithIssues = new ArrayList<>();
     allFields.stream()
         .collect(Collectors.groupingBy(Field::getModel_id))
         .values()
@@ -78,7 +78,7 @@ public class FieldsShouldBeOrdered extends DataQualityBase {
   }
 
   private List<Triple<String, String, Long>> doshit(List<Field> fields) {
-    List<Triple<String, String, Long>> notesWithIssues = Lists.newArrayList();
+    List<Triple<String, String, Long>> notesWithIssues = new ArrayList<>();
     if (fields.size() > 0) {
       fields.sort(Comparator.comparing(Field::getOrdinal));
       AtomicBoolean requiredDone = new AtomicBoolean(false);

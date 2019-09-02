@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -22,7 +23,6 @@ import org.quartz.JobExecutionContext;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
 import com.robertsanek.process.QuartzJob;
@@ -65,8 +65,7 @@ public class BudgetGetter implements QuartzJob {
   @Inject SecretProvider secretProvider;
 
   private AtomicLong counter = new AtomicLong(0);
-  private List<String> errors = Lists.newArrayList();
-
+  private List<String> errors = new ArrayList<>();
 
   public List<AnnotatedItem> getData() {
     List<AnnotatedItem> allLineItems = getValues(INCOME_RANGE);
@@ -106,14 +105,14 @@ public class BudgetGetter implements QuartzJob {
         SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(FINANCE_SPREADSHEET_ID), range);
     if (spreadsheet == null || spreadsheet.size() == 0) {
       log.error("No data found.");
-      return Lists.newArrayList();
+      return new ArrayList<>();
     }
 
     String requestType = range.equals(EXPENSES_RANGE) ? "expenses" : "income";
     return spreadsheet.stream()
         .filter(row -> row.size() > 0 && !row.get(0).toString().isEmpty())
         .flatMap(row -> {
-          final List<AnnotatedItem> currentRowAnnotatedItems = Lists.newArrayList();
+          final List<AnnotatedItem> currentRowAnnotatedItems = new ArrayList<>();
           final LocalDate date = Unchecked.get(() -> LocalDate.parse(row.get(0).toString(), SIMPLE_DATE_FORMAT));
           if (row.size() == expectedCells) {
             final String comment = row.get(expectedCells - 1).toString();

@@ -1,5 +1,6 @@
 package com.robertsanek.data.etl.remote.oauth.toodledo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +36,7 @@ public class ToodledoConnector {
         "https://api.toodledo.com/3/account/get.php?f=json");
 
     int startOffset = 0;
-    List<JsonTask> toReturn = Lists.newArrayList();
+    List<JsonTask> toReturn = new ArrayList<>();
     while (true) {
       String requestUrl = getRequestUrl(startOffset);
       final Response response =

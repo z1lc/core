@@ -4,6 +4,7 @@ import static com.robertsanek.data.quality.anki.AllNotesWithMultipleNamesShouldH
 import static com.robertsanek.data.quality.anki.AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard.getPrimaryTextFromFields;
 import static com.robertsanek.data.quality.anki.NoSynonymIsAFullSubstringOfAnotherSynonym.getSublistOfSynonymFieldsWithoutContext;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -13,7 +14,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.Jsoup;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.robertsanek.data.etl.local.sqllite.anki.Field;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
@@ -57,7 +57,7 @@ public class AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatch e
 
   private static Pair<String, List<String>> getCleanedIndividualSynonyms(List<String> fields) {
     String primary = Jsoup.parse(fields.get(0)).text().replaceAll("\\[sound:.+]", "");
-    List<String> all = Lists.newArrayList();
+    List<String> all = new ArrayList<>();
     all.add(primary);
     for (int i = 1; i < fields.size(); i++) {
       all.add(Jsoup.parse(fields.get(i)).text().replaceAll("\\[sound:.+]", ""));
