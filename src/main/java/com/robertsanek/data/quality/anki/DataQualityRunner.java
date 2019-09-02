@@ -19,6 +19,7 @@ import java.sql.Statement;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -187,7 +188,7 @@ public class DataQualityRunner implements QuartzJob {
             statement.execute(sql);
           } else {
             ResultSet resultSet = statement.executeQuery(sql);
-            Set<String> errors = Sets.newHashSet();
+            Set<String> errors = new HashSet<>();
             while (resultSet.next()) {
               String firstCo = resultSet.getString(1);
               if (ANKI_SEARCH_STRINGS_WITHIN_SQL.stream().anyMatch(firstCo::contains)) {

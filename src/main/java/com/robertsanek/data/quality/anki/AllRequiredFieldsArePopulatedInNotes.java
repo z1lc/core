@@ -1,12 +1,12 @@
 package com.robertsanek.data.quality.anki;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import com.robertsanek.data.etl.local.sqllite.anki.Field;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
@@ -27,7 +27,7 @@ public class AllRequiredFieldsArePopulatedInNotes extends DataQualityBase {
 
   @Override
   void runDQ() {
-    Set<String> noteIdViolationsList = Sets.newHashSet();
+    Set<String> noteIdViolationsList = new HashSet<>();
     allNotes.forEach(note -> {
       List<Field> requiredNoteFields = Optional.ofNullable(requiredFieldsByModelId.get(note.getModel_id()))
           .orElse(new ArrayList<>());

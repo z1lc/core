@@ -1,5 +1,6 @@
 package com.robertsanek.data.quality.anki;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +42,7 @@ public class AllNumericalClozeDeletionsHaveHashtagHint extends DataQualityBase {
         0L
     );
     Pattern clozeDigitsNoHint = Pattern.compile("\\{\\{c\\d+::\\d+?}}");
-    Set<String> noteIdViolationsList = Sets.newHashSet();
+    Set<String> noteIdViolationsList = new HashSet<>();
     allNotes.forEach(note -> {
       Matcher matcher = clozeDigitsNoHint.matcher(note.getFields());
       if (matcher.find() && !NOTE_ID_EXCLUSIONS.contains(note.getId())) {

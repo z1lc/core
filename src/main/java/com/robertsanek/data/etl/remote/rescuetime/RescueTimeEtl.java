@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -21,7 +22,6 @@ import org.apache.http.client.utils.URIBuilder;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.util.Log;
@@ -38,7 +38,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
   @Inject SecretProvider secretProvider;
 
   public <O> List<O> genericGet(String taxonomy, Function<CSVRecord, O> csvToObjectFunction) {
-    Set<O> allRecords = Collections.synchronizedSet(Sets.newHashSet());
+    Set<O> allRecords = Collections.synchronizedSet(new HashSet<>());
     IntStream.range(FROM_YEAR, TO_YEAR).parallel()
         .forEach(currentYear -> {
           final URI efficiencyUri;

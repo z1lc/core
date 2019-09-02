@@ -7,10 +7,10 @@ import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Maps;
 import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
 import com.robertsanek.data.quality.anki.DataQualityBase;
 import com.robertsanek.util.Log;
@@ -25,7 +25,7 @@ public class AnkiSyncer {
   private static final ObjectMapper objectMapper = InjectUtils.inject(ObjectMapper.class);
   private static final AnkiConnectUtils ankiConnectUtils = InjectUtils.inject(AnkiConnectUtils.class);
   private static Log log = Logs.getLog(AnkiSyncer.class);
-  private static final Map<String, ZonedDateTime> lastLoggedMap = Maps.newHashMap();
+  private static final Map<String, ZonedDateTime> lastLoggedMap = new HashMap<>();
 
   //TODO: make these methods non-static. hard because of reliance in static{} in DataQualityBase.
   public static synchronized boolean syncLocalCollectionIfOutOfDate(String profileToSync) {

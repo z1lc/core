@@ -9,15 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +26,6 @@ import org.apache.http.util.EntityUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -140,7 +131,7 @@ public class WikipediaConnector {
     log.info("Getting top Wikipedia articles on %s.wikipedia.org since %s with granularity %s.",
         language.toString().toLowerCase(), sinceDateInclusive.toString(), granularity.toString());
 
-    final Map<String, Long> pageToViewCountMap = Collections.synchronizedMap(Maps.newHashMap());
+    final Map<String, Long> pageToViewCountMap = Collections.synchronizedMap(new HashMap<>());
     getListOfDatesForApiRequest(sinceDateInclusive, granularity).parallelStream()
         .forEach(date -> {
           try {
