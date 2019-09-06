@@ -45,8 +45,10 @@ public class EtlAndDqJob implements QuartzJob {
       fastRun = jobDataMap.getBoolean("fastrun");
       parallel = jobDataMap.getBoolean("parallel");
     }
-    ankiEtl.call();
-    leetCodeToodledoTaskEtl.run();
+    if (!fastRun) {
+      ankiEtl.call();
+      leetCodeToodledoTaskEtl.run();
+    }
     boolean etlsSuccessful = masterEtl.runEtls(fastRun, parallel);
 
     log.info("Will execute all queries in CommonQueries.sql file to re-create views.");
