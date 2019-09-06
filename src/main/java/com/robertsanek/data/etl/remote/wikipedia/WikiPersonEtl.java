@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
+import com.robertsanek.data.etl.SlowEtl;
 import com.robertsanek.util.Unchecked;
 import com.robertsanek.wikipedia.WikipediaConnector;
 
+@SlowEtl
 public class WikiPersonEtl extends Etl<WikiPerson> {
 
   @Inject WikipediaConnector wikipediaConnector;
