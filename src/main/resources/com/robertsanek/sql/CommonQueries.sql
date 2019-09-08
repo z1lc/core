@@ -7,7 +7,7 @@ create or replace view rlp_weekly_exercise as (
         case when sum(cardio) is null or sum(lifting) is null
                  then sum(total) / 7
              else
-                     least(2::float / 3, 2::float / 3 * sum(cardio) / 3.5) +
+                     least(2::float / 3, 2::float / 3 * sum(cardio) / 2.5) +
                      least(1::float / 3, 1::float / 3 * sum(lifting) / 2.0) end as percentage
     from health
     group by week
