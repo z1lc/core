@@ -10,7 +10,7 @@ public class FitConnectorTest {
 
   @Test
   @Ignore("integration")
-  public void name() {
+  public void integration() {
     FitConnector fitConnector = InjectUtils.inject(FitConnector.class);
     FitResponse bloodPressureReadings = fitConnector.getBloodPressureReadings();
     System.out.println("bloodPressureReadings = " + bloodPressureReadings);
