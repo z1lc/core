@@ -17,22 +17,33 @@ import com.robertsanek.process.Command;
 
 public class CLI {
 
+  private enum MachineType {
+    ETL_MACHINE,
+    MANUAL
+  }
+
   class CliArgs {
 
     private Optional<Command> command;
+    private Optional<MachineType> machineType;
     private boolean force;
     private boolean fastRun;
     private boolean parallel;
 
-    CliArgs(Optional<Command> command, boolean force, boolean fastRun, boolean parallel) {
+    CliArgs(Optional<Command> command, boolean force, boolean fastRun, boolean parallel, String maybeMachineType) {
       this.command = command;
       this.force = force;
       this.fastRun = fastRun;
       this.parallel = parallel;
+      this.machineType = Optional.ofNullable(maybeMachineType).map(type -> MachineType.valueOf(type.toUpperCase()));
     }
 
     public Optional<Command> getCommand() {
       return command;
+    }
+
+    public Optional<MachineType> getMachineType() {
+      return machineType;
     }
 
     public boolean isForce() {
@@ -88,7 +99,7 @@ public class CLI {
       cmd = parser.parse(options, args);
     } catch (ParseException e) {
       formatter.printHelp("core", options);
-      return new CliArgs(null, false, false, false);
+      return new CliArgs(Optional.empty(), false, false, false, null);
     }
     String parallelismPassed = cmd.getOptionValue("parallelism");
     boolean parallelism = parallelismPassed == null || Boolean.parseBoolean(parallelismPassed);
@@ -96,7 +107,8 @@ public class CLI {
         Command.matchToCommand(cmd.getOptionValue("command")),
         Arrays.stream(cmd.getOptions()).anyMatch(opt -> opt.getLongOpt().equals("force")),
         Arrays.stream(cmd.getOptions()).anyMatch(opt -> opt.getLongOpt().equals("fastrun")),
-        parallelism);
+        parallelism,
+        cmd.getOptionValue("type"));
   }
 
 }

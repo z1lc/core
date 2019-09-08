@@ -231,7 +231,8 @@ public class DataQualityRunner implements QuartzJob {
           "Time: ", b(startZdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z"))), br(),
           "Duration :", b(String.valueOf(startSW.elapsed().getSeconds())), "seconds"));
       ContainerTag emailContent = getEmailContent(dqInformation);
-      if (errors + warnings >= MINIMUM_VIOLATIONS && jobDataMap == null) {
+      if (errors + warnings >= MINIMUM_VIOLATIONS &&
+          jobDataMap.getString("machine_type").toLowerCase().contains("manual")) {
         log.info("Will notify because the total number of errors and warnings (%s) is at least as large as the " +
             "configured alert minimum (%s).", errors + warnings, MINIMUM_VIOLATIONS);
         notificationSender.sendEmail(

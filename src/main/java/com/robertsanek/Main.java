@@ -59,7 +59,8 @@ public class Main {
       Command command = cliArgs.getCommand().orElseThrow();
       JobDataMap etlJobDataMap = new JobDataMap(ImmutableMap.of(
           "parallel", cliArgs.isParallel(),
-          "fastrun", cliArgs.isFastRun()
+          "fastrun", cliArgs.isFastRun(),
+          "machine_type", cliArgs.getMachineType().toString()
       ));
 
       switch (command) {
