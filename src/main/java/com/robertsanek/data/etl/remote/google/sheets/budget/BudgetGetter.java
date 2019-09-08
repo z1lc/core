@@ -129,7 +129,7 @@ public class BudgetGetter implements QuartzJob {
                 String itemComment = "";
                 try {
                   itemComment = split.get(currentSplit++).trim();
-                } catch (ArrayIndexOutOfBoundsException e) {
+                } catch (IndexOutOfBoundsException e) {
                   //will be caught by error handling below
                 }
                 final AnnotatedItem annotatedItem = new AnnotatedItem(

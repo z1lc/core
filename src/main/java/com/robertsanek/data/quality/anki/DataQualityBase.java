@@ -47,6 +47,7 @@ public abstract class DataQualityBase {
   static final long PERSON_MODEL_ID = 1436872005312L;
   static final long SYNONYM_MODEL_ID = 1539762208227L;
   static final long VENUE_MODEL_ID = 1537578027284L;
+  static final long INTERVIEW_QUESTION_MODEL_ID = 1548677631975L;
 
   //ETL'd Anki data for use by all subclasses of DQBase
   static List<Model> allModels;

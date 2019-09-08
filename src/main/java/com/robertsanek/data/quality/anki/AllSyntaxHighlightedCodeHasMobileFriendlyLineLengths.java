@@ -33,6 +33,7 @@ public class AllSyntaxHighlightedCodeHasMobileFriendlyLineLengths extends DataQu
   void runDQ() {
     getAllNotesInRelevantDecks().stream()
         .filter(note -> !NOTE_ID_EXCLUSIONS.contains(note.getId()))
+        .filter(note -> !note.getModel_id().equals(INTERVIEW_QUESTION_MODEL_ID))
         .flatMap(note -> splitCsvIntoCommaSeparatedList(note.getFields()).stream()
             .map(field -> Pair.of(note.getId(), field)))
         .filter(idFieldPair -> idFieldPair.getRight().contains("<div class=\"highlight\""))
