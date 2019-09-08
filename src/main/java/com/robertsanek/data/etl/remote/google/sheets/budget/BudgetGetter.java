@@ -72,7 +72,9 @@ public class BudgetGetter implements QuartzJob {
     allLineItems.addAll(getValues(EXPENSES_RANGE));
     allLineItems.sort(Comparator.comparing(AnnotatedItem::getDate));
     if (errors.size() > 0) {
-      notificationSender.sendEmailDefault("Budget errors", String.join("\n", errors));
+      notificationSender.sendEmailDefault(
+          String.format("%s errors in Budget ETL", errors.size()),
+          String.join("\n", errors));
     }
     return allLineItems;
   }
