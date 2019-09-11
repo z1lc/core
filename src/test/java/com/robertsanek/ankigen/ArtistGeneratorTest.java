@@ -1,12 +1,12 @@
 package com.robertsanek.ankigen;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class ArtistGeneratorTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name() {
     new ArtistGenerator().writeFiles();
     System.out.println("persons");

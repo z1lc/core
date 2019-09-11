@@ -2,8 +2,8 @@ package com.robertsanek.data;
 
 import static org.quartz.TriggerBuilder.newTrigger;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -15,7 +15,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class EtlAndDqJobTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name() throws SchedulerException, InterruptedException {
     JobDetail job = JobBuilder
         .newJob(EtlAndDqJob.class)
@@ -36,7 +36,7 @@ public class EtlAndDqJobTest {
   }
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name2() {
     new EtlAndDqJob().triggerKlipfolioRefresh();
   }

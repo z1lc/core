@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.robertsanek.passivekiva.entities.Loan;
@@ -22,7 +22,7 @@ public class HTMLOutputBuilderTest {
 
   private HTMLOutputBuilder outputBuilder;
 
-  @Before
+  @BeforeEach
   public void before() {
     outputBuilder = new FakeHTMLOutputBuilder();
     outputBuilder.now = ZonedDateTime.of(2017, 2, 4, 0, 0, 0, 0, ZoneOffset.ofHours(-8));

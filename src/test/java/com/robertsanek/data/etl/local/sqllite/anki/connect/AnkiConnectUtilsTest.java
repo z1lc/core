@@ -2,8 +2,8 @@ package com.robertsanek.data.etl.local.sqllite.anki.connect;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.robertsanek.data.etl.local.sqllite.anki.connect.jsonschema.CardsInfoResult;
 import com.robertsanek.util.platform.CrossPlatformUtils;
@@ -12,14 +12,14 @@ import com.robertsanek.util.platform.Platform;
 public class AnkiConnectUtilsTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void getCardInfo() {
     CardsInfoResult cardInfo = new AnkiConnectUtils().getCardInfo(1555217979670L);
     System.out.println("cardInfo = " + cardInfo);
   }
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void getPersonNoteImage() {
     String personNoteImage = new AnkiConnectUtils().getPersonNoteImage(1555217944784L);
     System.out.println("personNoteImage = " + personNoteImage);

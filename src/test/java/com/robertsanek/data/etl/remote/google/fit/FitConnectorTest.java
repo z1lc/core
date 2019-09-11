@@ -1,7 +1,7 @@
 package com.robertsanek.data.etl.remote.google.fit;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.robertsanek.data.etl.remote.google.fit.jsonentities.FitResponse;
 import com.robertsanek.util.inject.InjectUtils;
@@ -9,7 +9,7 @@ import com.robertsanek.util.inject.InjectUtils;
 public class FitConnectorTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void integration() {
     FitConnector fitConnector = InjectUtils.inject(FitConnector.class);
     FitResponse bloodPressureReadings = fitConnector.getBloodPressureReadings();

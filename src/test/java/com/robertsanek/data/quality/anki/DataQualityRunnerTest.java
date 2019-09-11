@@ -2,14 +2,14 @@ package com.robertsanek.data.quality.anki;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.quartz.JobDataMap;
 
 public class DataQualityRunnerTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void run() {
     new DataQualityRunner().exec((JobDataMap) null);
   }

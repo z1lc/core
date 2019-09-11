@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class GoodreadsGoodreadsBookEtlTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void integration() {
     List<GoodreadsBook> objects = new GoodreadsBookEtl().getObjects();
     System.out.println("objects = " + objects);

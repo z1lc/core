@@ -1,13 +1,12 @@
 package com.robertsanek.passivekiva;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.quartz.JobExecutionException;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class KivaApiConnectorTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name() {
     new KivaApiConnector().exec(null);
   }

@@ -3,13 +3,13 @@ package com.robertsanek.data.quality.anki;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class AllClozeTablesHaveDeletionForRowOrColumnTitleTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void integration() {
     new AllClozeTablesHaveDeletionForRowOrColumnTitle().runDQ();
   }

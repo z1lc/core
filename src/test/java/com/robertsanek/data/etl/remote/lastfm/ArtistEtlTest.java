@@ -5,15 +5,15 @@ import java.net.URI;
 import java.util.List;
 
 import org.apache.http.client.HttpResponseException;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.robertsanek.util.FakeSecretProvider;
 
 public class ArtistEtlTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name() {
     List<Artist> objects = new ArtistEtl().getObjects();
     System.out.println("objects = " + objects);

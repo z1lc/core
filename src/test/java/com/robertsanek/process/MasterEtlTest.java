@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 
 import com.google.common.collect.ImmutableSet;
@@ -59,7 +59,7 @@ public class MasterEtlTest {
   );
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void integration_test() {
     new MasterEtl().exec(null);
   }

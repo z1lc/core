@@ -5,6 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.12</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -122,6 +124,16 @@
       <version>3.9</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-csv</artifactId>
+      <version>1.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+      <version>4.4</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>4.2.2</version>
@@ -130,11 +142,6 @@
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
       <version>0.9.11</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-csv</artifactId>
-      <version>1.7</version>
     </dependency>
     <dependency>
       <groupId>commons-cli</groupId>
@@ -179,9 +186,9 @@
 
     <!-- testing/style -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.5.2</version>
       <scope>test</scope>
     </dependency>
 
@@ -320,6 +327,10 @@
 
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
+      </plugin>
       <!-- to deploy .jar to heroku: run `mvn clean heroku:deploy` -->
       <plugin>
         <groupId>com.heroku.sdk</groupId>

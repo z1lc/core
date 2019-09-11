@@ -1,12 +1,12 @@
 package com.robertsanek.util;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class NotificationSenderTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name() {
     new NotificationSender().sendNotificationDefault("hi", "hello\n\noh hey there");
   }

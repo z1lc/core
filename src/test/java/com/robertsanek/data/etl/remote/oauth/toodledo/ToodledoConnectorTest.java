@@ -2,15 +2,15 @@ package com.robertsanek.data.etl.remote.oauth.toodledo;
 
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.robertsanek.data.etl.remote.oauth.toodledo.jsonentities.JsonTask;
 
 public class ToodledoConnectorTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void getTasks() {
     List<JsonTask> tasks = new ToodledoConnector().getTasks();
     System.out.println("tasks = " + tasks);

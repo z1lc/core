@@ -6,13 +6,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class HealthEtlTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name() {
     List<Health> objects = new HealthEtl().getObjects();
     System.out.println("objects = " + objects);

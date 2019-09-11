@@ -1,12 +1,12 @@
 package com.robertsanek.data.quality.anki;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class AllNotesWithEnumsConformToSetTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name() {
     new AllNotesWithEnumsConformToSet().runDQ();
   }

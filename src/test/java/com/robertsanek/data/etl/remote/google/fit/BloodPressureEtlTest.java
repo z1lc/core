@@ -2,15 +2,15 @@ package com.robertsanek.data.etl.remote.google.fit;
 
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.robertsanek.util.inject.InjectUtils;
 
 public class BloodPressureEtlTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name() {
     BloodPressureEtl etl = InjectUtils.inject(BloodPressureEtl.class);
     List<BloodPressureReading> objects = etl.getObjects();

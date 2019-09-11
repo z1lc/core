@@ -4,8 +4,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.robertsanek.data.derived.anki.CardNewReps;
 import com.robertsanek.data.derived.anki.NewRepsPerCardDeriver;
@@ -13,7 +13,7 @@ import com.robertsanek.data.derived.anki.NewRepsPerCardDeriver;
 public class NewRepsPerCardDeriverTest {
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void name() {
     List<CardNewReps> objects = new NewRepsPerCardDeriver().getObjects().stream()
         .filter(nr -> DataQualityBase.cardByCardId.get(nr.getCard_id())
@@ -27,7 +27,7 @@ public class NewRepsPerCardDeriverTest {
   }
 
   @Test
-  @Ignore("integration")
+  @Disabled("integration")
   public void integration2() {
     List<CardNewReps> ret = new NewRepsPerCardDeriver().getObjects();
     long correct = ret.stream()

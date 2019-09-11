@@ -6,7 +6,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import org.joda.money.Money;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
 import com.robertsanek.passivekiva.entities.Loan;
