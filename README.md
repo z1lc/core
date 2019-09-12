@@ -15,6 +15,7 @@ generator. Everything is scheduled with [Quartz](http://www.quartz-scheduler.org
 *  [Calibre](https://calibre-ebook.com/) local SQLite database
 *  [Fitbit API](https://dev.fitbit.com/build/reference/web-api/)
 *  [Goodreads API](https://www.goodreads.com/api)
+*  [Google Analytics API](https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/installed-java)
 *  [Google Fit API](https://developers.google.com/fit/rest/)
 *  [Google Sheets API](https://developers.google.com/sheets/)
 *  [Habitica API](https://habitica.com/apidoc/)
