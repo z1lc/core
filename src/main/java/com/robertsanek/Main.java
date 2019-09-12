@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableMap;
 import com.robertsanek.data.EtlAndDqJob;
 import com.robertsanek.data.etl.local.sqllite.anki.AnkiSyncer;
 import com.robertsanek.data.etl.remote.fitbit.SleepEtl;
+import com.robertsanek.data.etl.remote.google.analytics.PageViewEtl;
 import com.robertsanek.data.etl.remote.google.fit.BloodPressureEtl;
 import com.robertsanek.data.etl.remote.google.sheets.budget.BudgetGetter;
 import com.robertsanek.data.etl.remote.oauth.toodledo.ToodledoConnector;
@@ -154,6 +155,10 @@ public class Main {
           log.info("Setting up Google Sheets credentials...");
           InjectUtils.inject(BudgetGetter.class).getData();
           log.info("Credentials for Google Sheets set up successfully.");
+
+          log.info("Setting up Google Analytics credentials...");
+          InjectUtils.inject(PageViewEtl.class).getObjects();
+          log.info("Credentials for Google Analytics set up successfully.");
 
           log.info("Setting up Google Fit credentials...");
           InjectUtils.inject(BloodPressureEtl.class).getObjects();
