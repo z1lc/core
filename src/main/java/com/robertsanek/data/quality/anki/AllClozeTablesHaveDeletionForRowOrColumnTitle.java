@@ -1,6 +1,5 @@
 package com.robertsanek.data.quality.anki;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -148,12 +147,7 @@ public class AllClozeTablesHaveDeletionForRowOrColumnTitle extends DataQualityBa
   @Override
   void runDQ() {
     getAllNotesInRelevantDecks(CLOZE_MODEL_ID, NOTE_ID_EXCLUSIONS).stream()
-        .filter(note -> {
-          List<String> fields = splitCsvIntoCommaSeparatedList(note.getFields());
-          return hasViolation(fields.get(0));
-        })
-        .forEach(note -> {
-          violations.put(this.getClass(), "nid:" + note.getId());
-        });
+        .filter(note -> hasViolation(splitCsvIntoCommaSeparatedList(note.getFields()).get(0)))
+        .forEach(note -> violations.put(this.getClass(), "nid:" + note.getId()));
   }
 }
