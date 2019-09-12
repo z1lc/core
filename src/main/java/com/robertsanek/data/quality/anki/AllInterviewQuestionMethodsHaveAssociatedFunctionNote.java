@@ -17,6 +17,7 @@ public class AllInterviewQuestionMethodsHaveAssociatedFunctionNote extends DataQ
       "dfs",
       "findUnassigned",
       "getKey",
+      "getRange",
       "getValue",
       "isSafe",
       "recurGen",
