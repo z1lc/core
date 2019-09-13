@@ -30,6 +30,7 @@ public class ProgrammingLanguageFunctionNameDoesNotAppearInDescription extends D
       1566956522115L,
       1566839536985L,
       1567448966728L,
+      1568338727531L,  //Java permutations
       0L
   );
 
