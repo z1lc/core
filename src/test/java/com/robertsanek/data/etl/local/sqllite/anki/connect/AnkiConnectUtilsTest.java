@@ -2,6 +2,9 @@ package com.robertsanek.data.etl.local.sqllite.anki.connect;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +26,29 @@ public class AnkiConnectUtilsTest {
   public void getPersonNoteImage() {
     String personNoteImage = new AnkiConnectUtils().getPersonNoteImage(1555217944784L);
     System.out.println("personNoteImage = " + personNoteImage);
+  }
+
+  @Test
+  @Disabled("integration")
+  public void search() {
+    List<Long> search = new AnkiConnectUtils().getNoteIdsForSearch("\"<br></th>\" or \"<br></td>\"");
+    System.out.println(search);
+  }
+
+  @Test
+  @Disabled("integration")
+  public void getFieldsForNote() {
+    Map<String, String> fieldsForNote = new AnkiConnectUtils().getFieldsForNote(1568489381781L);
+    System.out.println(fieldsForNote);
+  }
+
+  @Test
+  @Disabled("integration")
+  public void updateNoteFields() {
+    new AnkiConnectUtils().updateNoteFields(1568489381806L, Map.of(
+        "Born \uD83D\uDC76", "2001",
+        "Died ☠️", "2002"
+    ));
   }
 
   @Test

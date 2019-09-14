@@ -10,7 +10,11 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.client.methods.HttpPost;
@@ -20,6 +24,8 @@ import org.apache.http.util.EntityUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.inject.Inject;
@@ -86,6 +92,91 @@ public class AnkiConnectUtils {
     }
   }
 
+  //methods that use the browser will not return the response if the browser isn't already open. not ideal.
+  private boolean openBrowser() {
+    HttpPost openBrowser = new HttpPost(getUri());
+    openBrowser.setEntity(new ByteArrayEntity(("{\n" +
+        "    \"action\": \"guiBrowse\",\n" +
+        "    \"version\": 6\n" +
+        "}").getBytes(StandardCharsets.UTF_8)));
+    String updateResponse =
+        Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(openBrowser).getEntity()));
+    if (validateEmptyListResponse(updateResponse)) {
+      Unchecked.run(() -> {
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
+        return null;
+      });
+      return true;
+    }
+    return false;
+  }
+
+  public Map<String, String> getFieldsForNote(Long noteId) {
+    HttpPost notesInfo = new HttpPost(getUri());
+    notesInfo.setEntity(new ByteArrayEntity(
+        String.format("{\n" +
+            "    \"action\": \"notesInfo\",\n" +
+            "    \"version\": 6,\n" +
+            "    \"params\": {\n" +
+            "        \"notes\": [%s]\n" +
+            "    }\n" +
+            "}", noteId)
+            .getBytes(StandardCharsets.UTF_8)));
+    String updateResponse =
+        Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(notesInfo).getEntity()));
+    JsonObject fields =
+        new JsonParser().parse(updateResponse).getAsJsonObject().getAsJsonArray("result").get(0).getAsJsonObject()
+            .getAsJsonObject("fields");
+    return fields.entrySet().stream()
+        .collect(Collectors.toMap(
+            Map.Entry::getKey,
+            entry -> entry.getValue().getAsJsonObject().get("value").getAsString()));
+  }
+
+  public List<Long> getNoteIdsForSearch(String search) {
+//    openBrowser();
+    HttpPost searchPost = new HttpPost(getUri());
+    searchPost.setEntity(new ByteArrayEntity(
+        String.format("{\n" +
+            "    \"action\": \"findNotes\",\n" +
+            "    \"version\": 6,\n" +
+            "    \"params\": {\n" +
+            "        \"query\": \"%s\"\n" +
+            "    }\n" +
+            "}", StringEscapeUtils.escapeJson(search))
+            .getBytes(StandardCharsets.UTF_8)));
+    String updateResponse =
+        Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(searchPost).getEntity()));
+    JsonArray result = new JsonParser().parse(updateResponse).getAsJsonObject().getAsJsonArray("result");
+    return StreamSupport.stream(result.spliterator(), false)
+        .map(JsonElement::getAsLong)
+        .collect(Collectors.toList());
+  }
+
+  public boolean updateNoteFields(Long noteId, Map<String, String> fieldsToUpdate) {
+    String updateString = fieldsToUpdate.entrySet().stream()
+        .map(entry -> "\"" + entry.getKey() + "\": \"" + StringEscapeUtils.escapeJson(entry.getValue()) + "\"")
+        .collect(Collectors.joining(","));
+    HttpPost updateNote = new HttpPost(getUri());
+    updateNote.setEntity(new ByteArrayEntity(
+        String.format("{\n" +
+            "    \"action\": \"updateNoteFields\",\n" +
+            "    \"version\": 6,\n" +
+            "    \"params\": {\n" +
+            "        \"note\": {\n" +
+            "            \"id\": %s,\n" +
+            "            \"fields\": {\n" +
+            "                %s" +
+            "            }\n" +
+            "        }\n" +
+            "    }\n" +
+            "}", noteId, updateString)
+            .getBytes(StandardCharsets.UTF_8)));
+    String updateResponse =
+        Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(updateNote).getEntity()));
+    return validateNullResponse(updateResponse);
+  }
+
   public boolean updatePersonNoteImage(Long noteId, String oldName, String newName) {
     String currentImageField = getPersonNoteImage(noteId);
     HttpPost updateNote = new HttpPost(getUri());
@@ -105,13 +196,21 @@ public class AnkiConnectUtils {
             .getBytes(StandardCharsets.UTF_8)));
     String updateResponse =
         Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(updateNote).getEntity()));
-    if (!updateResponse.equals("{\"result\": null, \"error\": null}")) {
+    if (!validateNullResponse(updateResponse)) {
       log.info("Response from AnkiConnect did not match expected. Actual response: '%s'", updateResponse);
       return false;
     } else {
       log.info("Successfully updated image source from '%s' to '%s'.", oldName, newName);
       return true;
     }
+  }
+
+  private boolean validateNullResponse(String response) {
+    return response.equals("{\"result\": null, \"error\": null}");
+  }
+
+  private boolean validateEmptyListResponse(String response) {
+    return response.equals("{\"result\": [], \"error\": null}");
   }
 
   @SuppressWarnings("unchecked")
