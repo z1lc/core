@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,14 +30,13 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
 
   static final Log log = Logs.getLog(RenameAllPersonImagesToUniformNaming.class);
-  static final boolean SHOULD_RUN = true;
-  static final boolean SHOULD_RENAME = true;
   @Inject AnkiConnectUtils ankiConnectUtils;
 
   @Override
   void runDQ() {
-    if (SHOULD_RUN) {
-      String mediaFolder = "C:\\Users\\z1lc\\AppData\\Roaming\\Anki2\\z1lc\\collection.media\\";
+    Optional<String> maybeMediaFolder = CrossPlatformUtils.getAnkiMediaFolderForUserz1lcIncludingTrailingSlash();
+    if (maybeMediaFolder.isPresent()) {
+      String mediaFolder = maybeMediaFolder.orElseThrow();
       List<FileNameChange> filesToChange = getAllNotesInRelevantDecks(1436872005312L).stream()
           .filter(note -> note.getId() != 1529614507428L) //HerO/herO StarCraft cards
           .sorted(Comparator.comparing(Note::getId))
@@ -91,25 +91,23 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
 
         ankiConnectUtils.loadProfile("z1lc");
         for (FileNameChange fileNameChange : filesToChange) {
-          if (SHOULD_RENAME) {
-            String ankiMediaRoot =
-                CrossPlatformUtils.getAnkiMediaFolderForUserz1lcIncludingTrailingSlash().orElseThrow();
-            Unchecked.get(() -> Files.move(
-                Paths.get((ankiMediaRoot + fileNameChange.getOriginalFileName())),
-                Paths.get((ankiMediaRoot + fileNameChange.getTargetFileName()))));
-            if (!ankiConnectUtils.updatePersonNoteImage(fileNameChange.getNoteId(),
-                fileNameChange.getOriginalFileName(),
-                fileNameChange.getTargetFileName())) {
-              throw new RuntimeException(String.format(
-                  "Failed to use anki-connect to update Person %s.", fileNameChange.getFirstField()));
-            }
+          Unchecked.get(() -> Files.move(
+              Paths.get((mediaFolder + fileNameChange.getOriginalFileName())),
+              Paths.get((mediaFolder + fileNameChange.getTargetFileName()))));
+          if (!ankiConnectUtils.updatePersonNoteImage(fileNameChange.getNoteId(),
+              fileNameChange.getOriginalFileName(),
+              fileNameChange.getTargetFileName())) {
+            throw new RuntimeException(String.format(
+                "Failed to use anki-connect to update Person %s.", fileNameChange.getFirstField()));
           }
+
         }
         ankiConnectUtils.triggerSync();
       } else {
         log.info("No files to change.");
       }
-
+    } else {
+      log.info("Couldn't get media folder root on this platform so will not run.");
     }
   }
 
