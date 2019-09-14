@@ -30,6 +30,7 @@ import com.robertsanek.data.etl.remote.google.analytics.PageView;
 import com.robertsanek.data.etl.remote.humanapi.entities.ActivitySummary;
 import com.robertsanek.data.etl.remote.humanapi.entities.SleepSummary;
 import com.robertsanek.data.etl.remote.wikipedia.WikiPerson;
+import com.robertsanek.util.inject.InjectUtils;
 
 public class MasterEtlTest {
 
@@ -63,7 +64,7 @@ public class MasterEtlTest {
   @Test
   @Disabled("integration")
   public void integration_test() {
-    new MasterEtl().exec(null);
+    InjectUtils.inject(MasterEtl.class).exec(null);
   }
 
   @Test

@@ -7,13 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import com.robertsanek.data.etl.remote.scrape.toodledo.Habit;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitEtl;
+import com.robertsanek.util.inject.InjectUtils;
 
 public class HabitRepEtlTest {
 
   @Test
   @Disabled("integration")
   public void name() {
-    List<Habit> objects = new HabitEtl().getObjects();
+    List<Habit> objects = InjectUtils.inject(HabitEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }
 }

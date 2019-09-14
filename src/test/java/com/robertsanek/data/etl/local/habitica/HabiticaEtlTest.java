@@ -6,13 +6,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.robertsanek.data.etl.local.habitica.jsonentities.JsonTask;
+import com.robertsanek.util.inject.InjectUtils;
 
 public class HabiticaEtlTest {
 
   @Test
   @Disabled("integration")
   public void name() {
-    List<JsonTask> objects = new TaskEtl().getJsonObjects();
+    List<JsonTask> objects = InjectUtils.inject(TaskEtl.class).getJsonObjects();
     System.out.println("objects = " + objects);
   }
 }
