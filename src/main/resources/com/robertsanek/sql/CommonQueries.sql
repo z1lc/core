@@ -79,7 +79,7 @@ create or replace view rlp_weekly_productivity as (
 select distinct title, completed_at
 from toodledo_tasks
 where title not in (select distinct title from toodledo_tasks where repeat != '') and
-    completed_at >= '2019-09-08' and title not like 'Update Lifting Stats' and
+    completed_at >= '2019-09-18' and title not like 'Update Lifting Stats' and
     title not like 'Workout overrides' and title not like 'Update events in yearly candlestick calendar' and
     title not like 'Vacuum car' and title not like 'Change bedding %' and title not like 'Greylist inbox zero'
 order by completed_at DESC
