@@ -154,6 +154,7 @@ public class MasterEtl implements QuartzJob {
   public boolean runEtls(boolean fastRun, boolean parallel) {
     Stopwatch total = Stopwatch.createStarted();
     List<Class<? extends Etl>> concreteEtls = getConcreteEtls(fastRun);
+    log.info("Will run %s ETLs.", concreteEtls.size());
     log.info("Creating connection to Cloud SQL and re-generating table schemas... (this may take up to 3 minutes)");
     try (SessionFactory ignored = Unchecked.get(() -> getSessionFactory(Hbm2ddlType.CREATE, ConnectionType.RSANEK));
          SessionFactory noneSf = Unchecked.get(() -> getSessionFactory(Hbm2ddlType.NONE, ConnectionType.RSANEK))) {
