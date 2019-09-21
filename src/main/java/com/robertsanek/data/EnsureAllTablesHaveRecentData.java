@@ -1,0 +1,108 @@
+package com.robertsanek.data;
+
+import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD;
+import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.persistence.Column;
+import javax.persistence.Table;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.reflections.Reflections;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+import com.google.inject.Inject;
+import com.robertsanek.util.NotificationSender;
+import com.robertsanek.util.SecretProvider;
+import com.robertsanek.util.Unchecked;
+
+public class EnsureAllTablesHaveRecentData {
+
+  private static final Period DEFAULT_MAX_STALENESS = Period.ofDays(14);
+  private static final ImmutableMap<Pair<String, String>, Period> customMaxStaleness =
+      ImmutableMap.<Pair<String, String>, Period>builder()
+          .put(Pair.of("credit_scores", "date"), Period.ofDays(60))
+          .put(Pair.of("blood_pressure_readings", "date"), Period.ofDays(30))
+          .build();
+  private static final ImmutableSet<Pair<String, String>> infiniteStaleness =
+      ImmutableSet.<Pair<String, String>>builder()
+          .add(Pair.of("toodledo_habits", "added"))
+          .add(Pair.of("toodledo_habits", "modified"))
+          .add(Pair.of("toodledo_habit_repetitions", "date"))
+          .add(Pair.of("toodledo_habit_repetitions", "modified"))
+          .add(Pair.of("anki_models", "created_at"))
+          .add(Pair.of("anki_cards", "last_modified_at"))
+          .add(Pair.of("workflowy_entries", "date_exported"))
+          .build();
+
+  @Inject SecretProvider secretProvider;
+  @Inject NotificationSender notificationSender;
+
+  public void ensure() {
+    Set<String> violations = Sets.newHashSet();
+    String jdbcUrl = "jdbc:postgresql://google/postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory" +
+        "&cloudSqlInstance=arctic-rite-143002:us-west1:rsanek-db";
+    String username = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME);
+    String password = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
+
+    Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
+    try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
+      try (Statement statement = connection.createStatement()) {
+        new Reflections("com.robertsanek").getTypesAnnotatedWith(Table.class).stream()
+            .forEach(clazz -> {
+              String tableName = clazz.getAnnotation(Table.class).name();
+              Set<String> dateColumns = Arrays.stream(clazz.getDeclaredFields())
+                  .filter(field -> field.getType().equals(ZonedDateTime.class))
+                  .map(zdtField -> Optional.ofNullable(zdtField.getAnnotation(Column.class))
+                      .map(Column::name)
+                      .orElse(zdtField.getName().toLowerCase()))
+                  .collect(Collectors.toSet());
+
+              dateColumns.stream()
+                  .filter(dateColumn -> !infiniteStaleness.contains(Pair.of(tableName, dateColumn)))
+                  .forEach(dateColumn -> {
+                    try {
+                      ResultSet resultSet =
+                          statement.executeQuery(String.format("SELECT MAX(%s) FROM %s;", dateColumn, tableName));
+                      resultSet.next();
+                      Optional<LocalDate> maxDate = Optional.ofNullable(resultSet.getString(1))
+                          .map(dateString -> LocalDate.parse(dateString.substring(0, 10)));
+                      if (maxDate
+                          .map(date -> date.isBefore(LocalDate.now()
+                              .minus(
+                                  customMaxStaleness
+                                      .getOrDefault(Pair.of(tableName, dateColumn), DEFAULT_MAX_STALENESS))))
+                          .orElse(true)) {
+                        violations
+                            .add(String
+                                .format("Column '%s' in table '%s' potentially has stale data: latest date is %s.",
+                                    dateColumn, tableName, maxDate.orElse(null)));
+                      }
+                    } catch (SQLException e) {
+                      e.printStackTrace();
+                    }
+                  });
+            });
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    if (violations.size() > 0) {
+      notificationSender.sendEmailDefault("Potentially stale data!", String.join("<br>", violations));
+    }
+  }
+}

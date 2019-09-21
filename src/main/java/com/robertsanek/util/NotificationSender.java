@@ -36,7 +36,7 @@ public class NotificationSender {
 
   public boolean sendEmailDefault(String title, String message) {
     return sendEmail(new Email("notifications@robertsanek.com", "Notification Service"),
-        new Email(CommonProvider.getEmailAddress()), title, new Content("text/plain", message));
+        new Email(CommonProvider.getEmailAddress()), title, new Content("text/html", message));
   }
 
   public boolean sendEmail(Email from, Email to, String subject, Content content) {

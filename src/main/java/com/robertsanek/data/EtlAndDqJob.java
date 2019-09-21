@@ -32,6 +32,7 @@ public class EtlAndDqJob implements QuartzJob {
 
   @Inject ObjectMapper mapper;
   @Inject ReCreateViews reCreateViews;
+  @Inject EnsureAllTablesHaveRecentData ensureAllTablesHaveRecentData;
   @Inject SecretProvider secretProvider;
   @Inject AnkiEtl ankiEtl;
   @Inject LeetCodeToodledoTaskEtl leetCodeToodledoTaskEtl;
@@ -57,6 +58,7 @@ public class EtlAndDqJob implements QuartzJob {
     if (etlsSuccessful) {
       triggerKlipfolioRefresh();
       dqRunner.exec(jobDataMap);
+      ensureAllTablesHaveRecentData.ensure();
     } else {
       log.info("Not all ETLs were successful, so will not trigger Klipfolio refresh or run Data Quality checks.");
     }
