@@ -17,6 +17,15 @@ public class DateTimeUtilsTest {
   private final LocalDate ldNow = LocalDate.now();
 
   @Test
+  public void shouldWorkForAllDates() {
+    LocalDate currentDate = LocalDate.of(2015, 8, 1);
+    while (currentDate.isBefore(ldNow)) {
+      DateTimeUtils.toZonedDateTime(currentDate);
+      currentDate = currentDate.plusDays(1);
+    }
+  }
+
+  @Test
   public void toZonedDateTime_now() {
     assertEquals(ZonedDateTime.of(ldtNow, ZoneId.of("America/Los_Angeles")), DateTimeUtils.toZonedDateTime(ldtNow));
     assertEquals(ZonedDateTime.of(LocalDateTime.of(ldNow, LocalTime.of(0, 0)), ZoneId.of("America/Los_Angeles")),
