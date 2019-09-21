@@ -7,7 +7,7 @@ public class NotificationSenderTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     new NotificationSender().sendNotificationDefault("hi", "hello\n\noh hey there");
   }
 }

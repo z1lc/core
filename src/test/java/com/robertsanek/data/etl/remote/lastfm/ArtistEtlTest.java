@@ -15,7 +15,7 @@ public class ArtistEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<Artist> objects = InjectUtils.inject(ArtistEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

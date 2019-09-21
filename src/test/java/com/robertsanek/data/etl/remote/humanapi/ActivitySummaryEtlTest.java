@@ -12,7 +12,7 @@ public class ActivitySummaryEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<ActivitySummary> objects = InjectUtils.inject(ActivitySummaryEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

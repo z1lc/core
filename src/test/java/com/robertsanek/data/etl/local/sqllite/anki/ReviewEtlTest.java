@@ -11,7 +11,7 @@ public class ReviewEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<Review> objects = InjectUtils.inject(ReviewEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

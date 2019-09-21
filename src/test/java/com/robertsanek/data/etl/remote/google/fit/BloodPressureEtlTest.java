@@ -11,7 +11,7 @@ public class BloodPressureEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     BloodPressureEtl etl = InjectUtils.inject(BloodPressureEtl.class);
     List<BloodPressureReading> objects = etl.getObjects();
     System.out.println(objects);

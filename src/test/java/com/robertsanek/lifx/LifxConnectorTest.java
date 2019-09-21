@@ -7,7 +7,7 @@ public class LifxConnectorTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     boolean b = new LifxConnector().triggerCoreDay();
     System.out.println("b = " + b);
   }

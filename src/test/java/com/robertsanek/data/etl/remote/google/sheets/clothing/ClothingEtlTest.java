@@ -11,7 +11,7 @@ public class ClothingEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<ClothingRating> objects = InjectUtils.inject(ClothingEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

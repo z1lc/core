@@ -8,7 +8,7 @@ public class AllMentionsOfPersonsUseFullNameTest {
   @Test
   @Disabled("integration")
   @SuppressWarnings("deprecation")
-  public void name() {
+  public void integration() {
     new AllMentionsOfPersonsUseFullName().runDQ();
   }
 }

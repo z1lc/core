@@ -15,7 +15,7 @@ public class HealthEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<Health> objects = InjectUtils.inject(HealthEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

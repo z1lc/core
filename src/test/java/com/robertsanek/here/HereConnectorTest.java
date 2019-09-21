@@ -9,7 +9,7 @@ public class HereConnectorTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     LocalTime todaysSundownTimeForSanFrancisco = new HereConnector().getTodaysSundownTimeForSanFrancisco();
     System.out.println("todaysSundownTimeForSanFrancisco = " + todaysSundownTimeForSanFrancisco);
   }

@@ -9,7 +9,7 @@ class FindReplaceAllBadStringsTest {
 
   @Test
   @Disabled("integration")
-  void name() {
+  void integration() {
     InjectUtils.inject(FindReplaceAllBadStrings.class).runDQ();
   }
 }

@@ -11,7 +11,7 @@ public class MovieEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<Movie> objects = InjectUtils.inject(MovieEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

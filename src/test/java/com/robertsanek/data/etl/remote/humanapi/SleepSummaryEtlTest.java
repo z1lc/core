@@ -12,7 +12,7 @@ public class SleepSummaryEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<SleepSummary> objects = InjectUtils.inject(SleepSummaryEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

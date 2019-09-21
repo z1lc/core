@@ -11,7 +11,7 @@ public class TrelloListEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<TrelloList> objects = InjectUtils.inject(TrelloListEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

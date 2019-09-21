@@ -13,7 +13,7 @@ public class HabitRepEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<Habit> objects = InjectUtils.inject(HabitEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

@@ -11,7 +11,7 @@ public class LeetCodeQuestionEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<Question> objects = InjectUtils.inject(LeetCodeQuestionEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

@@ -7,7 +7,7 @@ public class Coachella2019GeneratorTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     new Coachella2019Generator().writeFiles();
   }
 }

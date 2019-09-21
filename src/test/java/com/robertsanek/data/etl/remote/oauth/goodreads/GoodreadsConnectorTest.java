@@ -7,7 +7,7 @@ public class GoodreadsConnectorTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     new GoodreadsConnector().getTasks();
   }
 }

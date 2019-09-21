@@ -7,7 +7,7 @@ public class AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCardTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     new AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard().runDQ();
   }
 }

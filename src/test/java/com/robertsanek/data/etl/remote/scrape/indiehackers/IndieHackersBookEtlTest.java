@@ -11,7 +11,7 @@ public class IndieHackersBookEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<IndieHackersBook> objects = InjectUtils.inject(IndieHackersBookEtl.class).getObjects();
     System.out.println(objects);
   }

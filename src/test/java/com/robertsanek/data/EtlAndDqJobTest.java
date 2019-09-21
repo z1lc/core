@@ -16,7 +16,7 @@ public class EtlAndDqJobTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws SchedulerException, InterruptedException {
+  public void integration() throws SchedulerException, InterruptedException {
     JobDetail job = JobBuilder
         .newJob(EtlAndDqJob.class)
         .withIdentity("a", "b")

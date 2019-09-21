@@ -7,7 +7,7 @@ public class ReCreateViewsTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     new ReCreateViews().executeQueries();
   }
 }

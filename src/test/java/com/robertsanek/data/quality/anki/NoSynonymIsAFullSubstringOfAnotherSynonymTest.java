@@ -7,7 +7,7 @@ public class NoSynonymIsAFullSubstringOfAnotherSynonymTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     new NoSynonymIsAFullSubstringOfAnotherSynonym().runDQ();
   }
 }

@@ -14,7 +14,7 @@ public class NewRepsPerCardDeriverTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<CardNewReps> objects = new NewRepsPerCardDeriver().getObjects().stream()
         .filter(nr -> DataQualityBase.cardByCardId.get(nr.getCard_id())
             .getCreated_at().isAfter(ZonedDateTime.now().minusDays(30)))

@@ -11,7 +11,7 @@ public class CreditScoreEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<CreditScore> objects = InjectUtils.inject(CreditScoreEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

@@ -7,7 +7,7 @@ public class AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatchTe
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     new AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatch().runDQ();
   }
 }

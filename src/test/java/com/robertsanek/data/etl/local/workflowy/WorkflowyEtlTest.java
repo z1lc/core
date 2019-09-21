@@ -11,7 +11,7 @@ public class WorkflowyEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<Entry> objects = InjectUtils.inject(WorkflowyEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

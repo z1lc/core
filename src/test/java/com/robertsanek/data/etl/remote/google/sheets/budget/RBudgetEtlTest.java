@@ -11,7 +11,7 @@ public class RBudgetEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<AnnotatedItem> objects = InjectUtils.inject(RBudgetEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

@@ -12,7 +12,7 @@ public class TemplateEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<Template> objects = InjectUtils.inject(TemplateEtl.class).getObjects().stream()
         .filter(temp -> temp.getDeck_id() != null)
         .collect(Collectors.toList());

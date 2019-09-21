@@ -11,7 +11,7 @@ public class TaskEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<Task> objects = InjectUtils.inject(TaskEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

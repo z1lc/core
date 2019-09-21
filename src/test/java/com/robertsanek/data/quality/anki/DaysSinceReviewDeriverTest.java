@@ -12,7 +12,7 @@ public class DaysSinceReviewDeriverTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<DaysSinceReview> objects = new DaysSinceReviewDeriver().getObjects();
     System.out.println("objects = " + objects);
   }

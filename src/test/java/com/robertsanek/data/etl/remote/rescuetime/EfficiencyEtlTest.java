@@ -11,7 +11,7 @@ public class EfficiencyEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<Efficiency> objects = InjectUtils.inject(EfficiencyEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

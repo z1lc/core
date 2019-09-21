@@ -11,7 +11,7 @@ public class CalibreCalibreBookEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<CalibreBook> objects = InjectUtils.inject(CalibreBookEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

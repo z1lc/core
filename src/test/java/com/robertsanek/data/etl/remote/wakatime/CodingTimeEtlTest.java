@@ -11,7 +11,7 @@ public class CodingTimeEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() throws Exception {
+  public void integration() throws Exception {
     List<CodingTime> objects = InjectUtils.inject(CodingTimeEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

@@ -12,7 +12,7 @@ public class HabiticaEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<JsonTask> objects = InjectUtils.inject(TaskEtl.class).getJsonObjects();
     System.out.println("objects = " + objects);
   }

@@ -91,9 +91,4 @@ public class MasterEtlTest {
     }
   }
 
-  @Test
-  public void name() {
-    LocalDateTime now = LocalDateTime.now();
-    System.out.println(ZonedDateTime.of(now, ZoneId.systemDefault()));
-  }
 }

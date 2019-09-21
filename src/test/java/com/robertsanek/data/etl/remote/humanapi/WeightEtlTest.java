@@ -12,7 +12,7 @@ public class WeightEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<GenericReading> objects = InjectUtils.inject(WeightEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

@@ -12,7 +12,7 @@ public class ReviewTimePerTagDeriverTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<ReviewTimePerTag> objects = new ReviewTimePerTagDeriver().getObjects();
     System.out.println("objects = " + objects);
   }

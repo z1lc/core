@@ -9,7 +9,7 @@ public class LeetCodeToodledoTaskEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     InjectUtils.inject(LeetCodeToodledoTaskEtl.class).run();
   }
 

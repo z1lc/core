@@ -11,7 +11,7 @@ public class BoardEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<TrelloBoard> objects = InjectUtils.inject(BoardEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

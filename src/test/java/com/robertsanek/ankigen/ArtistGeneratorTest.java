@@ -7,7 +7,7 @@ public class ArtistGeneratorTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     new ArtistGenerator().writeFiles();
     System.out.println("persons");
   }

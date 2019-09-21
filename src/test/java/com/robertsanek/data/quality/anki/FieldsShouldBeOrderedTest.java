@@ -7,7 +7,7 @@ public class FieldsShouldBeOrderedTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     new FieldsShouldBeOrdered().runDQ();
   }
 

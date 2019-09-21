@@ -11,7 +11,7 @@ public class NewHistoryEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<History> objects = InjectUtils.inject(NewHistoryEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }

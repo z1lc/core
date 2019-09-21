@@ -7,7 +7,7 @@ public class AllCalibreBooksAndAuthorsAreInAnkiTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     new AllCalibreBooksAndAuthorsAreInAnki().runDQ();
   }
 }

@@ -11,7 +11,7 @@ public class CardEtlTest {
 
   @Test
   @Disabled("integration")
-  public void name() {
+  public void integration() {
     List<TrelloCard> objects = InjectUtils.inject(CardEtl.class).getObjects();
     System.out.println("objects = " + objects);
   }
