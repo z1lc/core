@@ -13,9 +13,7 @@ import java.util.Optional;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
-import com.google.inject.Singleton;
 
-@Singleton
 public class DateTimeUtils {
 
   //ALL DATES IN RANGEMAP ARE ASSUMED TO BE UTC
