@@ -2,6 +2,7 @@ package com.robertsanek.process;
 
 import static com.robertsanek.process.MasterEtl.REFLECTIONS_PREFIX;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -70,6 +71,12 @@ public class MasterEtlTest {
   @Test
   public void getConcreteEtls_filtersOutDoNotRun() {
     assertFalse(new MasterEtl().getConcreteEtls(false).contains(WorkflowyEtl.class));
+    assertFalse(new MasterEtl().getConcreteEtls(true).contains(WorkflowyEtl.class));
+  }
+
+  @Test
+  public void getConcreteEtls_filtersOutSlowEtl() {
+    assertTrue(new MasterEtl().getConcreteEtls(false).contains(ReviewEtl.class));
     assertFalse(new MasterEtl().getConcreteEtls(true).contains(ReviewEtl.class));
   }
 
