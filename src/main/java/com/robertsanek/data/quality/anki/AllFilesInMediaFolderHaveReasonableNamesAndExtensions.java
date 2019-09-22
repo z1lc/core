@@ -37,6 +37,7 @@ public class AllFilesInMediaFolderHaveReasonableNamesAndExtensions extends DataQ
       "ogx",   //Ogg / Vorbis
       "png",
       "svg",
+      "otf",
       "ttf",   //font files
       "wav"
   );

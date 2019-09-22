@@ -31,6 +31,7 @@ public class ProgrammingLanguageFunctionNameDoesNotAppearInDescription extends D
       1566839536985L,
       1567448966728L,
       1568338727531L,  //Java permutations
+      1569099614037L,  //Streams.stream
       0L
   );
 
