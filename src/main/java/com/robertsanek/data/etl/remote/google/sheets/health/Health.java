@@ -1,7 +1,7 @@
 package com.robertsanek.data.etl.remote.google.sheets.health;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class Health {
 
   @Id
-  private ZonedDateTime date;
+  private LocalDate date;
   private BigDecimal cardio;
   private BigDecimal lifting;
   private BigDecimal total;
@@ -27,7 +27,7 @@ public class Health {
   private BigDecimal alcohol;
   private String drugs;
 
-  public ZonedDateTime getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
@@ -57,7 +57,7 @@ public class Health {
 
   public static final class HealthBuilder {
 
-    private ZonedDateTime date;
+    private LocalDate date;
     private BigDecimal cardio;
     private BigDecimal lifting;
     private BigDecimal total;
@@ -76,7 +76,7 @@ public class Health {
       return new HealthBuilder();
     }
 
-    public HealthBuilder withDate(ZonedDateTime date) {
+    public HealthBuilder withDate(LocalDate date) {
       this.date = date;
       return this;
     }

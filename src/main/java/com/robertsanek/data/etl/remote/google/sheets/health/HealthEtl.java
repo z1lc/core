@@ -5,7 +5,6 @@ import static com.robertsanek.util.SecretType.HEALTH_SPREADSHEET_ID;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +14,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.google.sheets.SheetsConnector;
-import com.robertsanek.util.DateTimeUtils;
 import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 
@@ -50,7 +48,7 @@ public class HealthEtl extends Etl<Health> {
               .orElse(null);
           String drugs = maybeGet(row, 11).orElse("");
           return Health.HealthBuilder.aHealth()
-              .withDate(DateTimeUtils.toZonedDateTime(date))
+              .withDate(date)
               .withCardio(cardio.orElse(null))
               .withLifting(lifting.orElse(null))
               .withTotal(total)
@@ -64,7 +62,7 @@ public class HealthEtl extends Etl<Health> {
               .withDrugs(drugs)
               .build();
         })
-        .filter(health -> health.getDate().isBefore(ZonedDateTime.now()))
+        .filter(health -> health.getDate().isBefore(LocalDate.now()))
         .collect(Collectors.toList());
   }
 
