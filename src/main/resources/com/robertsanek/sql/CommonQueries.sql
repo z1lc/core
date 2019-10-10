@@ -1,4 +1,11 @@
 /**************************************************** RLP - EXERCISE **************************************************/
+create or replace view rlp_daily_exercise as (
+    select date, case when total > 0 then 1 else 0 end as exercise
+    from health
+    order by date desc
+)
+;
+
 create or replace view rlp_weekly_exercise as (
     select date_trunc('week', date + interval '1 day') - interval '1 day' as week,
         sum(cardio) as cardio,
@@ -13,6 +20,59 @@ create or replace view rlp_weekly_exercise as (
     group by week
     order by week desc)
 ;
+
+
+/************************************************** RLP - EDUCATION ***************************************************/
+create or replace view rlp_daily_education as (
+    select *,
+        case when total_minutes >= 14.5 or total_reviews >= 145 then 1 else 0 end as complete
+    from (select date_trunc('day', created_at) as created_at,
+              (sum(time_ms) / 60000) as total_minutes,
+              count(time_ms) as total_reviews
+          from anki_reviews
+          group by 1) reviews_per_day
+    order by created_at desc
+)
+;
+
+create or replace view rlp_weekly_education as (
+    select date_trunc('week', created_at + interval '1 day') - interval '1 day' as week,
+        sum(total_minutes / 7) as average_minutes,
+        sum(complete) as days_completed
+    from rlp_daily_education
+    group by week
+    order by week DESC)
+;
+
+
+/************************************************* RLP - PRODUCTIVITY *************************************************/
+create or replace view rlp_daily_productivity as (
+    with toodledo as (select date_trunc('day', completed_at) as day, sum(length_minutes) as sum_toodledo
+                      from toodledo_tasks
+                      where completed_at is not null
+                      group by 1
+                      order by 1 desc),
+        habitica as (
+            select date_trunc('day', date) as day, sum(time_in_minutes) as sum_habitica
+            from habitica_tasks
+                     join habitica_histories hh on habitica_tasks.id = hh.task_id
+            where hh.completed
+            group by 1
+            order by 1 desc)
+    select day, coalesce(sum_toodledo, 0) + coalesce(sum_habitica, 0) as total_minutes
+    from toodledo
+             full outer join habitica using (day)
+)
+;
+
+create or replace view rlp_weekly_productivity as (
+    select date_trunc('week', day + interval '1 day') - interval '1 day' as week,
+        sum(case when total_minutes >= 30 then 1 else 0 end) as days_completed
+    from rlp_daily_productivity
+    group by 1
+    order by 1 desc)
+;
+
 
 /***************************************************** RLP - SLEEP ****************************************************/
 create or replace view rlp_weekly_sleep as (
@@ -33,47 +93,18 @@ create or replace view rlp_weekly_sleep as (
     order by week desc)
 ;
 
-/************************************************** RLP - EDUCATION ***************************************************/
-create or replace view rlp_weekly_education as (
-    select date_trunc('week', created_at + interval '1 day') - interval '1 day' as week,
-        sum(total_minutes / 7) as average_minutes,
-        sum(complete) as days_completed
-    from (select *,
-              case when total_minutes >= 14.5 or total_reviews >= 145 then 1 else 0 end as complete
-          from (select date_trunc('day', created_at) as created_at,
-                    (sum(time_ms) / 60000) as total_minutes,
-                    count(time_ms) as total_reviews
-                from anki_reviews
-                group by 1) reviews_per_day) b
-    group by week
-    order by week DESC)
+
+/************************************************* RLP - DAILY OVERALL ************************************************/
+create or replace view rlp_daily as (
+    select date(coalesce(date, created_at, day)) as day,
+        ex.exercise as exercise,
+        coalesce(ed.complete, 0) as education,
+        case when p.total_minutes >= 30 then 1 else 0 end as productivity
+    from rlp_daily_exercise ex
+             full outer join rlp_daily_education ed on ex.date = ed.created_at
+             full outer join rlp_daily_productivity p on ed.created_at = p.day
+)
 ;
-
-
-/************************************************* RLP - PRODUCTIVITY *************************************************/
-create or replace view rlp_weekly_productivity as (
-    with toodledo as (select date_trunc('day', completed_at) as day, sum(length_minutes) as sum_toodledo
-                      from toodledo_tasks
-                      where completed_at is not null
-                      group by 1
-                      order by 1 desc),
-        habitica as (
-            select date_trunc('day', date) as day, sum(time_in_minutes) as sum_habitica
-            from habitica_tasks
-                     join habitica_histories hh on habitica_tasks.id = hh.task_id
-            where hh.completed
-            group by 1
-            order by 1 desc),
-        minutes_per_day as (select day, coalesce(sum_toodledo, 0) + coalesce(sum_habitica, 0) as total_minutes
-                            from toodledo
-                                     full outer join habitica using (day))
-    select date_trunc('week', day + interval '1 day') - interval '1 day' as week,
-        sum(case when total_minutes >= 30 then 1 else 0 end) as days_completed
-    from minutes_per_day
-    group by 1
-    order by 1 desc)
-;
-
 
 /* Recently-completed non-recurring Toodledo tasks */
 select distinct title, completed_at
