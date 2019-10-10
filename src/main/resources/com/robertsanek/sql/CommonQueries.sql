@@ -1,6 +1,6 @@
 /**************************************************** RLP - EXERCISE **************************************************/
 create or replace view rlp_daily_exercise as (
-    select date, case when total > 0 then 1 else 0 end as exercise
+    select date, total
     from health
     order by date desc
 )
@@ -26,7 +26,7 @@ create or replace view rlp_weekly_exercise as (
 create or replace view rlp_daily_education as (
     select *,
         case when total_minutes >= 14.5 or total_reviews >= 145 then 1 else 0 end as complete
-    from (select date_trunc('day', created_at) as created_at,
+    from (select date(date_trunc('day', created_at)) as created_at,
               (sum(time_ms) / 60000) as total_minutes,
               count(time_ms) as total_reviews
           from anki_reviews
@@ -59,7 +59,7 @@ create or replace view rlp_daily_productivity as (
             where hh.completed
             group by 1
             order by 1 desc)
-    select day, coalesce(sum_toodledo, 0) + coalesce(sum_habitica, 0) as total_minutes
+    select date(day) as day, coalesce(sum_toodledo, 0) + coalesce(sum_habitica, 0) as total_minutes
     from toodledo
              full outer join habitica using (day)
 )
@@ -97,12 +97,23 @@ create or replace view rlp_weekly_sleep as (
 /************************************************* RLP - DAILY OVERALL ************************************************/
 create or replace view rlp_daily as (
     select date(coalesce(date, created_at, day)) as day,
-        ex.exercise as exercise,
-        coalesce(ed.complete, 0) as education,
-        case when p.total_minutes >= 30 then 1 else 0 end as productivity
+        case when total > 0
+                 then 1
+             else
+                 case when ex.date < current_date then 0 else null end
+            end as exercise,
+        case when ex.date < current_date
+                 then coalesce(ed.complete, 0)
+             else ed.complete end as education,
+        case when p.total_minutes >= 30
+                 then 1
+             else
+                 case when ex.date < current_date then 0 else null end
+            end as productivity
     from rlp_daily_exercise ex
-             full outer join rlp_daily_education ed on ex.date = ed.created_at
-             full outer join rlp_daily_productivity p on ed.created_at = p.day
+             left join rlp_daily_education ed on ex.date = ed.created_at
+             left join rlp_daily_productivity p on ex.date = p.day
+    order by day desc
 )
 ;
 
