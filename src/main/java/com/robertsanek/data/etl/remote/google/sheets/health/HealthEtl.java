@@ -22,7 +22,7 @@ import com.robertsanek.util.Unchecked;
 public class HealthEtl extends Etl<Health> {
 
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-  private static final String RANGE = "Daily Log!A2:H10000";
+  private static final String RANGE = "Daily Log!A2:L10000";
   @Inject SecretProvider secretProvider;
 
   @Override
@@ -40,18 +40,28 @@ public class HealthEtl extends Etl<Health> {
               .map(this::fromStringToBigDecimal)
               .orElse(getTotal(cardio, lifting));
           String note = maybeGet(row, 4).orElse("");
-          BigDecimal alcohol = maybeGet(row, 6)
+          String groceries = maybeGet(row, 5).orElse("");
+          Boolean cook = maybeGet(row, 6).map(this::fromStringToBoolean).orElse(null);
+          Boolean cafeteria = maybeGet(row, 7).map(this::fromStringToBoolean).orElse(null);
+          Boolean orderIn = maybeGet(row, 8).map(this::fromStringToBoolean).orElse(null);
+          Boolean restaurant = maybeGet(row, 9).map(this::fromStringToBoolean).orElse(null);
+          BigDecimal alcohol = maybeGet(row, 10)
               .map(this::fromStringToBigDecimal)
-              .orElse(new BigDecimal(0));
-          String drugs = maybeGet(row, 7).orElse("");
+              .orElse(null);
+          String drugs = maybeGet(row, 11).orElse("");
           return Health.HealthBuilder.aHealth()
               .withDate(DateTimeUtils.toZonedDateTime(date))
               .withCardio(cardio.orElse(null))
               .withLifting(lifting.orElse(null))
               .withTotal(total)
+              .withComment(note)
+              .withGroceries(groceries)
+              .withCook(cook)
+              .withCafeteria(cafeteria)
+              .withOrderIn(orderIn)
+              .withRestaurant(restaurant)
               .withAlcohol(alcohol)
               .withDrugs(drugs)
-              .withComment(note)
               .build();
         })
         .filter(health -> health.getDate().isBefore(ZonedDateTime.now()))
@@ -61,6 +71,13 @@ public class HealthEtl extends Etl<Health> {
   private BigDecimal fromStringToBigDecimal(String str) {
     if (!str.isEmpty()) {
       return new BigDecimal(str).setScale(2, RoundingMode.CEILING);
+    }
+    return null;
+  }
+
+  private Boolean fromStringToBoolean(String str) {
+    if (!str.isEmpty()) {
+      return Boolean.parseBoolean(str);
     }
     return null;
   }

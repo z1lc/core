@@ -3,6 +3,7 @@ package com.robertsanek.data.etl.remote.google.sheets.health;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -17,6 +18,12 @@ public class Health {
   private BigDecimal lifting;
   private BigDecimal total;
   private String comment;
+  private String groceries;
+  private Boolean cook;
+  private Boolean cafeteria;
+  @Column(name = "order_in")
+  private Boolean orderIn;
+  private Boolean restaurant;
   private BigDecimal alcohol;
   private String drugs;
 
@@ -55,6 +62,11 @@ public class Health {
     private BigDecimal lifting;
     private BigDecimal total;
     private String comment;
+    private String groceries;
+    private Boolean cook;
+    private Boolean cafeteria;
+    private Boolean orderIn;
+    private Boolean restaurant;
     private BigDecimal alcohol;
     private String drugs;
 
@@ -89,6 +101,31 @@ public class Health {
       return this;
     }
 
+    public HealthBuilder withGroceries(String groceries) {
+      this.groceries = groceries;
+      return this;
+    }
+
+    public HealthBuilder withCook(Boolean cook) {
+      this.cook = cook;
+      return this;
+    }
+
+    public HealthBuilder withCafeteria(Boolean cafeteria) {
+      this.cafeteria = cafeteria;
+      return this;
+    }
+
+    public HealthBuilder withOrderIn(Boolean orderIn) {
+      this.orderIn = orderIn;
+      return this;
+    }
+
+    public HealthBuilder withRestaurant(Boolean restaurant) {
+      this.restaurant = restaurant;
+      return this;
+    }
+
     public HealthBuilder withAlcohol(BigDecimal alcohol) {
       this.alcohol = alcohol;
       return this;
@@ -101,13 +138,18 @@ public class Health {
 
     public Health build() {
       Health health = new Health();
-      health.alcohol = this.alcohol;
-      health.cardio = this.cardio;
-      health.lifting = this.lifting;
-      health.date = this.date;
-      health.comment = this.comment;
       health.total = this.total;
+      health.cardio = this.cardio;
+      health.cafeteria = this.cafeteria;
+      health.alcohol = this.alcohol;
+      health.lifting = this.lifting;
+      health.cook = this.cook;
+      health.restaurant = this.restaurant;
       health.drugs = this.drugs;
+      health.comment = this.comment;
+      health.date = this.date;
+      health.groceries = this.groceries;
+      health.orderIn = this.orderIn;
       return health;
     }
   }
