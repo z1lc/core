@@ -22,6 +22,7 @@ public class AllInterviewQuestionMethodsHaveAssociatedFunctionNote extends DataQ
       "isSafe",
       "recurGen",
       "recurSum",
+      "remove",
       "solve"
   );
 
