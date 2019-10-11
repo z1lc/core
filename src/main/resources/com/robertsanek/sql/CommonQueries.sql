@@ -100,15 +100,15 @@ create or replace view rlp_daily as (
         case when total > 0
                  then 1
              else
-                 case when ex.date < current_date then 0 else null end
+                 case when ex.date < date(to_pst(current_timestamp)) then 0 else null end
             end as exercise,
-        case when ex.date < current_date
+        case when ex.date < date(to_pst(current_timestamp))
                  then coalesce(ed.complete, 0)
              else ed.complete end as education,
         case when p.total_minutes >= 30
                  then 1
              else
-                 case when ex.date < current_date then 0 else null end
+                 case when ex.date < date(to_pst(current_timestamp)) then 0 else null end
             end as productivity
     from rlp_daily_exercise ex
              left join rlp_daily_education ed on ex.date = ed.created_at
