@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.google.inject.Inject;
 import com.robertsanek.data.etl.local.habitica.TaskEtl;
 import com.robertsanek.data.etl.local.habitica.jsonentities.JsonTask;
 import com.robertsanek.util.Log;
@@ -28,15 +29,16 @@ public class HabiticaLoadAssessment {
 
   public static final ZonedDateTime now = ZonedDateTime.now();
   private static Log log = Logs.getLog(HabiticaLoadAssessment.class);
+  @Inject TaskEtl taskEtl;
 
   public void generateHtmlSummary() {
-    List<JsonTask> allJsonTasks = new TaskEtl().getJsonObjects();
+    List<JsonTask> allJsonTasks = taskEtl.getJsonObjects();
     List<JsonTask> scheduledDailys = allJsonTasks.stream()
         .filter(task -> task.getRepeat().hasSomeRepetition())
         .filter(task -> task.getFrequency().equals("weekly"))
         .sorted(Comparator.comparing(JsonTask::getWeeklyContribution).reversed())
         .collect(Collectors.toList());
-    Map<String, Pair<Long, Long>> timePerDay = getTimePerDay(scheduledDailys);
+    Map<String, Pair<Double, Double>> timePerDay = getTimePerDay(scheduledDailys);
 
     List<JsonTask> notWeeklyJsonTasks = allJsonTasks.stream()
         .filter(task -> !task.getFrequency().equals("weekly"))
@@ -78,7 +80,7 @@ public class HabiticaLoadAssessment {
                                 .map(item -> span(item.getText()).with(br()))
                                 .collect(Collectors.toList())
                         ))
-                        .with(td(Long.toString(task.getTimeBasedOnPriority())))
+                        .with(td(Double.toString(task.getTime())))
                         .with(td(getHtmlBasedOnRepeat(task.getRepeat().getSu())))
                         .with(td(getHtmlBasedOnRepeat(task.getRepeat().getM())))
                         .with(td(getHtmlBasedOnRepeat(task.getRepeat().getT())))
@@ -86,28 +88,28 @@ public class HabiticaLoadAssessment {
                         .with(td(getHtmlBasedOnRepeat(task.getRepeat().getTh())))
                         .with(td(getHtmlBasedOnRepeat(task.getRepeat().getF())))
                         .with(td(getHtmlBasedOnRepeat(task.getRepeat().getS())))
-                        .with(td(Long.toString(task.getWeeklyContribution())))
+                        .with(td(Double.toString(task.getWeeklyContribution())))
                     )
                     .collect(Collectors.toList()))
                 .with(tr().with(
                     td("Total Individual Tasks").attr("colspan", 2),
-                    td(Long.toString(timePerDay.get("Su").getRight())),
-                    td(Long.toString(timePerDay.get("M").getRight())),
-                    td(Long.toString(timePerDay.get("Tu").getRight())),
-                    td(Long.toString(timePerDay.get("W").getRight())),
-                    td(Long.toString(timePerDay.get("Th").getRight())),
-                    td(Long.toString(timePerDay.get("F").getRight())),
-                    td(Long.toString(timePerDay.get("Sa").getRight())))
+                    td(Double.toString(timePerDay.get("Su").getRight())),
+                    td(Double.toString(timePerDay.get("M").getRight())),
+                    td(Double.toString(timePerDay.get("Tu").getRight())),
+                    td(Double.toString(timePerDay.get("W").getRight())),
+                    td(Double.toString(timePerDay.get("Th").getRight())),
+                    td(Double.toString(timePerDay.get("F").getRight())),
+                    td(Double.toString(timePerDay.get("Sa").getRight())))
                 )
                 .with(tr().with(
                     td("Total Time").attr("colspan", 2),
-                    td(Long.toString(timePerDay.get("Su").getLeft())),
-                    td(Long.toString(timePerDay.get("M").getLeft())),
-                    td(Long.toString(timePerDay.get("Tu").getLeft())),
-                    td(Long.toString(timePerDay.get("W").getLeft())),
-                    td(Long.toString(timePerDay.get("Th").getLeft())),
-                    td(Long.toString(timePerDay.get("F").getLeft())),
-                    td(Long.toString(timePerDay.get("Sa").getLeft())))
+                    td(Double.toString(timePerDay.get("Su").getLeft())),
+                    td(Double.toString(timePerDay.get("M").getLeft())),
+                    td(Double.toString(timePerDay.get("Tu").getLeft())),
+                    td(Double.toString(timePerDay.get("W").getLeft())),
+                    td(Double.toString(timePerDay.get("Th").getLeft())),
+                    td(Double.toString(timePerDay.get("F").getLeft())),
+                    td(Double.toString(timePerDay.get("Sa").getLeft())))
                 )
             )
             .with(p("Dailys not scheduled:"))
@@ -126,10 +128,10 @@ public class HabiticaLoadAssessment {
     }
   }
 
-  private Map<String, Pair<Long, Long>> getTimePerDay(List<JsonTask> jsonTasks) {
+  private Map<String, Pair<Double, Double>> getTimePerDay(List<JsonTask> jsonTasks) {
     return jsonTasks.stream()
         .flatMap(task -> {
-          long time = task.getTimeBasedOnPriority();
+          double time = task.getTime();
           return Stream.of(
               Pair.of("Su", task.getRepeat().getSu() ? time : 0),
               Pair.of("M", task.getRepeat().getM() ? time : 0),
@@ -142,8 +144,8 @@ public class HabiticaLoadAssessment {
         })
         .collect(Collectors.groupingBy(Pair::getKey)).entrySet().stream()
         .collect(Collectors.toMap(Map.Entry::getKey,
-            entry -> Pair.of(entry.getValue().stream().mapToLong(Pair::getRight).sum(),
-                entry.getValue().stream().mapToLong(pair -> pair.getRight() == 0 ? 0 : 1).sum())));
+            entry -> Pair.of(entry.getValue().stream().mapToDouble(Pair::getRight).sum(),
+                entry.getValue().stream().mapToDouble(pair -> pair.getRight() == 0 ? 0 : 1).sum())));
   }
 
   private String getHtmlBasedOnRepeat(boolean repeat) {

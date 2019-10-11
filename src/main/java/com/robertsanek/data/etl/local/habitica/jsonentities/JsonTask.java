@@ -3,6 +3,8 @@ package com.robertsanek.data.etl.local.habitica.jsonentities;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -74,11 +76,19 @@ public class JsonTask {
   @JsonIgnore
   private Map<String, Object> additionalProperties = new HashMap<>();
 
-  public long getWeeklyContribution() {
-    return getRepeat().getTotalReps() * getTimeBasedOnPriority();
+  public double getWeeklyContribution() {
+    return getRepeat().getTotalReps() * getTime();
   }
 
-  public long getTimeBasedOnPriority() {
+  public double getTime() {
+    Matcher matcher = Pattern.compile("^\\d+(\\.\\d+)?$").matcher(notes.split("\n")[0]);
+    if (matcher.find()) {
+      return Double.parseDouble(matcher.group());
+    }
+    return getTimeBasedOnPriority();
+  }
+
+  public double getTimeBasedOnPriority() {
     if (priority == 0.1) {
       return 5;
     } else if (priority == 1) {
