@@ -29,6 +29,8 @@ public class DateTimeUtils {
   private static final LocalDate HUNTSVILLE_2018_XMAS_END = LocalDate.of(2019, 1, 2);
   private static final LocalDate CZECH_ITALY_2019_START = LocalDate.of(2019, 7, 8);
   private static final LocalDate CZECH_ITALY_2019_END = LocalDate.of(2019, 7, 30);
+  private static final LocalDate HUNTSVILLE_2019_OCTOBER_START = LocalDate.of(2019, 10, 6);
+  private static final LocalDate HUNTSVILLE_2019_OCTOBER_END = LocalDate.of(2019, 10, 14);
 
   static {
     dateRangeMap.put(Range.lessThan(MOVED_TO_CA), ZoneId.of("America/Chicago")); //Huntsville, Auburn
@@ -53,7 +55,12 @@ public class DateTimeUtils {
     dateRangeMap
         .put(Range.closedOpen(CZECH_ITALY_2019_START, CZECH_ITALY_2019_END), ZoneId.of("Europe/Paris"));
 
-    dateRangeMap.put(Range.atLeast(CZECH_ITALY_2019_END), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(CZECH_ITALY_2019_END, HUNTSVILLE_2019_OCTOBER_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2019_OCTOBER_START, HUNTSVILLE_2019_OCTOBER_END), ZoneId.of("America/Chicago"));
+
+    dateRangeMap.put(Range.atLeast(HUNTSVILLE_2019_OCTOBER_END), ZoneId.of("America/Los_Angeles"));
   }
 
   private static ZoneId getZoneId(LocalDate localDate) {
