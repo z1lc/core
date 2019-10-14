@@ -30,7 +30,7 @@ public class DateTimeUtils {
   private static final LocalDate CZECH_ITALY_2019_START = LocalDate.of(2019, 7, 8);
   private static final LocalDate CZECH_ITALY_2019_END = LocalDate.of(2019, 7, 30);
   private static final LocalDate HUNTSVILLE_2019_OCTOBER_START = LocalDate.of(2019, 10, 6);
-  private static final LocalDate HUNTSVILLE_2019_OCTOBER_END = LocalDate.of(2019, 10, 14);
+  private static final LocalDate HUNTSVILLE_2019_OCTOBER_END = LocalDate.of(2019, 10, 15);
 
   static {
     dateRangeMap.put(Range.lessThan(MOVED_TO_CA), ZoneId.of("America/Chicago")); //Huntsville, Auburn
