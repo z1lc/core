@@ -38,7 +38,7 @@ public class HabiticaLoadAssessment {
         .filter(task -> task.getFrequency().equals("weekly"))
         .sorted(Comparator.comparing(JsonTask::getWeeklyContribution).reversed())
         .collect(Collectors.toList());
-    Map<String, Pair<Double, Double>> timePerDay = getTimePerDay(scheduledDailys);
+    Map<String, Pair<Long, Long>> timePerDay = getTimePerDay(scheduledDailys);
 
     List<JsonTask> notWeeklyJsonTasks = allJsonTasks.stream()
         .filter(task -> !task.getFrequency().equals("weekly"))
@@ -49,7 +49,7 @@ public class HabiticaLoadAssessment {
     ContainerTag html = html()
         .with(head()
             .with(meta().attr("charset", "UTF-8"), style().withText(
-                "table {border-collapse: collapse;} table, th, td { border: 1px solid black; } span {font-size: 0.7em}")))
+                "table {border-collapse: collapse;} table, th, td { border: 1px solid black; padding: 2px 3px 2px 3px; } span {font-size: 0.7em}")))
         .with(body()
             .with(p("Created at " + now))
             .condWith(notWeeklyJsonTasks.size() > 0,
@@ -93,23 +93,23 @@ public class HabiticaLoadAssessment {
                     .collect(Collectors.toList()))
                 .with(tr().with(
                     td("Total Individual Tasks").attr("colspan", 2),
-                    td(Double.toString(timePerDay.get("Su").getRight())),
-                    td(Double.toString(timePerDay.get("M").getRight())),
-                    td(Double.toString(timePerDay.get("Tu").getRight())),
-                    td(Double.toString(timePerDay.get("W").getRight())),
-                    td(Double.toString(timePerDay.get("Th").getRight())),
-                    td(Double.toString(timePerDay.get("F").getRight())),
-                    td(Double.toString(timePerDay.get("Sa").getRight())))
+                    td(Long.toString(timePerDay.get("Su").getRight())),
+                    td(Long.toString(timePerDay.get("M").getRight())),
+                    td(Long.toString(timePerDay.get("Tu").getRight())),
+                    td(Long.toString(timePerDay.get("W").getRight())),
+                    td(Long.toString(timePerDay.get("Th").getRight())),
+                    td(Long.toString(timePerDay.get("F").getRight())),
+                    td(Long.toString(timePerDay.get("Sa").getRight())))
                 )
                 .with(tr().with(
                     td("Total Time").attr("colspan", 2),
-                    td(Double.toString(timePerDay.get("Su").getLeft())),
-                    td(Double.toString(timePerDay.get("M").getLeft())),
-                    td(Double.toString(timePerDay.get("Tu").getLeft())),
-                    td(Double.toString(timePerDay.get("W").getLeft())),
-                    td(Double.toString(timePerDay.get("Th").getLeft())),
-                    td(Double.toString(timePerDay.get("F").getLeft())),
-                    td(Double.toString(timePerDay.get("Sa").getLeft())))
+                    td(Long.toString(timePerDay.get("Su").getLeft())),
+                    td(Long.toString(timePerDay.get("M").getLeft())),
+                    td(Long.toString(timePerDay.get("Tu").getLeft())),
+                    td(Long.toString(timePerDay.get("W").getLeft())),
+                    td(Long.toString(timePerDay.get("Th").getLeft())),
+                    td(Long.toString(timePerDay.get("F").getLeft())),
+                    td(Long.toString(timePerDay.get("Sa").getLeft())))
                 )
             )
             .with(p("Dailys not scheduled:"))
@@ -128,7 +128,7 @@ public class HabiticaLoadAssessment {
     }
   }
 
-  private Map<String, Pair<Double, Double>> getTimePerDay(List<JsonTask> jsonTasks) {
+  private Map<String, Pair<Long, Long>> getTimePerDay(List<JsonTask> jsonTasks) {
     return jsonTasks.stream()
         .flatMap(task -> {
           double time = task.getTime();
@@ -144,8 +144,8 @@ public class HabiticaLoadAssessment {
         })
         .collect(Collectors.groupingBy(Pair::getKey)).entrySet().stream()
         .collect(Collectors.toMap(Map.Entry::getKey,
-            entry -> Pair.of(entry.getValue().stream().mapToDouble(Pair::getRight).sum(),
-                entry.getValue().stream().mapToDouble(pair -> pair.getRight() == 0 ? 0 : 1).sum())));
+            entry -> Pair.of(Math.round(entry.getValue().stream().mapToDouble(Pair::getRight).sum()),
+                Math.round(entry.getValue().stream().mapToDouble(pair -> pair.getRight() == 0 ? 0 : 1).sum()))));
   }
 
   private String getHtmlBasedOnRepeat(boolean repeat) {
