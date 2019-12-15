@@ -5,15 +5,15 @@ import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.robertsanek.data.derived.anki.DaysSinceReview;
-import com.robertsanek.data.derived.anki.DaysSinceReviewDeriver;
+import com.robertsanek.data.derived.anki.HydratedReview;
+import com.robertsanek.data.derived.anki.HydratedReviewDeriver;
 
-public class DaysSinceReviewDeriverTest {
+public class HydratedReviewDeriverTest {
 
   @Test
   @Disabled("integration")
   public void integration() {
-    List<DaysSinceReview> objects = new DaysSinceReviewDeriver().getObjects();
+    List<HydratedReview> objects = new HydratedReviewDeriver().getObjects();
     System.out.println("objects = " + objects);
   }
 }

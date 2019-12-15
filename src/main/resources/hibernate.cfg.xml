@@ -74,7 +74,7 @@
     <mapping class="com.robertsanek.data.etl.remote.wakatime.CodingTime"/>
     <mapping class="com.robertsanek.data.etl.remote.wikipedia.WikiPerson"/>
     <mapping class="com.robertsanek.data.derived.anki.CardNewReps"/>
-    <mapping class="com.robertsanek.data.derived.anki.DaysSinceReview"/>
+    <mapping class="com.robertsanek.data.derived.anki.HydratedReview"/>
     <mapping class="com.robertsanek.data.derived.anki.ReviewTimePerTag"/>
 
   </session-factory>
