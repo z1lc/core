@@ -39,13 +39,14 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
           return IntStream.range(0, orderedReviews.size())
               .mapToObj(i -> {
                 final Review review = orderedReviews.get(i);
-                double skew = 0.0;
+                Double skew = null;
                 if (i > 0) {
                   final Review prevReview = orderedReviews.get(i - 1);
+                  // We'll treat review that are new/relearn as having an interval of 1.
+                  long interval = Math.max(1, prevReview.getInterval());
                   final long daysReviewDelayed =
-                      DAYS.between(prevReview.getCreated_at().plusDays(prevReview.getInterval()),
-                          review.getCreated_at());
-                  skew = (double) daysReviewDelayed / prevReview.getInterval();
+                      DAYS.between(prevReview.getCreated_at().plusDays(interval), review.getCreated_at());
+                  skew = (double) daysReviewDelayed / interval;
                 }
                 return HydratedReview.HydratedReviewBuilder.aHydratedReview()
                     .withReview_id(review.getId())

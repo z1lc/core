@@ -14,6 +14,6 @@ public class HydratedReviewDeriverTest {
   @Disabled("integration")
   public void integration() {
     List<HydratedReview> objects = new HydratedReviewDeriver().getObjects();
-    System.out.println("objects = " + objects);
+    System.out.println("objects");
   }
 }
