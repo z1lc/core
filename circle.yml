@@ -5,7 +5,7 @@ jobs:
     working_directory: ~
 
     docker:
-      - image: codeaches/openjdk:12-jdk
+      - image: codeaches/openjdk:13-jdk
 
     steps:
 
