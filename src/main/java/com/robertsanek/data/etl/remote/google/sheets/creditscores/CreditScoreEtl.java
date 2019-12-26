@@ -1,6 +1,6 @@
 package com.robertsanek.data.etl.remote.google.sheets.creditscores;
 
-import static com.robertsanek.util.SecretType.FINANCE_SPREADSHEET_ID;
+import static com.robertsanek.util.SecretType.MICRO_FINANCE_SPREADSHEET_ID;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,7 +25,7 @@ public class CreditScoreEtl extends Etl<CreditScore> {
   @Override
   public List<CreditScore> getObjects() throws Exception {
     List<List<Object>> spreadsheetCells =
-        SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(FINANCE_SPREADSHEET_ID), RANGE);
+        SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(MICRO_FINANCE_SPREADSHEET_ID), RANGE);
     return spreadsheetCells.stream()
         .map(row -> {
           final ZonedDateTime date =
@@ -33,13 +33,13 @@ public class CreditScoreEtl extends Etl<CreditScore> {
                   LocalTime.of(0, 0), ZoneId.of("America/Los_Angeles"));
           return CreditScore.CreditScoreBuilder.aCreditScore()
               .withDate(date)
-              .withCreditKarma(SheetsConnector.getOrNullBigDecimal(row, 1))
-              .withCreditSesame(SheetsConnector.getOrNullBigDecimal(row, 2))
-              .withCreditViewDashboard(SheetsConnector.getOrNullBigDecimal(row, 3))
-              .withMint(SheetsConnector.getOrNullBigDecimal(row, 4))
-              .withQuizzle(SheetsConnector.getOrNullBigDecimal(row, 5))
-              .withBankRate(SheetsConnector.getOrNullBigDecimal(row, 6))
-              .withCiti(SheetsConnector.getOrNullBigDecimal(row, 7))
+              .withCreditKarma(SheetsConnector.getBigDecimalOrNull(row, 1))
+              .withCreditSesame(SheetsConnector.getBigDecimalOrNull(row, 2))
+              .withCreditViewDashboard(SheetsConnector.getBigDecimalOrNull(row, 3))
+              .withMint(SheetsConnector.getBigDecimalOrNull(row, 4))
+              .withQuizzle(SheetsConnector.getBigDecimalOrNull(row, 5))
+              .withBankRate(SheetsConnector.getBigDecimalOrNull(row, 6))
+              .withCiti(SheetsConnector.getBigDecimalOrNull(row, 7))
               .build();
         })
         .collect(Collectors.toList());

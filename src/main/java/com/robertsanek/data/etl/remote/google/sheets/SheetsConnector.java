@@ -81,12 +81,12 @@ public class SheetsConnector {
     return null;
   }
 
-  public static BigDecimal getOrNullBigDecimal(List<Object> row, int i) {
-    if (row.size() > i) {
-      if (row.get(i).toString().isEmpty()) {
+  public static BigDecimal getBigDecimalOrNull(List<Object> row, int index) {
+    if (row.size() > index) {
+      if (row.get(index).toString().isEmpty()) {
         return null;
       }
-      return new BigDecimal(row.get(i).toString()).setScale(2, RoundingMode.CEILING);
+      return new BigDecimal(row.get(index).toString()).setScale(2, RoundingMode.CEILING);
     }
     return null;
   }

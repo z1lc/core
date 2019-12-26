@@ -1,6 +1,6 @@
 package com.robertsanek.data.etl.remote.google.sheets.budget;
 
-import static com.robertsanek.util.SecretType.FINANCE_SPREADSHEET_ID;
+import static com.robertsanek.util.SecretType.MICRO_FINANCE_SPREADSHEET_ID;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -104,7 +104,7 @@ public class BudgetGetter implements QuartzJob {
     Preconditions.checkArgument(columnLettersOnly.length() == 2, "Expected column letters to be only 1 letter long.");
     final int expectedCells = columnLettersOnly.charAt(1) - columnLettersOnly.charAt(0) + 1;
     final List<List<Object>> spreadsheet =
-        SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(FINANCE_SPREADSHEET_ID), range);
+        SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(MICRO_FINANCE_SPREADSHEET_ID), range);
     if (spreadsheet == null || spreadsheet.size() == 0) {
       log.error("No data found.");
       return new ArrayList<>();
