@@ -23,12 +23,14 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.inject.Inject;
+import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.scrape.leetcode.jsonentities.LCQuestion;
 import com.robertsanek.util.CommonProvider;
 import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 
+@DoNotRun(explanation = "LeetCode added reCAPTCHA to login, will likely require manual captcha solving")
 public class LeetCodeQuestionEtl extends Etl<Question> {
 
   private static final String LOGIN = CommonProvider.getEmailAddress();
