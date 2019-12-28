@@ -37,31 +37,30 @@ public abstract class BaseGenerator {
         throw new RuntimeException("Failed to create directory on desktop!");
       }
       log.info("Getting people & downloading images...");
-      Unchecked.get(this::getPersons).parallelStream().forEach(person -> {
-        threadSafePrintRecord(csvPrinter,
-            person.getName(),
-            person.getNamePronunciation(),
-            person.getKnownFor(),
-            person.getBorn(),
-            person.getDied(),
-            person.getContext(),
-            IntStream.range(0, person.getImage().size())
-                .mapToObj(i -> {
-                  URI uri = person.getImage().get(i);
-                  String fileName = getPersonFileName(uri, person.getName(), i + 1);
-                  File destination = new File(directory + fileName);
-                  try {
-                    Request.Get(uri)
-                        .execute()
-                        .saveContent(destination);
-                  } catch (IOException ignored) {
-                  }
-                  return String.format("<img src='%s'>", fileName);
-                })
-                .collect(Collectors.joining("")),
-            person.getSource()
-        );
-      });
+      Unchecked.get(this::getPersons).parallelStream().forEach(person ->
+          threadSafePrintRecord(csvPrinter,
+              person.getName(),
+              person.getNamePronunciation(),
+              person.getKnownFor(),
+              person.getBorn(),
+              person.getDied(),
+              person.getContext(),
+              IntStream.range(0, person.getImage().size())
+                  .mapToObj(i -> {
+                    URI uri = person.getImage().get(i);
+                    String fileName = getPersonFileName(uri, person.getName(), i + 1);
+                    File destination = new File(directory + fileName);
+                    try {
+                      Request.Get(uri)
+                          .execute()
+                          .saveContent(destination);
+                    } catch (IOException ignored) {
+                    }
+                    return String.format("<img src='%s'>", fileName);
+                  })
+                  .collect(Collectors.joining("")),
+              person.getSource()
+          ));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

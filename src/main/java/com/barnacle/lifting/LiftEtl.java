@@ -174,7 +174,7 @@ public class LiftEtl implements Callable<Object> {
 
   private static int toIntDefault0(Object o) {
     try {
-      return Integer.valueOf(o.toString());
+      return Integer.parseInt(o.toString());
     } catch (NumberFormatException e) {
       return 0;
     }

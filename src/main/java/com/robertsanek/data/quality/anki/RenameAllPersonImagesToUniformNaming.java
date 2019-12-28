@@ -51,7 +51,7 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
                     String currentSrc = element.attr("src");
                     File file = new File(mediaFolder + currentSrc);
                     String targetSrc = String.format("Person_%s_%s.%s", cleanName,
-                        String.valueOf(count.incrementAndGet()),
+                        count.incrementAndGet(),
                         FilenameUtils.getExtension(file.getName()).toLowerCase());
                     if (currentSrc.equals(targetSrc)) {
                       return Stream.empty();

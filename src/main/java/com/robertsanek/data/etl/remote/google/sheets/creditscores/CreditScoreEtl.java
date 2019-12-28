@@ -23,7 +23,7 @@ public class CreditScoreEtl extends Etl<CreditScore> {
   @Inject SecretProvider secretProvider;
 
   @Override
-  public List<CreditScore> getObjects() throws Exception {
+  public List<CreditScore> getObjects() {
     List<List<Object>> spreadsheetCells =
         SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(MICRO_FINANCE_SPREADSHEET_ID), RANGE);
     return spreadsheetCells.stream()

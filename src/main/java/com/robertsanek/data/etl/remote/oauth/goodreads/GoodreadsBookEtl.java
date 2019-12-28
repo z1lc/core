@@ -113,7 +113,7 @@ public class GoodreadsBookEtl extends Etl<GoodreadsBook> {
   }
 
   private int extractTotalPages(Document response) {
-    return (int) Math.ceil(Double.valueOf(
+    return (int) Math.ceil(Double.parseDouble(
         response.getElementsByTagName("reviews").item(0).getAttributes().getNamedItem("total").getTextContent()) /
         REVIEWS_PER_PAGE);
   }

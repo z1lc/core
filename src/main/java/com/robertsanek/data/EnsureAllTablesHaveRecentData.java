@@ -62,7 +62,7 @@ public class EnsureAllTablesHaveRecentData {
     Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
     try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
       try (Statement statement = connection.createStatement()) {
-        new Reflections("com.robertsanek").getTypesAnnotatedWith(Table.class).stream()
+        new Reflections("com.robertsanek").getTypesAnnotatedWith(Table.class)
             .forEach(clazz -> {
               String tableName = clazz.getAnnotation(Table.class).name();
               Set<String> dateColumns = Arrays.stream(clazz.getDeclaredFields())

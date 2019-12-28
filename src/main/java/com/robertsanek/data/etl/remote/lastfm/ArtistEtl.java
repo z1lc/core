@@ -90,7 +90,7 @@ public class ArtistEtl extends Etl<Artist> {
 
   private Optional<Integer> extractTotalPages(ArtistApiResponse response) {
     return Optional.ofNullable(response.getTopartists())
-        .map(topArtists -> (int) Math.ceil(Double.valueOf(topArtists.getAttr().getTotal()) / ARTISTS_PER_PAGE));
+        .map(topArtists -> (int) Math.ceil(Double.parseDouble(topArtists.getAttr().getTotal()) / ARTISTS_PER_PAGE));
   }
 
 }
