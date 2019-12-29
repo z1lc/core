@@ -25,6 +25,8 @@ public class GoodreadsBook {
   private ZonedDateTime addedOn;
   @Column(name = "found_in_anki")
   private boolean foundInAnki;
+  @Column(name = "read")
+  private boolean read;
 
   public Long getId() {
     return id;
@@ -58,7 +60,11 @@ public class GoodreadsBook {
     return foundInAnki;
   }
 
-  public static final class BookBuilder {
+  public boolean isRead() {
+    return read;
+  }
+
+  public static final class GoodreadsBookBuilder {
 
     private Long id;
     private String isbn13;
@@ -68,63 +74,70 @@ public class GoodreadsBook {
     private Long yearPublished;
     private ZonedDateTime addedOn;
     private boolean foundInAnki;
+    private boolean read;
 
-    private BookBuilder() {}
+    private GoodreadsBookBuilder() {}
 
-    public static BookBuilder aBook() {
-      return new BookBuilder();
+    public static GoodreadsBookBuilder aGoodreadsBook() {
+      return new GoodreadsBookBuilder();
     }
 
-    public BookBuilder withId(Long id) {
+    public GoodreadsBookBuilder withId(Long id) {
       this.id = id;
       return this;
     }
 
-    public BookBuilder withIsbn13(String isbn13) {
+    public GoodreadsBookBuilder withIsbn13(String isbn13) {
       this.isbn13 = isbn13;
       return this;
     }
 
-    public BookBuilder withTitle(String title) {
+    public GoodreadsBookBuilder withTitle(String title) {
       this.title = title;
       return this;
     }
 
-    public BookBuilder withAuthorName(String authorName) {
+    public GoodreadsBookBuilder withAuthorName(String authorName) {
       this.authorName = authorName;
       return this;
     }
 
-    public BookBuilder withAuthorImageUrl(String authorImageUrl) {
+    public GoodreadsBookBuilder withAuthorImageUrl(String authorImageUrl) {
       this.authorImageUrl = authorImageUrl;
       return this;
     }
 
-    public BookBuilder withYearPublished(Long yearPublished) {
+    public GoodreadsBookBuilder withYearPublished(Long yearPublished) {
       this.yearPublished = yearPublished;
       return this;
     }
 
-    public BookBuilder withAddedOn(ZonedDateTime addedOn) {
+    public GoodreadsBookBuilder withAddedOn(ZonedDateTime addedOn) {
       this.addedOn = addedOn;
       return this;
     }
 
-    public BookBuilder withFoundInAnki(boolean foundInAnki) {
+    public GoodreadsBookBuilder withFoundInAnki(boolean foundInAnki) {
       this.foundInAnki = foundInAnki;
+      return this;
+    }
+
+    public GoodreadsBookBuilder withRead(boolean read) {
+      this.read = read;
       return this;
     }
 
     public GoodreadsBook build() {
       GoodreadsBook goodreadsBook = new GoodreadsBook();
-      goodreadsBook.isbn13 = this.isbn13;
-      goodreadsBook.authorName = this.authorName;
-      goodreadsBook.foundInAnki = this.foundInAnki;
       goodreadsBook.id = this.id;
-      goodreadsBook.authorImageUrl = this.authorImageUrl;
-      goodreadsBook.title = this.title;
-      goodreadsBook.addedOn = this.addedOn;
       goodreadsBook.yearPublished = this.yearPublished;
+      goodreadsBook.addedOn = this.addedOn;
+      goodreadsBook.title = this.title;
+      goodreadsBook.foundInAnki = this.foundInAnki;
+      goodreadsBook.isbn13 = this.isbn13;
+      goodreadsBook.read = this.read;
+      goodreadsBook.authorImageUrl = this.authorImageUrl;
+      goodreadsBook.authorName = this.authorName;
       return goodreadsBook;
     }
   }

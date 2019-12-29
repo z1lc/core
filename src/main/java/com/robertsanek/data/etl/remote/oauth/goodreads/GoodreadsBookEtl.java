@@ -63,7 +63,11 @@ public class GoodreadsBookEtl extends Etl<GoodreadsBook> {
                     .getElementsByTagName("author").item(0);
                 String maybeYearPublished = getChildAsText(book, "published");
                 String authorName = DataQualityBase.cleanName(cleanGoodreadsAuthor(getChildAsText(author, "name")));
-                return GoodreadsBook.BookBuilder.aBook()
+                NodeList shelfs =
+                    ((Element) review.getElementsByTagName("shelves").item(0)).getElementsByTagName("shelf");
+                boolean haveRead = IntStream.range(0, shelfs.getLength())
+                    .anyMatch(s -> shelfs.item(s).getAttributes().getNamedItem("name").getTextContent().equals("read"));
+                return GoodreadsBook.GoodreadsBookBuilder.aGoodreadsBook()
                     .withId(Long.valueOf(getChildAsText(book, "id")))
                     .withIsbn13(getChildAsText(book, "isbn13"))
                     .withTitle(getChildAsText(book, "title"))
@@ -72,6 +76,7 @@ public class GoodreadsBookEtl extends Etl<GoodreadsBook> {
                     .withYearPublished(maybeYearPublished.isEmpty() ? null : Long.valueOf(maybeYearPublished))
                     .withAddedOn(ZonedDateTime.parse(getChildAsText(review, "date_added"), dtFormatter))
                     .withFoundInAnki(existingPeopleInAnkiDb.contains(authorName.toLowerCase()))
+                    .withRead(haveRead)
                     .build();
               });
         })
