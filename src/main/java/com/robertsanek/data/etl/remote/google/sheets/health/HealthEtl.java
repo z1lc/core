@@ -20,7 +20,7 @@ import com.robertsanek.util.Unchecked;
 public class HealthEtl extends Etl<Health> {
 
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-  private static final String RANGE = "Daily Log!A2:L10000";
+  private static final String RANGE = "\uD83D\uDCCB Daily Log!A2:L10000";
   @Inject SecretProvider secretProvider;
 
   @Override
