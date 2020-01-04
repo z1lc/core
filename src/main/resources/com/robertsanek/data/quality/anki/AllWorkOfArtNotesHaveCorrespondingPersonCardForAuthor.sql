@@ -50,6 +50,8 @@ WITH people AS (SELECT split_part(
                                                                      1421207514429,
                                                                      1484430821746,
                                                                      1484432378503,
+                                                                     1542879193520,
+                                                                     1542879193522,
                                                                      0))
 SELECT 'nid:' || work_of_art_note_id /*, REPLACE(works_of_art.name, '"', '') as name, urlTitle*/
 FROM works_of_art
