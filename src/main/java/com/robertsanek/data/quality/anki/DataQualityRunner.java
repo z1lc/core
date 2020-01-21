@@ -72,7 +72,7 @@ public class DataQualityRunner implements QuartzJob {
       "AllRequiredFieldsUseStarEmojiAndNotAsterisk.sql",
       "AllTemplateNamesAreCustom.sql",
       "AllTemplatesIncludeJavaScriptLibrariesAndTags.sql",
-      "AllWorkOfArtNotesHaveCorrespondingPersonCardForAuthor.sql",
+      "AllWorkOfArtAndSpotifyTrackNotesHaveCorrespondingPersonCardForAuthor.sql",
       "NoImageSourcesAreExternal.sql",
       "NoFieldsHaveTrailingBr.sql",
       "NoTemplatesUseConditionalReplacementForRequiredFields.sql",

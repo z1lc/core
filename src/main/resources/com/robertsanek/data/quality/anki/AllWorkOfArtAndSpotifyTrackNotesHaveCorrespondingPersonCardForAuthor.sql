@@ -12,6 +12,21 @@ WITH people AS (SELECT split_part(
                   SELECT id
                   FROM anki_models
                   WHERE name LIKE '%Person%')),
+    numbers as (SELECT * FROM GENERATE_SERIES(1, 5)),
+     tracks as (SELECT anki_notes.id as work_of_art_note_id,
+                    REGEXP_REPLACE(
+                      REPLACE(REPLACE(REPLACE(split_part(fields, '","', 3), '<b>', ''), '</b>', ''), '"',
+                              ''), '\[sound:.*\]$', '') as name
+                FROM anki_notes
+                WHERE model_id = (
+                    SELECT id
+                    FROM anki_models
+                    WHERE name LIKE 'Spotify Track')),
+     songs as (
+               select min(work_of_art_note_id) as work_of_art_note_id, split_part(name, ', ', generate_series) as name
+               from tracks
+                        join numbers on true
+               group by 2),
   works_of_art AS (SELECT anki_notes.id as work_of_art_note_id,
                      REGEXP_REPLACE(
                        REPLACE(REPLACE(REPLACE(split_part(fields, '","', 4), '<b>', ''), '</b>', ''), '"',
@@ -52,10 +67,11 @@ WITH people AS (SELECT split_part(
                                                                      1484432378503,
                                                                      1542879193520,
                                                                      1542879193522,
-                                                                     0))
+                                                                     0)),
+     both_types as (select * from songs UNION (select * from works_of_art))
 SELECT 'nid:' || work_of_art_note_id /*, REPLACE(works_of_art.name, '"', '') as name, urlTitle*/
-FROM works_of_art
-       FULL OUTER JOIN people ON works_of_art.name = people.name
-WHERE people.name IS NULL AND works_of_art.name NOT LIKE '%<div>%' AND works_of_art.name NOT LIKE '%<br>%'
+FROM both_types
+       FULL OUTER JOIN people ON both_types.name = people.name
+WHERE people.name IS NULL AND both_types.name NOT LIKE '%<div>%' AND both_types.name NOT LIKE '%<br>%'
 ORDER BY 1 ASC
 ;
