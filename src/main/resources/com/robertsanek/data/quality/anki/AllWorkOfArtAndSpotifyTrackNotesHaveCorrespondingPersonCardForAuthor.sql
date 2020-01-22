@@ -72,6 +72,9 @@ WITH people AS (SELECT split_part(
 SELECT 'nid:' || work_of_art_note_id /*, REPLACE(works_of_art.name, '"', '') as name, urlTitle*/
 FROM both_types
        FULL OUTER JOIN people ON both_types.name = people.name
-WHERE people.name IS NULL AND both_types.name NOT LIKE '%<div>%' AND both_types.name NOT LIKE '%<br>%'
+WHERE people.name IS NULL AND both_types.name NOT LIKE '%<div>%' AND both_types.name NOT LIKE '%<br>%' and
+        both_types.name not in ('Calippo',
+                                'ROMÉO',
+                                '')
 ORDER BY 1 ASC
 ;
