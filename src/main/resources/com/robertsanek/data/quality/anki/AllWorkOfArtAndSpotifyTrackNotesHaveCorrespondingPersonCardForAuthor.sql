@@ -75,6 +75,8 @@ FROM both_types
 WHERE people.name IS NULL AND both_types.name NOT LIKE '%<div>%' AND both_types.name NOT LIKE '%<br>%' and
         both_types.name not in ('Calippo',
                                 'ROMÉO',
-                                '')
+                                'Home',
+                               '박혜진 park hye jin',
+                               'bbno$')
 ORDER BY 1 ASC
 ;
