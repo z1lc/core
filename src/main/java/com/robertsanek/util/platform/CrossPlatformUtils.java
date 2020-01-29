@@ -26,12 +26,13 @@ public class CrossPlatformUtils {
   public static Platform getPlatform() {
     if (SystemUtils.IS_OS_WINDOWS) {
       final String username = System.getProperty("user.name");
+      final String gDrive = String.format("C:/Users/%s/Google Drive/", username);
       return new Platform.Windows10(
-          Path.of("Z:/core/"),
+          Path.of(String.format("%score/", gDrive)),
           Path.of(String.format("C:/Users/%s/AppData/Roaming/Anki2/", username)),
           Path.of("C:/Program Files/Anki/anki.exe"),
           Path.of(String.format("C:/Users/%s/Desktop/", username)),
-          Path.of(String.format("C:/Users/%s/Google Drive/2 S-I/0 All Books/Calibre Library", username)));
+          Path.of(String.format("%s2 S-I/0 All Books/Calibre Library", gDrive)));
     } else if (SystemUtils.IS_OS_LINUX) {
       if (System.getProperty("user.home").contains("/pi")) {
         return new Platform.RaspberryPi(

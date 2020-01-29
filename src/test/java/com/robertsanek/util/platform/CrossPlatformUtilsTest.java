@@ -11,7 +11,7 @@ public class CrossPlatformUtilsTest {
     assertTrue(CrossPlatformUtils.getPlatform().visit(new Platform.Visitor<>() {
       @Override
       public Boolean caseWindows10(Platform.Windows10 windows10) {
-        return "Z:/core/".equals(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow());
+        return "C:/Users/z1lc/Google Drive/core/".equals(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow());
       }
 
       @Override
