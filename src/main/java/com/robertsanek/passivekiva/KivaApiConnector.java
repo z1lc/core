@@ -75,10 +75,9 @@ public class KivaApiConnector implements QuartzJob {
 
   @Override
   public void exec(JobExecutionContext context) {
-    if (!shouldRun()) {
-      return;
+    if (shouldRun()) {
+      Unchecked.get(this::doStuff);
     }
-    Unchecked.get(this::doStuff);
   }
 
   public boolean doStuff() throws IOException, InterruptedException {

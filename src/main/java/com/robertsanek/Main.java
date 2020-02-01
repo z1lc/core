@@ -134,6 +134,7 @@ public class Main {
               .build();
 
           Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+          scheduler.setJobFactory(InjectUtils.getInjector().getInstance(GuiceJobFactory.class));
           scheduler.scheduleJob(etlAndDq, etlAndDqTrigger);
           scheduler.scheduleJob(kivaJob, kivaTrigger);
           scheduler.scheduleJob(lifxDay, coreDayTrigger);
