@@ -198,6 +198,20 @@
       <artifactId>google-api-client</artifactId>
       <version>1.30.8</version>
     </dependency>
+    <!-- Necessary for above google-api-client to be able to do initial auth, but htmlunit / other dependencies rely
+         on newer jetty. Uncomment when you want to do first-time auth. (could not get it to work with exclusions)
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-util</artifactId>
+      <version>8.2.0.v20160908</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-io</artifactId>
+      <version>8.2.0.v20160908</version>
+    </dependency>
+    -->
+
     <dependency>
       <groupId>com.google.auth</groupId>
       <artifactId>google-auth-library-oauth2-http</artifactId>
