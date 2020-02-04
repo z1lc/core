@@ -27,7 +27,7 @@ public class FindReplaceAllBadStrings extends DataQualityBase {
   void runDQ() {
     AtomicLong violations = new AtomicLong(0);
     findToReplaceMap.forEach((find, replace) ->
-        ankiConnectUtils.getNoteIdsForSearch(find).stream()
+        ankiConnectUtils.getNoteIdsForSearch(find, "z1lc").stream()
             .filter(noteId -> !NOTE_ID_EXCLUSIONS.contains(noteId))
             .forEach(badNoteId -> {
               Map<String, String> fieldsToUpdate = ankiConnectUtils.getFieldsForNote(badNoteId).entrySet().stream()

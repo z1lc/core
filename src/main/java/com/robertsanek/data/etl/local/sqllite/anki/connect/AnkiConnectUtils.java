@@ -133,8 +133,8 @@ public class AnkiConnectUtils {
             entry -> entry.getValue().getAsJsonObject().get("value").getAsString()));
   }
 
-  public List<Long> getNoteIdsForSearch(String search) {
-//    openBrowser();
+  public List<Long> getNoteIdsForSearch(String search, String profile) {
+    loadProfile(profile);
     HttpPost searchPost = new HttpPost(getUri());
     searchPost.setEntity(new ByteArrayEntity(
         String.format("{\n" +

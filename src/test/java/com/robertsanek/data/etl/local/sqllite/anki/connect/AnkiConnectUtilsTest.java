@@ -31,7 +31,7 @@ public class AnkiConnectUtilsTest {
   @Test
   @Disabled("integration")
   public void search() {
-    List<Long> search = new AnkiConnectUtils().getNoteIdsForSearch("\"<br></th>\" or \"<br></td>\"");
+    List<Long> search = new AnkiConnectUtils().getNoteIdsForSearch("\"<br></th>\" or \"<br></td>\"", "z1lc");
     System.out.println(search);
   }
 
