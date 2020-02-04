@@ -111,7 +111,7 @@ public class AllClozeTablesHaveDeletionForRowOrColumnTitleTest {
   }
 
   @Test
-  public void hasViolation_noViolation() {
+  public void hasViolation_noViolation_1() {
     String muscleStrengthEnduranceShouldNotViolate = "<table>\n" +
         "<tbody><tr>\n" +
         "<th></th>\n" +
@@ -139,5 +139,25 @@ public class AllClozeTablesHaveDeletionForRowOrColumnTitleTest {
         "</tr>\n" +
         "</tbody></table>";
     assertFalse(AllClozeTablesHaveDeletionForRowOrColumnTitle.hasViolation(muscleStrengthEnduranceShouldNotViolate));
+  }
+
+  @Test
+  public void hasViolation_noViolation_2() {
+    String clozeWithUlLisShouldNotViolate = "<table>\n" +
+        "<tbody>\n" +
+        "<tr><th></th><th>What team is __ on?</th></tr>\n" +
+        "<tr><td>{{c20::<ul>\n" +
+        "<li>Person 1</li>\n" +
+        "<li>Person 2</li>\n" +
+        "<li>Person 3</li>\n" +
+        "</ul>}}</td><td>Team 1</td></tr>\n" +
+        "<tr><td><ul>\n" +
+        "<li>Person 4</li>\n" +
+        "<li>Person 5</li>\n" +
+        "<li>Person 6</li>\n" +
+        "</ul></td><td>Team 2</td></tr>\n" +
+        "</tbody>\n" +
+        "</table>";
+    assertFalse(AllClozeTablesHaveDeletionForRowOrColumnTitle.hasViolation(clozeWithUlLisShouldNotViolate));
   }
 }
