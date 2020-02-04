@@ -69,14 +69,19 @@ WITH people AS (SELECT split_part(
                                                                      1542879193522,
                                                                      0)),
      both_types as (select * from songs UNION (select * from works_of_art))
-SELECT 'nid:' || work_of_art_note_id /*, REPLACE(works_of_art.name, '"', '') as name, urlTitle*/
+SELECT both_types.name
 FROM both_types
        FULL OUTER JOIN people ON both_types.name = people.name
 WHERE people.name IS NULL AND both_types.name NOT LIKE '%<div>%' AND both_types.name NOT LIKE '%<br>%' and
-        both_types.name not in ('Calippo',
+        both_types.name not in ('',
+                                'Calippo',
                                 'ROMÉO',
                                 'Home',
-                               '박혜진 park hye jin',
-                               'bbno$')
+                                '박혜진 park hye jin',
+                                'bbno$',
+                                'Fred V & Grafix',
+                                'Laura Les',
+                                'Masato Maeda',
+                                'Virtual Self')
 ORDER BY 1 ASC
 ;
