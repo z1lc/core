@@ -21,18 +21,18 @@ abstract class HumanApiEtl<T> extends Etl<T> {
   @Inject SecretProvider secretProvider;
 
   <O> List<O> genericGet(String path, Class<O[]> clazz) {
-    final URI weightUri = Unchecked.get(() -> new URIBuilder()
+    final URI uriFromPath = Unchecked.get(() -> new URIBuilder()
         .setScheme("https")
         .setHost("api.humanapi.co")
         .setPath(path)
         .setParameter("access_token", secretProvider.getSecret(HUMAN_API_ACCESS_TOKEN))
         .setParameter("limit", "500")
         .build());
-    String weightsJson = Unchecked.get(() -> Request.Get(weightUri)
+    String rawJson = Unchecked.get(() -> Request.Get(uriFromPath)
         .execute()
         .returnContent()
         .asString());
-    return Lists.newArrayList(Unchecked.get(() -> mapper.readValue(weightsJson, clazz)));
+    return Lists.newArrayList(Unchecked.get(() -> mapper.readValue(rawJson, clazz)));
   }
 
 }
