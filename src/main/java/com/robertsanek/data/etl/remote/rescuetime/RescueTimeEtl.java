@@ -45,7 +45,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
           try {
             efficiencyUri = Unchecked.get(() -> new URIBuilder()
                 .setScheme("https")
-                .setHost("rescuetime.com")
+                .setHost("www.rescuetime.com")
                 .setPath("/anapi/data")
                 .setParameter("key", secretProvider.getSecret(RESCUETIME_API_KEY))
                 .setParameter("rs", "day")
