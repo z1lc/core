@@ -7,12 +7,42 @@
 <suppressions>
   <suppress checks="IllegalImport" files="SheetsConnector.java"/>
   <suppress checks="IllegalImport" files="FitConnector.java"/>
-  <suppress checks="LeftCurly|RightCurly" files="Card.java"/>
-  <suppress checks="LeftCurly|RightCurly" files="Model.java"/>
-  <suppress checks="LeftCurly|RightCurly" files="Note.java"/>
-  <suppress checks="LeftCurly|RightCurly" files="Template.java"/>
-  <suppress checks="LeftCurly|RightCurly" files="Category.java"/>
-  <suppress checks="LeftCurly|RightCurly" files="Efficiency.java"/>
+  <suppress checks="LeftCurly|RightCurly"
+            files="Card.java|
+                   |Model.java|
+                   |Note.java|
+                   |Template.java|
+                   |Category.java|
+                   |Efficiency.java|
+                   |CardNewReps.java|
+                   |HydratedReview.java|
+                   |ReviewTimePerTag.java|
+                   |EtlRun.java|
+                   |History.java|
+                   |Task.java|
+                   |Deck.java|
+                   |Field.java|
+                   |Review.java|
+                   |CalibreBook.java|
+                   |IncrementalReadingPriority.java|
+                   |Entry.java|
+                   |PageView.java|
+                   |BloodPressureReading.java|
+                   |AnnotatedItem.java|
+                   |ClothingRating.java|
+                   |CreditScore.java|
+                   |Health.java|
+                   |Artist.java|
+                   |GoodreadsBook.java|
+                   |ToodledoTask.java|
+                   |Question.java|
+                   |Movie.java|
+                   |TrelloList.java|
+                   |CodingTime.java|
+                   |WikiPerson.java|
+                   |Loan.java|
+                   |Payment.java|
+                   |Terms.java"/>
   <suppress checks="[a-zA-Z0-9]*" files="ParallelExample.java"/>
   <suppress checks="[a-zA-Z0-9]*" files="HelloAnalytics.java"/>
 </suppressions>

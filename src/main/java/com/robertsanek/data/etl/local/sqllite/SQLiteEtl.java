@@ -16,9 +16,13 @@ public abstract class SQLiteEtl<T> extends Etl<T> {
 
   private static final Duration QUERY_TIMEOUT = Duration.ofSeconds(30);
 
-  public void preEtlStep() { }
+  public void preEtlStep() {
 
-  public void postEtlStep() { }
+  }
+
+  public void postEtlStep() {
+
+  }
 
   @Override
   public List<T> getObjects() throws Exception {
