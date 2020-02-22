@@ -102,11 +102,14 @@ create or replace view rlp_daily as (
              else
                  case when ex.date < date(to_pst(current_timestamp)) then 0 else null end
             end as exercise,
-        case when ex.date < date(to_pst(current_timestamp))
-                 then coalesce(ed.complete, 0)
-             else ed.complete end as education,
+           case when ed.complete = 1 then 1
+           when ed.total_reviews > 0 then 0.5
+           when ex.date < date(to_pst(current_timestamp)) then coalesce(ed.complete, 0)
+           else ed.complete end as education,
         case when p.total_minutes >= 30
                  then 1
+             when p.total_minutes > 0
+                 then .5
              else
                  case when ex.date < date(to_pst(current_timestamp)) then 0 else null end
             end as productivity
