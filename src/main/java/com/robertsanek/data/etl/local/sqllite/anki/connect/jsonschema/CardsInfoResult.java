@@ -27,10 +27,11 @@ public class CardsInfoResult {
   private Fields fields;
   @JsonProperty("fieldOrder")
   private Long fieldOrder;
-  @JsonProperty("question")
-  private String question;
-  @JsonProperty("answer")
-  private String answer;
+  //removing question & answer since Anki-Connect seems to sometimes have them as arrays and sometimes as strings
+  //  @JsonProperty("question")
+  //  private String question;
+  //  @JsonProperty("answer")
+  //  private String answer;
   @JsonProperty("modelName")
   private String modelName;
   @JsonProperty("deckName")
@@ -74,26 +75,6 @@ public class CardsInfoResult {
   @JsonProperty("fieldOrder")
   public void setFieldOrder(Long fieldOrder) {
     this.fieldOrder = fieldOrder;
-  }
-
-  @JsonProperty("question")
-  public String getQuestion() {
-    return question;
-  }
-
-  @JsonProperty("question")
-  public void setQuestion(String question) {
-    this.question = question;
-  }
-
-  @JsonProperty("answer")
-  public String getAnswer() {
-    return answer;
-  }
-
-  @JsonProperty("answer")
-  public void setAnswer(String answer) {
-    this.answer = answer;
   }
 
   @JsonProperty("modelName")
