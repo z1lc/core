@@ -26,12 +26,15 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
 import com.robertsanek.util.NotificationSender;
 import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 
 public class EnsureAllTablesHaveRecentData {
 
+  private static Log log = Logs.getLog(EnsureAllTablesHaveRecentData.class);
   private static final Period DEFAULT_MAX_STALENESS = Period.ofDays(14);
   private static final ImmutableMap<Pair<String, String>, Period> customMaxStaleness =
       ImmutableMap.<Pair<String, String>, Period>builder()
@@ -82,18 +85,15 @@ public class EnsureAllTablesHaveRecentData {
                       Optional<LocalDate> maxDate = Optional.ofNullable(resultSet.getString(1))
                           .map(dateString -> LocalDate.parse(dateString.substring(0, 10)));
                       if (maxDate
-                          .map(date -> date.isBefore(LocalDate.now()
-                              .minus(
-                                  customMaxStaleness
-                                      .getOrDefault(Pair.of(tableName, dateColumn), DEFAULT_MAX_STALENESS))))
+                          .map(date -> date.isBefore(LocalDate.now().minus(
+                              customMaxStaleness.getOrDefault(Pair.of(tableName, dateColumn), DEFAULT_MAX_STALENESS))))
                           .orElse(true)) {
-                        violations
-                            .add(String
-                                .format("Column '%s' in table '%s' potentially has stale data: latest date is %s.",
-                                    dateColumn, tableName, maxDate.orElse(null)));
+                        violations.add(String.format(
+                            "Column '%s' in table '%s' potentially has stale data: latest date is %s.",
+                            dateColumn, tableName, maxDate.orElse(null)));
                       }
                     } catch (SQLException e) {
-                      e.printStackTrace();
+                      log.error(e);
                     }
                   });
             });
