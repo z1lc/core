@@ -83,6 +83,8 @@ WHERE people.name IS NULL AND both_types.name NOT LIKE '%<div>%' AND both_types.
                                 'Laura Les',
                                 'Masato Maeda',
                                 'Virtual Self',
-                                'Panic! At The Disco')
+                                'Panic! At The Disco',
+                                'Tom Ribbons',
+                                'downtime')
 ORDER BY 1 ASC
 ;
