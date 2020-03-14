@@ -236,7 +236,7 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-fitness</artifactId>
-      <version>v1-rev20200119-1.30.8</version>
+      <version>v1-rev20200220-1.30.9</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>
