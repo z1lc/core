@@ -34,6 +34,7 @@ public class ProgrammingLanguageFunctionNameDoesNotAppearInDescription extends D
       1569099614037L,  //Streams.stream
       1569192536962L,
       1569192639443L,
+      1584140517513L,
       0L
   );
 
