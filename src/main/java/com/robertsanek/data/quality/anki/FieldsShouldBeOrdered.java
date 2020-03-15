@@ -39,16 +39,17 @@ public class FieldsShouldBeOrdered extends DataQualityBase {
   );
   private static final ImmutableSet<Pair<String, String>> NOTE_FIELD_EXCLUSIONS =
       ImmutableSet.of(
+          Pair.of("3 Person", "\uD83D\uDD39Online Handle"),
           Pair.of("4 Work of Art: Book Film Painting", "Author Count"),
           Pair.of("7 Programming Language Function", "\uD83D\uDD39Library/Package"),
           Pair.of("7 Programming Language Function", "\uD83D\uDD39Time Complexity"),
+          Pair.of("8 Interview Question", "Additional Criteria"),
+          Pair.of("8 Interview Question", "Insight Explanation"),
+          Pair.of("8 Interview Question", "Complexity specifications"),
           Pair.of("Algorithm", "\uD83D\uDD39Average Case Time Complexity"),
           Pair.of("Geography Countries and Counties", "\uD83D\uDD39Currency Name"),
           Pair.of("Geography Countries and Counties", "\uD83D\uDD39Czech Name"),
-          Pair.of("Geography Countries and Counties", "\uD83D\uDD39Currency Pronunciation"),
-          Pair.of("8 Interview Question", "Additional Criteria"),
-          Pair.of("8 Interview Question", "Insight Explanation"),
-          Pair.of("8 Interview Question", "Complexity specifications")
+          Pair.of("Geography Countries and Counties", "\uD83D\uDD39Currency Pronunciation")
       );
 
   @Override
