@@ -3,7 +3,6 @@ package com.robertsanek.data.derived.anki;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +46,8 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
                   // New/relearn don't really have an interval, but the 'days in the future' they are scheduled is 0.
                   // Here we use 0 and then take another max during the skew division to avoid a DivisionByZero exception.
                   long interval = Math.max(0, prevReview.getInterval());
-                  LocalDate originallyScheduledForReviewOn = prevReview.getCreated_at().plusDays(interval).toLocalDate();
+                  LocalDate originallyScheduledForReviewOn =
+                      prevReview.getCreated_at().plusDays(interval).toLocalDate();
                   LocalDate actuallyReviewedOn = review.getCreated_at().toLocalDate();
                   daysReviewDelayed = DAYS.between(originallyScheduledForReviewOn, actuallyReviewedOn);
                   skew = (double) daysReviewDelayed / Math.max(1, interval);

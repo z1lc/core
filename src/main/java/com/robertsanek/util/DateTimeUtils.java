@@ -31,6 +31,10 @@ public class DateTimeUtils {
   private static final LocalDate CZECH_ITALY_2019_END = LocalDate.of(2019, 7, 30);
   private static final LocalDate HUNTSVILLE_2019_OCTOBER_START = LocalDate.of(2019, 10, 6);
   private static final LocalDate HUNTSVILLE_2019_OCTOBER_END = LocalDate.of(2019, 10, 15);
+  private static final LocalDate HUNTSVILLE_2019_XMAS_START = LocalDate.of(2019, 12, 2);
+  private static final LocalDate HUNTSVILLE_2019_XMAS_END = LocalDate.of(2020, 1, 1);
+  private static final LocalDate INDIA_UAE_2020_FEBRUARY_START = LocalDate.of(2020, 2, 28);
+  private static final LocalDate INDIA_UAE_2020_MARCH_END = LocalDate.of(2020, 3, 7);
 
   static {
     dateRangeMap.put(Range.lessThan(MOVED_TO_CA), ZoneId.of("America/Chicago")); //Huntsville, Auburn
@@ -60,7 +64,17 @@ public class DateTimeUtils {
     dateRangeMap.put(
         Range.closedOpen(HUNTSVILLE_2019_OCTOBER_START, HUNTSVILLE_2019_OCTOBER_END), ZoneId.of("America/Chicago"));
 
-    dateRangeMap.put(Range.atLeast(HUNTSVILLE_2019_OCTOBER_END), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2019_OCTOBER_END, HUNTSVILLE_2019_XMAS_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2019_XMAS_START, HUNTSVILLE_2019_XMAS_END), ZoneId.of("America/Chicago"));
+
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2019_XMAS_END, INDIA_UAE_2020_FEBRUARY_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(INDIA_UAE_2020_FEBRUARY_START, INDIA_UAE_2020_MARCH_END), ZoneId.of("Asia/Kolkata"));
+
+    dateRangeMap.put(Range.atLeast(INDIA_UAE_2020_MARCH_END), ZoneId.of("America/Los_Angeles"));
   }
 
   private static ZoneId getZoneId(LocalDate localDate) {
