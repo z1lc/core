@@ -12,6 +12,7 @@ public class HydratedReview {
   Long review_id;
   Long days_since_first_review;
   Long total_days_in_review;
+  Long num_days_review_delayed;
   Double skew_at_review_time;
 
   public Long getReview_id() {
@@ -26,6 +27,10 @@ public class HydratedReview {
     return total_days_in_review;
   }
 
+  public Long getNum_days_review_delayed() {
+    return num_days_review_delayed;
+  }
+
   public Double getSkew_at_review_time() {
     return skew_at_review_time;
   }
@@ -35,13 +40,12 @@ public class HydratedReview {
     Long review_id;
     Long days_since_first_review;
     Long total_days_in_review;
+    Long num_days_review_delayed;
     Double skew_at_review_time;
 
     private HydratedReviewBuilder() {}
 
-    public static HydratedReviewBuilder aHydratedReview() {
-      return new HydratedReviewBuilder();
-    }
+    public static HydratedReviewBuilder aHydratedReview() { return new HydratedReviewBuilder(); }
 
     public HydratedReviewBuilder withReview_id(Long review_id) {
       this.review_id = review_id;
@@ -58,6 +62,11 @@ public class HydratedReview {
       return this;
     }
 
+    public HydratedReviewBuilder withNum_days_review_delayed(Long num_days_review_delayed) {
+      this.num_days_review_delayed = num_days_review_delayed;
+      return this;
+    }
+
     public HydratedReviewBuilder withSkew_at_review_time(Double skew_at_review_time) {
       this.skew_at_review_time = skew_at_review_time;
       return this;
@@ -65,10 +74,11 @@ public class HydratedReview {
 
     public HydratedReview build() {
       HydratedReview hydratedReview = new HydratedReview();
-      hydratedReview.skew_at_review_time = this.skew_at_review_time;
-      hydratedReview.total_days_in_review = this.total_days_in_review;
       hydratedReview.days_since_first_review = this.days_since_first_review;
+      hydratedReview.total_days_in_review = this.total_days_in_review;
       hydratedReview.review_id = this.review_id;
+      hydratedReview.num_days_review_delayed = this.num_days_review_delayed;
+      hydratedReview.skew_at_review_time = this.skew_at_review_time;
       return hydratedReview;
     }
   }

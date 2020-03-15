@@ -2,6 +2,7 @@ package com.robertsanek.data.derived.anki;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -35,23 +36,27 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
           final List<Review> orderedReviews = groupedReview.getValue().stream()
               .sorted(Comparator.comparing(Review::getCreated_at))
               .collect(Collectors.toList());
-          final ZonedDateTime firstReview = orderedReviews.get(0).getCreated_at();
+          final LocalDate firstReview = orderedReviews.get(0).getCreated_at().toLocalDate();
           return IntStream.range(0, orderedReviews.size())
               .mapToObj(i -> {
                 final Review review = orderedReviews.get(i);
                 Double skew = null;
+                Long daysReviewDelayed = null;
                 if (i > 0) {
                   final Review prevReview = orderedReviews.get(i - 1);
-                  // We'll treat review that are new/relearn as having an interval of 1.
-                  long interval = Math.max(1, prevReview.getInterval());
-                  final long daysReviewDelayed =
-                      DAYS.between(prevReview.getCreated_at().plusDays(interval), review.getCreated_at());
-                  skew = (double) daysReviewDelayed / interval;
+                  // New/relearn don't really have an interval, but the 'days in the future' they are scheduled is 0.
+                  // Here we use 0 and then take another max during the skew division to avoid a DivisionByZero exception.
+                  long interval = Math.max(0, prevReview.getInterval());
+                  LocalDate originallyScheduledForReviewOn = prevReview.getCreated_at().plusDays(interval).toLocalDate();
+                  LocalDate actuallyReviewedOn = review.getCreated_at().toLocalDate();
+                  daysReviewDelayed = DAYS.between(originallyScheduledForReviewOn, actuallyReviewedOn);
+                  skew = (double) daysReviewDelayed / Math.max(1, interval);
                 }
                 return HydratedReview.HydratedReviewBuilder.aHydratedReview()
                     .withReview_id(review.getId())
-                    .withDays_since_first_review(DAYS.between(firstReview, review.getCreated_at()))
-                    .withTotal_days_in_review(DAYS.between(firstReview, ZonedDateTime.now()))
+                    .withDays_since_first_review(DAYS.between(firstReview, review.getCreated_at().toLocalDate()))
+                    .withTotal_days_in_review(DAYS.between(firstReview, LocalDate.now()))
+                    .withNum_days_review_delayed(daysReviewDelayed)
                     .withSkew_at_review_time(skew)
                     .build();
               });
