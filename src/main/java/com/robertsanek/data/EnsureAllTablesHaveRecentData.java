@@ -39,9 +39,11 @@ public class EnsureAllTablesHaveRecentData {
   private static final ImmutableMap<Pair<String, String>, Period> customMaxStaleness =
       ImmutableMap.<Pair<String, String>, Period>builder()
           .put(Pair.of("credit_scores", "date"), Period.ofDays(60))
-          .put(Pair.of("blood_pressure_readings", "date"), Period.ofDays(30))
+          .put(Pair.of("blood_pressure_readings", "date"), Period.ofDays(60))
+          .put(Pair.of("toodledo_tasks", "added_at"), Period.ofDays(60))
+          .put(Pair.of("trello_cards", "last_activity"), Period.ofDays(30))
           .build();
-  private static final ImmutableSet<Pair<String, String>> infiniteStaleness =
+  private static final ImmutableSet<Pair<String, String>> infiniteStalenessColumn =
       ImmutableSet.<Pair<String, String>>builder()
           .add(Pair.of("toodledo_habits", "added"))
           .add(Pair.of("toodledo_habits", "modified"))
@@ -50,6 +52,10 @@ public class EnsureAllTablesHaveRecentData {
           .add(Pair.of("anki_models", "created_at"))
           .add(Pair.of("anki_cards", "last_modified_at"))
           .add(Pair.of("workflowy_entries", "date_exported"))
+          .build();
+  private static final ImmutableSet<String> infiniteStalenessTable =
+      ImmutableSet.<String>builder()
+          .add("nokia_readings") // currently very stale because of Human API broken-ness
           .build();
 
   @Inject SecretProvider secretProvider;
@@ -68,6 +74,9 @@ public class EnsureAllTablesHaveRecentData {
         new Reflections("com.robertsanek").getTypesAnnotatedWith(Table.class)
             .forEach(clazz -> {
               String tableName = clazz.getAnnotation(Table.class).name();
+              if (infiniteStalenessTable.contains(tableName)) {
+                return;
+              }
               Set<String> dateColumns = Arrays.stream(clazz.getDeclaredFields())
                   .filter(field -> field.getType().equals(ZonedDateTime.class))
                   .map(zdtField -> Optional.ofNullable(zdtField.getAnnotation(Column.class))
@@ -76,7 +85,7 @@ public class EnsureAllTablesHaveRecentData {
                   .collect(Collectors.toSet());
 
               dateColumns.stream()
-                  .filter(dateColumn -> !infiniteStaleness.contains(Pair.of(tableName, dateColumn)))
+                  .filter(dateColumn -> !infiniteStalenessColumn.contains(Pair.of(tableName, dateColumn)))
                   .forEach(dateColumn -> {
                     try {
                       ResultSet resultSet =
