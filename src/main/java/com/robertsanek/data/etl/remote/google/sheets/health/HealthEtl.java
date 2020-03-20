@@ -82,8 +82,9 @@ public class HealthEtl extends Etl<Health> {
 
   @VisibleForTesting
   BigDecimal getTotal(Optional<BigDecimal> maybeBigDecimal1, Optional<BigDecimal> maybeBigDecimal2) {
-    return maybeBigDecimal1.orElse(new BigDecimal(0))
-        .add(maybeBigDecimal2.orElse(new BigDecimal(0)));
+    return maybeBigDecimal1.isEmpty() && maybeBigDecimal2.isEmpty() ? null :
+        maybeBigDecimal1.orElse(new BigDecimal(0))
+            .add(maybeBigDecimal2.orElse(new BigDecimal(0)));
   }
 
   private Optional<String> maybeGet(List<Object> row, int index) {
