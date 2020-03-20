@@ -27,21 +27,24 @@ public class ModelEtl extends AnkiEtl<Model> {
         .get(() -> Json.createReader(new ByteArrayInputStream(models.getBytes(StandardCharsets.UTF_8.name()))))) {
       JsonObject object = jsonReader.readObject();
       object.forEach((key, value) -> {
-        Model.ModelBuilder builder = Model.ModelBuilder.aModel();
         JsonObject individualModel = object.getJsonObject(key);
-        builder.withId(Long.valueOf(key));
-        builder.withName(individualModel.getString("name"));
-        builder.withCreated_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochMilli(Long.valueOf(key))));
-        builder.withModified_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochSecond(individualModel.getInt("mod"))));
-        builder.withDeck_id(individualModel.getJsonNumber("did").longValue());
+        Model.ModelBuilder builder = Model.ModelBuilder.aModel()
+            .withId(Long.valueOf(key))
+            .withName(individualModel.getString("name"))
+            .withCreated_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochMilli(Long.valueOf(key))))
+            .withModified_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochSecond(individualModel.getInt("mod"))))
+            .withDeck_id(individualModel.getJsonNumber("did").longValue());
+
         JsonArray fields = individualModel.getJsonArray("flds");
         builder.withFields(com.robertsanek.util.Lists.quoteListItemsAndJoinWithComma(fields.stream()
             .map(field -> field.asJsonObject().getString("name"))
             .collect(Collectors.toList()), FIELDS_LIMIT));
+
         JsonArray templates = individualModel.getJsonArray("tmpls");
         builder.withTemplates(com.robertsanek.util.Lists.quoteListItemsAndJoinWithComma(templates.stream()
             .map(field -> field.asJsonObject().getString("name"))
             .collect(Collectors.toList()), FIELDS_LIMIT));
+
         allModels.add(builder.build());
       });
     }

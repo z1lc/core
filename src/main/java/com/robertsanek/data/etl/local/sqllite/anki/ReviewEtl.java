@@ -14,16 +14,16 @@ public class ReviewEtl extends AnkiEtl<Review> {
 
   @Override
   public List<Review> transformRow(ResultSet row) throws SQLException {
-    Review.ReviewBuilder reviewBuilder = Review.ReviewBuilder.aReview();
-    reviewBuilder.withId(row.getLong("id"));
-    reviewBuilder.withCreated_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochMilli(row.getLong("id"))));
-    reviewBuilder.withCard_id(row.getLong("cid"));
-    reviewBuilder.withEase(row.getLong("ease"));
-    reviewBuilder.withInterval(row.getLong("ivl"));
-    reviewBuilder.withLast_interval(row.getLong("lastIvl"));
-    reviewBuilder.withFactor(row.getLong("factor"));
-    reviewBuilder.withTime_ms(row.getLong("time"));
-    return Collections.singletonList(reviewBuilder.build());
+    return Collections.singletonList(Review.ReviewBuilder.aReview()
+        .withId(row.getLong("id"))
+        .withCreated_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochMilli(row.getLong("id"))))
+        .withCard_id(row.getLong("cid"))
+        .withEase(row.getLong("ease"))
+        .withInterval(row.getLong("ivl"))
+        .withLast_interval(row.getLong("lastIvl"))
+        .withFactor(row.getLong("factor"))
+        .withTime_ms(row.getLong("time"))
+        .build());
   }
 
   @Override

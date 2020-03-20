@@ -26,17 +26,17 @@ public class TemplateEtl extends AnkiEtl<Template> {
         JsonObject individualModel = object.getJsonObject(key);
         JsonArray templates = individualModel.getJsonArray("tmpls");
         templates.forEach(template -> {
-          Template.TemplateBuilder builder = Template.TemplateBuilder.aTemplate();
           JsonObject templateAsJson = template.asJsonObject();
-          builder.withId(Long.valueOf(key + templateAsJson.getInt("ord")));
-          builder.withDeck_id(
-              templateAsJson.get("did").toString().equals("null") ? null : (long) templateAsJson.getInt("did"));
-          builder.withModel_id(Long.valueOf(key));
-          builder.withName(templateAsJson.getString("name"));
-          builder.withFront_html(templateAsJson.getString("qfmt"));
-          builder.withBack_html(templateAsJson.getString("afmt"));
-          builder.withOrdinal((long) templateAsJson.getInt("ord"));
-          allTemplates.add(builder.build());
+          allTemplates.add(Template.TemplateBuilder.aTemplate()
+              .withId(Long.valueOf(key + templateAsJson.getInt("ord")))
+              .withDeck_id(
+                  templateAsJson.get("did").toString().equals("null") ? null : (long) templateAsJson.getInt("did"))
+              .withModel_id(Long.valueOf(key))
+              .withName(templateAsJson.getString("name"))
+              .withFront_html(templateAsJson.getString("qfmt"))
+              .withBack_html(templateAsJson.getString("afmt"))
+              .withOrdinal((long) templateAsJson.getInt("ord"))
+              .build());
         });
       });
     }

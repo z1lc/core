@@ -26,16 +26,16 @@ public class FieldEtl extends AnkiEtl<Field> {
         JsonObject individualModel = object.getJsonObject(key);
         JsonArray templates = individualModel.getJsonArray("flds");
         templates.forEach(template -> {
-          Field.FieldBuilder builder = Field.FieldBuilder.aField();
           JsonObject templateAsJson = template.asJsonObject();
-          builder.withId(Long.valueOf(key + templateAsJson.getInt("ord")));
-          builder.withModel_id(Long.valueOf(key));
-          builder.withName(templateAsJson.getString("name"));
-          builder.withFont_face(templateAsJson.getString("font"));
-          builder.withFont_size((long) templateAsJson.getInt("size"));
-          builder.withOrdinal((long) templateAsJson.getInt("ord"));
-          builder.withSticky(templateAsJson.getBoolean("sticky"));
-          allFields.add(builder.build());
+          allFields.add(Field.FieldBuilder.aField()
+              .withId(Long.valueOf(key + templateAsJson.getInt("ord")))
+              .withModel_id(Long.valueOf(key))
+              .withName(templateAsJson.getString("name"))
+              .withFont_face(templateAsJson.getString("font"))
+              .withFont_size((long) templateAsJson.getInt("size"))
+              .withOrdinal((long) templateAsJson.getInt("ord"))
+              .withSticky(templateAsJson.getBoolean("sticky"))
+              .build());
         });
       });
     }
