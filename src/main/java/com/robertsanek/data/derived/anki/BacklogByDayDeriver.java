@@ -27,7 +27,7 @@ public class BacklogByDayDeriver extends Etl<BacklogForDay> {
               .forEach(i -> {
                 Review previousReview = orderedReviews.get(i - 1);
                 LocalDate firstDate = previousReview.getCreated_at().toLocalDate();
-                LocalDate secondDate = LocalDate.now();
+                LocalDate secondDate = LocalDate.now().plusDays(1);
                 if (i < orderedReviews.size()) {
                   secondDate = orderedReviews.get(i).getCreated_at().toLocalDate();
                 }
