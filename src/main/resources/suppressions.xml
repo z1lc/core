@@ -42,7 +42,8 @@
                    |WikiPerson.java|
                    |Loan.java|
                    |Payment.java|
-                   |Terms.java"/>
+                   |Terms.java|
+                   |BacklogForDay.java"/>
   <suppress checks="[a-zA-Z0-9]*" files="ParallelExample.java"/>
   <suppress checks="[a-zA-Z0-9]*" files="HelloAnalytics.java"/>
 </suppressions>
