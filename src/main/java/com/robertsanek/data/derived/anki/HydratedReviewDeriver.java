@@ -20,15 +20,7 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
 
   @Override
   public List<HydratedReview> getObjects() {
-    final List<Review> reviews = DataQualityBase.getAllReviews();
-    final List<Long> relevantDeckIds = DataQualityBase.getRelevantDeckIds(DataQualityBase.getAllDecks());
-    final Map<Long, Card> cardsByCardId = DataQualityBase.toMap(DataQualityBase.getAllCards(), Card::getId);
-    return reviews.stream()
-        .filter(review -> {
-          final Card card = cardsByCardId.get(review.getCard_id());
-          return card != null && relevantDeckIds.contains(card.getDeck_id()) && card.getQueue() != Card.Queue.SUSPENDED;
-        })
-        .collect(Collectors.groupingBy(Review::getCard_id))
+    return getReviewsByCardId()
         .entrySet()
         .stream()
         .flatMap(groupedReview -> {
@@ -62,5 +54,17 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
               });
         })
         .collect(Collectors.toList());
+  }
+
+  public static Map<Long, List<Review>> getReviewsByCardId() {
+    final List<Review> reviews = DataQualityBase.getAllReviews();
+    final List<Long> relevantDeckIds = DataQualityBase.getRelevantDeckIds(DataQualityBase.getAllDecks());
+    final Map<Long, Card> cardsByCardId = DataQualityBase.getCardsByCardId();
+    return reviews.stream()
+        .filter(review -> {
+          final Card card = cardsByCardId.get(review.getCard_id());
+          return card != null && relevantDeckIds.contains(card.getDeck_id()) && card.getQueue() != Card.Queue.SUSPENDED;
+        })
+        .collect(Collectors.groupingBy(Review::getCard_id));
   }
 }
