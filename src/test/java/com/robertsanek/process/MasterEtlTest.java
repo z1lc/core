@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 
 import com.google.common.collect.ImmutableSet;
+import com.robertsanek.data.derived.anki.BacklogForDay;
 import com.robertsanek.data.etl.local.sqllite.anki.ReviewEtl;
 import com.robertsanek.data.etl.local.workflowy.WorkflowyEtl;
 import com.robertsanek.data.etl.remote.fitbit.json.Sleep;
@@ -61,7 +62,8 @@ public class MasterEtlTest {
       Pair.of(Sleep.class, LocalDateTime.class),
       Pair.of(Sleep.class, LocalDate.class),
       Pair.of(PageView.class, LocalDate.class),
-      Pair.of(Health.class, LocalDate.class)
+      Pair.of(Health.class, LocalDate.class),
+      Pair.of(BacklogForDay.class, LocalDate.class)
   );
 
   @Test
