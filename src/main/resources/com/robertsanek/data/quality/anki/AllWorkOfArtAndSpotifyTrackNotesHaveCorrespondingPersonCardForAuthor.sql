@@ -90,6 +90,9 @@ WHERE people.name IS NULL AND both_types.name NOT LIKE '%<div>%' AND both_types.
                                 'Anna K.',
                                 'Ivan Gutierrez',
                                 'KOA',
-                                'R. Orth')
+                                'R. Orth',
+                                'Simon & Garfunkel',
+                                'Michael Jackson', -- due to synonym
+                                'Jesse & Joy')
 ORDER BY 1 ASC
 ;
