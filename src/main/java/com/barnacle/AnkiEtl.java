@@ -30,8 +30,6 @@ public class AnkiEtl implements Callable<Object> {
 
   private static final String TABLE_NAME = "anki_reviews";
   private static final ZonedDateTime start = ZonedDateTime.of(2017, 11, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
-  private static final String ROB_NAME = "z1lc";
-  private static final String WILL_NAME = "will";
   private static Log log = Logs.getLog(AnkiEtl.class);
 
   @Inject PostgresConnection postgresConnection;
@@ -43,15 +41,27 @@ public class AnkiEtl implements Callable<Object> {
         .addAll(Utils.addUser(Unchecked.get(() -> new ReviewEtl() {
           @Override
           public String getProfileName() {
-            return WILL_NAME;
+            return User.WILL.getAnkiUsername();
           }
         }.getObjects()), User.WILL))
         .addAll(Utils.addUser(Unchecked.get(() -> new ReviewEtl() {
           @Override
           public String getProfileName() {
-            return ROB_NAME;
+            return User.ROB.getAnkiUsername();
           }
         }.getObjects()), User.ROB))
+//        .addAll(Utils.addUser(Unchecked.get(() -> new ReviewEtl() {
+//          @Override
+//          public String getProfileName() {
+//            return User.JANA.getAnkiUsername();
+//          }
+//        }.getObjects()), User.VIKTOR))
+//        .addAll(Utils.addUser(Unchecked.get(() -> new ReviewEtl() {
+//          @Override
+//          public String getProfileName() {
+//            return User.VIKTOR.getAnkiUsername();
+//          }
+//        }.getObjects()), User.JANA))
         .build().stream()
         .filter(userReviewPair -> userReviewPair.getRight().getCreated_at().isAfter(start))
         .collect(Collectors.toList());
