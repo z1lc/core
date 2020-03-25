@@ -26,7 +26,10 @@ public class AllCalibreBooksAndAuthorsAreInAnki extends DataQualityBase {
       "Confidence Cheat Sheet",
       "Little Black Book of Scams",
       "How the European Union Works",
-      "2019 Email Deliverability Guide"
+      "2019 Email Deliverability Guide",
+      "Intricacies of Spaced Retrieval: A Resolution",
+      "Self-Regulated Learning",
+      "Making Things Hard on Yourself, But in a Good Way"
   );
 
   @Inject IncrementalReadingPriorityEtl incrementalReadingPriorityEtl;
