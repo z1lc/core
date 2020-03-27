@@ -14,6 +14,7 @@ public class HydratedReview {
   Long total_days_in_review;
   Long num_days_review_delayed;
   Double skew_at_review_time;
+  Double effective_ease_at_review_time;
 
   public Long getReview_id() {
     return review_id;
@@ -35,6 +36,10 @@ public class HydratedReview {
     return skew_at_review_time;
   }
 
+  public Double getEffective_ease_at_review_time() {
+    return effective_ease_at_review_time;
+  }
+
   public static final class HydratedReviewBuilder {
 
     Long review_id;
@@ -42,6 +47,7 @@ public class HydratedReview {
     Long total_days_in_review;
     Long num_days_review_delayed;
     Double skew_at_review_time;
+    Double effective_ease_at_review_time;
 
     private HydratedReviewBuilder() {}
 
@@ -72,13 +78,19 @@ public class HydratedReview {
       return this;
     }
 
+    public HydratedReviewBuilder withEffective_ease_at_review_time(Double effective_ease_at_review_time) {
+      this.effective_ease_at_review_time = effective_ease_at_review_time;
+      return this;
+    }
+
     public HydratedReview build() {
       HydratedReview hydratedReview = new HydratedReview();
       hydratedReview.days_since_first_review = this.days_since_first_review;
+      hydratedReview.effective_ease_at_review_time = this.effective_ease_at_review_time;
       hydratedReview.total_days_in_review = this.total_days_in_review;
-      hydratedReview.review_id = this.review_id;
       hydratedReview.num_days_review_delayed = this.num_days_review_delayed;
       hydratedReview.skew_at_review_time = this.skew_at_review_time;
+      hydratedReview.review_id = this.review_id;
       return hydratedReview;
     }
   }

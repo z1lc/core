@@ -33,6 +33,7 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
                 final Review review = orderedReviews.get(i);
                 Double skew = null;
                 Long daysReviewDelayed = null;
+                Double effectiveEase = null;
                 if (i > 0) {
                   final Review prevReview = orderedReviews.get(i - 1);
                   // New/relearn don't really have an interval, but the 'days in the future' they are scheduled is 0.
@@ -42,7 +43,11 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
                       prevReview.getCreated_at().plusDays(interval).toLocalDate();
                   LocalDate actuallyReviewedOn = review.getCreated_at().toLocalDate();
                   daysReviewDelayed = DAYS.between(originallyScheduledForReviewOn, actuallyReviewedOn);
+                  long daysBetweenReviews = DAYS.between(prevReview.getCreated_at().toLocalDate(), actuallyReviewedOn);
                   skew = (double) daysReviewDelayed / Math.max(1, interval);
+                  if (prevReview.getLast_interval() > 0) {
+                    effectiveEase = ((double) daysBetweenReviews) / prevReview.getLast_interval();
+                  }
                 }
                 return HydratedReview.HydratedReviewBuilder.aHydratedReview()
                     .withReview_id(review.getId())
@@ -50,6 +55,7 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
                     .withTotal_days_in_review(DAYS.between(firstReview, LocalDate.now()))
                     .withNum_days_review_delayed(daysReviewDelayed)
                     .withSkew_at_review_time(skew)
+                    .withEffective_ease_at_review_time(effectiveEase)
                     .build();
               });
         })
