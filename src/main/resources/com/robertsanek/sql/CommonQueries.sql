@@ -1,3 +1,21 @@
+create or replace view rlp_dates as
+(
+SELECT description, EXTRACT(epoch from date) as epoch, date
+FROM (
+    VALUES ('Last Year', current_date - 365),
+        ('Last 5 Years', current_date - 1826),
+        ('Last Decade', current_date - 3652),
+        ('Since Starting at Stripe', date '10-21-2019'),
+        ('Since Starting Sabbatical', date '03-22-2018'),
+        ('Since Moving to San Mateo', date '03-18-2017'),
+        ('Since Moving to Redwood City', date '03-25-2016'),
+        ('Since Moving to California', date '08-01-2015'),
+        ('Since Discovery of Anki', date '05-11-2014'),
+        ('Since Starting College', date '08-22-2011'),
+        ('Since Discovery of RescueTime', date '01-01-2009')
+) AS temptable(description, date))
+;
+
 /**************************************************** RLP - EXERCISE **************************************************/
 create or replace view rlp_daily_exercise as
 (
@@ -152,9 +170,9 @@ from anki_notes
          JOIN anki_reviews on anki_cards.id = anki_reviews.card_id
 --where tags LIKE '%z::Languages::Spanish%'
 --where tags LIKE '%General_Knowledge::The_Office%'
-where tags LIKE '%z::Computer_Science::Interview_Prep%'
+--where tags LIKE '%z::Computer_Science::Interview_Prep%'
 --and anki_reviews.created_at BETWEEN '2019-01-01' AND '2020-01-01'
---where tags LIKE '%z::Work::Stripe%'
+where tags LIKE '%z::Work::Stripe%'
 group by 1
 order by 1 desc
 ;
@@ -183,21 +201,22 @@ order by 1 desc
 ;
 
 -- average anki review time by year
-select date_trunc('year', created_at),
-        sum(time_ms) / 60000 / (case when date_trunc('year', created_at) < date_trunc('year', now())
-                                         then 365.24
-                                     else date_part('day', now() - date_trunc('year', now())) end) as daily_minutes
+select left(date_trunc('year', created_at) || '', 4) as year,
+    round(sum(time_ms) / 60000 / (case when date_trunc('year', created_at) < date_trunc('year', now())
+                                           then 365.24
+                                       else date_part('day', now() - date_trunc('year', now())) end)::numeric,
+          1) as average_daily_minutes
 from anki_reviews
-group by 1
+group by date_trunc('year', created_at)
 order by 1 desc
 ;
 
 -- average exercise by year
-select date_trunc('year', week),
+select left(date_trunc('year', week) || '', 4) as year,
     round(avg(percentage * 100)) as percentage,
     count(case when percentage is not null then 1 end) as weeks_with_data
 from rlp_weekly_exercise
 where percentage is not null
-group by 1
+group by date_trunc('year', week)
 order by 1 desc
 ;
