@@ -198,7 +198,7 @@ public class KivaApiConnector implements QuartzJob {
     try {
       List<List<Object>> spreadsheetCells =
           SheetsConnector.getSpreadsheetCells(secretProvider.getSecret(KIVA_SPREADSHEET_ID), RANGE);
-      return Boolean.valueOf(Iterables.getOnlyElement(Iterables.getOnlyElement(spreadsheetCells)).toString());
+      return Boolean.parseBoolean(Iterables.getOnlyElement(Iterables.getOnlyElement(spreadsheetCells)).toString());
     } catch (Exception e) {
       log.error("Encountered exception when trying to determine if should be searching for Kiva loans. " +
           "Assuming we should not search.");
