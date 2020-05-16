@@ -26,6 +26,7 @@ public class AllSyntaxHighlightedCodeHasMobileFriendlyLineLengths extends DataQu
       1561484430375L,
 
       1564780060733L,
+      1585588888988L,
       0L
   );
 
