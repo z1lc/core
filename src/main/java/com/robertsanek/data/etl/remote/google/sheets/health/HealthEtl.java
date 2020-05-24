@@ -38,26 +38,16 @@ public class HealthEtl extends Etl<Health> {
               .map(this::fromStringToBigDecimal)
               .orElse(getTotal(cardio, lifting));
           String note = maybeGet(row, 4).orElse("");
-          String groceries = maybeGet(row, 5).orElse("");
-          Boolean cook = maybeGet(row, 6).map(this::fromStringToBoolean).orElse(null);
-          Boolean cafeteria = maybeGet(row, 7).map(this::fromStringToBoolean).orElse(null);
-          Boolean orderIn = maybeGet(row, 8).map(this::fromStringToBoolean).orElse(null);
-          Boolean restaurant = maybeGet(row, 9).map(this::fromStringToBoolean).orElse(null);
-          BigDecimal alcohol = maybeGet(row, 10)
+          BigDecimal alcohol = maybeGet(row, 5)
               .map(this::fromStringToBigDecimal)
               .orElse(null);
-          String drugs = maybeGet(row, 11).orElse("");
+          String drugs = maybeGet(row, 6).orElse("");
           return Health.HealthBuilder.aHealth()
               .withDate(date)
               .withCardio(cardio.orElse(null))
               .withLifting(lifting.orElse(null))
               .withTotal(total)
               .withComment(note)
-              .withGroceries(groceries)
-              .withCook(cook)
-              .withCafeteria(cafeteria)
-              .withOrderIn(orderIn)
-              .withRestaurant(restaurant)
               .withAlcohol(alcohol)
               .withDrugs(drugs)
               .build();
