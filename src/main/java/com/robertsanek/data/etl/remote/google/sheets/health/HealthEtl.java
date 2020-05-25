@@ -77,7 +77,7 @@ public class HealthEtl extends Etl<Health> {
             .add(maybeBigDecimal2.orElse(new BigDecimal(0)));
   }
 
-  private Optional<String> maybeGet(List<Object> row, int index) {
+  public static Optional<String> maybeGet(List<Object> row, int index) {
     return row.size() > index ? Optional.ofNullable(row.get(index).toString()) : Optional.empty();
   }
 

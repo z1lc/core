@@ -16,6 +16,22 @@ public class BloodPressureReading {
   private Long systolic;
   private Long diastolic;
 
+  public Long getId() {
+    return id;
+  }
+
+  public ZonedDateTime getDate() {
+    return date;
+  }
+
+  public Long getSystolic() {
+    return systolic;
+  }
+
+  public Long getDiastolic() {
+    return diastolic;
+  }
+
   public static final class BloodPressureReadingBuilder {
 
     private Long id;

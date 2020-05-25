@@ -220,3 +220,8 @@ where percentage is not null
 group by date_trunc('year', week)
 order by 1 desc
 ;
+
+select *
+from anki_backlogs_by_day
+where date >= '2020-01-01'
+order by cards_in_backlog asc
