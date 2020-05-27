@@ -28,7 +28,9 @@ public class AllFieldsWithinNotesAreUsedByAtLestOneTemplate extends DataQualityB
   private static final ImmutableSet<String> ALLOWED_EMPTY_NOTE_TYPE_REGEX = ImmutableSet.of(
       ".*Cloze \\(overlapping\\).*",
       "^AnKindle.*",
-      "^Image Occlusion Enhanced$"
+      "^Image Occlusion Enhanced$",
+      "^Spotify Artist$",
+      "^Spotify Track$"
   );
   Pattern fieldInTemplatePattern = Pattern.compile("\\{\\{.+?}}");
 

@@ -69,7 +69,7 @@ WITH people AS (SELECT split_part(
                                         1542879193520,
                                         1542879193522,
                                         0)),
-    both_types as (select * from songs UNION (select * from works_of_art))
+    both_types as (select * from works_of_art) --removed `songs` table in favor of Artist note type directly from Spotify + Anki
 SELECT both_types.name
 FROM both_types
          FULL OUTER JOIN people ON both_types.name = people.name
