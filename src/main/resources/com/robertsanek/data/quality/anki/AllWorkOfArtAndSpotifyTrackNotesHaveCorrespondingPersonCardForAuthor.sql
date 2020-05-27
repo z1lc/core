@@ -97,6 +97,9 @@ WHERE people.name IS NULL AND both_types.name NOT LIKE '%<div>%' AND both_types.
                                 '40 Thevz',
                                 'Ardyn',
                                 'Billy Marchiafava',
-                                'Carla Monroe')
+                                'Carla Monroe',
+                                'Neal Marlens',
+                                'Rawson Thurber',
+                                'Stephen Lambert')
 ORDER BY 1 ASC
 ;
