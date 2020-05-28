@@ -76,7 +76,7 @@
     <mapping class="com.robertsanek.data.derived.anki.BacklogForDay"/>
     <mapping class="com.robertsanek.data.derived.anki.CardNewReps"/>
     <mapping class="com.robertsanek.data.derived.anki.HydratedReview"/>
-    <mapping class="com.robertsanek.data.derived.anki.ReviewTimePerTag"/>
+    <mapping class="com.robertsanek.data.derived.anki.ReviewTimePerCategory"/>
 
   </session-factory>
 </hibernate-configuration>

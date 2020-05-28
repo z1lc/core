@@ -110,6 +110,14 @@ public abstract class DataQualityBase {
         .collect(Collectors.groupingBy(Field::getModel_id));
   }
 
+  public static List<Model> getAllModels() {
+    return allModels;
+  }
+
+  public static Map<Long, List<Model>> getModelsByModelId() {
+    return modelsByModelId;
+  }
+
   public static List<Note> getExistingPeopleInAnkiDb() {
     Long personModelId = Iterables.getOnlyElement(DataQualityBase.allModels.stream()
         .filter(model -> model.getName().contains("Person"))

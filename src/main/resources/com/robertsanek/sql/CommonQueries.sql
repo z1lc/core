@@ -223,5 +223,12 @@ order by 1 desc
 
 select *
 from anki_backlogs_by_day
-where date >= '2020-01-01'
-order by cards_in_backlog asc
+where date >= '2019-12-16'
+order by cards_in_backlog asc;
+
+
+select category, round(sum(time_ms) / 3600000) as hours
+from anki_review_time_per_category
+where day >= '2019-10-21'
+group by category
+order by 2 desc;
