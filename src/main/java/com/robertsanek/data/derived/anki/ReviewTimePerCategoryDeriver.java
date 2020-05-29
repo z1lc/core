@@ -213,7 +213,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
 
           return "Other";
         })
-        .orElse("");
+        .orElse("Other");
   }
 
 }
