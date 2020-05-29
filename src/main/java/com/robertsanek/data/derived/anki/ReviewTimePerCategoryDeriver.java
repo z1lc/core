@@ -180,15 +180,9 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
     return Optional.ofNullable(DataQualityBase.getCardsByCardId().get(review.getCard_id()))
         .map(card -> DataQualityBase.getNotesByNoteId().get(card.getNote_id()))
         .map(note -> {
-          //First match by model name
           Model model = Iterables.getOnlyElement(DataQualityBase.getModelsByModelId().get(note.getModel_id()));
-          for (Map.Entry<String, String> nameAndCategory : MODEL_NAME_TO_CATEGORY.entrySet()) {
-            if (model.getName().contains(nameAndCategory.getKey())) {
-              return nameAndCategory.getValue();
-            }
-          }
 
-          //Then match by tag
+          //First match by tag
           for (Map.Entry<String, String> nameAndCategory : TAG_TO_CATEGORY.entrySet()) {
             String tagNameSubstringToFind = nameAndCategory.getKey();
             Optional<String> maybeTag = DataQualityBase.splitCsvIntoCommaSeparatedList(note.getTags()).stream()
@@ -199,7 +193,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
             }
           }
 
-          //Then fall back to context
+          //Then match by context
           List<String> fields = DataQualityBase.splitCsvIntoCommaSeparatedList(note.getFields());
           int contextIndex = DataQualityBase.splitCsvIntoCommaSeparatedList(model.getFields())
               .indexOf("Context \uD83D\uDCA1");
@@ -207,6 +201,13 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
             String maybeContext = fields.get(contextIndex);
             if (CONTEXT_TO_CATEGORY.containsKey(maybeContext)) {
               return CONTEXT_TO_CATEGORY.get(maybeContext);
+            }
+          }
+
+          //Finally fall back to model name
+          for (Map.Entry<String, String> nameAndCategory : MODEL_NAME_TO_CATEGORY.entrySet()) {
+            if (model.getName().contains(nameAndCategory.getKey())) {
+              return nameAndCategory.getValue();
             }
           }
 

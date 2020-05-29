@@ -223,7 +223,7 @@ order by 1 desc
 
 select *
 from anki_backlogs_by_day
-where date >= '2019-12-16'
+where date >= '2019-12-01'
 order by cards_in_backlog asc;
 
 
