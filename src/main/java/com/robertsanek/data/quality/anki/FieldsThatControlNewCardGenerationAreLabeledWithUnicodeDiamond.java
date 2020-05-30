@@ -20,7 +20,9 @@ public class FieldsThatControlNewCardGenerationAreLabeledWithUnicodeDiamond exte
     final List<String> IGNORE_MODEL_NAMES = Lists.newArrayList(
         "^AnKindle.*",
         "^Image Occlusion Enhanced$",
-        "^The Basic \\(optional reversed card\\)$"
+        "^The Basic \\(optional reversed card\\)$",
+        "^Spotify Track$",
+        "^Spotify Artist$"
     );
     Pattern endConditional = Pattern.compile("\\{\\{/.*}}");
     Pattern anyAlphabetical = Pattern.compile("[A-z]+");
