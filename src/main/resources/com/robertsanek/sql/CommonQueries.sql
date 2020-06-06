@@ -221,6 +221,14 @@ group by date_trunc('year', week)
 order by 1 desc
 ;
 
+-- average exercise by year, any exercise at all
+select left(date_trunc('year', date) || '', 4) as year,
+    round(sum(case when total > 0 then 1 else 0 end)::float / count(total) * 100) as percent_days_with_any_exercise,
+    count(total) as days_with_data
+from rlp_daily_exercise
+group by 1
+order by 1 desc;
+
 select *
 from anki_backlogs_by_day
 where date >= '2019-10-21'
