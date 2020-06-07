@@ -56,6 +56,7 @@ public class EnsureAllTablesHaveRecentData {
   private static final ImmutableSet<String> infiniteStalenessTable =
       ImmutableSet.<String>builder()
           .add("nokia_readings") // currently very stale because of Human API broken-ness
+          .add("habitica_histories") // no longer using
           .build();
 
   @Inject SecretProvider secretProvider;
