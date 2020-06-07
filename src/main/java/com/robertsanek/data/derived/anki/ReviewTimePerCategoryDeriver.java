@@ -83,6 +83,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
       .put("z::Computer_Science::Networking", "Computing")
       .put("Shared_From_Others::Will::Dynamo", "Computing")
 
+      .put("z::Culture", "Culture")
       .put("z::Other::Coachella", "Culture")
       .put("India", "Culture")
       .put("z::Japan", "Culture")
@@ -102,6 +103,10 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
       .put("z::Book_Summaries::Measure_What_Matters", "General Knowledge")
 
       .put("z::Nutrition", "Health")
+      .put("z::Health", "Health")
+      .put("z::Medicine", "Health")
+      .put("z::Exercise", "Health")
+      .put("z::Drugs", "Health")
 
       .put("z::Languages::Spanish", "Language")
 
@@ -138,6 +143,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
       .put("air purifiers", "Health")
       .put("cannabis", "Health")
       .put("medicine", "Health")
+      .put("nutrition", "Health")
 
       .put("WF", "Work")
       .put("Stripe", "Work")
