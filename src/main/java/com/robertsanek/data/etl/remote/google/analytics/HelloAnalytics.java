@@ -29,17 +29,20 @@ import com.google.api.services.analyticsreporting.v4.AnalyticsReporting;
 import com.google.api.services.analyticsreporting.v4.AnalyticsReportingScopes;
 import com.google.api.services.analyticsreporting.v4.model.*;
 import com.google.common.collect.Lists;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public class HelloAnalytics {
 
-  private static final String VIEW_ID = "181777329";
+  private static final String VIEW_ID = "59901365";
   private static final File DATA_STORE_DIR = new File(
       System.getProperty("user.home"), ".store/hello_analytics");
 
   private static final String APPLICATION_NAME = "Hello Analytics Reporting";
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
   private static AtomicLong ID_ISSUER = new AtomicLong(1);
+  private static final Log log = Logs.getLog(HelloAnalytics.class);
 
   public static void main(String[] args) {
     try {
@@ -111,7 +114,8 @@ public class HelloAnalytics {
       List<ReportRow> rows = report.getData().getRows();
 
       if (rows == null) {
-        throw new RuntimeException("No data found for " + VIEW_ID);
+        log.error("No rows found for view %s!", VIEW_ID);
+        return Lists.newArrayList();
       }
 
       for (ReportRow row : rows) {
@@ -124,7 +128,7 @@ public class HelloAnalytics {
                 PageView.PageViewBuilder.aPageView()
                     .withId(ID_ISSUER.getAndIncrement())
                     .withDate(LocalDate.parse(dimensions.get(0), DateTimeFormatter.ofPattern("yyyyMMdd")))
-                    .withWebsite("www.advancedanki.com")
+                    .withWebsite("www.robertsanek.com")
                     .withPageViews(Long.parseLong(values.getValues().get(k)))
                     .build()
             );

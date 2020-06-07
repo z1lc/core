@@ -19,12 +19,26 @@ public class TrelloCard {
   private String boardId;
   @Column(name = "list_id")
   private String listId;
+  @Column(length = MAX_LENGTH)
   private String name;
   @Column(length = MAX_LENGTH)
   private String description;
   private boolean closed;
   @Column(name = "last_activity")
   private ZonedDateTime lastActivity;
+
+  @Override
+  public String toString() {
+    return "TrelloCard{" +
+        "id='" + id + '\'' +
+        ", boardId='" + boardId + '\'' +
+        ", listId='" + listId + '\'' +
+        ", name='" + name + '\'' +
+        ", description='" + description + '\'' +
+        ", closed=" + closed +
+        ", lastActivity=" + lastActivity +
+        '}';
+  }
 
   public String getId() {
     return id;
