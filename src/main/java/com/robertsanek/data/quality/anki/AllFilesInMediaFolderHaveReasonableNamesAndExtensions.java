@@ -26,6 +26,7 @@ public class AllFilesInMediaFolderHaveReasonableNamesAndExtensions extends DataQ
       "css",
       "dat",  //some add-on storage
       "db",   //AnKindle add-on
+      "webp",
       "gif",
       "jpg",  //.jpg should be preferred to .jpe and .jpeg so that we can more easily automatically
               // find an image based on a name
