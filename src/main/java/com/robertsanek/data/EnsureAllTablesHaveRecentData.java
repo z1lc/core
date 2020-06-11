@@ -40,15 +40,10 @@ public class EnsureAllTablesHaveRecentData {
       ImmutableMap.<Pair<String, String>, Period>builder()
           .put(Pair.of("credit_scores", "date"), Period.ofDays(60))
           .put(Pair.of("blood_pressure_readings", "date"), Period.ofDays(60))
-          .put(Pair.of("toodledo_tasks", "added_at"), Period.ofDays(60))
           .put(Pair.of("trello_cards", "last_activity"), Period.ofDays(30))
           .build();
   private static final ImmutableSet<Pair<String, String>> infiniteStalenessColumn =
       ImmutableSet.<Pair<String, String>>builder()
-          .add(Pair.of("toodledo_habits", "added"))
-          .add(Pair.of("toodledo_habits", "modified"))
-          .add(Pair.of("toodledo_habit_repetitions", "date"))
-          .add(Pair.of("toodledo_habit_repetitions", "modified"))
           .add(Pair.of("anki_models", "created_at"))
           .add(Pair.of("anki_cards", "last_modified_at"))
           .add(Pair.of("workflowy_entries", "date_exported"))
@@ -56,7 +51,10 @@ public class EnsureAllTablesHaveRecentData {
   private static final ImmutableSet<String> infiniteStalenessTable =
       ImmutableSet.<String>builder()
           .add("nokia_readings") // currently very stale because of Human API broken-ness
+          .add("toodledo_habits")  //migrated to Habitica
+          .add("toodledo_habit_repetitions")
           .add("habitica_histories") // no longer using
+          .add("toodledo_tasks")  //no longer using
           .build();
 
   @Inject SecretProvider secretProvider;
