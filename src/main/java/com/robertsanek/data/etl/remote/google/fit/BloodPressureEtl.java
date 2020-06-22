@@ -20,7 +20,7 @@ import com.robertsanek.util.Unchecked;
 
 public class BloodPressureEtl extends Etl<BloodPressureReading> {
 
-  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("M/d/yyyy");
+  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("M/d/yyyy H:m");
   private static final AtomicLong ID_ISSUER = new AtomicLong(1);
   private static final String RANGE = "Weight & HR!A2:G10000";
 
