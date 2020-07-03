@@ -8,6 +8,16 @@ $$
     LANGUAGE plpgsql
 ;
 
+CREATE OR REPLACE FUNCTION date_trunc_week_sunday(input timestamp without time zone)
+    RETURNS timestamp without time zone AS
+$$
+BEGIN
+    RETURN (select date_trunc('week', input + interval '1 day') - interval '1 day');
+END;
+$$
+    LANGUAGE plpgsql
+;
+
 CREATE OR REPLACE FUNCTION day_of_week_ordinal()
     RETURNS int AS
 $$
