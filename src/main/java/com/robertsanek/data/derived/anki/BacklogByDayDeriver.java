@@ -19,8 +19,8 @@ public class BacklogByDayDeriver extends Etl<BacklogForDay> {
   @Override
   public List<BacklogForDay> getObjects() {
     HydratedReviewDeriver.getReviewsByCardId()
-        .forEach((key, value) -> {
-          final List<Review> orderedReviews = value.stream()
+        .forEach((cardId, reviews) -> {
+          final List<Review> orderedReviews = reviews.stream()
               .sorted(Comparator.comparing(Review::getCreated_at))
               .collect(Collectors.toList());
           IntStream.rangeClosed(1, orderedReviews.size())
