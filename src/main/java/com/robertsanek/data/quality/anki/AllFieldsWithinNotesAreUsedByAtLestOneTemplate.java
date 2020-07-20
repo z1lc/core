@@ -30,7 +30,8 @@ public class AllFieldsWithinNotesAreUsedByAtLestOneTemplate extends DataQualityB
       "^AnKindle.*",
       "^Image Occlusion Enhanced$",
       "^Spotify Artist$",
-      "^Spotify Track$"
+      "^Spotify Track$",
+      "^Video$"
   );
   Pattern fieldInTemplatePattern = Pattern.compile("\\{\\{.+?}}");
 

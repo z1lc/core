@@ -24,6 +24,7 @@ WHERE (front_html NOT LIKE ('%<script type="text/javascript" src="_jquery-1.11.2
                        1541366068534, --IR card
                        1586000000000, --Spotify Track
                        1587000000000, --Spotify Artist
+                       1588000000000, --Video
                        0)
 ORDER BY model_name ASC
 ;

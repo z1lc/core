@@ -13,7 +13,8 @@ public class AllTemplatesHaveFieldsWithArial20 extends DataQualityBase {
   static final Set<String> EXCLUDED_MODELS = Sets.newHashSet(
       "Cloze (overlapping)",
       "Spotify Track",
-      "Spotify Artist"
+      "Spotify Artist",
+      "Video"
   );
 
   @Override
