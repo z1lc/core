@@ -10,23 +10,15 @@ public class Field {
 
   @Id
   Long id; //should be model id && field ordinal (concatenated, not added)
-  String font_face;
-  Long font_size;
   Long model_id;
   String name;
   Long ordinal;
-  Boolean sticky;
+  @Deprecated String font_face;
+  @Deprecated Long font_size;
+  @Deprecated Boolean sticky;
 
   public Long getId() {
     return id;
-  }
-
-  public String getFont_face() {
-    return font_face;
-  }
-
-  public Long getFont_size() {
-    return font_size;
   }
 
   public Long getModel_id() {
@@ -41,6 +33,17 @@ public class Field {
     return ordinal;
   }
 
+  @Deprecated
+  public String getFont_face() {
+    return font_face;
+  }
+
+  @Deprecated
+  public Long getFont_size() {
+    return font_size;
+  }
+
+  @Deprecated
   public Boolean getSticky() {
     return sticky;
   }
@@ -61,12 +64,12 @@ public class Field {
   public static final class FieldBuilder {
 
     Long id; //should be model id && field ordinal (concatenated, not added)
-    String font_face;
-    Long font_size;
     Long model_id;
     String name;
     Long ordinal;
-    Boolean sticky;
+    @Deprecated String font_face;
+    @Deprecated Long font_size;
+    @Deprecated Boolean sticky;
 
     private FieldBuilder() {}
 
@@ -79,11 +82,13 @@ public class Field {
       return this;
     }
 
+    @Deprecated
     public FieldBuilder withFont_face(String font_face) {
       this.font_face = font_face;
       return this;
     }
 
+    @Deprecated
     public FieldBuilder withFont_size(Long font_size) {
       this.font_size = font_size;
       return this;
@@ -104,6 +109,7 @@ public class Field {
       return this;
     }
 
+    @Deprecated
     public FieldBuilder withSticky(Boolean sticky) {
       this.sticky = sticky;
       return this;

@@ -29,6 +29,10 @@ public class AnkiSyncer {
 
   //TODO: make these methods non-static. hard because of reliance in static{} in DataQualityBase.
   public static synchronized boolean syncLocalCollectionIfOutOfDate(String profileToSync) {
+    // TODO: wait for anki-connect to upgrade for 2.1.28
+    if (true) {
+      return true;
+    }
     if (CrossPlatformUtils.isRunningInsideDocker()) {
       return true;
     }

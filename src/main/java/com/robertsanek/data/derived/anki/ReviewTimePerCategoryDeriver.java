@@ -11,6 +11,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.robertsanek.data.etl.Etl;
+import com.robertsanek.data.etl.local.sqllite.anki.Field;
 import com.robertsanek.data.etl.local.sqllite.anki.Model;
 import com.robertsanek.data.etl.local.sqllite.anki.Review;
 import com.robertsanek.data.quality.anki.DataQualityBase;
@@ -201,7 +202,9 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
 
           //Then match by context
           List<String> fields = DataQualityBase.splitCsvIntoCommaSeparatedList(note.getFields());
-          int contextIndex = DataQualityBase.splitCsvIntoCommaSeparatedList(model.getFields())
+          int contextIndex = DataQualityBase.getFieldsByModelId().get(model.getId()).stream()
+              .map(Field::getName)
+              .collect(Collectors.toList())
               .indexOf("Context \uD83D\uDCA1");
           if (contextIndex > -1 && contextIndex < fields.size()) {
             String maybeContext = fields.get(contextIndex);

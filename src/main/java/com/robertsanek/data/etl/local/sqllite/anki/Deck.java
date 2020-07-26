@@ -13,20 +13,22 @@ public class Deck {
 
   @Id
   Long id;
-  Long option_group_id;
-  boolean collapsed;
   String name;
+  @Deprecated Long option_group_id;
+  @Deprecated boolean collapsed;
   @Column(length = FIELDS_LIMIT)
-  String description;
+  @Deprecated String description;
 
   public Long getId() {
     return id;
   }
 
+  @Deprecated
   public Long getOption_group_id() {
     return option_group_id;
   }
 
+  @Deprecated
   public boolean isCollapsed() {
     return collapsed;
   }
@@ -35,6 +37,7 @@ public class Deck {
     return name;
   }
 
+  @Deprecated
   public String getDescription() {
     return description;
   }
@@ -42,10 +45,10 @@ public class Deck {
   public static final class DeckBuilder {
 
     Long id;
-    Long option_group_id;
-    boolean collapsed;
     String name;
-    String description;
+    @Deprecated Long option_group_id;
+    @Deprecated boolean collapsed;
+    @Deprecated String description;
 
     private DeckBuilder() {}
 
@@ -58,11 +61,13 @@ public class Deck {
       return this;
     }
 
+    @Deprecated
     public DeckBuilder withOption_group_id(Long option_group_id) {
       this.option_group_id = option_group_id;
       return this;
     }
 
+    @Deprecated
     public DeckBuilder withCollapsed(boolean collapsed) {
       this.collapsed = collapsed;
       return this;
@@ -73,6 +78,7 @@ public class Deck {
       return this;
     }
 
+    @Deprecated
     public DeckBuilder withDescription(String description) {
       this.description = description;
       return this;

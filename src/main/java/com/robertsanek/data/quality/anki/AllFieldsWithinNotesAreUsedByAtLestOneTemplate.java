@@ -15,6 +15,8 @@ import com.robertsanek.data.etl.local.sqllite.anki.Model;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 
+@IgnoreDQ(explanation = "front + back HTML were moved into binary blob field in version 2.1.28")
+@Deprecated
 public class AllFieldsWithinNotesAreUsedByAtLestOneTemplate extends DataQualityBase {
 
   static final Log log = Logs.getLog(AllFieldsWithinNotesAreUsedByAtLestOneTemplate.class);

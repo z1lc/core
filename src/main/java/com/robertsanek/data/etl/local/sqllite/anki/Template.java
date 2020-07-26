@@ -14,13 +14,13 @@ public class Template {
   @Id
   Long id; //should be model id && template ordinal (concatenated, not added)
   Long model_id;
-  Long deck_id;
   String name;
-  @Column(length = FIELDS_LIMIT)
-  String front_html;
-  @Column(length = FIELDS_LIMIT)
-  String back_html;
   Long ordinal;
+  @Deprecated Long deck_id;
+  @Column(length = FIELDS_LIMIT)
+  @Deprecated String front_html;
+  @Column(length = FIELDS_LIMIT)
+  @Deprecated String back_html;
 
   public Long getId() {
     return id;
@@ -30,6 +30,7 @@ public class Template {
     return model_id;
   }
 
+  @Deprecated
   public Long getDeck_id() {
     return deck_id;
   }
@@ -38,10 +39,12 @@ public class Template {
     return name;
   }
 
+  @Deprecated
   public String getFront_html() {
     return front_html;
   }
 
+  @Deprecated
   public String getBack_html() {
     return back_html;
   }
@@ -54,10 +57,10 @@ public class Template {
 
     Long id; //should be model id && template ordinal (concatenated, not added)
     Long model_id;
-    Long deck_id;
+    @Deprecated Long deck_id;
     String name;
-    String front_html;
-    String back_html;
+    @Deprecated String front_html;
+    @Deprecated String back_html;
     Long ordinal;
 
     private TemplateBuilder() {}
@@ -74,6 +77,7 @@ public class Template {
       return this;
     }
 
+    @Deprecated
     public TemplateBuilder withDeck_id(Long deck_id) {
       this.deck_id = deck_id;
       return this;
@@ -84,11 +88,13 @@ public class Template {
       return this;
     }
 
+    @Deprecated
     public TemplateBuilder withFront_html(String front_html) {
       this.front_html = front_html;
       return this;
     }
 
+    @Deprecated
     public TemplateBuilder withBack_html(String back_html) {
       this.back_html = back_html;
       return this;

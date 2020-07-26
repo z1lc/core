@@ -22,7 +22,7 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
   public List<HydratedReview> getObjects() {
     return getReviewsByCardId()
         .entrySet()
-        .stream()
+        .parallelStream()
         .flatMap(groupedReview -> {
           final List<Review> orderedReviews = groupedReview.getValue().stream()
               .sorted(Comparator.comparing(Review::getCreated_at))
@@ -66,7 +66,7 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
     final List<Review> reviews = DataQualityBase.getAllReviews();
     final List<Long> relevantDeckIds = DataQualityBase.getRelevantDeckIds(DataQualityBase.getAllDecks());
     final Map<Long, Card> cardsByCardId = DataQualityBase.getCardsByCardId();
-    return reviews.stream()
+    return reviews.parallelStream()
         .filter(review -> {
           final Card card = cardsByCardId.get(review.getCard_id());
           return card != null && relevantDeckIds.contains(card.getDeck_id()) && card.getQueue() != Card.Queue.SUSPENDED;

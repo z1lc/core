@@ -1,58 +1,28 @@
 package com.robertsanek.data.etl.local.sqllite.anki;
 
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
+import com.google.common.collect.Lists;
 import com.robertsanek.util.DateTimeUtils;
-import com.robertsanek.util.Unchecked;
 
 public class ModelEtl extends AnkiEtl<Model> {
 
   @Override
   public List<Model> transformRow(ResultSet row) throws SQLException {
-    List<Model> allModels = new ArrayList<>();
-    String models = row.getString("models");
-    try (JsonReader jsonReader = Unchecked
-        .get(() -> Json.createReader(new ByteArrayInputStream(models.getBytes(StandardCharsets.UTF_8.name()))))) {
-      JsonObject object = jsonReader.readObject();
-      object.forEach((key, value) -> {
-        JsonObject individualModel = object.getJsonObject(key);
-        Model.ModelBuilder builder = Model.ModelBuilder.aModel()
-            .withId(Long.valueOf(key))
-            .withName(individualModel.getString("name"))
-            .withCreated_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochMilli(Long.valueOf(key))))
-            .withModified_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochSecond(individualModel.getInt("mod"))))
-            .withDeck_id(individualModel.getJsonNumber("did").longValue());
-
-        JsonArray fields = individualModel.getJsonArray("flds");
-        builder.withFields(com.robertsanek.util.Lists.quoteListItemsAndJoinWithComma(fields.stream()
-            .map(field -> field.asJsonObject().getString("name"))
-            .collect(Collectors.toList()), FIELDS_LIMIT));
-
-        JsonArray templates = individualModel.getJsonArray("tmpls");
-        builder.withTemplates(com.robertsanek.util.Lists.quoteListItemsAndJoinWithComma(templates.stream()
-            .map(field -> field.asJsonObject().getString("name"))
-            .collect(Collectors.toList()), FIELDS_LIMIT));
-
-        allModels.add(builder.build());
-      });
-    }
-    return allModels;
+    return Lists.newArrayList(Model.ModelBuilder.aModel()
+        .withId(row.getLong("id"))
+        .withName(row.getString("name"))
+        .withCreated_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochMilli(row.getLong("id"))))
+        .withModified_at(DateTimeUtils.toZonedDateTime(Instant.ofEpochSecond(row.getInt("mtime_secs"))))
+        // deck ID, fields, and templates have moved into binary blob 'config' column
+        .build());
   }
 
   @Override
   public String getImportTableName() {
-    return "col";
+    return "notetypes";
   }
 }

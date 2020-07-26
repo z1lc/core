@@ -18,11 +18,11 @@ public class Model {
   String name;
   ZonedDateTime created_at;
   ZonedDateTime modified_at;
-  Long deck_id;
+  @Deprecated Long deck_id;
   @Column(length = FIELDS_LIMIT)
-  String fields;
+  @Deprecated String fields;
   @Column(length = FIELDS_LIMIT)
-  String templates;
+  @Deprecated String templates;
 
   public Long getId() {
     return id;
@@ -40,14 +40,17 @@ public class Model {
     return modified_at;
   }
 
+  @Deprecated
   public Long getDeck_id() {
     return deck_id;
   }
 
+  @Deprecated
   public String getFields() {
     return fields;
   }
 
+  @Deprecated
   public String getTemplates() {
     return templates;
   }
@@ -58,9 +61,9 @@ public class Model {
     String name;
     ZonedDateTime created_at;
     ZonedDateTime modified_at;
-    Long deck_id;
-    String fields;
-    String templates;
+    @Deprecated Long deck_id;
+    @Deprecated String fields;
+    @Deprecated String templates;
 
     private ModelBuilder() {}
 
@@ -86,16 +89,19 @@ public class Model {
       return this;
     }
 
+    @Deprecated
     public ModelBuilder withDeck_id(Long deck_id) {
       this.deck_id = deck_id;
       return this;
     }
 
+    @Deprecated
     public ModelBuilder withFields(String fields) {
       this.fields = fields;
       return this;
     }
 
+    @Deprecated
     public ModelBuilder withTemplates(String templates) {
       this.templates = templates;
       return this;

@@ -7,6 +7,8 @@ import com.google.common.collect.Sets;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 
+@IgnoreDQ(explanation = "font details were moved into binary blob field in version 2.1.28")
+@Deprecated
 public class AllTemplatesHaveFieldsWithArial20 extends DataQualityBase {
 
   static final Log log = Logs.getLog(AllTemplatesHaveFieldsWithArial20.class);

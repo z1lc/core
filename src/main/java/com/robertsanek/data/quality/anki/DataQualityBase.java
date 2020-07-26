@@ -1,5 +1,6 @@
 package com.robertsanek.data.quality.anki;
 
+import static com.robertsanek.data.etl.local.sqllite.anki.NoteEtl.FIELD_SEPARATOR;
 import static j2html.TagCreator.table;
 import static j2html.TagCreator.td;
 import static j2html.TagCreator.tr;
@@ -69,6 +70,7 @@ public abstract class DataQualityBase {
   static List<Field> allFields;
   static List<Field> fieldsInUse;
   static Map<Long, List<Field>> requiredFieldsByModelId;
+  static Map<Long, List<Field>> fieldsByModelId;
 
   static {
     recomputeCachedFields();
@@ -105,6 +107,8 @@ public abstract class DataQualityBase {
         .filter(field -> !field.getName().startsWith("@Deprecated"))
         .filter(field -> !field.getName().startsWith("@Unused"))
         .collect(Collectors.toList());
+    fieldsByModelId = allFields.stream()
+        .collect(Collectors.groupingBy(Field::getModel_id));
     requiredFieldsByModelId = allFields.stream()
         .filter(field -> field.getName().startsWith("⭐"))
         .collect(Collectors.groupingBy(Field::getModel_id));
@@ -112,6 +116,10 @@ public abstract class DataQualityBase {
 
   public static List<Model> getAllModels() {
     return allModels;
+  }
+
+  public static Map<Long, List<Field>> getFieldsByModelId() {
+    return fieldsByModelId;
   }
 
   public static Map<Long, List<Model>> getModelsByModelId() {
@@ -209,7 +217,7 @@ public abstract class DataQualityBase {
   }
 
   public static List<String> splitCsvIntoCommaSeparatedList(String fields) {
-    if (fields.isEmpty()) {
+    if (fields == null || fields.isEmpty()) {
       return new ArrayList<>();
     }
     List<String> fieldsList = Arrays.asList(fields.split("\",\""));
@@ -225,7 +233,7 @@ public abstract class DataQualityBase {
 
   public static List<Long> getRelevantDeckIds(List<Deck> allDecks) {
     return allDecks.stream()
-        .filter(deck -> deck.getName().equals("z") || deck.getName().startsWith("z::"))
+        .filter(deck -> deck.getName().equals("z") || deck.getName().startsWith("z" + FIELD_SEPARATOR))
         .map(Deck::getId)
         .collect(Collectors.toList());
   }
