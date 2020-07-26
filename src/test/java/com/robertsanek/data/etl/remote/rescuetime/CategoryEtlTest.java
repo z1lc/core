@@ -26,6 +26,11 @@ public class CategoryEtlTest {
       String get(URI efficiencyUri) throws IOException {
         throw new HttpResponseException(504, "GATEWAY_TIMEOUT");
       }
+
+      @Override
+      String getAPIKey() {
+        return "fake_key";
+      }
     };
     etlInstance.FROM_YEAR = 2019;
     etlInstance.TO_YEAR = 2019;

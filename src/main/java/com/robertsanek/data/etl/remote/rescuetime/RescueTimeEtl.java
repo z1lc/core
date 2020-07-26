@@ -5,6 +5,7 @@ import static com.robertsanek.util.SecretType.RESCUETIME_API_KEY;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -33,47 +34,57 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
 
   private static Log log = Logs.getLog(RescueTimeEtl.class);
   @VisibleForTesting int FROM_YEAR = 2009; //first data in RescueTime is from 2009
-  @VisibleForTesting int TO_YEAR = LocalDate.now().getYear() + 1;
+  @VisibleForTesting int TO_YEAR = LocalDate.now().getYear();
+  DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   @Inject SecretProvider secretProvider;
 
   public <O> List<O> genericGet(String taxonomy, Function<CSVRecord, O> csvToObjectFunction) {
     Set<O> allRecords = Collections.synchronizedSet(new HashSet<>());
-    IntStream.range(FROM_YEAR, TO_YEAR).parallel()
+    IntStream.rangeClosed(FROM_YEAR, TO_YEAR).parallel()
         .forEach(currentYear -> {
-          final URI efficiencyUri;
-          try {
-            efficiencyUri = Unchecked.get(() -> new URIBuilder()
-                .setScheme("https")
-                .setHost("www.rescuetime.com")
-                .setPath("/anapi/data")
-                .setParameter("key", secretProvider.getSecret(RESCUETIME_API_KEY))
-                .setParameter("rs", "day")
-                .setParameter("by", "interval")
-                .setParameter("format", "csv")
-                .setParameter("ty", taxonomy)
-                .setParameter("rb", String.format("%s-01-01", currentYear))
-                .setParameter("re", String.format("%s-12-31", currentYear))
-                .build());
-            String csv = get(efficiencyUri);
-            CSVParser csvRecords = CSVParser.parse(csv, CSVFormat.DEFAULT);
-            synchronized (allRecords) {
-              allRecords.addAll(csvRecords.getRecords().stream()
-                  .skip(1)
-                  .map(csvToObjectFunction)
-                  .collect(Collectors.toList()));
-            }
-          } catch (IOException e) {
-            if (Pattern.compile("status code: 5\\d\\d").matcher(e.getMessage()).find()) {
-              log.error("Got 500-level exception from RescueTime:");
-              log.error(e);
-            } else {
-              throw new RuntimeException(e);
-            }
-          }
+          IntStream.rangeClosed(1, 12).parallel()
+              .forEach(currentMonth -> {
+                final URI efficiencyUri;
+                LocalDate startOfMonth = LocalDate.of(currentYear, currentMonth, 1);
+                try {
+                  efficiencyUri = Unchecked.get(() -> new URIBuilder()
+                      .setScheme("https")
+                      .setHost("www.rescuetime.com")
+                      .setPath("/anapi/data")
+                      .setParameter("key", getAPIKey())
+                      .setParameter("rs", "day")
+                      .setParameter("by", "interval")
+                      .setParameter("format", "csv")
+                      .setParameter("ty", taxonomy)
+                      .setParameter("rb", DATE_FORMAT.format(startOfMonth))
+                      .setParameter("re", DATE_FORMAT.format(startOfMonth.withDayOfMonth(startOfMonth.lengthOfMonth())))
+                      .build());
+                  String csv = get(efficiencyUri);
+                  CSVParser csvRecords = CSVParser.parse(csv, CSVFormat.DEFAULT);
+                  synchronized (allRecords) {
+                    allRecords.addAll(csvRecords.getRecords().stream()
+                        .skip(1)
+                        .map(csvToObjectFunction)
+                        .collect(Collectors.toList()));
+                  }
+                } catch (IOException e) {
+                  if (Pattern.compile("status code: 5\\d\\d").matcher(e.getMessage()).find()) {
+                    log.error("Got 500-level exception from RescueTime:");
+                    log.error(e);
+                  } else {
+                    throw new RuntimeException(e);
+                  }
+                }
+              });
         });
     log.info("Received %s objects for '%s' taxonomy.", allRecords.size(), taxonomy);
     return Lists.newArrayList(allRecords);
+  }
+
+  @VisibleForTesting
+  String getAPIKey() {
+    return secretProvider.getSecret(RESCUETIME_API_KEY);
   }
 
   @VisibleForTesting
