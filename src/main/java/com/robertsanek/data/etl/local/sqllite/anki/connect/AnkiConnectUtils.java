@@ -52,6 +52,10 @@ public class AnkiConnectUtils {
   @Inject ObjectMapper mapper;
 
   public boolean loadProfile(String profileToLoad) {
+    // TODO: enable again once anki-connect is fixed for v2.1.28
+    if (true) {
+      return true;
+    }
     openAnki();
     HttpPost changeProfilePost = new HttpPost(getUri());
     changeProfilePost.setEntity(new ByteArrayEntity(

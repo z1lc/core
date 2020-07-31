@@ -66,7 +66,7 @@ public class DataQualityRunner implements QuartzJob {
       "AllCoreCardsHaveKeyFields.sql",
       "AllDaggerAccentedDecksHaveMoreThan12NewCards.sql",
       "AllDecksLabeledAutoAddHaveAutoAddOptionsGroup.sql",
-      "AllKeyFieldsAreSticky.sql",
+      //"AllKeyFieldsAreSticky.sql", sticky no longer ETL'd
       "AllModelsHaveMainDeckAsDefault.sql",
       "AllPronounceCardsHaveUnderlineSpanClassOrUHtmlTag.sql",
       "AllRequiredFieldsUseStarEmojiAndNotAsterisk.sql",
