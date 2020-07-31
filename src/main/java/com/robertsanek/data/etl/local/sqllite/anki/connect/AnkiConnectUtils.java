@@ -39,14 +39,14 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 
 public class AnkiConnectUtils {
 
-  private static String ANKI_CONNECT_HOST = "localhost";
-  private static int ANKI_CONNECT_PORT = 8765;
-  private static String ANK_CONNECT_PRETTY_URL = String.format("%s:%d", ANKI_CONNECT_HOST, ANKI_CONNECT_PORT);
+  private static final String ANKI_CONNECT_HOST = "localhost";
+  private static final int ANKI_CONNECT_PORT = 8765;
+  private static final String ANK_CONNECT_PRETTY_URL = String.format("%s:%d", ANKI_CONNECT_HOST, ANKI_CONNECT_PORT);
   private static final URIBuilder ANKI_CONNECT_BASE_URI = new URIBuilder()
       .setScheme("http")
       .setHost(ANK_CONNECT_PRETTY_URL);
   private static final int ANKI_CONNECT_VERSION = 6;
-  private static Log log = Logs.getLog(AnkiConnectUtils.class);
+  private static final Log log = Logs.getLog(AnkiConnectUtils.class);
   private static ZonedDateTime lastAnkiOpenTime = ZonedDateTime.now().minusYears(10);
 
   @Inject ObjectMapper mapper;
