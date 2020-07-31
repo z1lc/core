@@ -24,7 +24,7 @@ public class AnkiSyncer {
   private static final Duration DO_NOT_SYNC_IF_WITHIN = Duration.ofMinutes(15);
   private static final ObjectMapper objectMapper = InjectUtils.inject(ObjectMapper.class);
   private static final AnkiConnectUtils ankiConnectUtils = InjectUtils.inject(AnkiConnectUtils.class);
-  private static Log log = Logs.getLog(AnkiSyncer.class);
+  private static final Log log = Logs.getLog(AnkiSyncer.class);
   private static final Map<String, ZonedDateTime> lastLoggedMap = new HashMap<>();
 
   //TODO: make these methods non-static. hard because of reliance in static{} in DataQualityBase.

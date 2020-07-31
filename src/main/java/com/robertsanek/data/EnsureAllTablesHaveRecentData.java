@@ -34,7 +34,7 @@ import com.robertsanek.util.Unchecked;
 
 public class EnsureAllTablesHaveRecentData {
 
-  private static Log log = Logs.getLog(EnsureAllTablesHaveRecentData.class);
+  private static final Log log = Logs.getLog(EnsureAllTablesHaveRecentData.class);
   private static final Period DEFAULT_MAX_STALENESS = Period.ofDays(14);
   private static final ImmutableMap<Pair<String, String>, Period> customMaxStaleness =
       ImmutableMap.<Pair<String, String>, Period>builder()

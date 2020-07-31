@@ -52,19 +52,19 @@ public class KivaApiConnector implements QuartzJob {
 
   private static final String RANGE = "Kiva: Summary!B1";
   private static final int TIMEOUT_SECONDS = 15;
-  private static double MINIMUM_AVAILABLE_VALUE_TO_PAGE = 1000.0;
-  private static int MAXIMUM_DURATION_IN_DAYS_TO_PAGE = 90;
-  private static String MINIMUM_RISK_RATING = "4.5";
-  private static Duration MINIMUM_TIME_BETWEEN_PAGES = Duration.ofHours(2);
-  private static boolean CHECK_CURRENT_TIME_BEFORE_PAGING = false;
-  private static int BEGIN_HOUR = 8;
-  private static int END_HOUR = 22;
-  private static int SEARCH_SIZE_LIMIT = 500; //max: 500; had to move down to 100 since executorservice was messing up
-  private static int DETAILED_LOAN_LIMIT = 100; //max: 100
-  private static int CONCURRENCY_LEVEL = 5;
-  private static String APP_ID = "com.robertsanek.com.robertsanek.passivekiva";
-  private static Log log = Logs.getLog(KivaApiConnector.class);
-  private static String PUSH_TITLE = "PassiveKiva Alert";
+  private static final double MINIMUM_AVAILABLE_VALUE_TO_PAGE = 1000.0;
+  private static final int MAXIMUM_DURATION_IN_DAYS_TO_PAGE = 90;
+  private static final String MINIMUM_RISK_RATING = "4.5";
+  private static final Duration MINIMUM_TIME_BETWEEN_PAGES = Duration.ofHours(2);
+  private static final boolean CHECK_CURRENT_TIME_BEFORE_PAGING = false;
+  private static final int BEGIN_HOUR = 8;
+  private static final int END_HOUR = 22;
+  private static final int SEARCH_SIZE_LIMIT = 500; //max: 500; had to move down to 100 since executorservice was messing up
+  private static final int DETAILED_LOAN_LIMIT = 100; //max: 100
+  private static final int CONCURRENCY_LEVEL = 5;
+  private static final String APP_ID = "com.robertsanek.com.robertsanek.passivekiva";
+  private static final Log log = Logs.getLog(KivaApiConnector.class);
+  private static final String PUSH_TITLE = "PassiveKiva Alert";
 
   @Inject ObjectMapper mapper;
   @Inject LastAlertedProvider lastAlertedProvider;

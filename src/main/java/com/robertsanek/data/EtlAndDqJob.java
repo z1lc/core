@@ -28,7 +28,7 @@ import com.robertsanek.util.Unchecked;
 
 public class EtlAndDqJob implements QuartzJob {
 
-  private static Log log = Logs.getLog(EtlAndDqJob.class);
+  private static final Log log = Logs.getLog(EtlAndDqJob.class);
 
   @Inject ObjectMapper mapper;
   @Inject ReCreateViews reCreateViews;

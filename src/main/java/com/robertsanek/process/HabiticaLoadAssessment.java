@@ -28,7 +28,7 @@ import j2html.tags.ContainerTag;
 public class HabiticaLoadAssessment {
 
   public static final ZonedDateTime now = ZonedDateTime.now();
-  private static Log log = Logs.getLog(HabiticaLoadAssessment.class);
+  private static final Log log = Logs.getLog(HabiticaLoadAssessment.class);
   @Inject TaskEtl taskEtl;
 
   public void generateHtmlSummary() {

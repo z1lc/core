@@ -37,7 +37,7 @@ public class SheetsConnector {
   private static final FileDataStoreFactory DATA_STORE_FACTORY;
   private static final java.io.File DATA_STORE_DIR = new java.io.File(
       System.getProperty("user.home"), ".credentials/com.robertsanek.sheets.googleapis.com-java-quickstart");
-  private static Log log = Logs.getLog(SheetsConnector.class);
+  private static final Log log = Logs.getLog(SheetsConnector.class);
 
   private static Credential authorize() throws IOException {
     try (InputStream in = new FileInputStream(

@@ -17,7 +17,7 @@ import com.robertsanek.util.Logs;
 @Table(name = "toodledo_tasks")
 public class ToodledoTask {
 
-  private static Log log = Logs.getLog(ToodledoTask.class);
+  private static final Log log = Logs.getLog(ToodledoTask.class);
 
   @Id
   Long id;

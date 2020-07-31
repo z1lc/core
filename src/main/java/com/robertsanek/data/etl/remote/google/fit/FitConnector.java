@@ -39,7 +39,7 @@ public class FitConnector {
       System.getProperty("user.home"), ".credentials/com.robertsanek.data.etl.remote.google.fit");
   private static final FileDataStoreFactory DATA_STORE_FACTORY =
       Unchecked.get(() -> new FileDataStoreFactory(DATA_STORE_DIR));
-  private static Log log = Logs.getLog(FitConnector.class);
+  private static final Log log = Logs.getLog(FitConnector.class);
   private static final String URL =
       "https://www.googleapis.com/fitness/v1/users/me/dataSources/derived:com.google.blood_pressure:com.google.android.gms:merged/datasets/000000-%s";
   @Inject ObjectMapper objectMapper;

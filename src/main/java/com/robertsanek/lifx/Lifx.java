@@ -9,7 +9,7 @@ import com.robertsanek.util.Logs;
 
 public class Lifx implements QuartzJob {
 
-  private static Log log = Logs.getLog(Lifx.class);
+  private static final Log log = Logs.getLog(Lifx.class);
 
   @Override
   public void exec(JobExecutionContext context) {

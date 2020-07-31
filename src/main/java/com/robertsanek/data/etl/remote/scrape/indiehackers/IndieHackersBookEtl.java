@@ -39,7 +39,7 @@ import com.robertsanek.util.Unchecked;
 @DoNotRun(explanation = "resource-hungry (uses multiple chromedrivers)")
 public class IndieHackersBookEtl extends Etl<IndieHackersBook> {
 
-  private static Log log = Logs.getLog(IndieHackersBookEtl.class);
+  private static final Log log = Logs.getLog(IndieHackersBookEtl.class);
   private static final AtomicLong ID_GENERATOR = new AtomicLong(1);
   private static final Set<String> BOOK_DOMAINS = ImmutableSet.of(
       "amazon.com",

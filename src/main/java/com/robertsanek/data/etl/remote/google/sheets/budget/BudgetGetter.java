@@ -59,7 +59,7 @@ public class BudgetGetter implements QuartzJob {
   private static final String EXPENSES_RANGE = "\uD83E\uDDFE Budget!A2:O10000";
   private static final String INCOME_RANGE = "\uD83E\uDDFE Budget!P2:R10000";
   private static final String CSV_DELIMITER = "`";
-  private static Log log = Logs.getLog(BudgetGetter.class);
+  private static final Log log = Logs.getLog(BudgetGetter.class);
 
   @Inject NotificationSender notificationSender;
   @Inject SecretProvider secretProvider;

@@ -16,7 +16,7 @@ import com.robertsanek.util.Logs;
 @Table(name = "anki_cards")
 public class Card {
 
-  private static Log log = Logs.getLog(Card.class);
+  private static final Log log = Logs.getLog(Card.class);
 
   @Id
   Long id;

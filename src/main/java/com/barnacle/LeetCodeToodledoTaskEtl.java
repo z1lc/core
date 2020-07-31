@@ -27,7 +27,7 @@ import com.robertsanek.util.Unchecked;
 
 public class LeetCodeToodledoTaskEtl {
 
-  private static Log log = Logs.getLog(LeetCodeToodledoTaskEtl.class);
+  private static final Log log = Logs.getLog(LeetCodeToodledoTaskEtl.class);
   private static final String TABLE_NAME = "toodledo_habit_reps";
 
   @Inject PostgresConnection postgresConnection;

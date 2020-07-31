@@ -16,7 +16,7 @@ import com.robertsanek.util.Logs;
 @Table(name = "leetcode_questions")
 public class Question {
 
-  private static Log log = Logs.getLog(Question.class);
+  private static final Log log = Logs.getLog(Question.class);
 
   @Id
   private Long id;

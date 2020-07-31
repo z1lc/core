@@ -30,7 +30,7 @@ public class AnkiEtl implements Callable<Object> {
 
   private static final String TABLE_NAME = "anki_reviews";
   private static final ZonedDateTime start = ZonedDateTime.of(2017, 11, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
-  private static Log log = Logs.getLog(AnkiEtl.class);
+  private static final Log log = Logs.getLog(AnkiEtl.class);
 
   @Inject PostgresConnection postgresConnection;
 
