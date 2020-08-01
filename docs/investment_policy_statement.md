@@ -7,7 +7,7 @@ This document is meant to define goals for my investments. I start very high-lev
 I expect changes in this category to come **very** rarely, perhaps a few times a decade at most.
 
 #### I. Effectively balance long-term focus with short-term flexibility.
- * I have been heavily influenced by ideas from [FIRE](https://www.reddit.com/r/financialindependence/) when considering investments. Someone that has a non-zero expectation of early retirement, even if temporary, will have a different investment approach than a lifetime wage earner. I want to achieve the benefits of the FIRE lifestyle without having to commit to a specific spending rate and retirement age. Mini-retirements, such as between jobs or when having kids, are the goal.
+ * I'd like to have the flexibility to take extended periods of time (months/years) off from working, which requires a different investment approach than one a lifetime wage earner might take. I want to achieve the benefits of the [FIRE](https://www.reddit.com/r/financialindependence/) lifestyle without having to commit to a specific spending rate and retirement age. Mini-retirements, such as between jobs or when having kids, are the goal.
  * Money not invested in risky assets that is unused in the time period it is intended for is wasted. Therefore, I need to resist over-provisioning for short-term flexibility to maximize my return over the long-term. At the same time, I do not want to over-invest and face outsize risk from market downturns.
 
 #### II. Resist unnecessary increases in consumption, but deploy capital when it has high potential ROI.
@@ -23,10 +23,10 @@ I expect changes in this category to come **very** rarely, perhaps a few times a
 Changes in this category may come 1-2 times per year, particularly as I learn more about investing.
  * **Passive Investing.** Broadly, I do not believe in the promise of active investing. Passive investing is the only realistic strategy for any investment horizon. I aim to resist the temptation to take part in either active funds or strategies that are similar to active investing, such as arbitrage or 'timing the market'.
  * **Minimize Taxes.** Avoiding additional taxation is like free returns.
- * **Low Expense Ratios.** Since the payment of the expense ratio is the only thing a fund can guarantee, it should be a focus for any passive investor to keep these as low as possible.
+ * **Low Expense Ratios.** Since the payment of the expense ratio is the only thing a fund can guarantee, it should be a focus for any passive investor to keep these as low as possible. Be sure not to over-index on this, though, as additional services (eg, PLOC) provided for a fee can be worth the cost.
  * **Resist Asset Allocation Obsession.** Nobody knows what allocation is the 'fairest', and any glide path to retirement is the opinion of someone. I aim to ignore allocation specifics and take the opinion of those I trust at face value (ex. Vanguard Target Date Retirement funds, Wealthfront funds, etc.)
  * **Minimize Uninvested Money.** Money that isn't in the market is by default losing value to inflation. Even money invested in an asset that doesn't return anything has at least been used as useful capital for a business or a government.
- * **Avoid Loans and Illiquid Investments.** Illiquid investments like real estate property or stock in a startup and loans for cars or houses come with extreme flexibility costs; loans have the additional risk of artificially increasing one's standard of living expectations.
+ * **Avoid Loans.** Loans generally artificially increase one's standard of living expectations and thus should be avoided. The one exception might be a primary residence.
  * **Avoid Long-term Bets on Taxes.** Nobody can predict how tax rates will change over time, especially on the horizon of decades. Investing completely in pre-tax (traditional) or post-tax (roth) accounts can be seen as a bet that taxes will either be lower or higher in retirement (respectively). Avoid taking either 'bet' by allocating contributions to equalize the estimated post-tax amount.
 
 ## Specific Implementation Details
