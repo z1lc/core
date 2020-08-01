@@ -25,7 +25,7 @@ import be.ceau.opml.entity.Outline;
 public class WorkflowyEtl extends Etl<Entry> {
 
   static final int TEXT_LIMIT = 10_000;
-  private AtomicLong logicalClock = new AtomicLong(1);
+  private final AtomicLong logicalClock = new AtomicLong(1);
   private ZonedDateTime dateExported;
 
   @Override
