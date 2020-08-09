@@ -128,7 +128,7 @@ public abstract class DataQualityBase {
 
   public static List<Note> getExistingPeopleInAnkiDb() {
     Long personModelId = Iterables.getOnlyElement(DataQualityBase.allModels.stream()
-        .filter(model -> model.getName().contains("Person"))
+        .filter(model -> model.getName().contains("3 Person"))
         .collect(Collectors.toList()))
         .getId();
     return DataQualityBase.getAllNotesInRelevantDecks(personModelId);

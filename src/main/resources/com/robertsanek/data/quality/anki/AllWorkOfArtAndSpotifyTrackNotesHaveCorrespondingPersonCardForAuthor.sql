@@ -11,7 +11,7 @@ WITH people AS (SELECT split_part(
                 WHERE model_id = (
                     SELECT id
                     FROM anki_models
-                    WHERE name LIKE '%Person%')),
+                    WHERE name LIKE '%3 Person%')),
     numbers as (SELECT * FROM GENERATE_SERIES(1, 5)),
     tracks as (SELECT anki_notes.id as work_of_art_note_id,
                    REGEXP_REPLACE(
