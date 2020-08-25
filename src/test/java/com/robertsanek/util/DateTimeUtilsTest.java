@@ -27,8 +27,8 @@ public class DateTimeUtilsTest {
 
   @Test
   public void toZonedDateTime_now() {
-    assertEquals(ZonedDateTime.of(ldtNow, ZoneId.of("America/Los_Angeles")), DateTimeUtils.toZonedDateTime(ldtNow));
-    assertEquals(ZonedDateTime.of(LocalDateTime.of(ldNow, LocalTime.of(0, 0)), ZoneId.of("America/Los_Angeles")),
+    assertEquals(ZonedDateTime.of(ldtNow, ZoneId.of("America/Chicago")), DateTimeUtils.toZonedDateTime(ldtNow));
+    assertEquals(ZonedDateTime.of(LocalDateTime.of(ldNow, LocalTime.of(0, 0)), ZoneId.of("America/Chicago")),
         DateTimeUtils.toZonedDateTime(ldNow));
   }
 
