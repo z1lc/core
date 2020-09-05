@@ -247,7 +247,7 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-analyticsreporting</artifactId>
-      <version>v4-rev20200803-1.30.10</version>
+      <version>v4-rev20200902-1.30.10</version>
     </dependency>
 
 
