@@ -6,6 +6,7 @@ This is a list of approaches to thinking about problems that I have consistently
 - [Create Systems, Don't Solve Problems](#create-systems-dont-solve-problems)
 - [BATNA](#batna)
 - [Embrace Reality](#embrace-reality)
+- [Antifragility](#antifragility)
 
 ## Power Law / 80-20 Rule
   - Performance in most activities in life follows a power law distribution; there are portions of a whole that give you an outsize amount of value for the input you put in.
@@ -84,5 +85,24 @@ First encountered in [*Principles*](https://www.goodreads.com/book/show/34536488
         - Refuse to contribute to fundraisers that you wouldn't contribute to yourself on your own volition. Ensure all your monetary contributions align with your values.
       - Ideal solution
         - Realize that most fundraisers require a symbolic contribution to achieve the greater goals of maintaining a positive relationship and having an interaction go well. Do not fret over small amounts given to causes that may not be of personal interest to you, or that involve poor ways of raising money. 
+## Antifragility
+First encountered in [Antifragile](https://www.goodreads.com/book/show/13530973-antifragile) by Nassim Nicholas Taleb
+  - Building a fragile system that assumes a predictable world is setting yourself up for failure. When designing solutions, consider how you might move up the fragility ladder:
+    - fragile (breaks down when encountering exceptions)
+    - robust (tolerates exceptions)
+    - flexible (can be reconfigured to work around exceptions)
+    - resilient (can self-recover from exceptions)
+    - antifragile (thrives from exceptions)
+  - **Questions to ask**:
+    - How does the system behave when we violate an assumption or introduce exceptional behaviors?
+    - Is there an opportunity to deliver unique benefit when in a failure condition? 
+  - **Examples**:
+    - Todo system
+      - Problem: I have a collection of tasks to complete, but varying time in which to complete them. Tasks vary in urgency and importance.
+      - Solutions with decreasing fragility:
+        - Fragile / semi-robust: Work on tasks in a top-down fashion. When facing a time constraint, whatever tasks happened to be last will be left uncompleted.
+        - Flexible: Manually prioritize tasks when you realize you may not have enough time to complete all of them. Requires the ability to forecast available time & motivation/ability to complete a specific number of tasks in a given time.
+        - Resilient: Automatically order tasks by decreasing importance. May mean that highest-priority tasks get completed more often at the expense of significantly-overdue lower-priority tasks.
+        - Antifragile: Automatically order tasks by decreasing importance and decreasing overdue-ness. Generally, the more over-due a task is, the more benefit you gain from a unit of work on that task (for example, it is likely higher ROI to clean the gutters after 3 years than after 1 year).
 ## Ideas
   - [HN discussion](https://news.ycombinator.com/item?id=12040707)
