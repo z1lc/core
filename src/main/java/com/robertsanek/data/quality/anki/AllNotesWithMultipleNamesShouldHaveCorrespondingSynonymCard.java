@@ -114,8 +114,9 @@ public class AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends
       1282537182547L,
       0L
   );
-  private final boolean shouldGenerateCsvOutput = false;
-  private final int MIN_CHARACTERS_TO_CONSIDER_SENTENCE = 100;
+  private static final boolean shouldGenerateCsvOutput = false;
+  private static final int MIN_CHARACTERS_TO_CONSIDER_SENTENCE = 100;
+
   @Inject AnkiConnectUtils ankiConnectUtils;
 
   static List<String> getIndividualNames(List<String> fields) {
