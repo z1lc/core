@@ -2,14 +2,21 @@ package com.robertsanek.data.quality.anki;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.jsoup.Jsoup;
 
+import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Streams;
+import com.google.inject.Inject;
+import com.robertsanek.data.etl.local.sqllite.anki.Note;
+import com.robertsanek.data.etl.local.sqllite.anki.connect.AnkiConnectUtils;
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;
 
@@ -104,10 +111,12 @@ public class AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends
       1574095336754L,
       1593436805748L,
       1543315636834L,
+      1282537182547L,
       0L
   );
   private final boolean shouldGenerateCsvOutput = false;
   private final int MIN_CHARACTERS_TO_CONSIDER_SENTENCE = 100;
+  @Inject AnkiConnectUtils ankiConnectUtils;
 
   static List<String> getIndividualNames(List<String> fields) {
     String front = Jsoup.parse(fields.get(0)).text();
@@ -125,12 +134,14 @@ public class AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends
 
   @Override
   void runDQ() {
-    Set<String> primarySynonymTerms = getAllNotesInRelevantDecks(SYNONYM_MODEL_ID).stream()
-        .map(note -> {
+    Map<String, Note> primarySynonymTermToNote = getAllNotesInRelevantDecks(SYNONYM_MODEL_ID).stream()
+        .collect(Collectors.toMap(note -> {
           List<String> fields = splitCsvIntoCommaSeparatedList(note.getFields());
           return Jsoup.parse(fields.get(0)).text().replaceAll("\\[sound:.+]", "");
-        })
-        .collect(Collectors.toSet());
+        }, Functions.identity()));
+
+    ankiConnectUtils.loadProfile("z1lc");
+
     Streams.concat(
         getAllNotesInRelevantDecks(BASIC_MODEL_ID, NOTE_ID_EXCLUSIONS).stream(),
         getAllNotesInRelevantDecks(VENUE_MODEL_ID, NOTE_ID_EXCLUSIONS).stream(),
@@ -141,9 +152,34 @@ public class AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends
           boolean frontContainsOr = front.contains(" or ");
           List<String> individualOr = Lists.newArrayList(front.split(" or "));
           String primary = getPrimaryTextFromFields(fields, note.getModel_id()).replaceAll("^Visualize ", "");
-          boolean synonymAlreadyExists = primarySynonymTerms.contains(primary);
+          boolean synonymAlreadyExists = primarySynonymTermToNote.containsKey(primary);
           boolean probablySentence = front.endsWith(".") || front.endsWith("?")
               || front.length() >= MIN_CHARACTERS_TO_CONSIDER_SENTENCE;
+
+          if (synonymAlreadyExists && !probablySentence) {
+            Note synonymNote = primarySynonymTermToNote.get(primary);
+            List<String> synonymFields = splitCsvIntoCommaSeparatedList(synonymNote.getFields());
+            if (note.getModel_id() == BASIC_MODEL_ID) {
+              Map<String, String> fieldUpdates = Maps.newHashMap();
+              if (synonymFields.size() < 12 || Jsoup.parse(synonymFields.get(11)).text().isEmpty()) {
+                // means we don't have anything in the extra field in the synonym card
+                String maybeExtra = fields.get(1);
+                if (!maybeExtra.equals("Identify:")) {
+                  fieldUpdates.put("Extra ➕", fields.get(1));
+                }
+              }
+              if (synonymFields.size() < 13 || Jsoup.parse(synonymFields.get(12)).text().isEmpty()) {
+                // means we don't have anything in the extra image field in the synonym card
+                getFirstNonNull(fields, List.of(6, 7, 8))
+                    .ifPresent(image -> fieldUpdates.put("Extra Image \uD83D\uDDBC️", image));
+              }
+              if (!ankiConnectUtils.updateNoteFields(synonymNote.getId(), fieldUpdates)) {
+                throw new RuntimeException(String.format(
+                    "Failed to use anki-connect to update Synonym with note id %s.", synonymNote.getId()));
+              }
+            }
+          }
+
           if (frontContainsOr && !synonymAlreadyExists && !probablySentence) {
             String context = "";
             int contextField = -1;
@@ -161,13 +197,22 @@ public class AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends
             if (shouldGenerateCsvOutput) {
               int left = 10 - individualOr.size();
               log.info("\"%s\",\"%s\",\"%s\"", String.join("\",\"", individualOr), String.join("\",\"",
-                  Collections.nCopies(left > 0 ? left : 0, "")), context);
+                  Collections.nCopies(Math.max(left, 0), "")), context);
 
             } else {
               log.error("Note '%s' does not have a corresponding synonym note.", front.replace("%", ""));
             }
           }
         });
+    ankiConnectUtils.triggerSync();
+  }
+
+  Optional<String> getFirstNonNull(List<String> fields, List<Integer> fieldIds) {
+    return IntStream.range(0, fields.size())
+        .filter(fieldIds::contains)
+        .mapToObj(fields::get)
+        .filter(field -> !field.isBlank())
+        .findFirst();
   }
 
 }
