@@ -310,7 +310,7 @@
     <dependency>
       <groupId>com.github.scribejava</groupId>
       <artifactId>scribejava-apis</artifactId>
-      <version>7.0.0</version>
+      <version>7.1.1</version>
     </dependency>
 
     <!-- Workflowy OPML -->
