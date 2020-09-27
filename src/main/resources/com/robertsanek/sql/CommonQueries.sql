@@ -27,7 +27,7 @@ order by date desc
 
 create or replace view rlp_weekly_exercise as
 (
-select date_trunc('week', date + interval '1 day') - interval '1 day' as week,
+select date_trunc_week_sunday(date) as week,
     sum(cardio) as cardio,
     sum(lifting) as lifting,
     sum(total) as total,
@@ -58,7 +58,7 @@ order by created_at desc
 
 create or replace view rlp_weekly_education as
 (
-select date_trunc('week', created_at + interval '1 day') - interval '1 day' as week,
+select date_trunc_week_sunday(created_at) as week,
     sum(total_minutes / 7) as average_minutes,
     sum(complete) as days_completed
 from rlp_daily_education
@@ -90,7 +90,7 @@ from toodledo
 
 create or replace view rlp_weekly_productivity as
 (
-select date_trunc('week', day + interval '1 day') - interval '1 day' as week,
+select date_trunc_week_sunday(day) as week,
     sum(case when total_minutes >= 30 then 1 else 0 end) as days_completed
 from rlp_daily_productivity
 group by 1
@@ -101,7 +101,7 @@ order by 1 desc)
 /***************************************************** RLP - SLEEP ****************************************************/
 create or replace view rlp_weekly_sleep as
 (
-select date_trunc('week', date_of_sleep + interval '1 day') - interval '1 day' as week,
+select date_trunc_week_sunday(date_of_sleep) as week,
     stddev(minutes) as standard_deviation,
     case when stddev(minutes) <= 10
              then 1
