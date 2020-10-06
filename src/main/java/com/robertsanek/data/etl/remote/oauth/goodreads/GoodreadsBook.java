@@ -23,6 +23,8 @@ public class GoodreadsBook {
   private Long yearPublished;
   @Column(name = "added_on")
   private ZonedDateTime addedOn;
+  @Column(name = "read_at")
+  private ZonedDateTime readAt;
   @Column(name = "found_in_anki")
   private boolean foundInAnki;
   @Column(name = "read")
@@ -73,14 +75,13 @@ public class GoodreadsBook {
     private String authorImageUrl;
     private Long yearPublished;
     private ZonedDateTime addedOn;
+    private ZonedDateTime readAt;
     private boolean foundInAnki;
     private boolean read;
 
     private GoodreadsBookBuilder() {}
 
-    public static GoodreadsBookBuilder aGoodreadsBook() {
-      return new GoodreadsBookBuilder();
-    }
+    public static GoodreadsBookBuilder aGoodreadsBook() { return new GoodreadsBookBuilder(); }
 
     public GoodreadsBookBuilder withId(Long id) {
       this.id = id;
@@ -117,6 +118,11 @@ public class GoodreadsBook {
       return this;
     }
 
+    public GoodreadsBookBuilder withReadAt(ZonedDateTime readAt) {
+      this.readAt = readAt;
+      return this;
+    }
+
     public GoodreadsBookBuilder withFoundInAnki(boolean foundInAnki) {
       this.foundInAnki = foundInAnki;
       return this;
@@ -129,15 +135,16 @@ public class GoodreadsBook {
 
     public GoodreadsBook build() {
       GoodreadsBook goodreadsBook = new GoodreadsBook();
+      goodreadsBook.readAt = this.readAt;
+      goodreadsBook.read = this.read;
+      goodreadsBook.title = this.title;
+      goodreadsBook.addedOn = this.addedOn;
+      goodreadsBook.authorImageUrl = this.authorImageUrl;
+      goodreadsBook.isbn13 = this.isbn13;
+      goodreadsBook.authorName = this.authorName;
+      goodreadsBook.foundInAnki = this.foundInAnki;
       goodreadsBook.id = this.id;
       goodreadsBook.yearPublished = this.yearPublished;
-      goodreadsBook.addedOn = this.addedOn;
-      goodreadsBook.title = this.title;
-      goodreadsBook.foundInAnki = this.foundInAnki;
-      goodreadsBook.isbn13 = this.isbn13;
-      goodreadsBook.read = this.read;
-      goodreadsBook.authorImageUrl = this.authorImageUrl;
-      goodreadsBook.authorName = this.authorName;
       return goodreadsBook;
     }
   }
