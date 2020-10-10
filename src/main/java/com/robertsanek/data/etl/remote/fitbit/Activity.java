@@ -1,6 +1,7 @@
 package com.robertsanek.data.etl.remote.fitbit;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +25,27 @@ public class Activity {
   private Integer veryActiveMinutes;
   @Column(name = "resting_heart_rate")
   private Integer restingHeartRate;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Activity activity = (Activity) o;
+    return Objects.equals(date, activity.date) &&
+        Objects.equals(lightlyActiveMinutes, activity.lightlyActiveMinutes) &&
+        Objects.equals(fairlyActiveMinutes, activity.fairlyActiveMinutes) &&
+        Objects.equals(veryActiveMinutes, activity.veryActiveMinutes) &&
+        Objects.equals(restingHeartRate, activity.restingHeartRate);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(date, lightlyActiveMinutes, fairlyActiveMinutes, veryActiveMinutes, restingHeartRate);
+  }
 
   public LocalDate getDate() {
     return date;
