@@ -27,16 +27,12 @@ order by date desc
 
 create or replace view rlp_weekly_exercise as
 (
-select date_trunc_week_sunday(date) as week,
-    sum(cardio) as cardio,
-    sum(lifting) as lifting,
-    sum(total) as total,
-    case when sum(cardio) is null or sum(lifting) is null
-             then sum(total) / 7
-         else
-                 least(2::float / 3, 2::float / 3 * sum(cardio) / 2.5) +
-                 least(1::float / 3, 1::float / 3 * sum(lifting) / 2.0) end as percentage
-from health
+select date_trunc_week_sunday(h.date) as week,
+    avg(case when fairly_active_minutes + very_active_minutes > 10 then 1 else 0 end)::float as cardio_percent,
+    avg(case when lifting > 0 then 1 else 0 end) as lifting_percent,
+    sum(fairly_active_minutes + very_active_minutes) as total_minutes
+from fitbit_activities fa
+         join health h on h.date = fa.date
 group by week
 order by week desc)
 ;
@@ -213,10 +209,10 @@ order by 1 desc
 
 -- average exercise by year
 select left(date_trunc('year', week) || '', 4) as year,
-    round(avg(percentage * 100)) as percentage,
-    count(case when percentage is not null then 1 end) as weeks_with_data
+    round(avg(cardio_percent * 100)) as percentage,
+    count(case when cardio_percent is not null then 1 end) as weeks_with_data
 from rlp_weekly_exercise
-where percentage is not null
+where cardio_percent is not null
 group by date_trunc('year', week)
 order by 1 desc
 ;
