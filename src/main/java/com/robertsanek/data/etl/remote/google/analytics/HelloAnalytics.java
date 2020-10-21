@@ -36,8 +36,8 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 public class HelloAnalytics {
 
   private static final String VIEW_ID = "59901365";
-  private static final File DATA_STORE_DIR = new File(
-      System.getProperty("user.home"), ".store/hello_analytics");
+  private static final java.io.File DATA_STORE_DIR = new java.io.File(
+      CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "in/etl/google_analytics_credential");
 
   private static final String APPLICATION_NAME = "Hello Analytics Reporting";
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();

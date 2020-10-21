@@ -36,7 +36,7 @@ public class FitConnector {
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
   private static final HttpTransport HTTP_TRANSPORT = Unchecked.get(GoogleNetHttpTransport::newTrustedTransport);
   private static final java.io.File DATA_STORE_DIR = new java.io.File(
-      System.getProperty("user.home"), ".credentials/com.robertsanek.data.etl.remote.google.fit");
+      CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "in/etl/google_fit_credential");
   private static final FileDataStoreFactory DATA_STORE_FACTORY =
       Unchecked.get(() -> new FileDataStoreFactory(DATA_STORE_DIR));
   private static final Log log = Logs.getLog(FitConnector.class);

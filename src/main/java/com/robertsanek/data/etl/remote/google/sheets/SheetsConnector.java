@@ -36,7 +36,7 @@ public class SheetsConnector {
   private static final ImmutableList<String> SCOPES = ImmutableList.of(SheetsScopes.SPREADSHEETS_READONLY);
   private static final FileDataStoreFactory DATA_STORE_FACTORY;
   private static final java.io.File DATA_STORE_DIR = new java.io.File(
-      System.getProperty("user.home"), ".credentials/com.robertsanek.sheets.googleapis.com-java-quickstart");
+      CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "in/etl/google_sheets_credential");
   private static final Log log = Logs.getLog(SheetsConnector.class);
 
   private static Credential authorize() throws IOException {
