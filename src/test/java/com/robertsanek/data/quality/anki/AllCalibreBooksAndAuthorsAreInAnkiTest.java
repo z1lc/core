@@ -9,6 +9,7 @@ public class AllCalibreBooksAndAuthorsAreInAnkiTest {
 
   @Test
   @Disabled("integration")
+  @SuppressWarnings("deprecation")
   public void integration() {
     InjectUtils.inject(AllCalibreBooksAndAuthorsAreInAnki.class).runDQ();
   }
