@@ -43,7 +43,9 @@ public class AllNumericalClozeDeletionsHaveHashtagHint extends DataQualityBase {
     );
     Pattern clozeDigitsNoHint = Pattern.compile("\\{\\{c\\d+::\\d+?}}");
     Set<String> noteIdViolationsList = new HashSet<>();
-    allNotes.forEach(note -> {
+    allNotes.stream()
+        .filter(note -> note.getModel_id() != 1604800000000L) //Cloze highlight model ID
+        .forEach(note -> {
       Matcher matcher = clozeDigitsNoHint.matcher(note.getFields());
       if (matcher.find() && !NOTE_ID_EXCLUSIONS.contains(note.getId())) {
         noteIdViolationsList.add("nid:" + note.getId());
