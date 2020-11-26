@@ -1,6 +1,7 @@
 # Investment Policy Statement
+Last reviewed *November 26, 2020*
 
-This document is meant to define goals for my investments. I start very high-level and get more specific as the document continues. The rate at which I expect to change these goals increases as I get more specific. See the [Bogleheads wiki entry](https://www.bogleheads.org/wiki/Investment_policy_statement) for background on general goals of writing an IPS.
+This document defines the goals for my investments. I start very high-level and get more specific as the document continues. The rate at which I expect to change these goals increases as I get more specific. See the [Bogleheads wiki entry](https://www.bogleheads.org/wiki/Investment_policy_statement) for background on general goals of writing an IPS.
 
 ## Investment Objectives
 
