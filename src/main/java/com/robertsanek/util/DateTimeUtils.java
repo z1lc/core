@@ -37,6 +37,8 @@ public class DateTimeUtils {
   private static final LocalDate INDIA_UAE_2020_MARCH_END = LocalDate.of(2020, 3, 7);
   private static final LocalDate HUNTSVILLE_2020_COVID_START = LocalDate.of(2020, 3, 17);
   private static final LocalDate HUNTSVILLE_2020_COVID_END = LocalDate.of(2020, 10, 18);
+  private static final LocalDate HUNTSVILLE_2020_XMAS_START = LocalDate.of(2020, 12, 21);
+  private static final LocalDate HUNTSVILLE_2020_XMAS_END = LocalDate.of(2021, 1, 4);
 
   static {
     dateRangeMap.put(Range.lessThan(MOVED_TO_CA), ZoneId.of("America/Chicago")); //Huntsville, Auburn
@@ -81,7 +83,12 @@ public class DateTimeUtils {
     dateRangeMap.put(
         Range.closedOpen(HUNTSVILLE_2020_COVID_START, HUNTSVILLE_2020_COVID_END), ZoneId.of("America/Chicago"));
 
-    dateRangeMap.put(Range.atLeast(HUNTSVILLE_2020_COVID_END), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2020_COVID_END, HUNTSVILLE_2020_XMAS_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2020_XMAS_START, HUNTSVILLE_2020_XMAS_END), ZoneId.of("America/Chicago"));
+
+    dateRangeMap.put(Range.atLeast(HUNTSVILLE_2020_XMAS_END), ZoneId.of("America/Los_Angeles"));
   }
 
   private static ZoneId getZoneId(LocalDate localDate) {

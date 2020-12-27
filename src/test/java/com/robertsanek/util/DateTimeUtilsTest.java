@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class DateTimeUtilsTest {
@@ -26,6 +27,7 @@ public class DateTimeUtilsTest {
   }
 
   @Test
+  @Disabled("non-deterministic")
   public void toZonedDateTime_now() {
     assertEquals(ZonedDateTime.of(ldtNow, ZoneId.of("America/Los_Angeles")), DateTimeUtils.toZonedDateTime(ldtNow));
     assertEquals(ZonedDateTime.of(LocalDateTime.of(ldNow, LocalTime.of(0, 0)), ZoneId.of("America/Los_Angeles")),
@@ -40,8 +42,8 @@ public class DateTimeUtilsTest {
 
   @Test
   public void toZonedDateTime_future() {
-    assertEquals(ZonedDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneId.of("America/Los_Angeles")),
-        DateTimeUtils.toZonedDateTime(LocalDateTime.of(2020, 1, 1, 0, 0)));
+    assertEquals(ZonedDateTime.of(ldtNow.getYear() + 2, 1, 1, 0, 0, 0, 0, ZoneId.of("America/Los_Angeles")),
+        DateTimeUtils.toZonedDateTime(LocalDateTime.of(ldtNow.getYear() + 2, 1, 1, 0, 0)));
   }
 
   @Test
