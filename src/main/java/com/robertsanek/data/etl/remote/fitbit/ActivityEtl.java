@@ -3,11 +3,10 @@ package com.robertsanek.data.etl.remote.fitbit;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
-
-import org.apache.commons.lang3.tuple.Triple;
 
 import com.github.scribejava.apis.FitbitApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -48,22 +47,25 @@ public class ActivityEtl extends Etl<Activity> {
           final JsonArray minutesLightlyActive = getResponse(oAuth20Utils, thisDate, "minutesLightlyActive");
           final JsonArray minutesFairlyActive = getResponse(oAuth20Utils, thisDate, "minutesFairlyActive");
           final JsonArray minutesVeryActive = getResponse(oAuth20Utils, thisDate, "minutesVeryActive");
-          return Triple.of(minutesLightlyActive, minutesFairlyActive, minutesVeryActive);
+          final JsonArray heart = getHeartRateResponse(oAuth20Utils, thisDate);
+          return List.of(minutesLightlyActive, minutesFairlyActive, minutesVeryActive, heart);
         })
         .flatMap(activeArraysTriple -> {
-          if (activeArraysTriple.getLeft().size() != activeArraysTriple.getMiddle().size() ||
-              activeArraysTriple.getMiddle().size() != activeArraysTriple.getRight().size()) {
+          if (activeArraysTriple.get(0).size() != activeArraysTriple.get(1).size() ||
+              activeArraysTriple.get(1).size() != activeArraysTriple.get(2).size() ||
+              activeArraysTriple.get(2).size() != activeArraysTriple.get(3).size()) {
             throw new RuntimeException("arrays not of same length");
           }
-          return IntStream.range(0, activeArraysTriple.getLeft().size())
+          return IntStream.range(0, activeArraysTriple.get(0).size())
               .mapToObj(i -> {
                 LocalDate thisDate = LocalDate
-                    .parse(activeArraysTriple.getLeft().get(i).getAsJsonObject().get("dateTime").getAsString());
+                    .parse(activeArraysTriple.get(0).get(i).getAsJsonObject().get("dateTime").getAsString());
                 return Activity.ActivityBuilder.anActivity()
                     .withDate(thisDate)
-                    .withLightlyActiveMinutes(getMinutesFromObj(activeArraysTriple.getLeft().get(i)))
-                    .withFairlyActiveMinutes(getMinutesFromObj(activeArraysTriple.getMiddle().get(i)))
-                    .withVeryActiveMinutes(getMinutesFromObj(activeArraysTriple.getRight().get(i)))
+                    .withLightlyActiveMinutes(getMinutesFromObj(activeArraysTriple.get(0).get(i)))
+                    .withFairlyActiveMinutes(getMinutesFromObj(activeArraysTriple.get(1).get(i)))
+                    .withVeryActiveMinutes(getMinutesFromObj(activeArraysTriple.get(2).get(i)))
+                    .withRestingHeartRate(getRestingHeartRateFromObj(activeArraysTriple.get(3).get(i)))
                     .build();
               });
         })
@@ -76,6 +78,11 @@ public class ActivityEtl extends Etl<Activity> {
     return Integer.parseInt(e.getAsJsonObject().get("value").getAsString());
   }
 
+  private Integer getRestingHeartRateFromObj(JsonElement e) {
+    return Optional.ofNullable(e.getAsJsonObject().get("value").getAsJsonObject().get("restingHeartRate"))
+        .map(JsonElement::getAsInt).orElse(null);
+  }
+
   private JsonArray getResponse(OAuth20Utils oAuth20Utils, LocalDate date, String measure) {
     return new JsonParser().parse(Unchecked.get(() -> oAuth20Utils.getSignedResponse(String.format(
         "https://api.fitbit.com/1/user/-/activities/tracker/%s/date/%s/%s.json",
@@ -85,7 +92,17 @@ public class ActivityEtl extends Etl<Activity> {
         oAuth20Utils.maybeGetAccessToken().orElseThrow()).getBody()))
         .getAsJsonObject()
         .getAsJsonArray(String.format("activities-tracker-%s", measure));
+  }
 
+  // TODO: I can get active zone minutes out of this, based on the responses' "cardio" "fat burn" and "peak" values
+  private JsonArray getHeartRateResponse(OAuth20Utils oAuth20Utils, LocalDate date) {
+    return new JsonParser().parse(Unchecked.get(() -> oAuth20Utils.getSignedResponse(String.format(
+        "https://api.fitbit.com/1/user/-/activities/heart/date/%s/%s.json",
+        date.toString(),
+        date.plusDays(100).toString()),
+        oAuth20Utils.maybeGetAccessToken().orElseThrow()).getBody()))
+        .getAsJsonObject()
+        .getAsJsonArray("activities-heart");
   }
 
 }
