@@ -18,6 +18,16 @@ $$
     LANGUAGE plpgsql
 ;
 
+CREATE OR REPLACE FUNCTION extract_quarter(input timestamp without time zone)
+    RETURNS varchar AS
+$$
+BEGIN
+    RETURN (select extract(year from input) || 'Q' || extract(quarter from input));
+END;
+$$
+    LANGUAGE plpgsql
+;
+
 CREATE OR REPLACE FUNCTION day_of_week_ordinal()
     RETURNS int AS
 $$
