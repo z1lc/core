@@ -135,7 +135,8 @@ public class AllNotesWithMultipleNamesShouldHaveCorrespondingSynonymCard extends
 
   @Override
   void runDQ() {
-    Map<String, Note> primarySynonymTermToNote = getAllNotesInRelevantDecks(SYNONYM_MODEL_ID).stream()
+    Map<String, Note> primarySynonymTermToNote = allNotes.stream()
+        .filter(note -> note.getModel_id().equals(SYNONYM_MODEL_ID))
         .collect(Collectors.toMap(note -> {
           List<String> fields = splitCsvIntoCommaSeparatedList(note.getFields());
           return Jsoup.parse(fields.get(0)).text().replaceAll("\\[sound:.+]", "");
