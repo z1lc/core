@@ -1,7 +1,7 @@
 -- Sleep
 -- Validate by spot-checking vs. fitbit.com -- they seem to change the DateTime's here kind of frequently!
 with hm as (select date_of_sleep,
-                extract(hour from start_time) + 2 as h,
+                extract(hour from start_time) as h,
                 extract(minute from start_time) as m,
                 time_in_bed
             from fitbit_sleep
@@ -43,5 +43,23 @@ from rescuetime_daily_categories
 where (category = 'Video' or
        category = 'Games')
     --and date >= '2020-01-01'
+group by 1
+order by 1 asc;
+
+-- before vs after (2021), media consumption of games vs. video
+with games as (select * from rescuetime_daily_categories where category = 'Games'),
+    video as (select * from rescuetime_daily_categories where category = 'Video'),
+    all_days as (select day from rlp_daily)
+select case when day > '2021-01-01' then '2021' else '2019 & 2020' end as time_period,
+    round(sum(games.time_spent_seconds) / 60 / count(distinct day)) as minutes_games,
+    round(sum(video.time_spent_seconds) / 60 / count(distinct day)) as minutes_video,
+        (sum(video.time_spent_seconds) + sum(games.time_spent_seconds)) / 60 / count(distinct day) as minutes_total,
+    round(sum(games.time_spent_seconds)::float /
+          (sum(video.time_spent_seconds) + sum(games.time_spent_seconds)) * 100) as percent_games,
+    count(distinct day)
+from all_days
+         full outer join games on date_trunc('day', date) = day
+         full outer join video on date_trunc('day', video.date) = day
+where day >= '2019-10-21'
 group by 1
 order by 1 asc;

@@ -219,7 +219,8 @@ order by 1 desc
 
 -- average exercise by year, any exercise at all
 select left(date_trunc('year', date) || '', 4) as year,
-    round(sum(case when total > 0 then 1 else 0 end)::float / count(total) * 100) as percent_days_with_any_exercise,
+    round(sum(case when total > 0 then 1 else 0 end)::float / greatest(1, count(total)) *
+          100) as percent_days_with_any_exercise,
     count(total) as days_with_data
 from rlp_daily_exercise
 group by 1

@@ -223,7 +223,7 @@ public class WikipediaConnector {
 
     }
 
-    if (page.contains("schema.org/Person")) {
+    if (page.contains("schema.org/Person") && page.contains("rel=\"owl:sameAs\"")) {
       String afterSameAsSection = page.substring(page.indexOf("rel=\"owl:sameAs\""));
       Pattern wikiDataUrlRegex = Pattern.compile("\"http://www\\.wikidata\\.org/entity/(.*?)\"");
       Matcher matcher = wikiDataUrlRegex.matcher(afterSameAsSection);

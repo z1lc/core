@@ -28,6 +28,16 @@ $$
     LANGUAGE plpgsql
 ;
 
+CREATE OR REPLACE FUNCTION extract_month(input timestamp with time zone)
+    RETURNS varchar AS
+$$
+BEGIN
+    RETURN (select extract(year from input) || '-' || lpad(extract(month from input)::text, 2, '0'));
+END;
+$$
+    LANGUAGE plpgsql
+;
+
 CREATE OR REPLACE FUNCTION day_of_week_ordinal()
     RETURNS int AS
 $$

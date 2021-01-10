@@ -11,10 +11,14 @@ import java.sql.Statement;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.inject.Inject;
+import com.robertsanek.util.Log;
+import com.robertsanek.util.Logs;
 import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.Unchecked;
 
 public class ReCreateViews {
+
+  static final Log log = Logs.getLog(ReCreateViews.class);
 
   @Inject SecretProvider secretProvider;
 
@@ -25,15 +29,18 @@ public class ReCreateViews {
     String password = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
 
     Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
+    String lastStatement = "";
     try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
       String sqlFile = Unchecked.get(() -> Resources.toString(
           Resources.getResource("com/robertsanek/sql/CommonQueries.sql"), Charsets.UTF_8));
       try (Statement statement = connection.createStatement()) {
         for (String s : sqlFile.split(";")) {
+          lastStatement = s;
           statement.execute(s);
         }
       }
     } catch (SQLException e) {
+      log.error(lastStatement);
       throw new RuntimeException(e);
     }
   }

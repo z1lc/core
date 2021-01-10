@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
@@ -27,7 +28,7 @@ public class TaskEtl extends Etl<ToodledoTask> {
               .withCompletedAt(
                   completedIsNull ? null : ZonedDateTime.ofInstant(jsonTask.getCompleted(), ZoneId.of("UTC")))
               .withNote(jsonTask.getNote())
-              .withParentId(Long.valueOf(jsonTask.getParent()))
+              .withParentId(Optional.ofNullable(jsonTask.getParent()).map(Long::valueOf).orElse(null))
               .withPriority(ToodledoTask.Priority.fromValue(jsonTask.getPriority()))
               .withRepeat(jsonTask.getRepeat())
               .withLengthMinutes(Long.valueOf(jsonTask.getLength()))
