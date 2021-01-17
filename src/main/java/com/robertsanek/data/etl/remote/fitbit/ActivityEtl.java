@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
+import java.util.stream.StreamSupport;
 
 import com.github.scribejava.apis.FitbitApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -60,12 +61,21 @@ public class ActivityEtl extends Etl<Activity> {
               .mapToObj(i -> {
                 LocalDate thisDate = LocalDate
                     .parse(activeArraysTriple.get(0).get(i).getAsJsonObject().get("dateTime").getAsString());
+                Integer fatBurn = getHeartRateZoneFromObj(activeArraysTriple.get(3).get(i), "Fat Burn");
+                Integer cardio = getHeartRateZoneFromObj(activeArraysTriple.get(3).get(i), "Cardio");
+                Integer peak = getHeartRateZoneFromObj(activeArraysTriple.get(3).get(i), "Peak");
                 return Activity.ActivityBuilder.anActivity()
                     .withDate(thisDate)
                     .withLightlyActiveMinutes(getMinutesFromObj(activeArraysTriple.get(0).get(i)))
                     .withFairlyActiveMinutes(getMinutesFromObj(activeArraysTriple.get(1).get(i)))
                     .withVeryActiveMinutes(getMinutesFromObj(activeArraysTriple.get(2).get(i)))
                     .withRestingHeartRate(getRestingHeartRateFromObj(activeArraysTriple.get(3).get(i)))
+                    .withFatBurnMinutes(fatBurn)
+                    .withCardioMinutes(cardio)
+                    .withPeakMinutes(peak)
+                    .withActiveZoneMinutes(
+                        Optional.ofNullable(fatBurn).orElse(0) +
+                            2 * (Optional.ofNullable(cardio).orElse(0) + Optional.ofNullable(peak).orElse(0)))
                     .build();
               });
         })
@@ -83,6 +93,18 @@ public class ActivityEtl extends Etl<Activity> {
         .map(JsonElement::getAsInt).orElse(null);
   }
 
+  private Integer getHeartRateZoneFromObj(JsonElement e, String name) {
+    return Optional.ofNullable(e.getAsJsonObject().get("value").getAsJsonObject().get("heartRateZones"))
+        .map(JsonElement::getAsJsonArray)
+        .flatMap(jsonArray -> StreamSupport.stream(jsonArray.spliterator(), false)
+            .filter(item -> item.getAsJsonObject().get("name").getAsString().equals(name))
+            .findFirst()
+            .map(obj -> obj.getAsJsonObject().get("minutes"))
+            .map(JsonElement::getAsInt)
+        )
+        .orElse(null);
+  }
+
   private JsonArray getResponse(OAuth20Utils oAuth20Utils, LocalDate date, String measure) {
     return new JsonParser().parse(Unchecked.get(() -> oAuth20Utils.getSignedResponse(String.format(
         "https://api.fitbit.com/1/user/-/activities/tracker/%s/date/%s/%s.json",
@@ -94,7 +116,6 @@ public class ActivityEtl extends Etl<Activity> {
         .getAsJsonArray(String.format("activities-tracker-%s", measure));
   }
 
-  // TODO: I can get active zone minutes out of this, based on the responses' "cardio" "fat burn" and "peak" values
   private JsonArray getHeartRateResponse(OAuth20Utils oAuth20Utils, LocalDate date) {
     return new JsonParser().parse(Unchecked.get(() -> oAuth20Utils.getSignedResponse(String.format(
         "https://api.fitbit.com/1/user/-/activities/heart/date/%s/%s.json",

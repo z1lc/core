@@ -25,6 +25,14 @@ public class Activity {
   private Integer veryActiveMinutes;
   @Column(name = "resting_heart_rate")
   private Integer restingHeartRate;
+  @Column(name = "fat_burn_minutes")
+  private Integer fatBurnMinutes;
+  @Column(name = "cardio_minutes")
+  private Integer cardioMinutes;
+  @Column(name = "peak_minutes")
+  private Integer peakMinutes;
+  @Column(name = "active_zone_minutes")
+  private Integer activeZoneMinutes;
 
   @Override
   public boolean equals(Object o) {
@@ -39,12 +47,18 @@ public class Activity {
         Objects.equals(lightlyActiveMinutes, activity.lightlyActiveMinutes) &&
         Objects.equals(fairlyActiveMinutes, activity.fairlyActiveMinutes) &&
         Objects.equals(veryActiveMinutes, activity.veryActiveMinutes) &&
-        Objects.equals(restingHeartRate, activity.restingHeartRate);
+        Objects.equals(restingHeartRate, activity.restingHeartRate) &&
+        Objects.equals(fatBurnMinutes, activity.fatBurnMinutes) &&
+        Objects.equals(cardioMinutes, activity.cardioMinutes) &&
+        Objects.equals(peakMinutes, activity.peakMinutes) &&
+        Objects.equals(activeZoneMinutes, activity.activeZoneMinutes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(date, lightlyActiveMinutes, fairlyActiveMinutes, veryActiveMinutes, restingHeartRate);
+    return Objects
+        .hash(date, lightlyActiveMinutes, fairlyActiveMinutes, veryActiveMinutes, restingHeartRate, fatBurnMinutes,
+            cardioMinutes, peakMinutes, activeZoneMinutes);
   }
 
   public LocalDate getDate() {
@@ -69,11 +83,15 @@ public class Activity {
 
   public static final class ActivityBuilder {
 
-    Integer lightlyActiveMinutes;
-    Integer fairlyActiveMinutes;
-    Integer veryActiveMinutes;
-    Integer restingHeartRate;
     private LocalDate date;
+    private Integer lightlyActiveMinutes;
+    private Integer fairlyActiveMinutes;
+    private Integer veryActiveMinutes;
+    private Integer restingHeartRate;
+    private Integer fatBurnMinutes;
+    private Integer cardioMinutes;
+    private Integer peakMinutes;
+    private Integer activeZoneMinutes;
 
     private ActivityBuilder() {
 
@@ -108,13 +126,37 @@ public class Activity {
       return this;
     }
 
+    public ActivityBuilder withFatBurnMinutes(Integer fatBurnMinutes) {
+      this.fatBurnMinutes = fatBurnMinutes;
+      return this;
+    }
+
+    public ActivityBuilder withCardioMinutes(Integer cardioMinutes) {
+      this.cardioMinutes = cardioMinutes;
+      return this;
+    }
+
+    public ActivityBuilder withPeakMinutes(Integer peakMinutes) {
+      this.peakMinutes = peakMinutes;
+      return this;
+    }
+
+    public ActivityBuilder withActiveZoneMinutes(Integer activeZoneMinutes) {
+      this.activeZoneMinutes = activeZoneMinutes;
+      return this;
+    }
+
     public Activity build() {
       Activity activity = new Activity();
+      activity.cardioMinutes = this.cardioMinutes;
       activity.fairlyActiveMinutes = this.fairlyActiveMinutes;
       activity.restingHeartRate = this.restingHeartRate;
-      activity.date = this.date;
+      activity.fatBurnMinutes = this.fatBurnMinutes;
+      activity.peakMinutes = this.peakMinutes;
       activity.lightlyActiveMinutes = this.lightlyActiveMinutes;
+      activity.date = this.date;
       activity.veryActiveMinutes = this.veryActiveMinutes;
+      activity.activeZoneMinutes = this.activeZoneMinutes;
       return activity;
     }
   }
