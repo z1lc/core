@@ -237,3 +237,10 @@ from anki_review_time_per_category
 where day >= '2019-10-21'
 group by category
 order by 2 desc;
+
+-- total study time on zdone-generated cards
+select round(sum(time_ms) / 3600000) as hours
+from anki_notes an
+         join anki_cards ac on an.id = ac.note_id
+         join anki_reviews ar on ac.id = ar.card_id
+where model_id % 100000000 = 0
