@@ -90,7 +90,8 @@ public class Card {
   public enum Type {
     SUSPENDED(0),
     LEARNING(1),
-    NORMAL(2);
+    NORMAL(2),
+    BURIED(3);
 
     private final Integer value;
 
@@ -98,12 +99,14 @@ public class Card {
       this.value = value;
     }
 
-    public static Type fromValue(int value) {
+    public static Type fromValue(long id, int value) {
       return Arrays.stream(Type.values())
           .filter(q -> q.value == value)
           .findAny()
           .orElseGet(() -> {
-            log.error("Card cid:%s has int value of %s for type, but no corresponding Type exists.", value);
+            log.error(
+                "Card cid:%s has int value of %s for type, but no corresponding Type exists. Returning %s as default.",
+                id, value, NORMAL);
             return NORMAL;
           });
     }
@@ -111,7 +114,8 @@ public class Card {
 
   // KEEP IN ORDER!
   public enum Queue {
-    BURIED(-2),
+    MANUALLY_BURIED(-3),
+    AUTOMATICALLY_BURIED(-2),
     SUSPENDED(-1),
     UNSEEN(0),
     LEARN(1),
@@ -125,7 +129,7 @@ public class Card {
       this.value = value;
     }
 
-    public static Queue fromValue(int value, long id) {
+    public static Queue fromValue(long id, int value) {
       return Arrays.stream(Queue.values())
           .filter(q -> q.value == value)
           .findAny()
