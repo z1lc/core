@@ -43,8 +43,8 @@ public class MovieEtl extends Etl<Movie> {
             String title = link.getAttribute("title");
             String score = li.getElementsByTagName("span").stream()
                 .filter(elem -> elem.getAttribute("class").equals("tMeterScore"))
-                .findFirst().orElseThrow().asText();
-            Matcher matcher = yearRegex.matcher(li.asText());
+                .findFirst().orElseThrow().asNormalizedText();
+            Matcher matcher = yearRegex.matcher(li.asNormalizedText());
             Long year = null;
             if (matcher.find()) {
               year = Long.parseLong(matcher.group());
