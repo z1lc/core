@@ -42,6 +42,7 @@ public class EnsureAllTablesHaveRecentData {
           .put(Pair.of("blood_pressure_readings", "date"), Period.ofDays(60))
           .put(Pair.of("trello_cards", "last_activity"), Period.ofDays(30))
           .put(Pair.of("goodreads_books", "added_on"), Period.ofDays(30))
+          .put(Pair.of("goodreads_books", "read_at"), Period.ofDays(30))
           .build();
   private static final ImmutableSet<Pair<String, String>> infiniteStalenessColumn =
       ImmutableSet.<Pair<String, String>>builder()
