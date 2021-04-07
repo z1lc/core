@@ -49,6 +49,13 @@ public class CrossPlatformUtils {
             null,
             null);
       }
+    } else if (SystemUtils.IS_OS_MAC) {
+        return new Platform.Ubuntu(
+            Path.of("/Users/rsanek/Google Drive/core/"),
+            Path.of("/Users/rsanek/Library/Application Support/Anki2/"),
+            null,
+            null,
+            null);
     } else {
       throw new RuntimeException(String.format("Couldn't detect platform for operating system %s.",
           System.getProperty("os.name")));
@@ -75,6 +82,11 @@ public class CrossPlatformUtils {
         } catch (IOException e) {
           return false;
         }
+      }
+
+      @Override
+      public Boolean caseMac(Platform.Mac ubuntu) {
+        return false;
       }
     });
   }

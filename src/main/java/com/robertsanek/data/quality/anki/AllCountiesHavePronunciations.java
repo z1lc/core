@@ -61,6 +61,12 @@ public class AllCountiesHavePronunciations extends DataQualityBase {
         log.info("Won't run on Ubuntu.");
         return Unit.unit();
       }
+
+      @Override
+      public Unit caseMac(Platform.Mac ubuntu) {
+        log.info("Won't run on Mac.");
+        return Unit.unit();
+      }
     });
   }
 }
