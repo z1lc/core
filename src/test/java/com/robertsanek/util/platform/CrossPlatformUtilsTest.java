@@ -23,6 +23,11 @@ public class CrossPlatformUtilsTest {
       public Boolean caseUbuntu(Platform.Ubuntu ubuntu) {
         return true;
       }
+
+      @Override
+      public Boolean caseMac(Platform.Mac ubuntu) {
+        return true;
+      }
     }));
   }
 
@@ -42,6 +47,11 @@ public class CrossPlatformUtilsTest {
 
       @Override
       public Boolean caseUbuntu(Platform.Ubuntu ubuntu) {
+        return true;
+      }
+
+      @Override
+      public Boolean caseMac(Platform.Mac ubuntu) {
         return true;
       }
     }));

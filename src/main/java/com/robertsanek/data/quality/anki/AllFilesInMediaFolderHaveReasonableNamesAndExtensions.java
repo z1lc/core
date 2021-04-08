@@ -89,6 +89,12 @@ public class AllFilesInMediaFolderHaveReasonableNamesAndExtensions extends DataQ
         log.info("Won't run on Ubuntu.");
         return Unit.unit();
       }
+
+      @Override
+      public Unit caseMac(Platform.Mac ubuntu) {
+        log.info("Won't run on Mac.");
+        return Unit.unit();
+      }
     });
   }
 }

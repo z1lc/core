@@ -28,7 +28,7 @@ public class AllImagesShouldHaveReasonableDimensions extends DataQualityBase {
 
   @Override
   void runDQ() {
-    if (SystemUtils.IS_OS_MAC) {
+    if (SystemUtils.IS_OS_HP_UX) {  //using as placeholder, don't want to run this right now
       File[] filesInMediaFolder = Optional.ofNullable(MEDIA_FOLDER.listFiles())
           .orElseThrow(() -> new RuntimeException("Didn't find any files in media folder."));
       Stream.of(filesInMediaFolder).parallel()
