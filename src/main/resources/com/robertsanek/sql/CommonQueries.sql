@@ -198,7 +198,9 @@ order by 1 desc
 
 -- average anki review time by year
 select left(date_trunc('year', created_at) || '', 4) as year,
-    round(sum(time_ms) / 60000 / (case when date_trunc('year', created_at) < date_trunc('year', now())
+    round(sum(time_ms) / 60000 / (case when date_part('year', date_trunc('year', created_at)) = 2014
+                                           then 235 --started on 2014-05-11
+                                       when date_trunc('year', created_at) < date_trunc('year', now())
                                            then 365.24
                                        else date_part('day', now() - date_trunc('year', now())) end)::numeric,
           1) as average_daily_minutes
