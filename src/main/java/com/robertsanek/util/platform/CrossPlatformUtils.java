@@ -54,8 +54,8 @@ public class CrossPlatformUtils {
             Path.of("/Users/rsanek/Google Drive/core/"),
             Path.of("/Users/rsanek/Library/Application Support/Anki2/"),
             null,
-            null,
-            null);
+            Path.of("/Users/rsanek/Desktop/"),
+            Path.of("/Users/rsanek/Google Drive/2 S-I/0 All Books/Calibre Library"));
     } else {
       throw new RuntimeException(String.format("Couldn't detect platform for operating system %s.",
           System.getProperty("os.name")));
