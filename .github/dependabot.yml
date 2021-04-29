@@ -1,0 +1,20 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: saturday
+    time: "08:00"
+    timezone: America/Los_Angeles
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.google.auth:google-auth-library-oauth2-http
+    versions:
+    - 0.23.0
+    - 0.24.1
+    - 0.25.2
+    - 0.25.3
+  - dependency-name: net.sourceforge.htmlunit:htmlunit
+    versions:
+    - 2.48.0
