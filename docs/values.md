@@ -1,5 +1,20 @@
 # Personal Values
-Values I try to live by.
+Values I try to live by. Last reviewed *May 28, 2021*.
+
+## Health
+Physical, mental / emotional, and spiritual health.
+
+## Relationships
+Friendships, family, romantic partners.
+
+## Curiosity
+Intellectual and experiential curiosity.
+
+## Confident Optimism
+The default expectation is positive.
+
+# Personal Beliefs
+Ideas that sit between the high-level values above and more specific [mental models](mental_models.md).
 
 ## Focus
 Make hard decisions about what to pursue and what to throw away. Concern yourself with as few things as possible.
