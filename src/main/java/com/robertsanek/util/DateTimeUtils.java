@@ -39,6 +39,10 @@ public class DateTimeUtils {
   private static final LocalDate HUNTSVILLE_2020_COVID_END = LocalDate.of(2020, 10, 18);
   private static final LocalDate HUNTSVILLE_2020_XMAS_START = LocalDate.of(2020, 12, 21);
   private static final LocalDate HUNTSVILLE_2020_XMAS_END = LocalDate.of(2021, 1, 4);
+  private static final LocalDate MEXICO_2021_START = LocalDate.of(2021, 2, 5);
+  private static final LocalDate MEXICO_2021_END = LocalDate.of(2021, 2, 28);
+  private static final LocalDate NYC_2021_START = LocalDate.of(2021, 4, 16);
+  private static final LocalDate NYC_2021_END = LocalDate.of(2021, 5, 9);
 
   static {
     dateRangeMap.put(Range.lessThan(MOVED_TO_CA), ZoneId.of("America/Chicago")); //Huntsville, Auburn
@@ -88,7 +92,17 @@ public class DateTimeUtils {
     dateRangeMap.put(
         Range.closedOpen(HUNTSVILLE_2020_XMAS_START, HUNTSVILLE_2020_XMAS_END), ZoneId.of("America/Chicago"));
 
-    dateRangeMap.put(Range.atLeast(HUNTSVILLE_2020_XMAS_END), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2020_XMAS_END, MEXICO_2021_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(MEXICO_2021_START, MEXICO_2021_END), ZoneId.of("America/Chicago"));
+
+    dateRangeMap.put(
+        Range.closedOpen(MEXICO_2021_END, NYC_2021_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(NYC_2021_START, NYC_2021_END), ZoneId.of("America/New_York"));
+
+    dateRangeMap.put(Range.atLeast(NYC_2021_END), ZoneId.of("America/Los_Angeles"));
   }
 
   private static ZoneId getZoneId(LocalDate localDate) {
