@@ -18,6 +18,18 @@ import com.robertsanek.data.quality.anki.DataQualityBase;
 
 public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
 
+  // should only contain zdone-generated models
+  private static final Map<Long, String> MODEL_ID_TO_CATEGORY = ImmutableMap.<Long, String>builder()
+      .put(1586000000000L, "Culture - Music") // SPOTIFY_TRACK_MODEL_ID
+      .put(1587000000000L, "Culture - Music") // SPOTIFY_ARTIST_MODEL_ID
+      .put(1588000000000L, "Culture - Movies/TV") // VIDEO_MODEL_ID
+      .put(1589000000000L, "Culture - Movies/TV") // VIDEO_PERSON_MODEL_ID
+      .put(1604800000000L, "General Knowledge") // READWISE_HIGHLIGHT_CLOZE_MODEL_ID
+      .put(1607000000000L, "Culture - Drinks") // BEER_MODEL_ID
+      .put(1621000000000L, "Culture - Music") // SPOTIFY_GENRE_MODEL_ID
+      .put(1622000000000L, "Culture - Venues") // VENUE_MODEL_ID
+      .build();
+
   private static final Map<String, String> MODEL_NAME_TO_CATEGORY = ImmutableMap.<String, String>builder()
       .put("Interview Question", "Computing")
       .put("Software", "Computing")
@@ -189,7 +201,13 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
         .map(note -> {
           Model model = Iterables.getOnlyElement(DataQualityBase.getModelsByModelId().get(note.getModel_id()));
 
-          //First match by tag
+          //First match by model id
+          String maybeModelIdBasedCategory = MODEL_ID_TO_CATEGORY.get(note.getModel_id());
+          if (maybeModelIdBasedCategory != null) {
+            return maybeModelIdBasedCategory;
+          }
+
+          //second match by tag
           for (Map.Entry<String, String> nameAndCategory : TAG_TO_CATEGORY.entrySet()) {
             String tagNameSubstringToFind = nameAndCategory.getKey();
             Optional<String> maybeTag = DataQualityBase.splitCsvIntoCommaSeparatedList(note.getTags()).stream()
