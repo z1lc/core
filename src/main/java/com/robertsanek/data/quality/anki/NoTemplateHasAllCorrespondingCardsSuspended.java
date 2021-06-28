@@ -19,7 +19,14 @@ public class NoTemplateHasAllCorrespondingCardsSuspended extends DataQualityBase
     final List<Long> ALL_SUSPENDED_TEMPLATES_ALLOWED_MODEL_IDS = Lists.newArrayList(
         1444077615554L, //Elements shared deck
         1532358549255L, //spanish sentences shared deck
-        1587000000000L, //Spotify Artist
+        1586000000000L, // Spotify Track
+        1587000000000L, // Spotify Artist
+        1588000000000L, // Video
+        1589000000000L, // Video Person
+        1604800000000L, // Readwise Highlight
+        1607000000000L, // Beer
+        1622000000000L, // Venue
+        1624000000000L, // Basic
         0L
     );
     modelsInUse.stream()
