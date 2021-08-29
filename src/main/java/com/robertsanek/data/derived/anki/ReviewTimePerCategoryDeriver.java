@@ -207,6 +207,15 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
             return maybeModelIdBasedCategory;
           }
 
+          //Basic model ID
+          if (note.getModel_id() == 1624000000000L) {
+            if (note.getFields().contains("zdone:venue")) {
+              return "Culture - Venues";
+            } else if (note.getFields().contains("zdone:historical_event")) {
+              return "General Knowledge";
+            }
+          }
+
           //second match by tag
           for (Map.Entry<String, String> nameAndCategory : TAG_TO_CATEGORY.entrySet()) {
             String tagNameSubstringToFind = nameAndCategory.getKey();
