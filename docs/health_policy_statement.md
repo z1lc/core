@@ -1,7 +1,7 @@
 # Health Policy Statement
 Last reviewed *August 29, 2021*
 
-This document defines the goals for my mental and physical health. I may eventually add in spiritual health. I start very high-level and get more specific as the document continues. The rate at which I expect to change these goals increases as I get more specific. See also my [investment policy statement](investment_policy_statement.md), which this document is inspired by.
+This document defines the goals for my mental and physical health. I may eventually add in spiritual health. I start very high-level and get more specific as the document continues. The rate at which I expect to change these goals increases as I get more specific. See also my [Investment Policy Statement](investment_policy_statement.md), which this document is inspired by.
 
 ## Health Objectives
 
