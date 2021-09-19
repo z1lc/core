@@ -212,7 +212,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
             if (note.getFields().contains("zdone:venue")) {
               return "Culture - Venues";
             } else if (note.getFields().contains("zdone:historical_event")) {
-              return "General Knowledge";
+              return "History";
             }
           }
 
