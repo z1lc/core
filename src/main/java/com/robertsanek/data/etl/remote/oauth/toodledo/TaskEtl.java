@@ -8,8 +8,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
+import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.Etl;
 
+@DoNotRun(explanation = "no longer use Toodledo")
 public class TaskEtl extends Etl<ToodledoTask> {
 
   @Inject ToodledoConnector toodledoConnector;

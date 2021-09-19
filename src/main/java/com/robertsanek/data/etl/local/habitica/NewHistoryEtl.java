@@ -7,9 +7,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.local.habitica.jsonentities.JsonTask;
 import com.robertsanek.util.DateTimeUtils;
 
+@DoNotRun(explanation = "no longer use Habitica")
 public class NewHistoryEtl extends HabiticaEtl<History> {
 
   @Override
