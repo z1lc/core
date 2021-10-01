@@ -1,5 +1,5 @@
 # Investment Policy Statement
-Last reviewed *June 6, 2021*
+Last reviewed *October 1, 2021*
 
 This document defines the goals for my investments. I start very high-level and get more specific as the document continues. The rate at which I expect to change these goals increases as I get more specific. See the [Bogleheads wiki entry](https://www.bogleheads.org/wiki/Investment_policy_statement) for background on general goals of writing an IPS. See also my [Health Policy Statement](health_policy_statement.md), which was inspired by this document.
 
@@ -40,4 +40,4 @@ Changes may happen frequently in this category (multiple times a year), since th
  * **Keep cash holdings within 6 months of expenses.** There is no need to keep a large amount of money in cash, particularly when I have significant credit (credit cards, [PLOC](https://www.wealthfront.com/portfolio-line-of-credit)) readily available.
  * **Maximize all possible tax-advantaged accounts.** See above for description. It usually makes sense to contribute the maximum to the 401k and IRA, when possible.
  * **Prefer tax-advantaged contributions that are reversible.** Contributions & earnings in traditional accounts are fully illiquid until retirement age (unless you're willing to take a penalty). Contributions to Roth accounts can generally be taken out any time, tax-free. There is an inherent tension between the flexibility objective and the tax bet avoidance belief mentioned above. Until I have more clarity about what my retirement will look like (particularly geographically), and what my medium-term money access needs will be, I should maximize flexibility by allowing over-investment into Roth accounts. This trades tax optimality for flexibility, a better decision for an uncertain future.
- * **Classify all spending.** In order to track consumption, I need dependable information on where money is actually flowing. Currently, the only solution that I know of which can results in accurate results is manually logging transactions and classifying them into categories (Food, Household, Clothes, Transportation, etc.). I've been doing so since August 2016.
+ * **Classify all spending.** In order to track consumption, I need dependable information on where money is actually flowing. Currently, the only solution that I know of which can result in accurate data is manually logging transactions and classifying them into categories (Food, Household, Clothes, Transportation, etc.). I've been doing so since August 2016.
