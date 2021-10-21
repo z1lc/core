@@ -10,7 +10,6 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import com.barnacle.AnkiEtl;
-import com.barnacle.LeetCodeToodledoTaskEtl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.JsonObject;
@@ -35,7 +34,7 @@ public class EtlAndDqJob implements QuartzJob {
   @Inject EnsureAllTablesHaveRecentData ensureAllTablesHaveRecentData;
   @Inject SecretProvider secretProvider;
   @Inject AnkiEtl ankiEtl;
-  @Inject LeetCodeToodledoTaskEtl leetCodeToodledoTaskEtl;
+//  @Inject LeetCodeToodledoTaskEtl leetCodeToodledoTaskEtl;
   @Inject MasterEtl masterEtl;
   @Inject DataQualityRunner dqRunner;
 
@@ -48,7 +47,8 @@ public class EtlAndDqJob implements QuartzJob {
     }
     if (!fastRun) {
       ankiEtl.call();
-      leetCodeToodledoTaskEtl.run();
+//      no longer using LeetCode nor Toodledo
+//      leetCodeToodledoTaskEtl.run();
     }
     boolean etlsSuccessful = masterEtl.runEtls(fastRun, parallel);
 

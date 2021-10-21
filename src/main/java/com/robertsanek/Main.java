@@ -29,7 +29,6 @@ import com.robertsanek.data.etl.remote.fitbit.SleepEtl;
 import com.robertsanek.data.etl.remote.google.analytics.PageViewEtl;
 import com.robertsanek.data.etl.remote.google.fit.BloodPressureEtl;
 import com.robertsanek.data.etl.remote.google.sheets.budget.BudgetGetter;
-import com.robertsanek.data.etl.remote.oauth.toodledo.ToodledoConnector;
 import com.robertsanek.data.quality.anki.DataQualityRunner;
 import com.robertsanek.here.HereConnector;
 import com.robertsanek.lifx.Lifx;
@@ -172,12 +171,12 @@ public class Main {
             log.error("Anki sync unsuccessful!");
           }
 
-          log.info("Setting up Toodledo...");
-          if (InjectUtils.inject(ToodledoConnector.class).getTasks().size() > 0) {
-            log.info("Successfully set up Toodledo.");
-          } else {
-            log.error("Toodledo setup unsuccessful!");
-          }
+          log.info("Skipping Toodledo setup, as I no longer use it.");
+//          if (InjectUtils.inject(ToodledoConnector.class).getTasks().size() > 0) {
+//            log.info("Successfully set up Toodledo.");
+//          } else {
+//            log.error("Toodledo setup unsuccessful!");
+//          }
 
           log.info("Setting up FitBit...");
           if (InjectUtils.inject(SleepEtl.class).getObjects().size() > 0) {
