@@ -50,7 +50,7 @@ public class CrossPlatformUtils {
             null);
       }
     } else if (SystemUtils.IS_OS_MAC) {
-        return new Platform.Ubuntu(
+        return new Platform.Mac(
             Path.of("/Users/rsanek/Google Drive/core/"),
             Path.of("/Users/rsanek/Library/Application Support/Anki2/"),
             null,
