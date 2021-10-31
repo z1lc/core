@@ -56,7 +56,6 @@ public class EtlAndDqJob implements QuartzJob {
     reCreateViews.executeQueries();
 
     if (etlsSuccessful) {
-      triggerKlipfolioRefresh();
       dqRunner.exec(jobDataMap);
       ensureAllTablesHaveRecentData.ensure();
     } else {
