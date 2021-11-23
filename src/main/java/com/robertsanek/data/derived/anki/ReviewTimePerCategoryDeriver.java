@@ -213,6 +213,15 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
               return "Culture - Venues";
             } else if (note.getFields().contains("zdone:historical_event")) {
               return "History";
+            } else if (note.getFields().contains("zdone:cocktail")) {
+              return "Culture - Drinks";
+            } else if (note.getFields().contains("zdone:pasta")) {
+              return "Culture - Food";
+            } else if (note.getFields().contains("zdone:dog") || note.getFields().contains("zdone:cat")) {
+              return "Culture - Pets";
+            } else if (note.getFields().contains("zdone:nba") || note.getFields().contains("zdone:mlb") ||
+                note.getFields().contains("zdone:nfl") || note.getFields().contains("zdone:nhl")) {
+              return "Culture - Sports";
             }
           }
 
