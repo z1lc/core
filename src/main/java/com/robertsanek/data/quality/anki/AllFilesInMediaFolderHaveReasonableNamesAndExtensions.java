@@ -18,6 +18,9 @@ import com.robertsanek.util.Unit;
 import com.robertsanek.util.platform.CrossPlatformUtils;
 import com.robertsanek.util.platform.Platform;
 
+@IgnoreDQ(explanation = "it's not really clear what the original intention was here, " +
+    "and now with zdone-generated cards, I don't really know what the use would be.")
+@Deprecated
 public class AllFilesInMediaFolderHaveReasonableNamesAndExtensions extends DataQualityBase {
 
   static final Log log = Logs.getLog(AllFilesInMediaFolderHaveReasonableNamesAndExtensions.class);
@@ -29,7 +32,7 @@ public class AllFilesInMediaFolderHaveReasonableNamesAndExtensions extends DataQ
       "webp",
       "gif",
       "jpg",  //.jpg should be preferred to .jpe and .jpeg so that we can more easily automatically
-              // find an image based on a name
+      // find an image based on a name
       "js",
       "json",  //some add-on storage
       "mp3",
@@ -54,6 +57,8 @@ public class AllFilesInMediaFolderHaveReasonableNamesAndExtensions extends DataQ
         //via https://stackoverflow.com/a/31976060
         Pattern forbiddenPatterns = Pattern.compile("[\\x00-\\x1F%<>:&\"/\\\\|?*]+");
         Stream.of(filesInMediaFolder)
+            // these are likely zdone-downloaded images; for these, we don't really care about the extension
+            .filter(file -> !(file.getName().startsWith("http_") || file.getName().startsWith("https_")))
             .flatMap(file -> {
               String fileName = file.getName();
               if (forbiddenPatterns.matcher(fileName).find()) {
