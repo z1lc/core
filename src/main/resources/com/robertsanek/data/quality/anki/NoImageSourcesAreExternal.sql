@@ -1,7 +1,9 @@
 SELECT *
 FROM anki_notes
-WHERE (fields LIKE '%src="http%' OR
-       fields LIKE '%src=''http%') and
+WHERE (fields LIKE '%src="http:%' OR
+       fields LIKE '%src=''http:%' OR
+       fields LIKE '%src="https:%' OR
+       fields LIKE '%src=''https:%') and
         model_id not in (
                          1586000000000, -- Spotify Track
                          1587000000000, -- Spotify Artist
