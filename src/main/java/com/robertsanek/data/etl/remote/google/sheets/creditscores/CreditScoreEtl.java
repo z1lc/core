@@ -18,7 +18,7 @@ import com.robertsanek.util.Unchecked;
 
 public class CreditScoreEtl extends Etl<CreditScore> {
 
-  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
   private static final String RANGE = "\uD83D\uDCAF Credit Score!A2:H10000";
   @Inject SecretProvider secretProvider;
 
