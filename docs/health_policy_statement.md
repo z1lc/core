@@ -1,5 +1,5 @@
 # Health Policy Statement
-Last reviewed *August 29, 2021*
+Last reviewed *January 15, 2022*
 
 This document defines the goals for my mental and physical health. I may eventually add in spiritual health. I start very high-level and get more specific as the document continues. The rate at which I expect to change these goals increases as I get more specific. See also my [Investment Policy Statement](investment_policy_statement.md), which this document is inspired by.
 
@@ -18,13 +18,13 @@ I expect changes in this category to come **very** rarely, perhaps a few times a
 
 ## General Beliefs
 Changes in this category may come 1-2 times per year, particularly as I learn more about health.
-* **Make lifestyle modifications before more aggressive interventions.** When considering health interventions, I should prefer to change things like diet, sleep, and exercise instead of trying to fix symptoms by getting a surgery or starting to supplement with an exogenous compound. This is less risky from the perspective of potential side-effects, but also avoids the serious risk of medical errors (which [rank as the third-leading cause of death in the US](https://hub.jhu.edu/2016/05/03/medical-errors-third-leading-cause-of-death/)!).
+* **Make lifestyle modifications before more aggressive interventions.** When considering health interventions, I should prefer to change things like diet, sleep, and exercise instead of trying to fix symptoms by getting a surgery or starting to supplement with an exogenous compound. This is less risky from the perspective of potential side-effects, but also avoids the significant chance of medical errors (which [rank as the third-leading cause of death in the US](https://hub.jhu.edu/2016/05/03/medical-errors-third-leading-cause-of-death/)!).
 * **Humility.** The reality of healthcare is that our understanding of the body and its processes is extremely limited. We have learned a good amount by controlling inputs & tracking outputs, but it’s mostly a black box.
 
 ## Specific Implementation Details
 Changes may happen frequently in this category (multiple times a year), since they are highly dependent on my current job situation (retired vs. not), location, living situation, relationship status, etc.
 * **Use Fitbit to track cardiovascular exercise & sleep times.** According to the CDC, this should be at minimum 150+ active zone minutes weekly, with a stretch goal of 300+ minutes. 7+ hours is CDC’s recommendation for sleep. The benefit of using Fitbit is that the tracking is quite accurate and only requires wearing the watch.
-* **Use the zdone tasks + reminder system to track strength training.** Manual tracking of weight lifted is tedious and may even decrease the likelihood I will engage with the activity at all. Using reminders and check-ins to validate effort is being spent in the category is likely to have higher ROI.
+* **Build tooling in zdone to help promote lifting.** A lightweight tracking system can be integrated with other tooling that has proved useful for me, such as gentle nudges to look at zdone tasks when I haven't done so in 5+ days.
 * **Use journal entries to track drug usage.** Relevant to the intervention 'general belief' above, I will regularly examine my intake of drugs and assess whether current levels could be getting problematic. What is considered a drug is self-defined, but may include caffeine, alcohol, marijuana, prescription drugs, vitamins, and supplements.
 * **Regularly get full blood tests and use InsideTracker to track the results over time.**
 * **Regularly record weight and blood pressure.**

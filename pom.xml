@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.13</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>5.4.21.Final</hibernateVersion>
+    <hibernateVersion>5.6.5.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -137,7 +137,7 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>5.0.1</version>
+      <version>5.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.reflections</groupId>
@@ -203,7 +203,7 @@
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
-      <version>1.33.0</version>
+      <version>1.33.1</version>
     </dependency>
     <!-- Necessary for above google-api-client to be able to do initial auth, but htmlunit / other dependencies rely
          on newer jetty. Uncomment when you want to do first-time auth. (could not get it to work with exclusions)
@@ -227,7 +227,7 @@
     <dependency>
       <groupId>com.google.oauth-client</groupId>
       <artifactId>google-oauth-client-jetty</artifactId>
-      <version>1.32.1</version>
+      <version>1.33.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.apis</groupId>
@@ -277,7 +277,7 @@
     <dependency>
       <groupId>com.twilio.sdk</groupId>
       <artifactId>twilio</artifactId>
-      <version>8.24.0</version>
+      <version>8.25.1</version>
     </dependency>
 
     <dependency>
@@ -298,7 +298,7 @@
     <dependency>
       <groupId>net.sourceforge.htmlunit</groupId>
       <artifactId>htmlunit</artifactId>
-      <version>2.56.0</version>
+      <version>2.57.0</version>
     </dependency>
 
     <dependency>
@@ -323,7 +323,7 @@
     <dependency>
       <groupId>com.sendgrid</groupId>
       <artifactId>sendgrid-java</artifactId>
-      <version>4.8.1</version>
+      <version>4.8.2</version>
     </dependency>
 
 
@@ -423,7 +423,7 @@
         <!-- Build an executable JAR -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.2.2</version>
         <configuration>
           <archive>
             <manifest>
@@ -436,7 +436,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.9.0</version>
         <configuration>
           <showWarnings>true</showWarnings>
           <release>13</release>

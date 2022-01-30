@@ -215,13 +215,20 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
               return "History";
             } else if (note.getFields().contains("zdone:cocktail")) {
               return "Culture - Drinks";
-            } else if (note.getFields().contains("zdone:pasta")) {
+            } else if (note.getFields().contains("zdone:pasta") || note.getFields().contains("zdone:coffee") ||
+                note.getFields().contains("zdone:cheese")) {
               return "Culture - Food";
             } else if (note.getFields().contains("zdone:dog") || note.getFields().contains("zdone:cat")) {
               return "Culture - Pets";
             } else if (note.getFields().contains("zdone:nba") || note.getFields().contains("zdone:mlb") ||
                 note.getFields().contains("zdone:nfl") || note.getFields().contains("zdone:nhl")) {
               return "Culture - Sports";
+            } else if (note.getFields().contains("zdone:art")) {
+              return "Culture - Art";
+            } else if (note.getFields().contains("zdone:chemistry")) {
+              return "General Knowledge";
+            } else if (note.getFields().contains("zdone:car")) {
+              return "Cars";
             }
           }
 
