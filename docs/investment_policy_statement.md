@@ -1,5 +1,5 @@
 # Investment Policy Statement
-Last reviewed *October 1, 2021*
+Last reviewed *January 30, 2022*
 
 This document defines the goals for my investments. I start very high-level and get more specific as the document continues. The rate at which I expect to change these goals increases as I get more specific. See the [Bogleheads wiki entry](https://www.bogleheads.org/wiki/Investment_policy_statement) for background on general goals of writing an IPS. See also my [Health Policy Statement](health_policy_statement.md), which was inspired by this document.
 
@@ -25,7 +25,7 @@ I expect changes in this category to come **very** rarely, perhaps a few times a
 
 ## General Beliefs
 Changes in this category may come 1-2 times per year, particularly as I learn more about investing.
- * **(Mostly) Passive Investing.** Money earmarked for retirement or which is needed to support medium- to long-term goals must be invested in passive funds. For this portion of my net worth, I aim to resist the temptation to take part in either active funds or strategies that are similar to active investing, such as arbitrage or 'timing the market'. Money that is not needed for these goals may be used in riskier ventures.
+ * **(Mostly) Passive Investing.** Money earmarked for retirement or which is needed to support medium- to long-term goals must be invested in passive funds. For this portion of my money, I aim to resist the temptation to take part in either active funds or strategies that are similar to active investing, such as arbitrage or 'timing the market'. Money that is not needed for these goals may be used in riskier ventures.
  * **Minimize Taxes.** Avoiding additional taxation is like free returns.
  * **Low Expense Ratios.** Since the payment of the expense ratio is the only thing a fund can guarantee, it should be a focus for any passive investor to keep these as low as possible. Be sure not to over-index on this, though, as additional services (eg, PLOC) provided for a fee can be worth the cost.
  * **Resist Asset Allocation Obsession.** Nobody knows what allocation is the 'fairest', and any glide path to retirement is the opinion of someone. I aim to ignore allocation specifics and take the opinion of those I trust at face value (ex. Vanguard Target Date Retirement funds, Wealthfront funds, etc.)
