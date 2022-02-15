@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,7 +21,7 @@ import com.robertsanek.util.Unchecked;
 
 public class BloodPressureEtl extends Etl<BloodPressureReading> {
 
-  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("M/d/yyyy H:m");
+  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("M/d/yyyy H:m", new Locale("en"));
   private static final AtomicLong ID_ISSUER = new AtomicLong(1);
   private static final String RANGE = "Weight & HR!A2:G10000";
 

@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -243,12 +244,12 @@ public class MasterEtl implements QuartzJob {
       if (max.get() == 0) {
         notificationSender.sendNotificationDefault(
             String.format("%s generated 0 rows at %s!", etlClazz.getSimpleName(),
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))), "Check output.");
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss", new Locale("en")))), "Check output.");
       }
     } else {
       notificationSender.sendNotificationDefault(
           String.format("%s failed at %s!", etlClazz.getSimpleName(),
-              LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))),
+              LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss", new Locale("en")))),
           template + "\n\n" + ExceptionUtils.getStackTrace(exceptionDuringEtl));
       log.error(template);
     }

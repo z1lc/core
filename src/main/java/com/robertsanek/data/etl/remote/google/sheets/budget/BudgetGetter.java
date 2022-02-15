@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,7 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
  */
 public class BudgetGetter implements QuartzJob {
 
-  private static final DateTimeFormatter SIMPLE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  private static final DateTimeFormatter SIMPLE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
   private static final ImmutableList<LineItemType> EXPENSES_LINE_ITEM_ORDER = ImmutableList.of(
       LineItemType.FOOD,
       LineItemType.FOOD,

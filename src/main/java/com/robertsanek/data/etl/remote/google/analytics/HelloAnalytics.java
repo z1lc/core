@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -127,7 +128,7 @@ public class HelloAnalytics {
             toReturn.add(
                 PageView.PageViewBuilder.aPageView()
                     .withId(ID_ISSUER.getAndIncrement())
-                    .withDate(LocalDate.parse(dimensions.get(0), DateTimeFormatter.ofPattern("yyyyMMdd")))
+                    .withDate(LocalDate.parse(dimensions.get(0), DateTimeFormatter.ofPattern("yyyyMMdd", new Locale("en"))))
                     .withWebsite("www.robertsanek.com")
                     .withPageViews(Long.parseLong(values.getValues().get(k)))
                     .build()

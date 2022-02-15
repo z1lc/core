@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -228,7 +229,7 @@ public class DataQualityRunner implements QuartzJob {
       String emailSubject = getEmailSubject(errors, warnings);
       ContainerTag emailIntro = p(join(
           "System: ", b(String.format("%s / %s", System.getProperty("os.arch"), System.getProperty("os.name"))), br(),
-          "Time: ", b(startZdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z"))), br(),
+          "Time: ", b(startZdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z", new Locale("en")))), br(),
           "Duration :", b(String.valueOf(startSW.elapsed().getSeconds())), "seconds"));
       ContainerTag emailContent = getEmailContent(dqInformation);
       if (errors + warnings >= MINIMUM_VIOLATIONS &&

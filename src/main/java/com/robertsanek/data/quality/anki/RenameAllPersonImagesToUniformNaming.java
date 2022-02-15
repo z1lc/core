@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -73,7 +74,7 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
           .collect(Collectors.toList());
 
       if (filesToChange.size() > 0) {
-        DateTimeFormatter ourFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm ssS");
+        DateTimeFormatter ourFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm ssS", new Locale("en"));
         String dateTimeForFile = LocalDateTime.now().format(ourFormatter);
         File fileNameChangesTarget = new File(
             String.format(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/anki/%s.txt",

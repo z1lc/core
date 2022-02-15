@@ -198,9 +198,9 @@ public class WikipediaConnector {
   private static String formatDate(LocalDate date, Granularity granularity) {
     switch (granularity) {
       case DAILY:
-        return DateTimeFormatter.ofPattern("yyyy/MM/dd").format(date);
+        return DateTimeFormatter.ofPattern("yyyy/MM/dd", new Locale("en")).format(date);
       case MONTHLY:
-        return DateTimeFormatter.ofPattern("yyyy/MM").format(date) + "/all-days";
+        return DateTimeFormatter.ofPattern("yyyy/MM", new Locale("en")).format(date) + "/all-days";
       default:
         throw new RuntimeException(String.format("Don't have URL scheme defined for granularity '%s'.", granularity));
     }
@@ -212,7 +212,7 @@ public class WikipediaConnector {
         .map(valueObj -> valueObj.getAsJsonObject().get("time").getAsString().replace("-00", "-01"))
         .map(birthdayString -> LocalDate.parse(
             birthdayString.substring(1, 11),
-            DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"))));
   }
 
   private static Optional<String> getWikiDataEntityIdIfPerson(WikiArticle wikiArticle) {

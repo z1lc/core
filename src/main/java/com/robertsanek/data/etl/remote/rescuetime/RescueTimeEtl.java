@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -35,7 +36,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
   private static final Log log = Logs.getLog(RescueTimeEtl.class);
   @VisibleForTesting int FROM_YEAR = 2009; //first data in RescueTime is from 2009
   @VisibleForTesting int TO_YEAR = LocalDate.now().getYear();
-  DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
 
   @Inject SecretProvider secretProvider;
 

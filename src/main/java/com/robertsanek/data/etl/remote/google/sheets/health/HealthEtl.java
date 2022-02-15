@@ -7,6 +7,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ import com.robertsanek.util.Unchecked;
 
 public class HealthEtl extends Etl<Health> {
 
-  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM-dd-yyyy", new Locale("en"));
   private static final String RANGE = "\uD83D\uDCCB Daily Log!A2:L10000";
   @Inject SecretProvider secretProvider;
 

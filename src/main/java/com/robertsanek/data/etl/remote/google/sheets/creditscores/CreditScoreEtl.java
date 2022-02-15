@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
@@ -18,7 +19,7 @@ import com.robertsanek.util.Unchecked;
 
 public class CreditScoreEtl extends Etl<CreditScore> {
 
-  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
   private static final String RANGE = "\uD83D\uDCAF Credit Score!A2:H10000";
   @Inject SecretProvider secretProvider;
 

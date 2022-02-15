@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ public class LiftEtl implements Callable<Object> {
           } else {
             monthAndDay = monthAndDay + "/2018";
           }
-          LocalDate day = LocalDate.parse(monthAndDay, DateTimeFormatter.ofPattern("M/d/uuuu"));
+          LocalDate day = LocalDate.parse(monthAndDay, DateTimeFormatter.ofPattern("M/d/uuuu", new Locale("en")));
           String maybeDescription1 = liftingDayRows.get(0).get(1).toString();
           String maybeDescription2 = liftingDayRows.get(0).get(4).toString();
           String description = maybeDescription1.contains("e") ? maybeDescription1 : maybeDescription2;

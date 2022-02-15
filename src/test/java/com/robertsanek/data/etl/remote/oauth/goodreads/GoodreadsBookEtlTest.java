@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.robertsanek.util.inject.InjectUtils;
 
-public class GoodreadsGoodreadsBookEtlTest {
+public class GoodreadsBookEtlTest {
 
   @Test
   @Disabled("integration")
