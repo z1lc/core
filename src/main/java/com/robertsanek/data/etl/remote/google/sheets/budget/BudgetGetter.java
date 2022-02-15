@@ -39,7 +39,7 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
  */
 public class BudgetGetter implements QuartzJob {
 
-  private static final DateTimeFormatter SIMPLE_DATE_FORMAT = DateTimeFormatter.ofPattern("M/d/yy");
+  private static final DateTimeFormatter SIMPLE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
   private static final ImmutableList<LineItemType> EXPENSES_LINE_ITEM_ORDER = ImmutableList.of(
       LineItemType.FOOD,
       LineItemType.FOOD,
