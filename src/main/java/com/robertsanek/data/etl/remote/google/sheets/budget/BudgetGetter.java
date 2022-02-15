@@ -64,8 +64,8 @@ public class BudgetGetter implements QuartzJob {
   @Inject NotificationSender notificationSender;
   @Inject SecretProvider secretProvider;
 
-  private AtomicLong counter = new AtomicLong(0);
-  private List<String> errors = new ArrayList<>();
+  private final AtomicLong counter = new AtomicLong(0);
+  private final List<String> errors = new ArrayList<>();
 
   public List<AnnotatedItem> getData() {
     List<AnnotatedItem> allLineItems = getValues(INCOME_RANGE);

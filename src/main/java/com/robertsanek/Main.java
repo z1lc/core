@@ -46,7 +46,7 @@ import com.robertsanek.wikipedia.WikipediaConnector;
 public class Main {
 
   private static final Log log = Logs.getLog(Main.class);
-  private static String target = CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "_SUCCESS/";
+  private static final String target = CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "_SUCCESS/";
 
   public static void main(String[] args) throws IOException, InterruptedException, SchedulerException {
     log.info("core is running on %s at %s.", System.getProperty("os.name"), ZonedDateTime.now());
