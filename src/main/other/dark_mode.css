@@ -1,0 +1,9 @@
+@media (prefers-color-scheme: dark) {
+    html {
+        filter: invert(100%);
+    }
+
+    html img {
+        filter: invert(100%);
+    }
+}
