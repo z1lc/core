@@ -228,7 +228,17 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
             } else if (note.getFields().contains("zdone:chemistry")) {
               return "General Knowledge";
             } else if (note.getFields().contains("zdone:car")) {
-              return "Cars";
+              return "General Knowledge";
+            } else if (note.getFields().contains("zdone:company")) {
+              return "General Knowledge";
+            } else if (note.getFields().contains("zdone:ingredient")) {
+              return "Health";
+            } else if (note.getFields().contains("zdone:wikipedia")) {
+              return "General Knowledge";
+            } else if (note.getFields().contains("zdone:incident")) {
+              return "Work";
+            } else if (note.getFields().contains("zdone:exercise")) {
+              return "Health";
             }
           }
 
