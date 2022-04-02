@@ -43,7 +43,7 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-sqladmin</artifactId>
-      <version>v1-rev20220310-1.32.1</version>
+      <version>v1-rev20220323-1.32.1</version>
     </dependency>
 
     <!-- Became necessary to include when loading Hibernate config after Java 10 upgrade.
@@ -277,7 +277,7 @@
     <dependency>
       <groupId>com.twilio.sdk</groupId>
       <artifactId>twilio</artifactId>
-      <version>8.27.1</version>
+      <version>8.28.0</version>
     </dependency>
 
     <dependency>
@@ -288,7 +288,7 @@
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>10.0</version>
+      <version>10.1</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>
