@@ -6,8 +6,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -19,7 +21,7 @@ import j2html.tags.DomContent;
 public class HTMLOutputBuilder {
 
   public ZonedDateTime now = ZonedDateTime.now();
-  private DecimalFormat df = new DecimalFormat("#.0");
+  private DecimalFormat df = new DecimalFormat("#.0", DecimalFormatSymbols.getInstance(new Locale("en")));
 
   public ContainerTag buildHTML(List<Loan> loans) {
     String styleSheet = getStyleSheet();
