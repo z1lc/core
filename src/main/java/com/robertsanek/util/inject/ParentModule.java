@@ -3,6 +3,7 @@ package com.robertsanek.util.inject;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.sheigutn.pushbullet.Pushbullet;
@@ -26,10 +27,10 @@ public class ParentModule extends AbstractModule {
   @Singleton
   ObjectMapper objectMapper() {
     //https://github.com/FasterXML/jackson-modules-java8
-    ObjectMapper objectMapper = new ObjectMapper()
-        .registerModule(new JavaTimeModule());
-    objectMapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
-    return objectMapper;
+    return JsonMapper.builder()
+        .addModule(new JavaTimeModule())
+        .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+        .build();
   }
 
   @Provides
