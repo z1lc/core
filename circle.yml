@@ -5,7 +5,7 @@ jobs:
     working_directory: ~
 
     docker:
-      - image: codeaches/openjdk:17-jdk
+      - image: cimg/openjdk:17.0.2
 
     steps:
 
