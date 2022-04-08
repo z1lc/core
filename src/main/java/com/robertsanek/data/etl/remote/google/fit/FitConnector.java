@@ -19,7 +19,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.fitness.Fitness;
 import com.google.api.services.fitness.FitnessScopes;
@@ -33,7 +33,7 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 public class FitConnector {
 
   private static final String APPLICATION_NAME = "R ETL";
-  private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+  private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
   private static final HttpTransport HTTP_TRANSPORT = Unchecked.get(GoogleNetHttpTransport::newTrustedTransport);
   private static final java.io.File DATA_STORE_DIR = new java.io.File(
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "in/etl/google_fit_credential");

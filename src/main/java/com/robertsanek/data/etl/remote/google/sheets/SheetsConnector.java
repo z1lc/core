@@ -18,7 +18,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
@@ -31,7 +31,7 @@ import com.robertsanek.util.platform.CrossPlatformUtils;
 public class SheetsConnector {
 
   private static final String APPLICATION_NAME = "R ETL";
-  private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+  private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
   private static final HttpTransport HTTP_TRANSPORT;
   private static final ImmutableList<String> SCOPES = ImmutableList.of(SheetsScopes.SPREADSHEETS_READONLY);
   private static final FileDataStoreFactory DATA_STORE_FACTORY;

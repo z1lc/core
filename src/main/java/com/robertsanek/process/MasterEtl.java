@@ -39,7 +39,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sqladmin.SQLAdmin;
 import com.google.api.services.sqladmin.model.DatabaseInstance;
 import com.google.api.services.sqladmin.model.Operation;
@@ -133,7 +133,7 @@ public class MasterEtl implements QuartzJob {
 
   private SQLAdmin createSqlAdminService() throws IOException, GeneralSecurityException {
     HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-    JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+    JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
     @SuppressWarnings("deprecation")  //https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory/issues/66
         GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(

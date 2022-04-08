@@ -24,7 +24,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.analyticsreporting.v4.AnalyticsReporting;
 import com.google.api.services.analyticsreporting.v4.AnalyticsReportingScopes;
@@ -41,7 +41,7 @@ public class HelloAnalytics {
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "in/etl/google_analytics_credential");
 
   private static final String APPLICATION_NAME = "Hello Analytics Reporting";
-  private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+  private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
   private static AtomicLong ID_ISSUER = new AtomicLong(1);
   private static final Log log = Logs.getLog(HelloAnalytics.class);
 
