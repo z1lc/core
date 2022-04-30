@@ -5,6 +5,7 @@ Pre-built commands to send to `nativefier` to create dark-mode-aware native appl
 ```
 nativefier 'zdone.co' --name 'zdone tasks' --darwin-dark-mode-support
 nativefier 'gmail.com' --name 'Gmail' --inject ./dark_mode.css --darwin-dark-mode-support
+nativefier 'docs.google.com' --name 'Google Docs' --inject ./dark_mode.css --darwin-dark-mode-support
 nativefier 'calendar.google.com' --name 'Google Calendar' --inject ./dark_mode.css --darwin-dark-mode-support
 nativefier 'keep.google.com' --name 'Google Keep' --inject ./dark_mode.css --darwin-dark-mode-support
 ```
