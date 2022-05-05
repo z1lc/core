@@ -55,6 +55,20 @@ public class AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatch e
       1574719411307L,
       1583888550469L,
       1631767315766L,
+      // Czech imported start
+      1459400148719L,
+      1532180104197L,
+      1469971057949L,
+      1469971060470L,
+      1502693103032L,
+      1532180104407L,
+      1502693101744L,
+      1532180104275L,
+      1469971059545L,
+      1502693102454L,
+      1532180104017L,
+      1469971057672L,
+      // Czech imported end
       0L
   );
 
