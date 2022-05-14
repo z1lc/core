@@ -11,4 +11,5 @@ nativefier 'sheets.google.com' --name 'Google Tabulky (Sheets)' --inject ./dark_
 nativefier 'keep.google.com' --name 'Google Keep' --inject ./dark_mode.css --darwin-dark-mode-support
 nativefier 'linebyline.app' --name 'LineByLine' --inject ./dark_mode.css --darwin-dark-mode-support
 nativefier 'https://trello.com/b/Kq6NQ2LP/backlogs' --name 'Trello Backlogs' --inject ./dark_mode.css --darwin-dark-mode-support
+nativefier 'https://workflowy.com/' --name 'Workflowy' --inject ./dark_mode.css --darwin-dark-mode-support
 ```
