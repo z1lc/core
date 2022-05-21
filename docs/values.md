@@ -1,5 +1,5 @@
 # Personal Values
-Values I try to live by. Last reviewed *January 15, 2022*.
+Values I try to live by. Last reviewed *May 21, 2022*.
 
 ## Health
 Physical, mental / emotional, and spiritual health.
