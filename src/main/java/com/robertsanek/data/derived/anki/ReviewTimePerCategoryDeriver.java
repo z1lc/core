@@ -20,14 +20,46 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
 
   // should only contain zdone-generated models
   private static final Map<Long, String> MODEL_ID_TO_CATEGORY = ImmutableMap.<Long, String>builder()
-      .put(1586000000000L, "Culture - Music") // SPOTIFY_TRACK_MODEL_ID
-      .put(1587000000000L, "Culture - Music") // SPOTIFY_ARTIST_MODEL_ID
-      .put(1588000000000L, "Culture - Movies/TV") // VIDEO_MODEL_ID
-      .put(1589000000000L, "Culture - Movies/TV") // VIDEO_PERSON_MODEL_ID
+      .put(1586000000000L, "Music") // SPOTIFY_TRACK_MODEL_ID
+      .put(1587000000000L, "Music") // SPOTIFY_ARTIST_MODEL_ID
+      .put(1588000000000L, "Movies & TV") // VIDEO_MODEL_ID
+      .put(1589000000000L, "Movies & TV") // VIDEO_PERSON_MODEL_ID
       .put(1604800000000L, "General Knowledge") // READWISE_HIGHLIGHT_CLOZE_MODEL_ID
-      .put(1607000000000L, "Culture - Drinks") // BEER_MODEL_ID
-      .put(1621000000000L, "Culture - Music") // SPOTIFY_GENRE_MODEL_ID
-      .put(1622000000000L, "Culture - Venues") // VENUE_MODEL_ID
+      .put(1607000000000L, "Drinks") // BEER_MODEL_ID
+      .put(1621000000000L, "Music") // SPOTIFY_GENRE_MODEL_ID
+      .put(1622000000000L, "Venues") // VENUE_MODEL_ID
+      .build();
+
+  private static final Map<String, String> BASIC_ID_PREFIXES_TO_CATEGORY  = ImmutableMap.<String, String>builder()
+      .put("zdone:car:", "General Knowledge")
+      .put("zdone:chemistry:", "General Knowledge")
+      .put("zdone:company:", "General Knowledge")
+      .put("zdone:highlight:", "General Knowledge")
+      .put("zdone:reminder:", "General Knowledge")
+      .put("zdone:river:", "General Knowledge")
+      .put("zdone:wikipedia:", "General Knowledge")
+      .put("zdone:mlb:", "Sports")
+      .put("zdone:nba:", "Sports")
+      .put("zdone:nfl:", "Sports")
+      .put("zdone:nhl:", "Sports")
+      .put("zdone:cheese:", "Food")
+      .put("zdone:coffee:", "Food")
+      .put("zdone:pasta:", "Food")
+      .put("spotify:artist:", "Music")
+      .put("spotify:track:", "Music")
+      .put("zdone:genre:", "Music")
+      .put("zdone:cocktail:", "Drinks")
+      .put("zdone:beer:", "Drinks")
+      .put("zdone:exercise:", "Health")
+      .put("zdone:ingredient:", "Health")
+      .put("zdone:person:", "Movies & TV")
+      .put("zdone:video:", "Movies & TV")
+      .put("zdone:cat:", "Pets")
+      .put("zdone:dog:", "Pets")
+      .put("zdone:art:", "Art")
+      .put("zdone:historical_event:", "History")
+      .put("zdone:venue:", "Venues")
+      .put("zdone:incident:", "Work")
       .build();
 
   private static final Map<String, String> MODEL_NAME_TO_CATEGORY = ImmutableMap.<String, String>builder()
@@ -49,11 +81,11 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
       .put("_Unix command types", "Computing")
       .put("R Data Structure", "Computing")
 
-      .put("Spotify", "Culture")
-      .put("Venue", "Culture")
-      .put("Work of Art", "Culture")
-      .put("Movie/TV", "Culture")
-      .put("Music Album", "Culture")
+      .put("Spotify", "Music")
+      .put("Venue", "Venues")
+      .put("Work of Art", "Art")
+      .put("Movie/TV", "Movies & TV")
+      .put("Music Album", "Music")
 
       .put("Currency", "General Knowledge")
       .put("Elements", "General Knowledge")
@@ -135,11 +167,11 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
       .put("Java", "Computing")
       .put("computing", "Computing")
 
-      .put("author", "Culture")
-      .put("artist", "Culture")
-      .put("actor", "Culture")
-      .put("TV", "Culture")
-      .put("music festival", "Culture")
+      .put("author", "Books")
+      .put("artist", "Music")
+      .put("actor", "Movies & TV")
+      .put("TV", "Movies & TV")
+      .put("music festival", "Music")
 
       .put("US politics", "General Knowledge")
       .put("Memory cognitive bias", "General Knowledge")
@@ -209,36 +241,10 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
 
           //Basic model ID
           if (note.getModel_id() == 1624000000000L) {
-            if (note.getFields().contains("zdone:venue")) {
-              return "Culture - Venues";
-            } else if (note.getFields().contains("zdone:historical_event")) {
-              return "History";
-            } else if (note.getFields().contains("zdone:cocktail")) {
-              return "Culture - Drinks";
-            } else if (note.getFields().contains("zdone:pasta") || note.getFields().contains("zdone:coffee") ||
-                note.getFields().contains("zdone:cheese")) {
-              return "Culture - Food";
-            } else if (note.getFields().contains("zdone:dog") || note.getFields().contains("zdone:cat")) {
-              return "Culture - Pets";
-            } else if (note.getFields().contains("zdone:nba") || note.getFields().contains("zdone:mlb") ||
-                note.getFields().contains("zdone:nfl") || note.getFields().contains("zdone:nhl")) {
-              return "Culture - Sports";
-            } else if (note.getFields().contains("zdone:art")) {
-              return "Culture - Art";
-            } else if (note.getFields().contains("zdone:chemistry")) {
-              return "General Knowledge";
-            } else if (note.getFields().contains("zdone:car")) {
-              return "General Knowledge";
-            } else if (note.getFields().contains("zdone:company")) {
-              return "General Knowledge";
-            } else if (note.getFields().contains("zdone:ingredient")) {
-              return "Health";
-            } else if (note.getFields().contains("zdone:wikipedia")) {
-              return "General Knowledge";
-            } else if (note.getFields().contains("zdone:incident")) {
-              return "Work";
-            } else if (note.getFields().contains("zdone:exercise")) {
-              return "Health";
+            for (Map.Entry<String, String> id_prefix_to_category : BASIC_ID_PREFIXES_TO_CATEGORY.entrySet()) {
+              if (note.getFields().contains(id_prefix_to_category.getKey())) {
+                return id_prefix_to_category.getValue();
+              }
             }
           }
 

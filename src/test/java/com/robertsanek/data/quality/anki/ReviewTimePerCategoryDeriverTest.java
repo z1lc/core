@@ -51,8 +51,8 @@ public class ReviewTimePerCategoryDeriverTest {
   @Disabled("needs local Anki db")
   void reviewToCategory_culture_by_context() {
     String actual = new ReviewTimePerCategoryDeriver().reviewToCategory(Review.ReviewBuilder.aReview()
-        .withCard_id(1542917262530L)
+        .withCard_id(1537833602481L)  // Billy Bush
         .build());
-    assertEquals("Culture", actual);
+    assertEquals("Movies & TV", actual);
   }
 }
