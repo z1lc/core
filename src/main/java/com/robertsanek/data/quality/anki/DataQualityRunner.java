@@ -97,8 +97,8 @@ public class DataQualityRunner implements QuartzJob {
   @Inject SecretProvider secretProvider;
 
   @VisibleForTesting
-  static ContainerTag getEmailContent(DataQualityBase.DQInformation dqInformation) {
-    ContainerTag htmlEmailContent = div();
+  static ContainerTag<?> getEmailContent(DataQualityBase.DQInformation dqInformation) {
+    ContainerTag<?> htmlEmailContent = div();
     if (dqInformation.getErrors().size() > 0) {
       htmlEmailContent.with(b("Errors:")).with(br());
       htmlEmailContent.with(dqInformation.getErrorsAsTable());
@@ -227,11 +227,11 @@ public class DataQualityRunner implements QuartzJob {
         log.error(toOutput);
       }
       String emailSubject = getEmailSubject(errors, warnings);
-      ContainerTag emailIntro = p(join(
+      ContainerTag<?> emailIntro = p(join(
           "System: ", b(String.format("%s / %s", System.getProperty("os.arch"), System.getProperty("os.name"))), br(),
           "Time: ", b(startZdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z", new Locale("en")))), br(),
           "Duration :", b(String.valueOf(startSW.elapsed().getSeconds())), "seconds"));
-      ContainerTag emailContent = getEmailContent(dqInformation);
+      ContainerTag<?> emailContent = getEmailContent(dqInformation);
       if (errors + warnings >= MINIMUM_VIOLATIONS &&
           jobDataMap.getString("machine_type").toLowerCase().contains("manual")) {
         log.info("Will notify because the total number of errors and warnings (%s) is at least as large as the " +

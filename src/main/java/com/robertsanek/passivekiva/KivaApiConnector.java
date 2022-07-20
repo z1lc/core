@@ -146,7 +146,7 @@ public class KivaApiConnector implements QuartzJob {
 
     allDetailedLoans.forEach(loan -> loan.setDuration(LoanDurationCalculator.getDuration(now, loan)));
     allDetailedLoans = allDetailedLoans.stream().sorted().collect(Collectors.toList());
-    final ContainerTag containerTag = new HTMLOutputBuilder().buildHTML(allDetailedLoans);
+    final ContainerTag<?> containerTag = new HTMLOutputBuilder().buildHTML(allDetailedLoans);
 
     File loansTarget =
         new File(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/loans.html");

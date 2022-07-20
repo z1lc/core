@@ -46,7 +46,7 @@ public class HabiticaLoadAssessment {
 
     final String regex = "(:[a-zA-Z0-9_]*?:)";
 
-    ContainerTag html = html()
+    ContainerTag<?> html = html()
         .with(head()
             .with(meta().attr("charset", "UTF-8"), style().withText(
                 "table {border-collapse: collapse;} table, th, td { border: 1px solid black; padding: 2px 3px 2px 3px; } span {font-size: 0.7em}")))

@@ -284,10 +284,11 @@ public class WikipediaConnector {
   }
 
   private void writeHtmlFile(List<WikiPerson> sortedPeople) {
-    ContainerTag html = html()
+    ContainerTag<?> html = html()
         .with(head()
             .with(style().with(new DomContent() {
               @Override
+              @SuppressWarnings("deprecation")
               public void renderModel(Appendable writer, Object model) throws IOException {
                 writer.append(new HTMLOutputBuilder().getStyleSheet());
               }

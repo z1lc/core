@@ -325,17 +325,17 @@ public abstract class DataQualityBase {
       return errors.stream().map(IndividualError::toString).collect(Collectors.toList());
     }
 
-    ContainerTag getErrorsAsTable() {
+    ContainerTag<?> getErrorsAsTable() {
       return getGenericAsTable(errors);
     }
 
-    ContainerTag getWarningsAsTable() {
+    ContainerTag<?> getWarningsAsTable() {
       return getGenericAsTable(warnings);
     }
 
     @VisibleForTesting
-    static ContainerTag getGenericAsTable(List<IndividualError> type) {
-      ContainerTag table = table();
+    static ContainerTag<?> getGenericAsTable(List<IndividualError> type) {
+      ContainerTag<?> table = table();
       type.forEach(individualErrorOrWarning ->
           table.with(tr().with(
               td(individualErrorOrWarning.getName()),

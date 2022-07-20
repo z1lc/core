@@ -23,7 +23,7 @@ public class HTMLOutputBuilder {
   public ZonedDateTime now = ZonedDateTime.now();
   private DecimalFormat df = new DecimalFormat("#.0", DecimalFormatSymbols.getInstance(new Locale("en")));
 
-  public ContainerTag buildHTML(List<Loan> loans) {
+  public ContainerTag<?> buildHTML(List<Loan> loans) {
     String styleSheet = getStyleSheet();
     return html()
         .with(head()
@@ -36,6 +36,7 @@ public class HTMLOutputBuilder {
                   }
 
                   @Override
+                  @SuppressWarnings("deprecation")
                   public void renderModel(Appendable writer, Object model) throws IOException {
                     writer.append(styleSheet);
                   }

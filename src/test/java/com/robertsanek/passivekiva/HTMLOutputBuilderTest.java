@@ -30,7 +30,7 @@ public class HTMLOutputBuilderTest {
 
   @Test
   public void realTest() {
-    ContainerTag containerTag = new HTMLOutputBuilder().buildHTML(Collections.emptyList());
+    ContainerTag<?> containerTag = new HTMLOutputBuilder().buildHTML(Collections.emptyList());
     assertTrue(containerTag.render().contains("sans-serif"));
   }
 
