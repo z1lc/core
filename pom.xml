@@ -356,7 +356,7 @@
       <plugin>
         <groupId>com.heroku.sdk</groupId>
         <artifactId>heroku-maven-plugin</artifactId>
-        <version>3.0.5</version>
+        <version>3.0.6</version>
         <configuration>
           <appName>qs-runner</appName>
           <includeTarget>false</includeTarget>
