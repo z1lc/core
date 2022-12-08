@@ -46,7 +46,8 @@ public class EtlAndDqJob implements QuartzJob {
       parallel = jobDataMap.getBoolean("parallel");
     }
     if (!fastRun) {
-      ankiEtl.call();
+      // heroku shut us down
+//      ankiEtl.call();
 //      no longer using LeetCode nor Toodledo
 //      leetCodeToodledoTaskEtl.run();
     }

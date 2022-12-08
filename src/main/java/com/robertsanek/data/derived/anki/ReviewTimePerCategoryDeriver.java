@@ -33,7 +33,6 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
   private static final Map<String, String> BASIC_ID_PREFIXES_TO_CATEGORY  = ImmutableMap.<String, String>builder()
       .put("zdone:car:", "General Knowledge")
       .put("zdone:chemistry:", "General Knowledge")
-      .put("zdone:company:", "General Knowledge")
       .put("zdone:highlight:", "General Knowledge")
       .put("zdone:reminder:", "General Knowledge")
       .put("zdone:river:", "General Knowledge")
