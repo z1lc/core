@@ -1,14 +1,14 @@
 # Personal Values
-Values I try to live by. Last reviewed *May 21, 2022*.
+Values I try to live by. Last reviewed *December 17, 2022*.
 
 ## Health
-Physical, mental / emotional, and spiritual health.
+Physical, mental, emotional, spiritual.
 
 ## Relationships
-Friendships, family, romantic partners.
+Romantic partners, family, friendships, communities.
 
 ## Curiosity
-Intellectual and experiential curiosity.
+Intellectual, experiential, creative.
 
 ## Confident Optimism
 The default expectation is positive.
@@ -22,11 +22,6 @@ Make hard decisions about what to pursue and what to throw away. Concern yoursel
 ## Neuroplasticity
 
 Your beliefs influence your own perception of reality and can even become self-fulfilling. Purposefully select beliefs for yourself instead of being subject to them.
-
-## Measurement
-> "The first rule is that a measurement–any measurement–is better than none." (Andy Grove in *High Output Management*)
-
-Thoughtful input and output metrics can accurately capture progress on goals; assessments become less susceptible to mental biases when informed by objective data.
 
 ## Action
 In general, it is better to take action and fail than to have never taken action at all. Focus on potential growth stemming from an activity and get comfortable accepting downside risk.
