@@ -1,7 +1,7 @@
 package com.robertsanek.data;
 
-import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD;
-import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME;
+import static com.robertsanek.util.SecretType.RENDER_SQL_Z_BI_POSTGRES_PASSWORD;
+import static com.robertsanek.util.SecretType.RENDER_SQL_Z_BI_POSTGRES_USERNAME;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,10 +23,9 @@ public class ReCreateViews {
   @Inject SecretProvider secretProvider;
 
   public void executeQueries() {
-    String jdbcUrl = "jdbc:postgresql://google/postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory" +
-        "&cloudSqlInstance=arctic-rite-143002:us-west1:rsanek-db";
-    String username = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME);
-    String password = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
+    String jdbcUrl = "jdbc:postgresql://dpg-cefuij1gp3jk7mi5qev0-a.oregon-postgres.render.com:5432/z_bi";
+    String username = secretProvider.getSecret(RENDER_SQL_Z_BI_POSTGRES_USERNAME);
+    String password = secretProvider.getSecret(RENDER_SQL_Z_BI_POSTGRES_PASSWORD);
 
     Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
     String lastStatement = "";

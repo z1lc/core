@@ -1,8 +1,7 @@
 package com.robertsanek.process;
 
-import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME;
-import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD;
-import static com.robertsanek.util.SecretType.GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME;
+import static com.robertsanek.util.SecretType.RENDER_SQL_Z_BI_POSTGRES_PASSWORD;
+import static com.robertsanek.util.SecretType.RENDER_SQL_Z_BI_POSTGRES_USERNAME;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -90,43 +89,29 @@ public class MasterEtl implements QuartzJob {
       throws HibernateException, IOException, GeneralSecurityException, InterruptedException {
     try {
       config.setProperty("hibernate.hbm2ddl.auto", hbm2ddlType.getText());
-      String username;
-      String password;
-      String instanceName;
-      if (connectionType.equals(ConnectionType.RSANEK)) {
-        username = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_USERNAME);
-        password = secretProvider.getSecret(GOOGLE_CLOUD_SQL_RSANEK_POSTGRES_PASSWORD);
-        instanceName = "rsanek-db";
-      } else if (connectionType.equals(ConnectionType.CRONUS)) {
-        username = secretProvider.getSecret(GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME);
-        password = secretProvider.getSecret(GOOGLE_CLOUD_SQL_CRONUS_POSTGRES_USERNAME);
-        instanceName = "cronus-pg-primary";
-      } else {
-        throw new RuntimeException(String.format("Don't know configuration for connection type %s.", connectionType));
-      }
+      String username = secretProvider.getSecret(RENDER_SQL_Z_BI_POSTGRES_USERNAME);
+      String password = secretProvider.getSecret(RENDER_SQL_Z_BI_POSTGRES_PASSWORD);
       config.setProperty("hibernate.connection.username", username);
       config.setProperty("hibernate.connection.password", password);
-      config.setProperty("connection.url",
-          "jdbc:postgresql://google/postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory&cloudSqlInstance=arctic-rite-143002:us-west1:" +
-              instanceName);
+      config.setProperty("connection.url", "jdbc:postgresql://dpg-cefuij1gp3jk7mi5qev0-a.oregon-postgres.render.com:5432/z_bi");
       return config.buildSessionFactory();
     } catch (ServiceException e) {
-      log.info("Failed to connect to Cloud SQL Instance. Assuming instance is stopped, attempting to start...");
-      String project = "arctic-rite-143002";
-      String instance = "rsanek-db";
-
-      DatabaseInstance requestBody = new DatabaseInstance();
-      requestBody.setSettings(new Settings().setActivationPolicy("ALWAYS"));
-      SQLAdmin sqlAdminService = createSqlAdminService();
-      SQLAdmin.Instances.Patch request =
-          sqlAdminService.instances().patch(project, instance, requestBody);
-
-      Operation response = request.execute();
-
-      log.info(response.toPrettyString());
-      log.info("Starting instance successful. Waiting for %s seconds to let instance start.",
-          INSTANCE_STARTUP_WAIT_TIME.toMinutes());
-      Thread.sleep(INSTANCE_STARTUP_WAIT_TIME.toMillis());
+//      log.info("Failed to connect to Cloud SQL Instance. Assuming instance is stopped, attempting to start...");
+//      String project = "arctic-rite-143002";
+//      String instance = "rsanek-db";
+//
+//      DatabaseInstance requestBody = new DatabaseInstance();
+//      requestBody.setSettings(new Settings().setActivationPolicy("ALWAYS"));
+//      SQLAdmin sqlAdminService = createSqlAdminService();
+//      SQLAdmin.Instances.Patch request =
+//          sqlAdminService.instances().patch(project, instance, requestBody);
+//
+//      Operation response = request.execute();
+//
+//      log.info(response.toPrettyString());
+//      log.info("Starting instance successful. Waiting for %s seconds to let instance start.",
+//          INSTANCE_STARTUP_WAIT_TIME.toMinutes());
+//      Thread.sleep(INSTANCE_STARTUP_WAIT_TIME.toMillis());
       return config.buildSessionFactory();
     }
   }
@@ -163,9 +148,7 @@ public class MasterEtl implements QuartzJob {
           total.elapsed().getSeconds(), parallel);
       Stream<Class<? extends Etl>> stream = parallel ? concreteEtls.parallelStream() : concreteEtls.stream();
 
-      List<EtlRun> etlRuns = stream
-          .map(etlClazz -> runIndividualEtl(etlClazz, noneSf))
-          .collect(Collectors.toList());
+      List<EtlRun> etlRuns = stream.map(etlClazz -> runIndividualEtl(etlClazz, noneSf)).toList();
       try (Session session = noneSf.openSession()) {
         Transaction transaction = session.beginTransaction();
         etlRuns.forEach(session::save);

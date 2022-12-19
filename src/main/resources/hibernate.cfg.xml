@@ -10,7 +10,7 @@
     <property name="connection.driver_class">org.postgresql.Driver</property>
     <property name="connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
     <property name="connection.url">
-      jdbc:postgresql://google/postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory&amp;cloudSqlInstance=arctic-rite-143002:us-west1:rsanek-db
+      jdbc:postgresql://dpg-cefuij1gp3jk7mi5qev0-a.oregon-postgres.render.com:5432/z_bi
     </property>
 
     <property name="hibernate.jdbc.time_zone">America/Los_Angeles</property> <!-- UTC -->
