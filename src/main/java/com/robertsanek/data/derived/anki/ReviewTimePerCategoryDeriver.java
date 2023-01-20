@@ -267,7 +267,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
           List<String> fields = DataQualityBase.splitCsvIntoCommaSeparatedList(note.getFields());
           int contextIndex = DataQualityBase.getFieldsByModelId().get(model.getId()).stream()
               .map(Field::getName)
-              .collect(Collectors.toList())
+              .toList()
               .indexOf("Context \uD83D\uDCA1");
           if (contextIndex > -1 && contextIndex < fields.size()) {
             String maybeContext = fields.get(contextIndex);
