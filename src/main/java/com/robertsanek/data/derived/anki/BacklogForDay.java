@@ -29,7 +29,9 @@ public class BacklogForDay {
 
     private BacklogForDayBuilder() {}
 
-    public static BacklogForDayBuilder aBacklogForDay() {return new BacklogForDayBuilder();}
+    public static BacklogForDayBuilder aBacklogForDay() {
+      return new BacklogForDayBuilder();
+    }
 
     public BacklogForDayBuilder withDate(LocalDate date) {
       this.date = date;
