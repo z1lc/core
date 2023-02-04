@@ -32,6 +32,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
 
   private static final Map<String, String> BASIC_ID_PREFIXES_TO_CATEGORY  = ImmutableMap.<String, String>builder()
       .put("zdone:car:", "General Knowledge")
+      .put("zdone:dawn:", "General Knowledge")
       .put("zdone:chemistry:", "General Knowledge")
       .put("zdone:highlight:", "General Knowledge")
       .put("zdone:reminder:", "General Knowledge")
@@ -52,6 +53,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
       .put("zdone:beer:", "Drinks")
       .put("zdone:exercise:", "Health")
       .put("zdone:ingredient:", "Health")
+      .put("zdone:intermittent_fasting:", "Health")
       .put("zdone:person:", "Movies & TV")
       .put("zdone:video:", "Movies & TV")
       .put("zdone:cat:", "Pets")
@@ -61,9 +63,10 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
       .put("zdone:historical_event:", "History")
       .put("zdone:venue:", "Venues")
       .put("zdone:incident:", "Work")
-      .put("zdone:spanish_verb:", "Language")
-      .put("zdone:spanish_verb_sentence:", "Language")
+      .put("zdone:spanish", "Language")
       .put("zdone:company:", "Companies")
+      .put("zdone:perfume:", "Perfumes")
+      .put("zdone:watch:", "Watches")
       .build();
 
   private static final Map<String, String> MODEL_NAME_TO_CATEGORY = ImmutableMap.<String, String>builder()
