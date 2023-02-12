@@ -1,12 +1,11 @@
 package com.robertsanek.data.quality.anki;
 
-import static org.junit.Assert.assertEquals;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ public class NewRepsPerCardDeriverTest {
     List<CardNewReps> objects = new NewRepsPerCardDeriver().getObjects().stream()
         .filter(nr -> DataQualityBase.cardByCardId.get(nr.getCard_id())
             .getCreated_at().isAfter(ZonedDateTime.now().minusDays(30)))
-        .collect(Collectors.toList());
+        .toList();
     long sum = objects.stream()
         .mapToLong(CardNewReps::getReps_to_graduate)
         .sum();
@@ -39,16 +38,13 @@ public class NewRepsPerCardDeriverTest {
         .filter(CardNewReps::isGotFirstReviewAfterGraduationCorrect)
         .filter(card -> card.getGraduating_interval() == 2)
         .count();
-    long total = ret.stream()
-        .filter(CardNewReps::isReviewedGraduationRepetitionOnTime)
-        .filter(card -> card.getGraduating_interval() == 2)
-        .count();
-    System.out.println((double) correct / total);
+    System.out.println((double) correct);
   }
 
   @Test
   public void getNumReviewsTillFirstAbove() {
-    assertEquals(Optional.empty(), NewRepsPerCardDeriver.getNumReviewsTillFirstAbove(Lists.newArrayList(), 21));
+    Assertions.assertEquals(Optional.empty(),
+        NewRepsPerCardDeriver.getNumReviewsTillFirstAbove(Lists.newArrayList(), 21));
 
     List<Review> reviews = Lists.newArrayList(
         // example comes from card id # 1599061445876
@@ -56,12 +52,14 @@ public class NewRepsPerCardDeriverTest {
         Review.ReviewBuilder.aReview().withInterval(2L).build(),
         Review.ReviewBuilder.aReview().withInterval(7L).build(),
         Review.ReviewBuilder.aReview().withInterval(24L).build(),
-        Review.ReviewBuilder.aReview().withInterval(103L).build()
+        Review.ReviewBuilder.aReview().withInterval(103L).build(),
+        Review.ReviewBuilder.aReview().withInterval(431L).build(),
+        Review.ReviewBuilder.aReview().withInterval(1666L).build()
     );
 
-    assertEquals(Optional.of(2L), NewRepsPerCardDeriver.getNumReviewsTillFirstAbove(reviews, 0));
-    assertEquals(Optional.of(4L), NewRepsPerCardDeriver.getNumReviewsTillFirstAbove(reviews, 21));
-    assertEquals(Optional.of(5L), NewRepsPerCardDeriver.getNumReviewsTillFirstAbove(reviews, 90));
+    Assertions.assertEquals(Optional.of(2L), NewRepsPerCardDeriver.getNumReviewsTillFirstAbove(reviews, 0));
+    Assertions.assertEquals(Optional.of(4L), NewRepsPerCardDeriver.getNumReviewsTillFirstAbove(reviews, 21));
+    Assertions.assertEquals(Optional.of(5L), NewRepsPerCardDeriver.getNumReviewsTillFirstAbove(reviews, 90));
   }
 
 }

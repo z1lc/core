@@ -10,7 +10,7 @@ import com.robertsanek.util.inject.InjectUtils;
 public class DeckEtlTest {
 
   @Test
-  @Disabled("integration")
+//  @Disabled("integration")
   public void integration() throws Exception {
     List<Deck> objects = InjectUtils.inject(DeckEtl.class).getObjects();
     System.out.println("objects = " + objects);

@@ -14,8 +14,9 @@ public class CardNewReps {
   Long reps_to_mature;
   Long reps_to_90d;
   Long graduating_interval;
+
   boolean gotFirstReviewAfterGraduationCorrect;
-  boolean reviewedGraduationRepetitionOnTime;
+  Long actualNumberOfDaysBetweenGraduationAndFirstReview;
 
   public Long getCard_id() {
     return card_id;
@@ -41,25 +42,23 @@ public class CardNewReps {
     return gotFirstReviewAfterGraduationCorrect;
   }
 
-  public boolean isReviewedGraduationRepetitionOnTime() {
-    return reviewedGraduationRepetitionOnTime;
+  public Long getActualNumberOfDaysBetweenGraduationAndFirstReview() {
+    return actualNumberOfDaysBetweenGraduationAndFirstReview;
   }
 
   public static final class CardNewRepsBuilder {
 
-    Long card_id;
-    Long reps_to_graduate;
-    Long reps_to_mature;
-    Long reps_to_90d;
-    Long graduating_interval;
-    boolean gotFirstReviewAfterGraduationCorrect;
-    boolean reviewedGraduationRepetitionOnTime;
+    private Long card_id;
+    private Long reps_to_graduate;
+    private Long reps_to_mature;
+    private Long reps_to_90d;
+    private Long graduating_interval;
+    private boolean gotFirstReviewAfterGraduationCorrect;
+    private Long actualNumberOfDaysBetweenGraduationAndFirstReview;
 
     private CardNewRepsBuilder() {}
 
-    public static CardNewRepsBuilder aCardNewReps() {
-      return new CardNewRepsBuilder();
-    }
+    public static CardNewRepsBuilder aCardNewReps() {return new CardNewRepsBuilder();}
 
     public CardNewRepsBuilder withCard_id(Long card_id) {
       this.card_id = card_id;
@@ -91,21 +90,22 @@ public class CardNewReps {
       return this;
     }
 
-    public CardNewRepsBuilder withReviewedGraduationRepetitionOnTime(
-        boolean reviewedGraduationRepetitionOnTime) {
-      this.reviewedGraduationRepetitionOnTime = reviewedGraduationRepetitionOnTime;
+    public CardNewRepsBuilder withActualNumberOfDaysBetweenGraduationAndFirstReview(
+        Long actualNumberOfDaysBetweenGraduationAndFirstReview) {
+      this.actualNumberOfDaysBetweenGraduationAndFirstReview = actualNumberOfDaysBetweenGraduationAndFirstReview;
       return this;
     }
 
     public CardNewReps build() {
       CardNewReps cardNewReps = new CardNewReps();
-      cardNewReps.reps_to_90d = this.reps_to_90d;
-      cardNewReps.reviewedGraduationRepetitionOnTime = this.reviewedGraduationRepetitionOnTime;
-      cardNewReps.graduating_interval = this.graduating_interval;
       cardNewReps.reps_to_graduate = this.reps_to_graduate;
-      cardNewReps.reps_to_mature = this.reps_to_mature;
-      cardNewReps.card_id = this.card_id;
       cardNewReps.gotFirstReviewAfterGraduationCorrect = this.gotFirstReviewAfterGraduationCorrect;
+      cardNewReps.reps_to_mature = this.reps_to_mature;
+      cardNewReps.reps_to_90d = this.reps_to_90d;
+      cardNewReps.actualNumberOfDaysBetweenGraduationAndFirstReview =
+          this.actualNumberOfDaysBetweenGraduationAndFirstReview;
+      cardNewReps.card_id = this.card_id;
+      cardNewReps.graduating_interval = this.graduating_interval;
       return cardNewReps;
     }
   }

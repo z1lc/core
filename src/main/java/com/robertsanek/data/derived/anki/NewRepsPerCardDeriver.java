@@ -1,5 +1,6 @@
 package com.robertsanek.data.derived.anki;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
         .map(Card::getId)
         .collect(Collectors.toCollection(HashSet::new));
     List<Review> reviews = DataQualityBase.getAllReviews();
+
     return reviews.stream()
         .collect(Collectors.groupingBy(Review::getCard_id))
         .values()
@@ -36,22 +38,19 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
           reviewsPerCard.sort(Comparator.comparing(Review::getCreated_at));
           boolean gotFirstReviewAfterGraduationCorrect = false;
           boolean foundFirstReviewAfterGraduation = false;
-          Long graduatingInterval = null;
-          for (int i = 0; i < reviewsPerCard.size(); i++) {
+          Long intendedGraduatingInterval = null;
+          Long actualNumberOfDaysBetweenGraduationAndFirstReview = null;
+          for (int i = 1; i < reviewsPerCard.size(); i++) {
             Review review = reviewsPerCard.get(i);
             if (!foundFirstReviewAfterGraduation) {
-              if (review.getLast_interval() == 1 &&
-                  reviewsPerCard.get(i - 1).getCreated_at().toLocalDate().plusDays(1)
-                      .equals(review.getCreated_at().toLocalDate())) {
-                graduatingInterval = 1L;
+              // the first review after graduation will be the first ordered review
+              // that has both the last interval and the current interval greater than 0.
+              if (review.getInterval() > 0 && review.getLast_interval() > 0) {
+                intendedGraduatingInterval = review.getLast_interval();
                 foundFirstReviewAfterGraduation = true;
-                gotFirstReviewAfterGraduationCorrect = review.getEase() >= 3;
-              } else if (review.getLast_interval() == 2 &&
-                  reviewsPerCard.get(i - 1).getCreated_at().toLocalDate().plusDays(2)
-                      .equals(review.getCreated_at().toLocalDate())) {
-                graduatingInterval = 2L;
-                foundFirstReviewAfterGraduation = true;
-                gotFirstReviewAfterGraduationCorrect = review.getEase() >= 3;
+                gotFirstReviewAfterGraduationCorrect = review.getEase() >= 2;
+                actualNumberOfDaysBetweenGraduationAndFirstReview =
+                    ChronoUnit.DAYS.between(reviewsPerCard.get(i - 1).getCreated_at(), review.getCreated_at());
               }
             }
           }
@@ -63,9 +62,9 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
               .withReps_to_graduate(toGraduate.orElse(null))
               .withReps_to_mature(toMature.orElse(null))
               .withReps_to_90d(to90.orElse(null))
-              .withGraduating_interval(graduatingInterval)
+              .withGraduating_interval(intendedGraduatingInterval)
               .withGotFirstReviewAfterGraduationCorrect(gotFirstReviewAfterGraduationCorrect)
-              .withReviewedGraduationRepetitionOnTime(foundFirstReviewAfterGraduation)
+              .withActualNumberOfDaysBetweenGraduationAndFirstReview(actualNumberOfDaysBetweenGraduationAndFirstReview)
               .build();
         })
         .collect(Collectors.toList());
