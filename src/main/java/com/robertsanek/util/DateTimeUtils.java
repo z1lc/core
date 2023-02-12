@@ -43,6 +43,28 @@ public class DateTimeUtils {
   private static final LocalDate MEXICO_2021_END = LocalDate.of(2021, 2, 28);
   private static final LocalDate NYC_2021_START = LocalDate.of(2021, 4, 16);
   private static final LocalDate NYC_2021_END = LocalDate.of(2021, 5, 9);
+  private static final LocalDate MEXICO_2021_P2_START = LocalDate.of(2021, 7, 10);
+  private static final LocalDate MEXICO_2021_P2_END = LocalDate.of(2021, 7, 18);
+  private static final LocalDate HUNTSVILLE_2021_START = LocalDate.of(2021, 9, 22);
+  private static final LocalDate HUNTSVILLE_2021_END_NYC_P2_START = LocalDate.of(2021, 9, 27);
+  private static final LocalDate NYC_2021_P2_END = LocalDate.of(2021, 10, 6);
+  private static final LocalDate HUNTSVILLE_2021_P2_START = LocalDate.of(2021, 11, 11);
+  private static final LocalDate HUNTSVILLE_2021_P2_END = LocalDate.of(2021, 11, 15);
+  private static final LocalDate HUNTSVILLE_2022_START = LocalDate.of(2022, 1, 1);
+  private static final LocalDate HUNTSVILLE_2022_END = LocalDate.of(2022, 1, 11);
+  private static final LocalDate MEXICO_2022_START = LocalDate.of(2022, 2, 4);
+  private static final LocalDate MEXICO_2022_END = LocalDate.of(2022, 2, 21);
+  private static final LocalDate EUROPE_2022_START = LocalDate.of(2022, 7, 21);
+  private static final LocalDate EUROPE_2022_END = LocalDate.of(2022, 8, 15);
+  private static final LocalDate NYC_2022_START = LocalDate.of(2022, 9, 1);
+  private static final LocalDate NYC_2022_END = LocalDate.of(2022, 10, 2);
+  private static final LocalDate PERU_2022_START = LocalDate.of(2022, 11, 16);
+  private static final LocalDate PERU_2022_END = LocalDate.of(2022, 12, 7);
+  private static final LocalDate HUNTSVILLE_2022_P2_START = LocalDate.of(2022, 12, 20);
+  private static final LocalDate HUNTSVILLE_2022_P2_END_VIETNAM_2023_START = LocalDate.of(2022, 12, 29);
+  private static final LocalDate VIETNAM_2023_END_INDONESIA_2023_START = LocalDate.of(2023, 1, 8);
+  private static final LocalDate INDONESIA_2023_END = LocalDate.of(2023, 1, 19);
+  private static final LocalDate NYC_2023_START = LocalDate.of(2023, 3, 16);
 
   static {
     dateRangeMap.put(Range.lessThan(MOVED_TO_CA), ZoneId.of("America/Chicago")); //Huntsville, Auburn
@@ -102,7 +124,52 @@ public class DateTimeUtils {
     dateRangeMap.put(
         Range.closedOpen(NYC_2021_START, NYC_2021_END), ZoneId.of("America/New_York"));
 
-    dateRangeMap.put(Range.atLeast(NYC_2021_END), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(NYC_2021_END, MEXICO_2021_P2_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(MEXICO_2021_P2_START, MEXICO_2021_P2_END), ZoneId.of("America/Cancun"));
+    dateRangeMap.put(
+        Range.closedOpen(MEXICO_2021_P2_END, HUNTSVILLE_2021_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2021_START, HUNTSVILLE_2021_END_NYC_P2_START), ZoneId.of("America/Chicago"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2021_END_NYC_P2_START, NYC_2021_P2_END), ZoneId.of("America/New_York"));
+    dateRangeMap.put(
+        Range.closedOpen(NYC_2021_P2_END, HUNTSVILLE_2021_P2_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2021_P2_START, HUNTSVILLE_2021_P2_END), ZoneId.of("America/Chicago"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2021_P2_END, HUNTSVILLE_2022_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2022_START, HUNTSVILLE_2022_END), ZoneId.of("America/Chicago"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2022_END, MEXICO_2022_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(MEXICO_2022_START, MEXICO_2022_END), ZoneId.of("America/Cancun"));
+    dateRangeMap.put(
+        Range.closedOpen(MEXICO_2022_END, EUROPE_2022_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(EUROPE_2022_START, EUROPE_2022_END), ZoneId.of("UTC+1"));
+    dateRangeMap.put(
+        Range.closedOpen(EUROPE_2022_END, NYC_2022_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(NYC_2022_START, NYC_2022_END), ZoneId.of("America/New_York"));
+    dateRangeMap.put(
+        Range.closedOpen(NYC_2022_END, PERU_2022_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(PERU_2022_START, PERU_2022_END), ZoneId.of("UTC-5"));
+    dateRangeMap.put(
+        Range.closedOpen(PERU_2022_END, HUNTSVILLE_2022_P2_START), ZoneId.of("America/Los_Angeles"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2022_P2_START, HUNTSVILLE_2022_P2_END_VIETNAM_2023_START), ZoneId.of("America/Chicago"));
+    dateRangeMap.put(
+        Range.closedOpen(HUNTSVILLE_2022_P2_END_VIETNAM_2023_START, VIETNAM_2023_END_INDONESIA_2023_START), ZoneId.of("UTC+7"));
+    dateRangeMap.put(
+        Range.closedOpen(VIETNAM_2023_END_INDONESIA_2023_START, INDONESIA_2023_END), ZoneId.of("UTC+8"));
+    dateRangeMap.put(
+        Range.closedOpen(INDONESIA_2023_END, NYC_2023_START), ZoneId.of("America/Los_Angeles"));
+
+    dateRangeMap.put(Range.atLeast(NYC_2023_START), ZoneId.of("America/New_York"));
   }
 
   private static ZoneId getZoneId(LocalDate localDate) {
