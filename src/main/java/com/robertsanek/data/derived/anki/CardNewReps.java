@@ -58,7 +58,9 @@ public class CardNewReps {
 
     private CardNewRepsBuilder() {}
 
-    public static CardNewRepsBuilder aCardNewReps() {return new CardNewRepsBuilder();}
+    public static CardNewRepsBuilder aCardNewReps() {
+      return new CardNewRepsBuilder();
+    }
 
     public CardNewRepsBuilder withCard_id(Long card_id) {
       this.card_id = card_id;
