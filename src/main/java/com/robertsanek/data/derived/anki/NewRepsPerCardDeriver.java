@@ -42,16 +42,17 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
           Long actualNumberOfDaysBetweenGraduationAndFirstReview = null;
           for (int i = 1; i < reviewsPerCard.size(); i++) {
             Review review = reviewsPerCard.get(i);
-            if (!foundFirstReviewAfterGraduation) {
-              // the first review after graduation will be the first ordered review
-              // that has both the last interval and the current interval greater than 0.
-              if (review.getInterval() > 0 && review.getLast_interval() > 0) {
-                intendedGraduatingInterval = review.getLast_interval();
-                foundFirstReviewAfterGraduation = true;
-                gotFirstReviewAfterGraduationCorrect = review.getEase() >= 2;
-                actualNumberOfDaysBetweenGraduationAndFirstReview =
-                    ChronoUnit.DAYS.between(reviewsPerCard.get(i - 1).getCreated_at(), review.getCreated_at());
-              }
+            // the first review after graduation will be the first ordered
+            // review that has the last interval greater than 0.
+            if (!foundFirstReviewAfterGraduation && review.getLast_interval() > 0) {
+              intendedGraduatingInterval = review.getLast_interval();
+              foundFirstReviewAfterGraduation = true;
+              gotFirstReviewAfterGraduationCorrect = review.getEase() >= 2;
+              // we want to compare local dates here because otherwise we'll get boned by the hours difference,
+              // but we also need to adjust by the ~4 hours that we use as Anki's "next day start" setting
+              actualNumberOfDaysBetweenGraduationAndFirstReview =
+                  ChronoUnit.DAYS.between(reviewsPerCard.get(i - 1).getCreated_at().minusHours(4).toLocalDate(),
+                      review.getCreated_at().minusHours(4).toLocalDate());
             }
           }
           Optional<Long> toGraduate = getNumReviewsTillFirstAbove(reviewsPerCard, 0);
