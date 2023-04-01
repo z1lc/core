@@ -170,6 +170,8 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
 
   private static final Map<String, String> CONTEXT_TO_CATEGORY = ImmutableMap.<String, String>builder()
       .put("software", "Computing")
+      .put("\uD83D\uDCBD software", "Computing")
+      .put("<img src=\"database%20%281%29.png\" height=\"24px\"> data engineering", "Computing")
       .put("data systems", "Computing")
       .put("Silicon Valley", "Computing")
       .put("Java", "Computing")
@@ -191,15 +193,21 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
       .put("credit card churning", "General Knowledge")
 
       .put("drugs", "Health")
+      .put("\uD83D\uDC8A drugs", "Health")
       .put("shrooms", "Health")
       .put("air cleaners", "Health")
       .put("air purifiers", "Health")
       .put("cannabis", "Health")
       .put("medicine", "Health")
+      .put("\uD83E\uDEC0 medicine", "Health")
       .put("nutrition", "Health")
+      .put("\uD83C\uDF4F nutrition", "Health")
+
+      .put("\uD83C\uDDE8\uD83C\uDDFF čeština", "Language")
 
       .put("WF", "Work")
       .put("Stripe", "Work")
+      .put("\uD83D\uDCB3 Stripe", "Work")
       .build();
 
   private final AtomicLong logicalClock = new AtomicLong(1);
