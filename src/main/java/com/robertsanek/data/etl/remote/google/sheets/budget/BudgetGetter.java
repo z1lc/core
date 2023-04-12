@@ -44,6 +44,7 @@ public class BudgetGetter implements QuartzJob {
   private static final ImmutableList<LineItemType> EXPENSES_LINE_ITEM_ORDER = ImmutableList.of(
       LineItemType.FOOD,
       LineItemType.FOOD,
+      LineItemType.FOOD,
       LineItemType.HOUSE,
       LineItemType.HOUSE,
       LineItemType.CLOTHING,
@@ -57,8 +58,8 @@ public class BudgetGetter implements QuartzJob {
       LineItemType.OTHER
   );
   private static final ImmutableList<LineItemType> INCOME_LINE_ITEM_ORDER = ImmutableList.of(LineItemType.INCOME);
-  private static final String EXPENSES_RANGE = "\uD83E\uDDFE Budget!A2:O10000";
-  private static final String INCOME_RANGE = "\uD83E\uDDFE Budget!P2:R10000";
+  private static final String EXPENSES_RANGE = "\uD83E\uDDFE Budget!A2:P10000";
+  private static final String INCOME_RANGE = "\uD83E\uDDFE Budget!Q2:S10000";
   private static final String CSV_DELIMITER = "`";
   private static final Log log = Logs.getLog(BudgetGetter.class);
 
