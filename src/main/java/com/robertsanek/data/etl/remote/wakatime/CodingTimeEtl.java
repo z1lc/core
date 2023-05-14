@@ -15,11 +15,13 @@ import org.apache.http.client.fluent.Request;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonParser;
 import com.google.inject.Inject;
+import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.data.etl.remote.wakatime.jsonentities.CodingInfoForDay;
 import com.robertsanek.util.SecretProvider;
 import com.robertsanek.util.SecretType;
 
+@DoNotRun(explanation = "Stopped working for some reason")
 public class CodingTimeEtl extends Etl<CodingTime> {
 
   @Inject ObjectMapper mapper;

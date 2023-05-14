@@ -64,7 +64,7 @@ public class MasterEtl implements QuartzJob {
   @VisibleForTesting static final String REFLECTIONS_PREFIX = "com.robertsanek.data";
   private static final Log log = Logs.getLog(MasterEtl.class);
   private static final AtomicLong ETL_RUN_ID_GENERATOR = new AtomicLong(1);
-  private static final int ROW_LIMIT = 1_000_000;
+  private static final int ROW_LIMIT = 10_000_000;
   private static final Duration TRANSACTION_TIMEOUT = Duration.ofMinutes(10);
   private static final Duration INSTANCE_STARTUP_WAIT_TIME = Duration.ofMinutes(5);
   private static final String SERVICE_ACCOUNT_FILENAME = "z1lc-qs.json";
