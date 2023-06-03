@@ -6,7 +6,7 @@ updates:
     interval: weekly
     day: saturday
     time: "08:00"
-    timezone: America/Los_Angeles
+    timezone: America/New_York
   open-pull-requests-limit: 10
   ignore:
   - dependency-name: com.google.auth:google-auth-library-oauth2-http
