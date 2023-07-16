@@ -10,6 +10,10 @@ public enum LineItemType {
   HEALTH("HLTH", "Health", true),
   TRAVEL("TRAV", "Travel", true),
   OTHER("OTHR", "Other", true),
+  // Started using this in May 2023 to deal with high amount of smaller transactions after move to NYC. This represents
+  // a ~weekly sum of transactions <$20, that could fall into any category. I am using a separate category instead of
+  // the existing 'OTHER' to differentiate that this is specifically *not* categorized.
+  UNCATEGORIZED("UNCGR", "Uncategorized", true),
   INCOME("Income", "Income", false);
 
   private final String columnNameInGoogleSheets;
