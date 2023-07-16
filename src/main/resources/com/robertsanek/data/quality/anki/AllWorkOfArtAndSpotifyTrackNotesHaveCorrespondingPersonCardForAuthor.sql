@@ -68,6 +68,7 @@ WITH people AS (SELECT split_part(
                                         1484432378503,
                                         1542879193520,
                                         1542879193522,
+                                        1680733719434, --Sida Peng, Eirini Kalliamvakou, Peter Cihon, Mert Demirer
                                         0)),
     both_types as (select * from works_of_art) --removed `songs` table in favor of Artist note type directly from Spotify + Anki
 SELECT both_types.name
