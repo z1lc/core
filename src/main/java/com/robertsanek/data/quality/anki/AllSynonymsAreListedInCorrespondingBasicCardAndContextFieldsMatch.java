@@ -68,7 +68,9 @@ public class AllSynonymsAreListedInCorrespondingBasicCardAndContextFieldsMatch e
       1502693102454L,
       1532180104017L,
       1469971057672L,
+      1469971060712L,
       // Czech imported end
+      1510330338872L,
       0L
   );
 
