@@ -77,7 +77,7 @@ public class IndieHackersBookEtl extends Etl<IndieHackersBook> {
                           driver.findElements(By.cssSelector("div.thread-voter__count")).get(0).getText()))
                       .withIndieHackersTitle(driver.getTitle())
                       .build())
-                  .collect(Collectors.toList()));
+                  .toList());
         }));
     pool.shutdown();
     pool.awaitTermination(10, TimeUnit.MINUTES);

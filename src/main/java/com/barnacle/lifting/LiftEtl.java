@@ -101,7 +101,7 @@ public class LiftEtl implements Callable<Object> {
               })
               .collect(Collectors.groupingBy(Pair::getLeft)).entrySet().stream()
               .collect(Collectors.toMap(Map.Entry::getKey,
-                  entry -> entry.getValue().stream().map(Pair::getRight).collect(Collectors.toList())));
+                  entry -> entry.getValue().stream().map(Pair::getRight).toList()));
 
           return new LiftingDay(
               day,
@@ -110,7 +110,7 @@ public class LiftEtl implements Callable<Object> {
               lifterToExercises
           );
         })
-        .collect(Collectors.toList());
+        .toList();
 
     //    File csvFile = new File(System.getProperty("java.io.tmpdir"), String.format("%s.csv", TABLE_NAME));
 
@@ -148,7 +148,7 @@ public class LiftEtl implements Callable<Object> {
                           return String.format("(%s)", String.join(",", row));
                         }));
               }))
-          .collect(Collectors.toList());
+          .toList();
 
       Unchecked.run(() -> statement.executeUpdate(
           String.format("INSERT INTO %s VALUES %s", TABLE_NAME, String.join(",", toInsert))));
@@ -170,7 +170,7 @@ public class LiftEtl implements Callable<Object> {
             return 0;
           }
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   private static int toIntDefault0(Object o) {

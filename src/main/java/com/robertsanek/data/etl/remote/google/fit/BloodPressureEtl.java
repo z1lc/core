@@ -9,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -57,6 +56,6 @@ public class BloodPressureEtl extends Etl<BloodPressureReading> {
                 .withSystolic(point.getValue().get(0).getFpVal().longValue())
                 .withDiastolic(point.getValue().get(1).getFpVal().longValue())
                 .build());
-    return Stream.concat(manual, automated).collect(Collectors.toList());
+    return Stream.concat(manual, automated).toList();
   }
 }

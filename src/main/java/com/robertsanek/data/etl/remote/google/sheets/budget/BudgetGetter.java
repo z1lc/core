@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 import org.quartz.JobExecutionContext;
 
@@ -163,7 +162,7 @@ public class BudgetGetter implements QuartzJob {
           }
           return currentRowAnnotatedItems.stream();
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override

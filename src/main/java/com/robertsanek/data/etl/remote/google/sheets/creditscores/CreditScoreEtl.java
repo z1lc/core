@@ -9,7 +9,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
@@ -43,6 +42,6 @@ public class CreditScoreEtl extends Etl<CreditScore> {
               .withCiti(SheetsConnector.getBigDecimalOrNull(row, 7))
               .build();
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 }

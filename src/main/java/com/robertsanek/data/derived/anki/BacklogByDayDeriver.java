@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -53,7 +52,7 @@ public class BacklogByDayDeriver extends Etl<BacklogForDay> {
             .withCardsInBacklogSevenDays(sevenDayMap.get(entry.getKey()))
             .withCardsInBacklogThirtyDays(thirtyDayMap.get(entry.getKey()))
             .build())
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @VisibleForTesting

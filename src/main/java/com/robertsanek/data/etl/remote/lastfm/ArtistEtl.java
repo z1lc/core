@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.http.client.fluent.Request;
@@ -50,10 +49,10 @@ public class ArtistEtl extends Etl<Artist> {
               .withImageUrl(Iterables.getOnlyElement(artist.getImage().stream()
                   .filter(image -> image.getSize().equals("mega"))
                   .map(Image::getText)
-                  .collect(Collectors.toList())))
+                  .toList()))
               .build();
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @VisibleForTesting

@@ -5,7 +5,6 @@ import static com.robertsanek.util.SecretType.LEETCODE_PASSWORD;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.HttpGet;
@@ -49,7 +48,7 @@ public class LeetCodeQuestionEtl extends Etl<Question> {
       CommonProvider.getHttpClient(cookieStore).execute(httpGet, context);
       String csrftoken = Iterables.getOnlyElement(context.getCookieStore().getCookies().stream()
           .filter(cookie -> cookie.getName().equals("csrftoken"))
-          .collect(Collectors.toList()))
+          .toList())
           .getValue();
 
       URI loginUri = Unchecked.get(() -> new URIBuilder()
@@ -85,7 +84,7 @@ public class LeetCodeQuestionEtl extends Etl<Question> {
               .withStatus(Question.Status.fromValue(lcQuestion.getStatus()))
               .withDifficulty((long) lcQuestion.getDifficulty().getLevel())
               .build())
-          .collect(Collectors.toList());
+          .toList();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

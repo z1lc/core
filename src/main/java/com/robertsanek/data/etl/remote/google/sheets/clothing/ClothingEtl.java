@@ -4,7 +4,6 @@ import static com.robertsanek.util.SecretType.CLOTHING_SPREADSHEET_ID;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
@@ -40,7 +39,7 @@ public class ClothingEtl extends Etl<ClothingRating> {
             .withEnoughTotalItems(convertYesNoStringToBoolean(SheetsConnector.getOrNull(row, 6)))
             .withTotalComment(SheetsConnector.getOrNull(row, 6))
             .build())
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

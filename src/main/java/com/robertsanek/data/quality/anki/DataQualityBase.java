@@ -86,13 +86,13 @@ public abstract class DataQualityBase {
         .filter(model -> !model.getName().startsWith("~"))
         .filter(model -> model.getId() != 1487029322167L)  //Will's Cloze
         .filter(model -> model.getId() != 1511625126772L)  //Will's Basic
-        .collect(Collectors.toList());
+        .toList();
     modelsByModelId = allModels.stream()
         .collect(Collectors.groupingBy(Model::getId));
     allTemplates = Unchecked.get(() -> new TemplateEtl().getObjects());
     templatesInUse = allTemplates.stream()
         .filter(template -> !template.getName().startsWith("@D"))
-        .collect(Collectors.toList());
+        .toList();
     allReviews = Unchecked.get(() -> new ReviewEtl().getObjects());
     cards = getAllCards();
     cardsByNoteId = cards.stream()
@@ -106,7 +106,7 @@ public abstract class DataQualityBase {
     fieldsInUse = allFields.stream()
         .filter(field -> !field.getName().startsWith("@Deprecated"))
         .filter(field -> !field.getName().startsWith("@Unused"))
-        .collect(Collectors.toList());
+        .toList();
     fieldsByModelId = allFields.stream()
         .collect(Collectors.groupingBy(Field::getModel_id));
     requiredFieldsByModelId = allFields.stream()
@@ -129,7 +129,7 @@ public abstract class DataQualityBase {
   public static List<Note> getExistingPeopleInAnkiDb() {
     Long personModelId = Iterables.getOnlyElement(DataQualityBase.allModels.stream()
         .filter(model -> model.getName().contains("3 Person"))
-        .collect(Collectors.toList()))
+        .toList())
         .getId();
     return DataQualityBase.getAllNotesInRelevantDecks(personModelId);
   }
@@ -145,7 +145,7 @@ public abstract class DataQualityBase {
   public static Set<String> getExistingWorksOfArtInAnkiDbLowerCased() {
     Long workOfArtModelId = Iterables.getOnlyElement(DataQualityBase.allModels.stream()
         .filter(model -> model.getName().contains("Work of Art"))
-        .collect(Collectors.toList()))
+        .toList())
         .getId();
     return DataQualityBase.getAllNotesInRelevantDecks(workOfArtModelId).stream()
         .map(note -> DataQualityBase.splitCsvIntoCommaSeparatedList(note.getFields()))
@@ -213,7 +213,7 @@ public abstract class DataQualityBase {
           List<Card> cards = cardsByNoteId.get(note.getId());
           return cards.stream().anyMatch(card -> relevantDeckIds.contains(card.getDeck_id()));
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public static List<String> splitCsvIntoCommaSeparatedList(String fields) {
@@ -235,7 +235,7 @@ public abstract class DataQualityBase {
     return allDecks.stream()
         .filter(deck -> deck.getName().equals("z") || deck.getName().startsWith("z" + FIELD_SEPARATOR))
         .map(Deck::getId)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public static List<Card> getAllCards() {
@@ -322,7 +322,7 @@ public abstract class DataQualityBase {
     }
 
     List<String> getErrors() {
-      return errors.stream().map(IndividualError::toString).collect(Collectors.toList());
+      return errors.stream().map(IndividualError::toString).toList();
     }
 
     ContainerTag<?> getErrorsAsTable() {
@@ -344,13 +344,13 @@ public abstract class DataQualityBase {
     }
 
     List<String> getWarnings() {
-      return warnings.stream().map(IndividualError::toString).collect(Collectors.toList());
+      return warnings.stream().map(IndividualError::toString).toList();
     }
 
     List<String> getErrorsAndWarnings() {
       return Streams.concat(getErrors().stream(), getWarnings().stream())
           .map(StringEscapeUtils::escapeHtml4)
-          .collect(Collectors.toList());
+          .toList();
     }
 
     boolean isErrorAndWarningFree() {

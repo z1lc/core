@@ -68,7 +68,7 @@ public class NewRepsPerCardDeriver extends Etl<CardNewReps> {
               .withActualNumberOfDaysBetweenGraduationAndFirstReview(actualNumberOfDaysBetweenGraduationAndFirstReview)
               .build();
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public static Optional<Long> getNumReviewsTillFirstAbove(List<Review> reviews, long limit) {

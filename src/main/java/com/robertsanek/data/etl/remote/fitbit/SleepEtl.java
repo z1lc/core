@@ -3,7 +3,6 @@ package com.robertsanek.data.etl.remote.fitbit;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
@@ -53,7 +52,7 @@ public class SleepEtl extends Etl<Sleep> {
         })
         .flatMap(sleepSummary -> sleepSummary.getSleep() != null ? sleepSummary.getSleep().stream() : Stream.empty())
         .distinct()
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

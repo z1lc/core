@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BoardEtl extends Etl<TrelloBoard> {
 
@@ -19,7 +18,7 @@ public class BoardEtl extends Etl<TrelloBoard> {
             .withDesc(board.getDesc())
             .withClosed(board.isClosed())
             .build())
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

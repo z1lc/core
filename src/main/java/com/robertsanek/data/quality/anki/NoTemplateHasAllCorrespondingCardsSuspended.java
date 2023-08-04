@@ -2,7 +2,6 @@ package com.robertsanek.data.quality.anki;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 import com.robertsanek.data.etl.local.sqllite.anki.Card;
@@ -37,18 +36,18 @@ public class NoTemplateHasAllCorrespondingCardsSuspended extends DataQualityBase
           List<Template> modelTemplates = templatesInUse.stream()
               .filter(template -> template.getModel_id().equals(modelId))
               .sorted(Comparator.comparing(Template::getId))
-              .collect(Collectors.toList());
+              .toList();
           List<Card> allCards = allNotes.stream()
               .filter(note -> note.getModel_id().equals(modelId))
               .flatMap(note -> cardsByNoteId.get(note.getId()).stream())
-              .collect(Collectors.toList());
+              .toList();
 
           List<Integer> templateOrdinalsActive = allCards.stream()
               .filter(card -> card.getQueue() != Card.Queue.SUSPENDED)
               .map(card -> card.getTemplate_ordinal().intValue())
               .sorted()
               .distinct()
-              .collect(Collectors.toList());
+              .toList();
 
           if (templateOrdinalsActive.size() != modelTemplates.size()) {
             modelTemplates.stream()

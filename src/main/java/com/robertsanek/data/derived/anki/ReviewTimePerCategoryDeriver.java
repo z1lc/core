@@ -239,7 +239,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
                     .build();
               });
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @VisibleForTesting

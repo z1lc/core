@@ -154,7 +154,7 @@ public class AnkiConnectUtils {
     JsonArray result = new JsonParser().parse(updateResponse).getAsJsonObject().getAsJsonArray("result");
     return StreamSupport.stream(result.spliterator(), false)
         .map(JsonElement::getAsLong)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public boolean updateNoteFields(Long noteId, Map<String, String> fieldsToUpdate) {

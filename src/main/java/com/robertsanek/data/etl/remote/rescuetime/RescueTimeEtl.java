@@ -13,7 +13,6 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.csv.CSVFormat;
@@ -67,7 +66,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
                     allRecords.addAll(csvRecords.getRecords().stream()
                         .skip(1)
                         .map(csvToObjectFunction)
-                        .collect(Collectors.toList()));
+                        .toList());
                   }
                 } catch (IOException e) {
                   if (Pattern.compile("status code: 5\\d\\d").matcher(e.getMessage()).find()) {

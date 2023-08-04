@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Named;
 
@@ -45,7 +44,7 @@ public class LeetCodeToodledoTaskEtl {
 
     List<Pair<User, Habit>> leetCodeOnly = habits.stream()
         .filter(habit -> habit.getRight().getTitle() != null && habit.getRight().getTitle().contains("LeetCode: 10m"))
-        .collect(Collectors.toList());
+        .toList();
 
     ImmutableList<Pair<User, HabitRep>> habitReps = ImmutableList.<Pair<User, HabitRep>>builder()
         .addAll(Utils.addUser(robHabitRepEtl.getObjects(), User.ROB))
@@ -65,7 +64,7 @@ public class LeetCodeToodledoTaskEtl {
       List<String> toInsert = habitReps.stream()
           .filter(habitRep -> Iterables.getOnlyElement(leetCodeOnly.stream()
               .filter(habit -> habit.getLeft().equals(habitRep.getKey()))
-              .collect(Collectors.toList())).getRight().getId().equals(habitRep.getRight().getHabit())
+              .toList()).getRight().getId().equals(habitRep.getRight().getHabit())
           )
           .map(userAndHabitRep -> {
             final List<String> row = ImmutableList.<String>builder()
@@ -79,7 +78,7 @@ public class LeetCodeToodledoTaskEtl {
                 .build();
             return String.format("(%s)", String.join(",", row));
           })
-          .collect(Collectors.toList());
+          .toList();
 
       Unchecked.run(() -> statement.executeUpdate(
           String.format("INSERT INTO %s VALUES %s", TABLE_NAME, String.join(",", toInsert))));

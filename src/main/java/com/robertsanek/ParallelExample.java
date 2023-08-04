@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import com.google.common.base.Stopwatch;
 import com.robertsanek.util.Unchecked;
@@ -31,7 +30,7 @@ public class ParallelExample {
     Stopwatch stopwatch = Stopwatch.createStarted();
     List<Integer> sortedList = randomNumbers.stream()
         .sorted()
-        .collect(Collectors.toList());
+        .toList();
     System.out.println("Not parallel: " + stopwatch.elapsed().getSeconds());
 
     Collections.shuffle(randomNumbers);
@@ -39,7 +38,7 @@ public class ParallelExample {
     stopwatch.reset().start();
     List<Integer> sortedList2 = randomNumbers.parallelStream()
         .sorted()
-        .collect(Collectors.toList());
+        .toList();
     System.out.println("Parallel: " + stopwatch.elapsed().getSeconds());
   }
 

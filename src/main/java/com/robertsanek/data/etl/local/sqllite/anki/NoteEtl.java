@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,10 +26,10 @@ public class NoteEtl extends AnkiEtl<Note> {
         .withTags(Lists.quoteListItemsAndJoinWithComma(Arrays.stream(row.getString("tags")
             .split(" "))
             .filter(s -> !s.equals(""))
-            .collect(Collectors.toList()), FIELDS_LIMIT))
+            .toList(), FIELDS_LIMIT))
         .withFields(Lists.quoteListItemsAndJoinWithComma(Arrays.stream(row.getString("flds")
             .split(FIELD_SEPARATOR))
-            .collect(Collectors.toList()), FIELDS_LIMIT))
+            .toList(), FIELDS_LIMIT))
         .withSortField(StringUtils.left(row.getString("sfld"), FIELDS_LIMIT))
         .build());
   }

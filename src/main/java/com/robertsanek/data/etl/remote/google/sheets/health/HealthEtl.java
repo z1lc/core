@@ -9,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
@@ -54,7 +53,7 @@ public class HealthEtl extends Etl<Health> {
               .build();
         })
         .filter(health -> health.getDate().isBefore(LocalDate.now().plusDays(1)))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   private BigDecimal fromStringToBigDecimal(String str) {

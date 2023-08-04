@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -277,7 +276,7 @@ public class MasterEtl implements QuartzJob {
           return true;
         })
         .sorted(Comparator.comparing(Class::getName))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /* https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl

@@ -2,7 +2,6 @@ package com.robertsanek.data.quality.anki;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 
@@ -24,7 +23,7 @@ public class NoSynonymIsAFullSubstringOfAnotherSynonym extends DataQualityBase {
 
   public static List<String> getSublistOfSynonymFieldsWithoutContext(List<String> fields) {
     List<String> fieldsNoSynonym = fields.subList(0, Math.min(MAX_SYNONYM_INDEX + 1, fields.size()));
-    return fieldsNoSynonym.stream().filter(item -> !item.isEmpty()).collect(Collectors.toList());
+    return fieldsNoSynonym.stream().filter(item -> !item.isEmpty()).toList();
   }
 
   @Override
@@ -41,7 +40,7 @@ public class NoSynonymIsAFullSubstringOfAnotherSynonym extends DataQualityBase {
               .stream()
               .map(synonym -> Jsoup.parse(synonym).text().replaceAll("\\[sound:.+]", ""))
               .filter(syn -> !syn.isEmpty())
-              .collect(Collectors.toList());
+              .toList();
           fields.forEach(syn1 -> fields.forEach(syn2 -> {
             if (syn1.contains(syn2) && !syn1.equals(syn2)) {
               log.error("Synonym '%s' is a full substring of synonym '%s'. " +

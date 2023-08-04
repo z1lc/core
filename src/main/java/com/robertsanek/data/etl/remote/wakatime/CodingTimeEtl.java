@@ -7,7 +7,6 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.client.fluent.Request;
@@ -47,6 +46,6 @@ public class CodingTimeEtl extends Etl<CodingTime> {
             .withSeconds(pair.getLeft().getTotalSeconds())
             .build())
         .filter(codingTime -> codingTime.getSeconds() > 0)
-        .collect(Collectors.toList());
+        .toList();
   }
 }

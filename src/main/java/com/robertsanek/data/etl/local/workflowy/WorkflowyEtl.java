@@ -8,7 +8,6 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.Etl;
@@ -36,7 +35,7 @@ public class WorkflowyEtl extends Etl<Entry> {
     Opml parsedData = new OpmlParser().parse(new FileReader(workflowyExport, UTF_8));
     List<Outline> outlines = parsedData.getBody().getOutlines();
     long firstId = logicalClock.getAndIncrement();
-    return outlines.stream().flatMap(outline -> processOutline(outline, firstId).stream()).collect(Collectors.toList());
+    return outlines.stream().flatMap(outline -> processOutline(outline, firstId).stream()).toList();
   }
 
   private List<Entry> processOutline(Outline outline, long parentId) {
@@ -52,7 +51,7 @@ public class WorkflowyEtl extends Etl<Entry> {
         .build();
     List<Entry> subEntries = subElements.stream()
         .flatMap(subOutline -> processOutline(subOutline, thisId).stream())
-        .collect(Collectors.toList());
+        .toList();
     subEntries.add(0, entry);
     return subEntries;
   }

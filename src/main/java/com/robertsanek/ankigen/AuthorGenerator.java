@@ -2,7 +2,6 @@ package com.robertsanek.ankigen;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -21,6 +20,6 @@ public class AuthorGenerator extends BaseGenerator {
             .withName(pair.getLeft())
             .withImage(Lists.newArrayList(URI.create(pair.getRight())))
             .build())
-        .collect(Collectors.toList());
+        .toList();
   }
 }

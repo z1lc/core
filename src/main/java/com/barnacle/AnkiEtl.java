@@ -64,7 +64,7 @@ public class AnkiEtl implements Callable<Object> {
 //        }.getObjects()), User.JANA))
         .build().stream()
         .filter(userReviewPair -> userReviewPair.getRight().getCreated_at().isAfter(start))
-        .collect(Collectors.toList());
+        .toList();
 
     List<Triple<User, Review, Pair<Optional<Double>, Optional<Double>>>> reviews2 =
         reviews.stream().collect(Collectors.groupingBy(userReviewPair -> {
@@ -91,7 +91,7 @@ public class AnkiEtl implements Callable<Object> {
                         .count() / totalReviews);
               }
               return Triple.of(pairListEntry.getKey().getLeft(), review, Pair.of(cardsPerMinute, percentCorrect));
-            }).collect(Collectors.toList());
+            }).toList();
 
     Unchecked.run(() -> Class.forName("org.postgresql.Driver"));
     try (Connection connection = postgresConnection.getConnection(true);
@@ -116,7 +116,7 @@ public class AnkiEtl implements Callable<Object> {
             .build();
         return String.format("(%s)", String.join(",", row));
       })
-          .collect(Collectors.toList());
+          .toList();
 
       Unchecked.run(() -> statement.executeUpdate(
           String.format("INSERT INTO %s VALUES %s", TABLE_NAME, String.join(",", toInsert))));

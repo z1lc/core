@@ -128,7 +128,7 @@ public class KivaApiConnector implements QuartzJob {
             };
           });
         })
-        .collect(Collectors.toList());
+        .toList();
 
     List<Loan> allDetailedLoans =
         executorService.invokeAll(callablesByBatchesOf100List, TIMEOUT_SECONDS, TimeUnit.SECONDS).stream()
@@ -140,12 +140,12 @@ public class KivaApiConnector implements QuartzJob {
                 return Stream.empty();
               }
             })
-            .collect(Collectors.toList());
+            .toList();
 
     executorService.shutdown();
 
     allDetailedLoans.forEach(loan -> loan.setDuration(LoanDurationCalculator.getDuration(now, loan)));
-    allDetailedLoans = allDetailedLoans.stream().sorted().collect(Collectors.toList());
+    allDetailedLoans = allDetailedLoans.stream().sorted().toList();
     final ContainerTag<?> containerTag = new HTMLOutputBuilder().buildHTML(allDetailedLoans);
 
     File loansTarget =
@@ -157,7 +157,7 @@ public class KivaApiConnector implements QuartzJob {
 
     final List<Loan> toPageLoans = allDetailedLoans.stream()
         .filter(loan -> loan.getDuration().orElse(100.0) <= MAXIMUM_DURATION_IN_DAYS_TO_PAGE)
-        .collect(Collectors.toList());
+        .toList();
 
     final double outstandingValueOfLoansToPage = toPageLoans.stream()
         .mapToDouble(loan -> loan.getUnfundedAmount().getAmount().doubleValue())
@@ -170,7 +170,7 @@ public class KivaApiConnector implements QuartzJob {
         return Unchecked.get(() -> {
           String message = String.format("<%sd duration loans with aggregate value of $%s available. Loan IDs: %s",
               MAXIMUM_DURATION_IN_DAYS_TO_PAGE, outstandingValueOfLoansToPage,
-              toPageLoans.stream().map(loan -> loan.getId().toString()).collect(Collectors.toList()));
+              toPageLoans.stream().map(loan -> loan.getId().toString()).toList());
           return notificationSender.sendNotificationDefault(PUSH_TITLE, message);
         });
       } else {

@@ -161,7 +161,7 @@ public class DataQualityRunner implements QuartzJob {
         .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
         .filter(clazz -> clazz.getAnnotation(IgnoreDQ.class) == null)
         .sorted(Comparator.comparing(Class::getName))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public void exec(JobDataMap jobDataMap) {

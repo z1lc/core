@@ -37,12 +37,12 @@ public class HabiticaLoadAssessment {
         .filter(task -> task.getRepeat().hasSomeRepetition())
         .filter(task -> task.getFrequency().equals("weekly"))
         .sorted(Comparator.comparing(JsonTask::getWeeklyContribution).reversed())
-        .collect(Collectors.toList());
+        .toList();
     Map<String, Pair<Long, Long>> timePerDay = getTimePerDay(scheduledDailys);
 
     List<JsonTask> notWeeklyJsonTasks = allJsonTasks.stream()
         .filter(task -> !task.getFrequency().equals("weekly"))
-        .collect(Collectors.toList());
+        .toList();
 
     final String regex = "(:[a-zA-Z0-9_]*?:)";
 
@@ -56,7 +56,7 @@ public class HabiticaLoadAssessment {
                 p(String.format("%d non-weekly tasks need to be moved to Toodledo: ", notWeeklyJsonTasks.size())))
             .condWith(notWeeklyJsonTasks.size() > 0, ul().with(notWeeklyJsonTasks.stream()
                 .map(task -> li(task.getText().replaceAll(regex, "").trim()))
-                .collect(Collectors.toList())))
+                .toList()))
             .with(table().with(
                 tr().with(
                     th("JsonTask"),
@@ -78,7 +78,7 @@ public class HabiticaLoadAssessment {
                             br()).with(
                             task.getChecklistItem().stream()
                                 .map(item -> span(item.getText()).with(br()))
-                                .collect(Collectors.toList())
+                                .toList()
                         ))
                         .with(td(Double.toString(task.getTime())))
                         .with(td(getHtmlBasedOnRepeat(task.getRepeat().getSu())))
@@ -90,7 +90,7 @@ public class HabiticaLoadAssessment {
                         .with(td(getHtmlBasedOnRepeat(task.getRepeat().getS())))
                         .with(td(Double.toString(task.getWeeklyContribution())))
                     )
-                    .collect(Collectors.toList()))
+                    .toList())
                 .with(tr().with(
                     td("Total Individual Tasks").attr("colspan", 2),
                     td(Long.toString(timePerDay.get("Su").getRight())),
@@ -118,7 +118,7 @@ public class HabiticaLoadAssessment {
                     .filter(task -> !task.getRepeat().hasSomeRepetition())
                     .sorted(Comparator.comparing(JsonTask::getWeeklyContribution).reversed())
                     .map(task -> li(task.getText().replaceAll(regex, "").trim()))
-                    .collect(Collectors.toList())
+                    .toList()
             ))
         );
     File loansTarget = new File(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/habitica.html");

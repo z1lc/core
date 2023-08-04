@@ -166,7 +166,7 @@ public class WikipediaConnector {
         .sorted(((Comparator<Map.Entry<String, Long>>) (o1, o2) -> {
           return o1.getValue().compareTo(o2.getValue());
         }).reversed())
-        .collect(Collectors.toList());
+        .toList();
     for (Map.Entry<String, Long> entry : sortedEntries) {
       if (sortedArticles.size() < peopleToOutput * 3) {
         sortedArticles.add(new WikiArticle(entry.getKey(), entry.getValue(), count.getAndIncrement()));
@@ -192,7 +192,7 @@ public class WikipediaConnector {
             }))
             .filter(wikiPerson -> !shouldWriteToDisk || !wikiPerson.isFound_in_anki())
             .stream())
-        .collect(Collectors.toList());
+        .toList();
   }
 
   private static String formatDate(LocalDate date, Granularity granularity) {
@@ -310,12 +310,12 @@ public class WikipediaConnector {
                             td(NumberFormat.getNumberInstance(Locale.US).format(wikiArticle.getHits()))
                                 .withClass("wiki_article_hits")
                         ))
-                        .collect(Collectors.toList()))
+                        .toList())
             )
             .with(sortedPeople.stream()
                 .map(WikiPerson::toArticle)
                 .map(article -> p(article.getURL()))
-                .collect(Collectors.toList())));
+                .toList()));
     File loansTarget =
         new File(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/wikipedia.html");
     log.info("Writing to %s", loansTarget.getAbsolutePath());

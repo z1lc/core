@@ -5,7 +5,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.DoNotRun;
@@ -36,6 +35,6 @@ public class TaskEtl extends Etl<ToodledoTask> {
               .withLengthMinutes(Long.valueOf(jsonTask.getLength()))
               .build();
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 }

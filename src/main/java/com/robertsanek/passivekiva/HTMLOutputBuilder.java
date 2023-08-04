@@ -11,7 +11,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import com.robertsanek.passivekiva.entities.Loan;
 
@@ -59,7 +58,7 @@ public class HTMLOutputBuilder {
                                 td("$" + loan.getUnfundedAmount().getAmountMajorInt())
                                     .attr("align", "right")
                             ))
-                        .collect(Collectors.toList())
+                        .toList()
                 )
             ));
   }

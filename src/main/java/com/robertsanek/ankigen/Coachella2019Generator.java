@@ -2,7 +2,6 @@ package com.robertsanek.ankigen;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -26,7 +25,7 @@ public class Coachella2019Generator extends ArtistGenerator {
             .withPlayCount(Long.MAX_VALUE)
             .withFoundInAnki(existingPeopleInAnkiDb.contains(pair.get(0).toLowerCase()))
             .build())
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override

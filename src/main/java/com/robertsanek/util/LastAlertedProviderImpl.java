@@ -7,7 +7,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.robertsanek.process.Command;
@@ -24,7 +23,7 @@ public class LastAlertedProviderImpl implements LastAlertedProvider {
              Files.lines(Paths.get(target + command.toString() + "." + successType.toString().toLowerCase()))) {
       List<ZonedDateTime> collect = lines
           .map(l -> ZonedDateTime.parse(l, DateTimeFormatter.ISO_ZONED_DATE_TIME))
-          .collect(Collectors.toList());
+          .toList();
       return collect.size() != 1 ? DEFAULT_DATETIME : collect.iterator().next();
     } catch (IOException e) {
       return DEFAULT_DATETIME;

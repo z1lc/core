@@ -1,7 +1,6 @@
 package com.robertsanek.data.etl.remote.trello;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.julienvey.trello.domain.Argument;
@@ -24,6 +23,6 @@ public class TrelloListEtl extends Etl<TrelloList> {
             .withClosed(list.isClosed())
             .withPos(list.getPos())
             .build())
-        .collect(Collectors.toList());
+        .toList();
   }
 }

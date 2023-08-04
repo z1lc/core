@@ -24,13 +24,13 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
         .entrySet()
         .parallelStream()
         .flatMap(groupedReview -> mapToHydratedReviews(groupedReview.getValue(), LocalDate.now()).stream())
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public static List<HydratedReview> mapToHydratedReviews(List<Review> groupedReview, LocalDate today) {
     final List<Review> orderedReviews = groupedReview.stream()
         .sorted(Comparator.comparing(Review::getCreated_at))
-        .collect(Collectors.toList());
+        .toList();
     final LocalDate firstReview = orderedReviews.get(0).getCreated_at().toLocalDate();
     return IntStream.range(0, orderedReviews.size())
         .mapToObj(i -> {
@@ -62,7 +62,7 @@ public class HydratedReviewDeriver extends Etl<HydratedReview> {
               .withEffective_ease_at_review_time(effectiveEase)
               .build();
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public static Map<Long, List<Review>> getReviewsByCardId() {

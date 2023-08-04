@@ -46,6 +46,6 @@ public class AllMentionsOfPersonsUseFullName extends DataQualityBase {
           int nameStartIndex = note.getFields().indexOf(name);
           return !note.getFields().substring(nameStartIndex + name.length()).matches(" [A-Z].*");
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 }

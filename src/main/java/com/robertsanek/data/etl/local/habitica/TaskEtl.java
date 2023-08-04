@@ -1,7 +1,6 @@
 package com.robertsanek.data.etl.local.habitica;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.robertsanek.data.etl.DoNotRun;
 
@@ -12,6 +11,6 @@ public class TaskEtl extends HabiticaEtl<Task> {
   public List<Task> getObjects() {
     return getJsonObjects().stream()
         .map(HabiticaUtils::convertJsonTaskToHibernateTask)
-        .collect(Collectors.toList());
+        .toList();
   }
 }

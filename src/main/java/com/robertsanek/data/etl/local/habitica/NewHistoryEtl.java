@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.local.habitica.jsonentities.JsonTask;
@@ -37,7 +36,7 @@ public class NewHistoryEtl extends HabiticaEtl<History> {
           }
           return thisList.stream();
         })
-        .collect(Collectors.toList());
+        .toList();
   }
 
   static Optional<Boolean> increaseOrDecrease(double yesterday, double today) {

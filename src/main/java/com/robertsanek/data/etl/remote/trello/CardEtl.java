@@ -3,7 +3,6 @@ package com.robertsanek.data.etl.remote.trello;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.julienvey.trello.domain.Argument;
@@ -28,7 +27,7 @@ public class CardEtl extends Etl<TrelloCard> {
             .withClosed(card.isClosed())
             .withLastActivity(ZonedDateTime.ofInstant(card.getDateLastActivity().toInstant(), ZoneId.systemDefault()))
             .build())
-        .collect(Collectors.toList());
+        .toList();
   }
 
 }

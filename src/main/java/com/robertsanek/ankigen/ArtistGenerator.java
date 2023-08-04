@@ -3,7 +3,6 @@ package com.robertsanek.ankigen;
 import java.net.URI;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 import com.robertsanek.data.etl.remote.lastfm.Artist;
@@ -31,7 +30,7 @@ public class ArtistGenerator extends BaseGenerator {
             .withContext("artist")
             .withSource(getSource())
             .build())
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public List<Artist> getArtists() throws Exception {

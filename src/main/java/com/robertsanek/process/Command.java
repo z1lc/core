@@ -3,7 +3,6 @@ package com.robertsanek.process;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 
@@ -26,7 +25,7 @@ public enum Command {
     final String lowerArg = arg.toLowerCase();
     List<Command> potentialCommand = Arrays.stream(Command.values())
         .filter(command -> command.getPossibleArgs().contains(lowerArg))
-        .collect(Collectors.toList());
+        .toList();
     if (potentialCommand.size() != 1) {
       return Optional.empty();
     } else {

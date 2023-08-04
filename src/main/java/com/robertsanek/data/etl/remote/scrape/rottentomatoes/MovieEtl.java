@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @DoNotRun(explanation = "broken/flaky")
 public class MovieEtl extends Etl<Movie> {
@@ -57,7 +56,7 @@ public class MovieEtl extends Etl<Movie> {
                 .withYear(year)
                 .build();
           })
-          .collect(Collectors.toList());
+          .toList();
     }
   }
 }

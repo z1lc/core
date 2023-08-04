@@ -61,10 +61,10 @@ public class FieldsShouldBeOrdered extends DataQualityBase {
         .forEach(fields -> {
           List<Field> subClassFields = fields.stream()
               .filter(field -> field.getName().contains("@SC"))
-              .collect(Collectors.toList());
+              .toList();
           List<Field> primaryFields = fields.stream()
               .filter(field -> !field.getName().contains("@SC"))
-              .collect(Collectors.toList());
+              .toList();
           notesWithIssues.addAll(doshit(subClassFields));
           notesWithIssues.addAll(doshit(primaryFields));
         });

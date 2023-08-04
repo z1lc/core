@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.StreamSupport;
@@ -81,7 +80,7 @@ public class ActivityEtl extends Etl<Activity> {
         })
         .filter(activity -> activity.getDate().isBefore(LocalDate.now()))
         .distinct()
-        .collect(Collectors.toList());
+        .toList();
   }
 
   private int getMinutesFromObj(JsonElement e) {

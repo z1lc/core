@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
@@ -71,7 +70,7 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
               return Stream.empty();
             }
           })
-          .collect(Collectors.toList());
+          .toList();
 
       if (filesToChange.size() > 0) {
         DateTimeFormatter ourFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm ssS", new Locale("en"));

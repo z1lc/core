@@ -42,7 +42,7 @@ public class EnsureDatesInPersonCardAreNonDecreasingAcrossLinesAndIncreasingPerL
                 .flatMap(line -> Stream.of(line.split("<br>")))
                 .flatMap(line -> Stream.of(line.split("<br />")))
                 .flatMap(line -> Stream.of(line.split("<li>")))
-                .collect(Collectors.toList());
+                .toList();
             List<Integer> maxYearsPerLine = lines.stream()
                 .filter(line -> line.length() > 0)
                 .flatMap(line -> {
@@ -50,7 +50,7 @@ public class EnsureDatesInPersonCardAreNonDecreasingAcrossLinesAndIncreasingPerL
                       .map(MatchResult::group)
                       .mapToInt(Integer::valueOf)
                       .boxed()
-                      .collect(Collectors.toList());
+                      .toList();
                   if (!Ordering.natural().isOrdered(yearsAsList)) {
                     log.error("Person '%s': individual line does not have increasing dates when reading " +
                         "left-to-right: '%s'", name, line);
@@ -58,7 +58,7 @@ public class EnsureDatesInPersonCardAreNonDecreasingAcrossLinesAndIncreasingPerL
                   }
                   return yearsAsList.stream().max(Comparator.comparing(Integer::valueOf)).stream();
                 })
-                .collect(Collectors.toList());
+                .toList();
             if (!Ordering.natural().reverse().isOrdered(maxYearsPerLine)) {
               log.error("Person '%s': does not have generally decreasing dates across lines when reading " +
                   "top-to-bottom: '%s'", name, maxYearsPerLine.stream()

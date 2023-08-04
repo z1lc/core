@@ -64,7 +64,7 @@ public class AllFieldsWithinNotesAreUsedByAtLestOneTemplate extends DataQualityB
               )
               .collect(Collectors.toSet());
           Sets.SetView<String> unusedFields = Sets.difference(allFields, usedFields);
-          List<String> sortedFields = unusedFields.stream().sorted().collect(Collectors.toList());
+          List<String> sortedFields = unusedFields.stream().sorted().toList();
           if (unusedFields.size() > 0) {
             log.warn("Note '%s': %s %s appear in any template: %s", model.getName(), sortedFields.size(),
                 sortedFields.size() > 1 ? "fields do not" : "field does not", String.join(", ", sortedFields));

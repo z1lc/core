@@ -1,7 +1,6 @@
 package com.robertsanek.data.quality.anki;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
@@ -37,7 +36,7 @@ public class AllNotesWithEnumsConformToSet extends DataQualityBase {
           List<String> enums = Lists.newArrayList(field.getName().substring(left, right).split(" / "));
           return new EnumField(field.getName(), field.getModel_id(), field.getOrdinal().intValue(), enums);
         })
-        .collect(Collectors.toList());
+        .toList();
 
     //TODO: assumes all enum fields are required (can result in array out of bounds otherwise)
     enumFields.forEach(enumField -> {

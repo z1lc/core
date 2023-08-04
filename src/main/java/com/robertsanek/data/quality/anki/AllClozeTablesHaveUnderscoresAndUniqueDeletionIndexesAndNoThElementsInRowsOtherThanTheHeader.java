@@ -3,7 +3,6 @@ package com.robertsanek.data.quality.anki;
 import java.util.List;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -45,7 +44,7 @@ public class AllClozeTablesHaveUnderscoresAndUniqueDeletionIndexesAndNoThElement
             Pattern cxPattern = Pattern.compile("\\{\\{c(\\d+)::");
             List<String> cxAsList = cxPattern.matcher(fields.get(0)).results()
                 .map(MatchResult::group)
-                .collect(Collectors.toList());
+                .toList();
             boolean clozeIndexMismatch = Sets.newHashSet(cxAsList).size() != cxAsList.size();
 
             boolean noUnderscoreOrDescription = !(fields.get(0).contains("__")

@@ -12,7 +12,6 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 
@@ -94,7 +93,7 @@ public class MasterEtlTest {
         .filter(pair -> !EXCEPTIONS.contains(pair))
         .map(pair -> String.format("%s: %s", pair.getLeft(), pair.getRight()))
         .distinct()
-        .collect(Collectors.toList());
+        .toList();
     if (violations.size() > 0) {
       throw new RuntimeException(
           String.format("%s classes have fields that refer to date and/or time but have no time zone:\n%s",
