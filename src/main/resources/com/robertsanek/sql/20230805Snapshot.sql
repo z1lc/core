@@ -1,5 +1,5 @@
 -- Queries used in The Snapshot #13 / May 2023
--- https://docs.google.com/document/d/1-x8dtw5qWq7cDSMnkAo3Aiw4J4YjbbEvuMwt0zBN5Pc/edit#
+-- https://docs.google.com/document/d/1Y8uqNeyXJKGh8HVBX7cQtMJf0ye0HGr9RTU2Uy1cM9E
 
 CREATE OR REPLACE FUNCTION weeks() RETURNS integer AS $$
 BEGIN
