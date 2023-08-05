@@ -65,7 +65,6 @@ public class MasterEtl implements QuartzJob {
   private static final AtomicLong ETL_RUN_ID_GENERATOR = new AtomicLong(1);
   private static final int ROW_LIMIT = 2_000_000;
   private static final Duration TRANSACTION_TIMEOUT = Duration.ofMinutes(10);
-  private static final Duration INSTANCE_STARTUP_WAIT_TIME = Duration.ofMinutes(5);
   private static final String SERVICE_ACCOUNT_FILENAME = "z1lc-qs.json";
   private static final RetryPolicy<EtlRun> individualEtlRetry = new RetryPolicy<EtlRun>()
       .handle(Throwable.class)
@@ -137,7 +136,7 @@ public class MasterEtl implements QuartzJob {
     Stopwatch total = Stopwatch.createStarted();
     List<Class<? extends Etl>> concreteEtls = getConcreteEtls(fastRun);
     log.info("Will run %s ETLs.", concreteEtls.size());
-    log.info("Creating connection to Cloud SQL and re-generating table schemas... (this may take up to 3 minutes)");
+    log.info("Creating connection to Render and re-generating table schemas... (this may take up to 3 minutes)");
     try (SessionFactory ignored = Unchecked.get(() -> getSessionFactory(Hbm2ddlType.CREATE, ConnectionType.RSANEK));
          SessionFactory noneSf = Unchecked.get(() -> getSessionFactory(Hbm2ddlType.NONE, ConnectionType.RSANEK))) {
       log.info("Schema re-generation complete, taking %s seconds. Beginning ETL with parallel = %s.",
