@@ -43,7 +43,7 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-sqladmin</artifactId>
-      <version>v1-rev20230607-2.0.0</version>
+      <version>v1-rev20230721-2.0.0</version>
     </dependency>
 
     <!-- Became necessary to include when loading Hibernate config after Java 10 upgrade.
@@ -232,12 +232,12 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-sheets</artifactId>
-      <version>v4-rev20230526-2.0.0</version>
+      <version>v4-rev20230808-2.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-fitness</artifactId>
-      <version>v1-rev20210920-2.0.0</version>
+      <version>v1-rev20230703-2.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>
@@ -277,7 +277,7 @@
     <dependency>
       <groupId>com.twilio.sdk</groupId>
       <artifactId>twilio</artifactId>
-      <version>9.9.1</version>
+      <version>9.10.0</version>
     </dependency>
 
     <dependency>
