@@ -28,7 +28,7 @@ public class AllInterviewQuestionMethodsHaveAssociatedFunctionNote extends DataQ
 
   @Override
   void runDQ() {
-    Set<String> methodNames =
+    Set<String> existingProgrammingLanguageFunctionNoteMethodNames =
         getAllNotesInRelevantDecks(PROGRAMMING_LANGUAGE_FUNCTION_MODEL_ID).stream()
             .map(note -> splitCsvIntoCommaSeparatedList(note.getFields()).get(0))
             .collect(Collectors.toSet());
@@ -45,7 +45,7 @@ public class AllInterviewQuestionMethodsHaveAssociatedFunctionNote extends DataQ
                 .map(result -> result.group(1)))
         .distinct()
         .filter(methodName -> !METHOD_NAME_EXCLUSIONS.contains(methodName))
-        .filter(methodName -> !methodNames.contains(methodName))
+        .filter(methodName -> !existingProgrammingLanguageFunctionNoteMethodNames.contains(methodName))
         .forEach(method -> violations.put(this.getClass(), method));
   }
 }
