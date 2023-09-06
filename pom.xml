@@ -18,7 +18,7 @@
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
-      <version>3.42.0.1</version>
+      <version>3.43.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -232,7 +232,7 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-sheets</artifactId>
-      <version>v4-rev20230808-2.0.0</version>
+      <version>v4-rev20230815-2.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.apis</groupId>
@@ -288,7 +288,7 @@
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>10.12.2</version>
+      <version>10.12.3</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>
