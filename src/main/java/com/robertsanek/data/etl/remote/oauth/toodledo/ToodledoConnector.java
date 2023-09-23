@@ -34,6 +34,7 @@ public class ToodledoConnector {
             .build(new ToodledoApi20(clientId, clientSecret)),
         TOODLEDO_ROOT,
         "https://api.toodledo.com/3/account/get.php?f=json");
+    oAuth20Utils.handleLogin();
 
     int startOffset = 0;
     List<JsonTask> toReturn = new ArrayList<>();

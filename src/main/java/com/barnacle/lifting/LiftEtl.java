@@ -66,7 +66,7 @@ public class LiftEtl implements Callable<Object> {
           } else {
             monthAndDay = monthAndDay + "/2018";
           }
-          LocalDate day = LocalDate.parse(monthAndDay, DateTimeFormatter.ofPattern("M/d/uuuu", new Locale("en")));
+          LocalDate day = LocalDate.parse(monthAndDay, DateTimeFormatter.ofPattern("M/d/uuuu", Locale.of("en")));
           String maybeDescription1 = liftingDayRows.get(0).get(1).toString();
           String maybeDescription2 = liftingDayRows.get(0).get(4).toString();
           String description = maybeDescription1.contains("e") ? maybeDescription1 : maybeDescription2;

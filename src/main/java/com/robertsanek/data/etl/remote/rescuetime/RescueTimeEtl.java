@@ -35,7 +35,7 @@ abstract class RescueTimeEtl<T> extends Etl<T> {
   private static final Log log = Logs.getLog(RescueTimeEtl.class);
   @VisibleForTesting int FROM_YEAR = 2009; //first data in RescueTime is from 2009
   @VisibleForTesting int TO_YEAR = LocalDate.now().getYear();
-  DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
+  DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.of("en"));
 
   @Inject SecretProvider secretProvider;
 

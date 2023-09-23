@@ -12,9 +12,9 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 
 public class DateDeserializer extends JsonDeserializer<LocalDateTime> {
 
-  public static DateTimeFormatter d = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", new Locale("en"));
+  public static DateTimeFormatter d = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.of("en"));
 
-  private static DateTimeFormatter oldFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
+  private static DateTimeFormatter oldFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.of("en"));
 
   @Override
   public LocalDateTime deserialize(JsonParser p, DeserializationContext context) throws IOException {

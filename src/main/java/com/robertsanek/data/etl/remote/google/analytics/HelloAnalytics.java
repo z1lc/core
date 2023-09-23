@@ -128,7 +128,7 @@ public class HelloAnalytics {
             toReturn.add(
                 PageView.PageViewBuilder.aPageView()
                     .withId(ID_ISSUER.getAndIncrement())
-                    .withDate(LocalDate.parse(dimensions.get(0), DateTimeFormatter.ofPattern("yyyyMMdd", new Locale("en"))))
+                    .withDate(LocalDate.parse(dimensions.get(0), DateTimeFormatter.ofPattern("yyyyMMdd", Locale.of("en"))))
                     .withWebsite("www.robertsanek.com")
                     .withPageViews(Long.parseLong(values.getValues().get(k)))
                     .build()

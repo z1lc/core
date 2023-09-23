@@ -38,7 +38,7 @@ import com.robertsanek.util.SecretProvider;
 public class GoodreadsBookEtl extends Etl<GoodreadsBook> {
 
   private static final String LIST_ID = "4081882";
-  private static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss XXXX uuuu", new Locale("en"));
+  private static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss XXXX uuuu", Locale.of("en"));
   private static final int REVIEWS_PER_PAGE = 20;
   private static final ImmutableMap<String, String> AUTHOR_NAME_REMAP = ImmutableMap.of(
       "J.K. Rowling", "J. K. Rowling",

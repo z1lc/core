@@ -13,7 +13,7 @@ import com.robertsanek.util.DateTimeUtils;
 
 public class SimpleDateDeserializer extends JsonDeserializer<ZonedDateTime> {
 
-  public static DateTimeFormatter d = DateTimeFormatter.ofPattern("yyyyMMdd", new Locale("en"));
+  public static DateTimeFormatter d = DateTimeFormatter.ofPattern("yyyyMMdd", Locale.of("en"));
 
   @Override
   public ZonedDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {

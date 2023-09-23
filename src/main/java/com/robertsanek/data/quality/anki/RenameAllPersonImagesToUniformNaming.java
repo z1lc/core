@@ -73,7 +73,7 @@ public class RenameAllPersonImagesToUniformNaming extends DataQualityBase {
           .toList();
 
       if (filesToChange.size() > 0) {
-        DateTimeFormatter ourFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm ssS", new Locale("en"));
+        DateTimeFormatter ourFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm ssS", Locale.of("en"));
         String dateTimeForFile = LocalDateTime.now().format(ourFormatter);
         File fileNameChangesTarget = new File(
             String.format(CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/anki/%s.txt",

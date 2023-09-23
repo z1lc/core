@@ -20,7 +20,7 @@ import j2html.tags.DomContent;
 public class HTMLOutputBuilder {
 
   public ZonedDateTime now = ZonedDateTime.now();
-  private DecimalFormat df = new DecimalFormat("#.0", DecimalFormatSymbols.getInstance(new Locale("en")));
+  private DecimalFormat df = new DecimalFormat("#.0", DecimalFormatSymbols.getInstance(Locale.of("en")));
 
   public ContainerTag<?> buildHTML(List<Loan> loans) {
     String styleSheet = getStyleSheet();

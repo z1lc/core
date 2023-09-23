@@ -39,6 +39,7 @@ public class ActivityEtl extends Etl<Activity> {
         .build(FitbitApi20.instance());
     OAuth20Utils oAuth20Utils = new OAuth20Utils(service, FITBIT_ROOT,
         "https://api.fitbit.com/1/user/-/activities/date/2019-01-01.json");
+    oAuth20Utils.handleLogin();
 
     long daysBetweenDates = ChronoUnit.DAYS.between(FITBIT_START_DATE, LocalDate.now());
     return LongStream.range(0, (daysBetweenDates / MAXIMUM_DAYS_PER_REQUEST) + 1)

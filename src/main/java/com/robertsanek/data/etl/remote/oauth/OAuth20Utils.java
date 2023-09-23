@@ -29,10 +29,9 @@ public class OAuth20Utils {
     this.service = service;
     this.tokenSaveLocation = tokenSaveLocation;
     this.exampleUrl = exampleUrl;
-    handleLogin();
   }
 
-  private synchronized void handleLogin() {
+  public synchronized void handleLogin() {
     Optional<String> maybeAccessToken = maybeGetAccessToken();
     Optional<String> maybeRefreshToken = maybeGetRefreshToken();
 

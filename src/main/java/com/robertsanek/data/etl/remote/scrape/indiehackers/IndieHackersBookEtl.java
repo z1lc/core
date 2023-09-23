@@ -145,7 +145,7 @@ public class IndieHackersBookEtl extends Etl<IndieHackersBook> {
           new WebDriverWait(driver, Duration.ofSeconds(10).getSeconds()).until(
               ExpectedConditions.presenceOfElementLocated(By.className("interviews__interviews")));
           interviews.addAll(driver.findElements(By.cssSelector("a.interview__link")).stream()
-              .map(a -> Unchecked.get(() -> new URL(a.getAttribute("href"))))
+              .map(a -> Unchecked.get(() -> new URI(a.getAttribute("href")).toURL()))
               .collect(Collectors.toSet()));
         }));
     pool.shutdown();
@@ -164,7 +164,7 @@ public class IndieHackersBookEtl extends Etl<IndieHackersBook> {
   }
 
   private WebDriver getThreadLocalDriver() {
-    return drivers.get(Thread.currentThread().getId() % driverCount + 1);
+    return drivers.get(Thread.currentThread().threadId() % driverCount + 1);
   }
 
 }

@@ -222,12 +222,12 @@ public class MasterEtl implements QuartzJob {
       if (max.get() == 0) {
         notificationSender.sendNotificationDefault(
             String.format("%s generated 0 rows at %s!", etlClazz.getSimpleName(),
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss", new Locale("en")))), "Check output.");
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss", Locale.of("en")))), "Check output.");
       }
     } else {
       notificationSender.sendNotificationDefault(
           String.format("%s failed at %s!", etlClazz.getSimpleName(),
-              LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss", new Locale("en")))),
+              LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss", Locale.of("en")))),
           template + "\n\n" + ExceptionUtils.getStackTrace(exceptionDuringEtl));
       log.error(template);
     }
