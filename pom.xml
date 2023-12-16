@@ -350,7 +350,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.2.2</version>
+        <version>3.2.3</version>
       </plugin>
       <!-- to deploy .jar to heroku: run `mvn clean heroku:deploy` -->
       <plugin>
