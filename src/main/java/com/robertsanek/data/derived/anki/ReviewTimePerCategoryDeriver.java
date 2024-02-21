@@ -40,6 +40,7 @@ public class ReviewTimePerCategoryDeriver extends Etl<ReviewTimePerCategory> {
       .put("zdone:wikipedia:", "General Knowledge")
       .put("zdone:bike_lock:", "General Knowledge")
       .put("zdone:gened:", "General Knowledge")
+      .put("zdone:planet:", "General Knowledge")
       .put("zdone:mlb:", "Sports")
       .put("zdone:nba:", "Sports")
       .put("zdone:nfl:", "Sports")
