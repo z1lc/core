@@ -1,7 +1,6 @@
 import random
 from datetime import date, timedelta
 
-from PyQt5.QtWidgets import QAction
 from anki.utils import intTime
 from aqt import mw
 from aqt.qt import *
@@ -15,7 +14,7 @@ MAXIMUM_PER_DAY = 15
 # this setting will be overriden by MAXIMUM_PER_DAY
 AMORTIZE_OVER = 7
 
-DECKS = ['z::P0::@ClozeTableManager']
+DECKS = ['z::0 ClozeTableManager']
 
 
 def auto_manage():
