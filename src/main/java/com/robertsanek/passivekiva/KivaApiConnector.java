@@ -26,6 +26,8 @@ import java.util.stream.Stream;
 
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.utils.URIBuilder;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.quartz.JobExecutionContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -145,7 +147,8 @@ public class KivaApiConnector implements QuartzJob {
     executorService.shutdown();
 
     allDetailedLoans.forEach(loan -> loan.setDuration(LoanDurationCalculator.getDuration(now, loan)));
-    allDetailedLoans = allDetailedLoans.stream().sorted().toList();
+    allDetailedLoans = allDetailedLoans.stream().sorted().filter(loan -> loan.getUnfundedAmount().isGreaterThan(Money.of(
+        CurrencyUnit.USD, 0))).toList();
     final ContainerTag<?> containerTag = new HTMLOutputBuilder().buildHTML(allDetailedLoans);
 
     File loansTarget =
