@@ -27,6 +27,7 @@ public class NoTemplateHasAllCorrespondingCardsSuspended extends DataQualityBase
         1607000000000L, // Beer
         1622000000000L, // Venue
         1624000000000L, // Basic
+        1708188592047L, // Okluze obrázku
         0L
     );
     modelsInUse.stream()
