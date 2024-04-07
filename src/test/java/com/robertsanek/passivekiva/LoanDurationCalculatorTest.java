@@ -6,6 +6,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import org.joda.money.Money;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Lists;
@@ -16,7 +17,7 @@ import com.robertsanek.passivekiva.entities.TermsBuilder;
 
 public class LoanDurationCalculatorTest {
 
-  private ZonedDateTime now = ZonedDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+  private final ZonedDateTime now = ZonedDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
   @Test
   public void getDuration_simple() {
@@ -26,14 +27,15 @@ public class LoanDurationCalculatorTest {
                 .setScheduledPayments(Lists.newArrayList(
                     new PaymentBuilder()
                         .setAmount(Money.parse("USD 100"))
-                        .setDueDate(ZonedDateTime.of(2017, 2, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                        .setDueDate(ZonedDateTime.of(2017, 5, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                         .createPayment()
                 ))
                 .createTerms()
         )
         .setLoanAmount(Money.parse("USD 100"))
         .createLoan();
-    assertEquals(17.0, LoanDurationCalculator.getDuration(now, loan), 0.0);
+    Assertions.assertEquals(107.0, LoanCalculator.getDuration(now, loan), 0.0);
+    Assertions.assertEquals(0.0732, LoanCalculator.calculateReturn(now, loan, 0.03), 0.001);
   }
 
   @Test
@@ -59,7 +61,6 @@ public class LoanDurationCalculatorTest {
         )
         .setLoanAmount(Money.parse("USD 300"))
         .createLoan();
-    assertEquals(47.0, LoanDurationCalculator.getDuration(now, loan), 0.0);
+    Assertions.assertEquals(47.0, LoanCalculator.getDuration(now, loan), 0.0);
   }
-
 }

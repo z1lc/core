@@ -44,12 +44,13 @@ public class Loan implements Comparable<Loan> {
   @JsonProperty("terms")
   private Terms terms;
   private Optional<Double> duration = Optional.empty();
+  private Optional<Double> xirr = Optional.empty();
 
   public Loan() {}
 
   public Loan(Long id, String name, Location location, String activity, String use, Money fundedAmount,
               Long partnerId, Long borrowerCount, Money loanAmount, Status status, String sector, Terms terms,
-              Optional<Double> duration) {
+              Optional<Double> duration, Optional<Double> xirr) {
     this.id = id;
     this.name = name;
     this.location = location;
@@ -63,6 +64,7 @@ public class Loan implements Comparable<Loan> {
     this.sector = sector;
     this.terms = terms;
     this.duration = duration;
+    this.xirr = xirr;
   }
 
   public Terms getTerms() {
@@ -117,8 +119,16 @@ public class Loan implements Comparable<Loan> {
     return duration;
   }
 
+  public Optional<Double> getXirr() {
+    return xirr;
+  }
+
   public void setDuration(double duration) {
     this.duration = Optional.of(duration);
+  }
+
+  public void setXirr(double xirr) {
+    this.xirr = Optional.of(xirr);
   }
 
   public Optional<String> getLink() {

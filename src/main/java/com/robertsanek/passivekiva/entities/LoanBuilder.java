@@ -19,6 +19,7 @@ public class LoanBuilder {
   private String sector;
   private Terms terms;
   private Optional<Double> duration;
+  private Optional<Double> xirr;
   private Optional<String> link;
 
   public LoanBuilder setId(Long id) {
@@ -93,6 +94,6 @@ public class LoanBuilder {
 
   public Loan createLoan() {
     return new Loan(id, name, location, activity, use, fundedAmount, partnerId, borrowerCount, loanAmount, status,
-        sector, terms, duration);
+        sector, terms, duration, xirr);
   }
 }

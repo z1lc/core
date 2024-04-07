@@ -73,7 +73,7 @@ public class KivaApiConnector implements QuartzJob {
   @Inject NotificationSender notificationSender;
   @Inject SecretProvider secretProvider;
 
-  private ZonedDateTime now = ZonedDateTime.now();
+  private final ZonedDateTime now = ZonedDateTime.now();
 
   @Override
   public void exec(JobExecutionContext context) {
@@ -124,7 +124,7 @@ public class KivaApiConnector implements QuartzJob {
             URI these100LoansURL = individualLoanBaseURIBuilder
                 .setPath("/v1/loans/" + these100LoansAsCSVString + ".json")
                 .build();
-            return (Callable<List<Loan>>) () -> {
+            return () -> {
               String these100LoansHTMLBody = Request.Get(these100LoansURL).execute().returnContent().asString();
               return mapper.readValue(these100LoansHTMLBody, LoanListResponse.class).getLoans();
             };
@@ -146,7 +146,8 @@ public class KivaApiConnector implements QuartzJob {
 
     executorService.shutdown();
 
-    allDetailedLoans.forEach(loan -> loan.setDuration(LoanDurationCalculator.getDuration(now, loan)));
+    allDetailedLoans.forEach(loan -> loan.setDuration(LoanCalculator.getDuration(now, loan)));
+    allDetailedLoans.forEach(loan -> loan.setXirr(LoanCalculator.calculateReturn(now, loan, 0.03)));
     allDetailedLoans = allDetailedLoans.stream().sorted().filter(loan -> loan.getUnfundedAmount().isGreaterThan(Money.of(
         CurrencyUnit.USD, 0))).toList();
     final ContainerTag<?> containerTag = new HTMLOutputBuilder().buildHTML(allDetailedLoans);

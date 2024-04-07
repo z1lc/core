@@ -343,6 +343,12 @@
       <version>0.14</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.decampo</groupId>
+      <artifactId>xirr</artifactId>
+      <version>1.2</version>
+    </dependency>
+
 
   </dependencies>
 

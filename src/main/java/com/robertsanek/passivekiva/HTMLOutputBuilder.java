@@ -46,8 +46,10 @@ public class HTMLOutputBuilder {
             .with(table().attr("align", "center")
                 .with(tr().with(
                     td("Loan"),
-                    td("Duration▼"),
-                    td("Unfunded Amount")
+                    td("Duration"),
+                    td("XIRR▼"),
+                    td("Unfunded Amount"),
+                    td("Partner Link")
                 ))
                 .with(
                     loans.stream()
@@ -55,8 +57,10 @@ public class HTMLOutputBuilder {
                             tr().with(
                                 td().with(a(loan.getName()).withHref(loan.getLink().orElseThrow())),
                                 td(df.format(loan.getDuration().orElseThrow())),
+                                td(df.format(loan.getXirr().orElseThrow() * 100) + '%'),
                                 td("$" + loan.getUnfundedAmount().getAmountMajorInt())
-                                    .attr("align", "right")
+                                    .attr("align", "right"),
+                                td(a(loan.getPartnerId().toString()).withHref("https://www.kiva.org/about/where-kiva-works/partners/" + loan.getPartnerId().toString()))
                             ))
                         .toList()
                 )
