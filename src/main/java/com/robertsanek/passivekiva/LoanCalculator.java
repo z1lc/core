@@ -15,7 +15,7 @@ import com.robertsanek.passivekiva.entities.Loan;
 public class LoanCalculator {
 
   // Accurate as of 2024-03-27: 0.89% default + 0.1% currency loss
-  private static final double currencyExchangeLossAndDefaultPercentageTotal = 0.0099;
+  private static final double CURRENCY_EXCHANGE_LOSS_AND_DEFAULT_PERCENTAGE_TOTAL = 0.0099;
 
   public static double getDuration(ZonedDateTime now, Loan loan) {
     return loan.getTerms().getScheduledPayments().stream()
@@ -32,7 +32,8 @@ public class LoanCalculator {
   }
 
   public static List<Transaction> getTransactionsForXIRR(Loan loan) {
-    double amortizedLoss = loan.getLoanAmount().getAmount().doubleValue() * currencyExchangeLossAndDefaultPercentageTotal / loan.getTerms().getScheduledPayments().size();
+    double amortizedLoss = loan.getLoanAmount().getAmount().doubleValue() *
+        CURRENCY_EXCHANGE_LOSS_AND_DEFAULT_PERCENTAGE_TOTAL / loan.getTerms().getScheduledPayments().size();
     return loan.getTerms().getScheduledPayments().stream()
         .map(payment -> new Transaction(payment.getAmount().getAmount().doubleValue() - amortizedLoss, payment.getDueDate().minusMonths(1).plusDays(16).toLocalDate()))
         .collect(Collectors.toList());
