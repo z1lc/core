@@ -87,6 +87,11 @@ public class LoanBuilder {
     return this;
   }
 
+  public LoanBuilder setXirr(Optional<Double> xirr) {
+    this.xirr = xirr;
+    return this;
+  }
+
   public LoanBuilder setLink(Optional<String> link) {
     this.link = link;
     return this;

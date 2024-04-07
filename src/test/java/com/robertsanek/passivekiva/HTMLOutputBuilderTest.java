@@ -38,7 +38,7 @@ public class HTMLOutputBuilderTest {
   public void buildHTML_empty() {
     String expected = "<html><head><meta charset=\"UTF-8\"><style>{}</style><title>Top 0 PassiveKiva Loans</title>" +
         "</head><body><p>Created at 2017-02-04T00:00-08:00</p><table align=\"center\"><tr><td>Loan</td>" +
-        "<td>Duration▼</td><td>Unfunded Amount</td></tr></table></body></html>";
+        "<td>Duration</td><td>XIRR▼</td><td>Unfunded Amount</td><td>Partner Link</td></tr></table></body></html>";
     assertEquals(expected, outputBuilder.buildHTML(Collections.emptyList()).render());
   }
 
@@ -49,12 +49,16 @@ public class HTMLOutputBuilderTest {
             .setName("Name 1")
             .setId(1L)
             .setDuration(Optional.of(130.3))
+            .setPartnerId(1L)
+            .setXirr(Optional.of(0.1))
             .createLoan()
     );
+    loans.get(0).setXirr(0);
     String expected = "<html><head><meta charset=\"UTF-8\"><style>{}</style><title>Top 1 PassiveKiva Loans</title>" +
         "</head><body><p>Created at 2017-02-04T00:00-08:00</p><table align=\"center\"><tr><td>Loan</td>" +
-        "<td>Duration▼</td><td>Unfunded Amount</td></tr><tr><td><a href=\"https://www.kiva.org/lend/1\">Name 1</a>" +
-        "</td><td>130.3</td><td align=\"right\">$0</td></tr></table></body></html>";
+        "<td>Duration</td><td>XIRR▼</td><td>Unfunded Amount</td><td>Partner Link</td></tr><tr><td><a href=\"https://www.kiva.org/lend/1\">Name 1</a>" +
+        "</td><td>130.3</td><td>.0%</td><td align=\"right\">$0</td>" +
+        "<td><a href=\"https://www.kiva.org/about/where-kiva-works/partners/1\">1</a></td></tr></table></body></html>";
     assertEquals(expected, outputBuilder.buildHTML(loans).render());
   }
 
