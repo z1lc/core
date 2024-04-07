@@ -3,15 +3,12 @@ package com.robertsanek.passivekiva;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.decampo.xirr.Transaction;
 import org.decampo.xirr.Xirr;
-import org.joda.money.Money;
 
 import com.robertsanek.passivekiva.entities.Loan;
 
