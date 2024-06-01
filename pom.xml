@@ -203,7 +203,7 @@
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
-      <version>2.5.1</version>
+      <version>2.6.0</version>
     </dependency>
     <!-- Necessary for above google-api-client to be able to do initial auth, but htmlunit / other dependencies rely
          on newer jetty. Uncomment when you want to do first-time auth. (could not get it to work with exclusions)
