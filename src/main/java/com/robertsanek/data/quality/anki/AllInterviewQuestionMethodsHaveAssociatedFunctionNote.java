@@ -24,7 +24,13 @@ public class AllInterviewQuestionMethodsHaveAssociatedFunctionNote extends DataQ
       "recurSum",
       "remove",
       "solve",
-      "getOrDefault or max or stream or valueOf or sum or sort or allMatch or put"
+      "getOrDefault",
+      "max",
+      "stream",
+      "valueOf",
+      "sum",
+      "allMatch",
+      "put"
   );
 
   @Override
