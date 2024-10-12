@@ -1,7 +1,5 @@
 package com.robertsanek;
 
-import javax.inject.Inject;
-
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -9,6 +7,7 @@ import org.quartz.SchedulerException;
 import org.quartz.spi.JobFactory;
 import org.quartz.spi.TriggerFiredBundle;
 
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 //via http://blog.timmattison.com/archives/2014/08/05/using-guice-dependency-injection-with-quartz-schedulding/

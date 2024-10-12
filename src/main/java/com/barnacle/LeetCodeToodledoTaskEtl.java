@@ -8,13 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import javax.inject.Named;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.robertsanek.data.etl.remote.scrape.toodledo.Habit;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitEtl;
 import com.robertsanek.data.etl.remote.scrape.toodledo.HabitRep;
