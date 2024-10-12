@@ -36,7 +36,7 @@ public class GoodreadsConnector {
   private static final String GOODREADS_ROOT =
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "out/goodreads/";
   @Inject ObjectMapper mapper;
-  private final String secretState = RandomStringUtils.randomAlphanumeric(13).toLowerCase();
+  private final String secretState = RandomStringUtils.insecure().nextAlphanumeric(13).toLowerCase();
   //TODO: inject this
   private final OAuth10aService service =
       new ServiceBuilder(InjectUtils.inject(SecretProvider.class).getSecret(SecretType.GOODREADS_API_KEY))

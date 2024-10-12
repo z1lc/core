@@ -37,7 +37,7 @@ public abstract class AnkiEtl<T> extends SQLiteEtl<T> {
   public File getSQLiteDbFileLocation() {
     final Path fromPath = Path.of(String.format("%s/%s/collection.anki2",
         CrossPlatformUtils.getPlatform().getAnkiBaseDirectory().orElseThrow().toString(), getProfileName()));
-    final String newFileName = RandomStringUtils.randomAlphanumeric(32).toLowerCase();
+    final String newFileName = RandomStringUtils.insecure().nextAlphanumeric(32).toLowerCase();
     final String target = String.format(System.getProperty("java.io.tmpdir") + "/%s.ankidb", newFileName);
     Unchecked.run(() -> Files.copy(fromPath,
         Paths.get(target),
