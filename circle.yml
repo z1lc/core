@@ -5,7 +5,7 @@ jobs:
     working_directory: ~
 
     docker:
-      - image: cimg/openjdk:20.0.1
+      - image: cimg/openjdk:21.0.4
 
     steps:
 
