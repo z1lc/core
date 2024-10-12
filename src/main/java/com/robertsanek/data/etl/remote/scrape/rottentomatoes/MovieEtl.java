@@ -1,9 +1,9 @@
 package com.robertsanek.data.etl.remote.scrape.rottentomatoes;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
-import com.gargoylesoftware.htmlunit.html.HtmlListItem;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.HtmlElement;
+import org.htmlunit.html.HtmlListItem;
+import org.htmlunit.html.HtmlPage;
 import com.robertsanek.data.etl.DoNotRun;
 import com.robertsanek.data.etl.Etl;
 import com.robertsanek.util.CommonProvider;
