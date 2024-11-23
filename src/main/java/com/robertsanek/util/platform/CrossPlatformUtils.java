@@ -75,13 +75,10 @@ public class CrossPlatformUtils {
         return false;
       }
 
+      // Don't really use Ubuntu personally anymore so we can use it as an equivalent for running in CI
       @Override
       public Boolean caseUbuntu(Platform.Ubuntu ubuntu) {
-        try (Stream<String> stream = Files.lines(Paths.get("/proc/1/cgroup"))) {
-          return stream.anyMatch(line -> line.contains("/docker"));
-        } catch (IOException e) {
-          return false;
-        }
+        return true;
       }
 
       @Override
