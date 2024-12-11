@@ -28,6 +28,7 @@ public class NoTemplateHasAllCorrespondingCardsSuspended extends DataQualityBase
         1622000000000L, // Venue
         1624000000000L, // Basic
         1708188592047L, // Okluze obrázku
+        1464374953790L, // AWS Service
         0L
     );
     modelsInUse.stream()

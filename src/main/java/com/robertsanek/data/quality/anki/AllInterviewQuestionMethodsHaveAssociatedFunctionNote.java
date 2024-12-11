@@ -9,7 +9,9 @@ import java.util.stream.Stream;
 import org.jsoup.Jsoup;
 
 import com.google.common.collect.ImmutableSet;
+import com.robertsanek.data.etl.DoNotRun;
 
+@DoNotRun(explanation = "Pulled this out since I don't really need to be ready for interviews year-round.")
 public class AllInterviewQuestionMethodsHaveAssociatedFunctionNote extends DataQualityBase {
 
   private static final Pattern methodNameRegex = Pattern.compile("\\.([a-zA-Z][a-zA-Z0-9]+)\\(");
