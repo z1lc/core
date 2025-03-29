@@ -277,7 +277,7 @@
     <dependency>
       <groupId>com.twilio.sdk</groupId>
       <artifactId>twilio</artifactId>
-      <version>10.7.0</version>
+      <version>10.7.1</version>
     </dependency>
 
     <dependency>
