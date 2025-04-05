@@ -64,9 +64,10 @@ public class KivaApiConnector implements QuartzJob {
   private static final int SEARCH_SIZE_LIMIT = 500; //max: 500; had to move down to 100 since executorservice was messing up
   private static final int DETAILED_LOAN_LIMIT = 100; //max: 100
   private static final int CONCURRENCY_LEVEL = 5;
-  private static final String APP_ID = "com.robertsanek.com.robertsanek.passivekiva";
+  private static final String APP_ID = "com.robertsanek.passivekiva";
   private static final Log log = Logs.getLog(KivaApiConnector.class);
   private static final String PUSH_TITLE = "PassiveKiva Alert";
+  private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36";
 
   @Inject ObjectMapper mapper;
   @Inject LastAlertedProvider lastAlertedProvider;
@@ -96,6 +97,7 @@ public class KivaApiConnector implements QuartzJob {
         .build());
 
     final String allLoanBody = Request.Get(listAllAcceptablyRatedLoansURI)
+        .userAgent(USER_AGENT)
         .execute()
         .returnContent()
         .asString();
@@ -125,7 +127,7 @@ public class KivaApiConnector implements QuartzJob {
                 .setPath("/v1/loans/" + these100LoansAsCSVString + ".json")
                 .build();
             return () -> {
-              String these100LoansHTMLBody = Request.Get(these100LoansURL).execute().returnContent().asString();
+              String these100LoansHTMLBody = Request.Get(these100LoansURL).userAgent(USER_AGENT).execute().returnContent().asString();
               return mapper.readValue(these100LoansHTMLBody, LoanListResponse.class).getLoans();
             };
           });
