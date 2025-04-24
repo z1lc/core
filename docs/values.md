@@ -1,11 +1,11 @@
 # Personal Values
-Values I try to live by. Last reviewed *January 16, 2026*.
+Values I try to live by. Last reviewed *April 24, 2025*.
 
 ## Health
 Physical, mental, emotional, spiritual.
 
 ## Relationships
-Romantic partners, family, friendships, communities.
+Romantic partner, family, friendships, communities.
 
 ## Curiosity
 Intellectual, experiential, creative.
