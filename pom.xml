@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.google.cloud.sql</groupId>
       <artifactId>postgres-socket-factory</artifactId>
-      <version>1.25.0</version>
+      <version>1.25.1</version>
     </dependency>
     <dependency>
       <groupId>com.google.apis</groupId>
