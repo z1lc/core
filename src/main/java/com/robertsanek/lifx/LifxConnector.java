@@ -67,7 +67,7 @@ public class LifxConnector {
 
   private boolean allLightsAreOnRightNow() {
     return StreamSupport.stream(
-        new JsonParser().parse(CommonProvider.retrying().get(() -> Request
+        JsonParser.parseString(CommonProvider.retrying().get(() -> Request
             .Get("https://api.lifx.com/v1/lights/all")
             .setHeader("Authorization", getAuthorizationString())
             .execute()
@@ -106,7 +106,7 @@ public class LifxConnector {
   }
 
   private boolean responseWasSuccess(String response) {
-    String dataArrAsString = new JsonParser().parse(response).getAsJsonObject().getAsJsonArray("results").toString();
+    String dataArrAsString = JsonParser.parseString(response).getAsJsonObject().getAsJsonArray("results").toString();
     return Arrays.stream(Unchecked.get(() -> mapper.readValue(dataArrAsString, SceneSelectionResult[].class)))
         .allMatch(result -> result.getStatus().equals("ok"));
   }

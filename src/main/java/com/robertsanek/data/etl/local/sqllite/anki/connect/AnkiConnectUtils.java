@@ -129,7 +129,7 @@ public class AnkiConnectUtils {
     String updateResponse =
         Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(notesInfo).getEntity()));
     JsonObject fields =
-        new JsonParser().parse(updateResponse).getAsJsonObject().getAsJsonArray("result").get(0).getAsJsonObject()
+        JsonParser.parseString(updateResponse).getAsJsonObject().getAsJsonArray("result").get(0).getAsJsonObject()
             .getAsJsonObject("fields");
     return fields.entrySet().stream()
         .collect(Collectors.toMap(
@@ -151,7 +151,7 @@ public class AnkiConnectUtils {
             .getBytes(StandardCharsets.UTF_8)));
     String updateResponse =
         Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(searchPost).getEntity()));
-    JsonArray result = new JsonParser().parse(updateResponse).getAsJsonObject().getAsJsonArray("result");
+    JsonArray result = JsonParser.parseString(updateResponse).getAsJsonObject().getAsJsonArray("result");
     return StreamSupport.stream(result.spliterator(), false)
         .map(JsonElement::getAsLong)
         .toList();
@@ -236,8 +236,7 @@ public class AnkiConnectUtils {
             "}", cardId)
             .getBytes(StandardCharsets.UTF_8)));
     JsonObject obj =
-        new JsonParser()
-            .parse(
+        JsonParser.parseString(
                 Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(syncPost).getEntity())))
             .getAsJsonObject();
     String dataSources = obj.getAsJsonArray("result").toString();

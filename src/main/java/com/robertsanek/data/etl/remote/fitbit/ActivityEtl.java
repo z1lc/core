@@ -106,7 +106,7 @@ public class ActivityEtl extends Etl<Activity> {
   }
 
   private JsonArray getResponse(OAuth20Utils oAuth20Utils, LocalDate date, String measure) {
-    return new JsonParser().parse(Unchecked.get(() -> oAuth20Utils.getSignedResponse(String.format(
+    return JsonParser.parseString(Unchecked.get(() -> oAuth20Utils.getSignedResponse(String.format(
         "https://api.fitbit.com/1/user/-/activities/tracker/%s/date/%s/%s.json",
         measure,
         date.toString(),
@@ -117,7 +117,7 @@ public class ActivityEtl extends Etl<Activity> {
   }
 
   private JsonArray getHeartRateResponse(OAuth20Utils oAuth20Utils, LocalDate date) {
-    return new JsonParser().parse(Unchecked.get(() -> oAuth20Utils.getSignedResponse(String.format(
+    return JsonParser.parseString(Unchecked.get(() -> oAuth20Utils.getSignedResponse(String.format(
         "https://api.fitbit.com/1/user/-/activities/heart/date/%s/%s.json",
         date.toString(),
         date.plusDays(100).toString()),

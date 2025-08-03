@@ -78,8 +78,7 @@ public class EtlAndDqJob implements QuartzJob {
         .setPath("api/1.0/datasources")
         .build());
     JsonObject obj =
-        new JsonParser()
-            .parse(Unchecked.get(() -> Request.Get(uri)
+        JsonParser.parseString(Unchecked.get(() -> Request.Get(uri)
                 .addHeader("kf-api-key", secretProvider.getSecret(SecretType.KLIPFOLIO_API_KEY))
                 .execute()
                 .returnContent()

@@ -70,7 +70,7 @@ public class LeetCodeQuestionEtl extends Etl<Question> {
       }
 
       HttpGet httpGet2 = new HttpGet("https://leetcode.com/api/problems/algorithms/");
-      JsonObject obj = new JsonParser().parse(EntityUtils.toString(
+      JsonObject obj = JsonParser.parseString(EntityUtils.toString(
           CommonProvider.getHttpClient(cookieStore).execute(httpGet2).getEntity())).getAsJsonObject();
       if (!obj.toString().contains("rsanek")) {
         throw new RuntimeException("Could not guarantee user was logged into LeetCode. " +

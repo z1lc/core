@@ -134,8 +134,7 @@ public class WikipediaConnector {
     getListOfDatesForApiRequest(sinceDateInclusive, granularity).parallelStream()
         .forEach(date -> {
           try {
-            JsonObject apiResponse = new JsonParser()
-                .parse(getWithCustomHttpClient(String
+            JsonObject apiResponse = JsonParser.parseString(getWithCustomHttpClient(String
                     .format("https://wikimedia.org/api/rest_v1/metrics/pageviews/top/%s.wikipedia/all-access/%s",
                         language.toString().toLowerCase(), formatDate(date, granularity))))
                 .getAsJsonObject();
@@ -264,7 +263,7 @@ public class WikipediaConnector {
   }
 
   private static JsonObject getWikiDataApiResponse(String wikiDataEntityId, String property) {
-    return new JsonParser().parse(
+    return JsonParser.parseString(
         getWithCustomHttpClient(String.format(WIKIDATA_URL_TEMPLATE, wikiDataEntityId, property)))
         .getAsJsonObject();
   }

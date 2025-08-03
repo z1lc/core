@@ -34,7 +34,7 @@ public class CodingTimeEtl extends Etl<CodingTime> {
         secretProvider.getSecret(SecretType.WAKATIME_USER_ID), secretProvider.getSecret(SecretType.WAKATIME_API_KEY),
         today.minusDays(13), today);
     String jsonReturned = Request.Get(URL).execute().returnContent().asString();
-    String dataArrAsString = new JsonParser().parse(jsonReturned).getAsJsonObject().getAsJsonArray("data").toString();
+    String dataArrAsString = JsonParser.parseString(jsonReturned).getAsJsonObject().getAsJsonArray("data").toString();
     return Arrays.stream(mapper.readValue(dataArrAsString, CodingInfoForDay[].class))
         .flatMap(codingInfoForDay -> codingInfoForDay.getLanguages().stream()
             .map(lang -> Pair.of(lang, codingInfoForDay.getRange())))
