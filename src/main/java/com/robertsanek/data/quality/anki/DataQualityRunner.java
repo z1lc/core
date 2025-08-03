@@ -11,6 +11,7 @@ import static j2html.TagCreator.join;
 import static j2html.TagCreator.p;
 
 import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -30,7 +31,6 @@ import org.quartz.JobExecutionContext;
 import org.reflections.Reflections;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -179,7 +179,7 @@ public class DataQualityRunner implements QuartzJob {
       stream.forEach(sqlFileName -> {
         log.info("Running %s...", sqlFileName);
         String sql = Unchecked.get(() -> Resources.toString(
-            Resources.getResource("com/robertsanek/data/quality/anki/" + sqlFileName), Charsets.UTF_8));
+            Resources.getResource("com/robertsanek/data/quality/anki/" + sqlFileName), StandardCharsets.UTF_8));
 
         try (Statement statement = connection.createStatement()) {
           statement.setQueryTimeout((int) QUERY_TIMEOUT.getSeconds());

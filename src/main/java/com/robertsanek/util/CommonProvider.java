@@ -1,5 +1,6 @@
 package com.robertsanek.util;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -15,7 +16,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import org.htmlunit.WebClient;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
 
@@ -80,7 +80,7 @@ public class CommonProvider {
 
   public static ImmutableSet<String> getCommonNames() {
     String rawNames = Unchecked.get(() -> Resources.toString(Resources.getResource(
-        "com/robertsanek/data/quality/anki/files/common_first_names.txt"), Charsets.UTF_8));
+        "com/robertsanek/data/quality/anki/files/common_first_names.txt"), StandardCharsets.UTF_8));
     return ImmutableSet.copyOf(Arrays.stream(rawNames.split("\r\n"))
         .map(name -> StringUtils.capitalize(name.toLowerCase()))
         .collect(Collectors.toSet()));

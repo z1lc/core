@@ -4,6 +4,7 @@ import static com.robertsanek.util.SecretType.LAST_FM_API_KEY;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -15,7 +16,6 @@ import org.apache.http.client.utils.URIBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Charsets;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.robertsanek.data.etl.Etl;
@@ -84,7 +84,7 @@ public class ArtistEtl extends Etl<Artist> {
     return Request.Get(uri)
         .execute()
         .returnContent()
-        .asString(Charsets.UTF_8);
+        .asString(StandardCharsets.UTF_8);
   }
 
   private Optional<Integer> extractTotalPages(ArtistApiResponse response) {

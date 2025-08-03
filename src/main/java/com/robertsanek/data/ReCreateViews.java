@@ -3,12 +3,12 @@ package com.robertsanek.data;
 import static com.robertsanek.util.SecretType.RENDER_SQL_Z_BI_POSTGRES_PASSWORD;
 import static com.robertsanek.util.SecretType.RENDER_SQL_Z_BI_POSTGRES_USERNAME;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.inject.Inject;
 import com.robertsanek.util.Log;
@@ -31,7 +31,7 @@ public class ReCreateViews {
     String lastStatement = "";
     try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
       String sqlFile = Unchecked.get(() -> Resources.toString(
-          Resources.getResource("com/robertsanek/sql/CommonQueries.sql"), Charsets.UTF_8));
+          Resources.getResource("com/robertsanek/sql/CommonQueries.sql"), StandardCharsets.UTF_8));
       try (Statement statement = connection.createStatement()) {
         for (String s : sqlFile.split(";")) {
           lastStatement = s;
