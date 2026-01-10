@@ -31,10 +31,24 @@ public class Unchecked {
     }
   }
 
+  public static void runVoid(ThrowingRunnable runnable) {
+    try {
+      runnable.run();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   @FunctionalInterface
   public interface ThrowingFunction<T, R, E extends Exception> {
 
     R apply(T t) throws E;
+  }
+
+  @FunctionalInterface
+  public interface ThrowingRunnable {
+
+    void run() throws Exception;
   }
 
 }
