@@ -106,10 +106,7 @@ public class AnkiConnectUtils {
     String updateResponse =
         Unchecked.get(() -> EntityUtils.toString(CommonProvider.getHttpClient().execute(openBrowser).getEntity()));
     if (validateEmptyListResponse(updateResponse)) {
-      Unchecked.run(() -> {
-        Thread.sleep(Duration.ofSeconds(5).toMillis());
-        return null;
-      });
+      Unchecked.runVoid(() -> Thread.sleep(Duration.ofSeconds(5).toMillis()));
       return true;
     }
     return false;

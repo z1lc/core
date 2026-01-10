@@ -68,10 +68,7 @@ public class ParallelExample {
   }
 
   private static void sleep(long millis) {
-    Unchecked.run(() -> {
-      Thread.sleep(millis);
-      return null;
-    });
+    Unchecked.runVoid(() -> Thread.sleep(millis));
   }
 
 }

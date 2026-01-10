@@ -7,13 +7,14 @@ import java.util.stream.Collectors;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.help.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import com.google.common.collect.Lists;
 import com.robertsanek.process.Command;
+import com.robertsanek.util.Unchecked;
 
 public class CLI {
 
@@ -92,13 +93,13 @@ public class CLI {
     options.addOption(fastRunSelection);
 
     CommandLineParser parser = new DefaultParser();
-    HelpFormatter formatter = new HelpFormatter();
+    HelpFormatter formatter = HelpFormatter.builder().get();
     CommandLine cmd;
 
     try {
       cmd = parser.parse(options, args);
     } catch (ParseException e) {
-      formatter.printHelp("core", options);
+      Unchecked.runVoid(() -> formatter.printHelp("core", null, options, null, true));
       return new CliArgs(Optional.empty(), false, false, false, null);
     }
     String parallelismPassed = cmd.getOptionValue("parallelism");
