@@ -92,7 +92,9 @@ public class SheetsConnector {
   }
 
   static {
-    HTTP_TRANSPORT = Unchecked.get(GoogleNetHttpTransport::newTrustedTransport);
+    @SuppressWarnings("deprecation")
+    HttpTransport transport = Unchecked.get(GoogleNetHttpTransport::newTrustedTransport);
+    HTTP_TRANSPORT = transport;
     DATA_STORE_FACTORY = Unchecked.get(() -> new FileDataStoreFactory(DATA_STORE_DIR));
   }
 

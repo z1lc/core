@@ -67,6 +67,7 @@ public class HelloAnalytics {
     }
   }
 
+  @SuppressWarnings("deprecation")
   private static AnalyticsReporting initializeAnalyticsReporting() throws GeneralSecurityException, IOException {
     NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
     FileDataStoreFactory dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);

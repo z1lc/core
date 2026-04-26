@@ -34,6 +34,7 @@ public class FitConnector {
 
   private static final String APPLICATION_NAME = "R ETL";
   private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+  @SuppressWarnings("deprecation")
   private static final HttpTransport HTTP_TRANSPORT = Unchecked.get(GoogleNetHttpTransport::newTrustedTransport);
   private static final java.io.File DATA_STORE_DIR = new java.io.File(
       CrossPlatformUtils.getRootPathIncludingTrailingSlash().orElseThrow() + "in/etl/google_fit_credential");
