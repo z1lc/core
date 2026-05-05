@@ -8,6 +8,10 @@ updates:
     time: "08:00"
     timezone: America/New_York
   open-pull-requests-limit: 10
+  groups:
+    all-dependencies:
+      patterns:
+      - "*"
   ignore:
   - dependency-name: com.google.auth:google-auth-library-oauth2-http
     versions:
