@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.3.3.Final</hibernateVersion>
+    <hibernateVersion>7.3.4.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
