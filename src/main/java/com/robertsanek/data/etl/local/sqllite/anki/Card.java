@@ -3,11 +3,11 @@ package com.robertsanek.data.etl.local.sqllite.anki;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import com.robertsanek.util.Log;
 import com.robertsanek.util.Logs;

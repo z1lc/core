@@ -3,7 +3,7 @@ package com.robertsanek.data.etl.remote.humanapi.entities;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

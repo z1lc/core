@@ -5,8 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Connection;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.sqlite.Collation;
 
 import com.robertsanek.data.etl.local.sqllite.SQLiteEtl;
 import com.robertsanek.util.Log;
@@ -24,6 +26,18 @@ public abstract class AnkiEtl<T> extends SQLiteEtl<T> {
   @Override
   public void preEtlStep() {
     AnkiSyncer.syncLocalCollectionIfOutOfDate(getProfileName());
+  }
+
+  // Anki's collection.anki2 references a custom collation registered at runtime by Anki's Rust
+  // backend. Bare JDBC connections must register a stub so the query planner can resolve it.
+  @Override
+  public void customizeConnection(Connection connection) throws Exception {
+    Collation.create(connection, "unicase", new Collation() {
+      @Override
+      protected int xCompare(String s1, String s2) {
+        return s1.compareToIgnoreCase(s2);
+      }
+    });
   }
 
   @Override
