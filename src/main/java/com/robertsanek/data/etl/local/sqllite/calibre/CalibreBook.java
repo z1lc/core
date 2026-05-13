@@ -1,8 +1,8 @@
 package com.robertsanek.data.etl.local.sqllite.calibre;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "calibre_books")

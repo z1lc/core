@@ -24,6 +24,10 @@ public abstract class SQLiteEtl<T> extends Etl<T> {
 
   }
 
+  public void customizeConnection(Connection connection) throws Exception {
+
+  }
+
   @Override
   public List<T> getObjects() throws Exception {
     preEtlStep();
@@ -32,6 +36,7 @@ public abstract class SQLiteEtl<T> extends Etl<T> {
 
     try (Connection connection = DriverManager.getConnection(getConnectionString());
          Statement statement = connection.createStatement()) {
+      customizeConnection(connection);
       statement.setQueryTimeout((int) QUERY_TIMEOUT.getSeconds());
       ResultSet rs = statement.executeQuery(String.format("select * from %s;", getImportTableName()));
       while (rs.next()) {

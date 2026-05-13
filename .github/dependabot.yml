@@ -12,6 +12,9 @@ updates:
     all-dependencies:
       patterns:
       - "*"
+      update-types:
+      - "minor"
+      - "patch"
   ignore:
   - dependency-name: com.google.auth:google-auth-library-oauth2-http
     versions:

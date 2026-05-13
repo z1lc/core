@@ -147,7 +147,7 @@ public class MasterEtl implements QuartzJob {
       List<EtlRun> etlRuns = stream.map(etlClazz -> runIndividualEtl(etlClazz, noneSf)).toList();
       try (Session session = noneSf.openSession()) {
         Transaction transaction = session.beginTransaction();
-        etlRuns.forEach(session::save);
+        etlRuns.forEach(session::persist);
         session.flush();
         session.clear();
         transaction.commit();
@@ -195,7 +195,7 @@ public class MasterEtl implements QuartzJob {
             IntStream.range(0, max.get())
                 .forEach(i -> {
                   try {
-                    session.save(objects.get(i));
+                    session.persist(objects.get(i));
                   } catch (NonUniqueObjectException e) {
                     log.error(e.toString());
                   }
