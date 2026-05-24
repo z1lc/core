@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.3.4.Final</hibernateVersion>
+    <hibernateVersion>7.3.5.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -201,13 +201,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>6.0.3</version>
+      <version>6.1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
-      <version>6.0.3</version>
+      <version>6.1.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -395,7 +395,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version>
+        <version>3.6.3</version>
         <executions>
           <execution>
             <id>enforce-maven</id>
