@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.3.5.Final</hibernateVersion>
+    <hibernateVersion>7.4.0.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.google.cloud.sql</groupId>
       <artifactId>postgres-socket-factory</artifactId>
-      <version>1.28.3</version>
+      <version>1.28.4</version>
     </dependency>
     <dependency>
       <groupId>com.google.apis</groupId>
@@ -56,12 +56,12 @@
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-core</artifactId>
-      <version>4.0.8</version>
+      <version>4.0.9</version>
     </dependency>
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
-      <version>4.0.8</version>
+      <version>4.0.9</version>
     </dependency>
 
     <!-- jackson -->
@@ -73,12 +73,12 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.21.3</version>
+      <version>2.21.4</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.21.3</version>
+      <version>2.21.4</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -88,18 +88,18 @@
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-csv</artifactId>
-      <version>2.21.3</version>
+      <version>2.21.4</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.21.3</version>
+      <version>2.21.4</version>
     </dependency>
     <!-- jackson java time -->
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.21.3</version>
+      <version>2.21.4</version>
     </dependency>
     <dependency>
       <groupId>com.mashape.unirest</groupId>
@@ -368,7 +368,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.5</version>
+        <version>3.5.6</version>
       </plugin>
       <!-- to deploy .jar to heroku: run `mvn clean heroku:deploy` -->
       <plugin>
@@ -390,7 +390,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.10.0</version>
+        <version>3.11.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
