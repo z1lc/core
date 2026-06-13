@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.4.0.Final</hibernateVersion>
+    <hibernateVersion>7.4.1.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.9.8</version>
+      <version>4.10.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
