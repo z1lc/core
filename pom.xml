@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.4.1.Final</hibernateVersion>
+    <hibernateVersion>7.4.2.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -310,7 +310,7 @@
     <dependency>
       <groupId>org.htmlunit</groupId>
       <artifactId>htmlunit</artifactId>
-      <version>5.1.0</version>
+      <version>5.2.0</version>
     </dependency>
 
     <dependency>
