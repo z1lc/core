@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.4.3.Final</hibernateVersion>
+    <hibernateVersion>7.4.4.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.7.12</version>
+      <version>42.7.13</version>
     </dependency>
     <dependency>
       <groupId>com.google.cloud.sql</groupId>
@@ -73,12 +73,12 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.22.0</version>
+      <version>2.22.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.22.0</version>
+      <version>2.22.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -88,18 +88,18 @@
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-csv</artifactId>
-      <version>2.22.0</version>
+      <version>2.22.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.22.0</version>
+      <version>2.22.1</version>
     </dependency>
     <!-- jackson java time -->
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.22.0</version>
+      <version>2.22.1</version>
     </dependency>
     <dependency>
       <groupId>com.mashape.unirest</groupId>
@@ -234,7 +234,7 @@
     <dependency>
       <groupId>com.google.auth</groupId>
       <artifactId>google-auth-library-oauth2-http</artifactId>
-      <version>1.48.0</version>
+      <version>1.49.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.oauth-client</groupId>
