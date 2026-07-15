@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.3.4.Final</hibernateVersion>
+    <hibernateVersion>7.4.4.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -18,7 +18,7 @@
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
-      <version>3.53.1.0</version>
+      <version>3.53.2.0</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate.orm</groupId>
@@ -33,12 +33,12 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.7.11</version>
+      <version>42.7.13</version>
     </dependency>
     <dependency>
       <groupId>com.google.cloud.sql</groupId>
       <artifactId>postgres-socket-factory</artifactId>
-      <version>1.28.3</version>
+      <version>1.28.6</version>
     </dependency>
     <dependency>
       <groupId>com.google.apis</groupId>
@@ -56,12 +56,12 @@
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-core</artifactId>
-      <version>4.0.8</version>
+      <version>4.0.9</version>
     </dependency>
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
-      <version>4.0.8</version>
+      <version>4.0.9</version>
     </dependency>
 
     <!-- jackson -->
@@ -73,33 +73,33 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.21.3</version>
+      <version>2.22.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.21.3</version>
+      <version>2.22.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.21</version>
+      <version>2.22</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-csv</artifactId>
-      <version>2.21.3</version>
+      <version>2.22.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.21.3</version>
+      <version>2.22.1</version>
     </dependency>
     <!-- jackson java time -->
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.21.3</version>
+      <version>2.22.1</version>
     </dependency>
     <dependency>
       <groupId>com.mashape.unirest</groupId>
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.9.8</version>
+      <version>4.10.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -161,22 +161,22 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.26.0</version>
+      <version>2.26.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.26.0</version>
+      <version>2.26.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.26.0</version>
+      <version>2.26.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-jcl</artifactId>
-      <version>2.26.0</version>
+      <version>2.26.1</version>
     </dependency>
 
 
@@ -201,13 +201,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>6.0.3</version>
+      <version>6.1.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
-      <version>6.0.3</version>
+      <version>6.1.1</version>
       <scope>test</scope>
     </dependency>
 
@@ -234,7 +234,7 @@
     <dependency>
       <groupId>com.google.auth</groupId>
       <artifactId>google-auth-library-oauth2-http</artifactId>
-      <version>1.47.0</version>
+      <version>1.49.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.oauth-client</groupId>
@@ -300,7 +300,7 @@
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>13.4.2</version>
+      <version>13.7.0</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>
@@ -310,7 +310,7 @@
     <dependency>
       <groupId>org.htmlunit</groupId>
       <artifactId>htmlunit</artifactId>
-      <version>4.21.0</version>
+      <version>5.2.0</version>
     </dependency>
 
     <dependency>
@@ -368,7 +368,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.5</version>
+        <version>3.5.6</version>
       </plugin>
       <!-- to deploy .jar to heroku: run `mvn clean heroku:deploy` -->
       <plugin>
@@ -390,12 +390,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.10.0</version>
+        <version>3.11.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version>
+        <version>3.6.3</version>
         <executions>
           <execution>
             <id>enforce-maven</id>
