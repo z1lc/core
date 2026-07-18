@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.4.4.Final</hibernateVersion>
+    <hibernateVersion>7.4.5.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.10.2</version>
+      <version>4.10.3</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -201,13 +201,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>6.1.1</version>
+      <version>6.1.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
-      <version>6.1.1</version>
+      <version>6.1.2</version>
       <scope>test</scope>
     </dependency>
 
@@ -300,7 +300,7 @@
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>13.7.0</version>
+      <version>13.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>
@@ -310,7 +310,7 @@
     <dependency>
       <groupId>org.htmlunit</groupId>
       <artifactId>htmlunit</artifactId>
-      <version>5.2.0</version>
+      <version>5.3.0</version>
     </dependency>
 
     <dependency>
