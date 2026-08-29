@@ -126,6 +126,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.15.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
       <artifactId>commons-csv</artifactId>
       <version>1.14.1</version>
     </dependency>
@@ -298,11 +303,6 @@
       <version>2.5.2</version>
     </dependency>
     <dependency>
-      <groupId>com.puppycrawl.tools</groupId>
-      <artifactId>checkstyle</artifactId>
-      <version>13.9.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.jsoup</groupId>
       <artifactId>jsoup</artifactId>
       <version>1.23.2</version>
@@ -468,6 +468,14 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.6.0</version>
+        <dependencies>
+          <!-- The plugin bundles an old Checkstyle (9.3 as of plugin 3.6.0); override it explicitly. -->
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>14.0.0</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <id>validate</id>
