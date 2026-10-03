@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.4.10.Final</hibernateVersion>
+    <hibernateVersion>7.4.11.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -117,12 +117,12 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.7.1-jre</version>
+      <version>33.7.2-jre</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.20.0</version>
+      <version>3.21.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -239,7 +239,7 @@
     <dependency>
       <groupId>com.google.auth</groupId>
       <artifactId>google-auth-library-oauth2-http</artifactId>
-      <version>1.52.0</version>
+      <version>1.53.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.oauth-client</groupId>
@@ -294,7 +294,7 @@
     <dependency>
       <groupId>com.twilio.sdk</groupId>
       <artifactId>twilio</artifactId>
-      <version>13.0.1</version>
+      <version>13.0.2</version>
     </dependency>
 
     <dependency>
@@ -473,7 +473,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>14.1.0</version>
+            <version>14.3.0</version>
           </dependency>
         </dependencies>
         <executions>
