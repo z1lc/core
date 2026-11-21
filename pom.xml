@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.4.15.Final</hibernateVersion>
+    <hibernateVersion>7.4.16.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.google.cloud.sql</groupId>
       <artifactId>postgres-socket-factory</artifactId>
-      <version>1.30.2</version>
+      <version>1.31.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.apis</groupId>
@@ -239,7 +239,7 @@
     <dependency>
       <groupId>com.google.auth</groupId>
       <artifactId>google-auth-library-oauth2-http</artifactId>
-      <version>1.57.0</version>
+      <version>1.58.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.oauth-client</groupId>
@@ -294,7 +294,7 @@
     <dependency>
       <groupId>com.twilio.sdk</groupId>
       <artifactId>twilio</artifactId>
-      <version>13.2.0</version>
+      <version>13.2.1</version>
     </dependency>
 
     <dependency>
@@ -310,7 +310,7 @@
     <dependency>
       <groupId>org.htmlunit</groupId>
       <artifactId>htmlunit</artifactId>
-      <version>5.7.0</version>
+      <version>5.8.0</version>
     </dependency>
 
     <dependency>
