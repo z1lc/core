@@ -7,7 +7,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.20</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <hibernateVersion>7.4.16.Final</hibernateVersion>
+    <hibernateVersion>7.4.17.Final</hibernateVersion>
   </properties>
 
   <groupId>com.robertsanek</groupId>
@@ -33,12 +33,12 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.7.14</version>
+      <version>42.7.15</version>
     </dependency>
     <dependency>
       <groupId>com.google.cloud.sql</groupId>
       <artifactId>postgres-socket-factory</artifactId>
-      <version>1.31.0</version>
+      <version>1.31.1</version>
     </dependency>
     <dependency>
       <groupId>com.google.apis</groupId>
@@ -310,7 +310,7 @@
     <dependency>
       <groupId>org.htmlunit</groupId>
       <artifactId>htmlunit</artifactId>
-      <version>5.8.0</version>
+      <version>5.9.0</version>
     </dependency>
 
     <dependency>
